@@ -20,11 +20,11 @@ Welcome! Code is comming soon~
 ### 小组选题
 
 通过自选和抽签等方式确定选题：
-- 后台管理子系统：[蔡锐小组](https://github.com/ruizi/software_engineer_backstage)
+- 后台管理子系统：[蔡锐小组](https://github.com/software-engineering-backstage-team)
 - 排课子系统：[罗登小组](https://github.com/RonDen/Course-Scheduling-System)
 - 成绩管理子系统： 张云皓小组
 - 毕业设计管理子系统： 朱迪迪小组
-- 选课子系统： 何显小组
+- 选课子系统： [何显小组](https://github.com/Messiahhhh/2019-Software-Engineering-Curriculum-Design--)
 
 ### 后续工作安排
 1. 及时向团长提交小组名单。
