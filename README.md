@@ -1,8 +1,9 @@
 # 2019-Software-Engineering-Curriculum-Design
 
-Welcome! Code is comming.
+Welcome! Code is comming soon~
 
-----
+------
+
 # 2019/3/15日第一次会议记录
 
 参会人员：罗登，何显，蔡锐，张云皓。
@@ -14,7 +15,7 @@ Welcome! Code is comming.
 
 | 语言 | 框架 | 数据库 | 版本控制 | 项目管理 |
 | :----: | :----: | :----: | :----: | :----: |
-|Python3.60 | Django2.1 | MySql8.0 | Git | https://github.com/RonDen/2019-Software-Engineering-Curriculum-Design |
+|[Python3.6](https://www.python.org/) | [Django2.1](https://www.djangoproject.com/) | [MySql8.0](https://www.mysql.com/) | Git | https://github.com/RonDen/2019-Software-Engineering-Curriculum-Design |
 
 ### 小组选题
 
@@ -34,3 +35,9 @@ Welcome! Code is comming.
 ### 下次开会时间
 
 暂定下周五晚上最后一节课下课。
+
+### 相关学习资料链接
+
+- [菜鸟教程git教程](http://www.runoob.com/git/git-tutorial.html)
+- [廖雪峰git教程](https://www.liaoxuefeng.com/wiki/0013739516305929606dd18361248578c67b8067c8c017b000/)
+
