@@ -44,3 +44,20 @@ Welcome! Code is comming soon~
 - [菜鸟教程git教程](http://www.runoob.com/git/git-tutorial.html)
 - [廖雪峰git教程](https://www.liaoxuefeng.com/wiki/0013739516305929606dd18361248578c67b8067c8c017b000/)
 
+
+# 2019/03/22第二次会议记录
+
+参会人员：罗登，蔡锐，朱迪迪，何显，张云皓
+
+## 会议讨论内容
+
+1. 沟通目前各小组内部分工情况。是否有召集线下会议。
+2. 各小组长轮流发言，描述各自模块功能。约定在**下周**提交**小组功能分析说明**。
+3. 选定合适的前端框架，辅助的前端设计人员。
+4. 后台数据库内容。数据库访问方式等。
+5. 分析数据流图，各视图下数据流动方向。
+
+## 补充
+
+- 各小组长在本项目master分支上建立新的分支，将各自小组的项目同步到新的分支上开发，便于集成测试与整体项目监控。
+- 前端建议了解[Vue.js](https://cn.vuejs.org/), [Bootstrap](http://www.runoob.com/bootstrap/bootstrap-tutorial.html), [AdminTable](https://adminlte.io/), [Echarts.js](https://echarts.baidu.com/)等。
