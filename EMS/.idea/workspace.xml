@@ -1,7 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="034b6cb8-cd81-402b-a28d-b1a207d0dc3b" name="Default Changelist" comment="" />
+    <list default="true" id="034b6cb8-cd81-402b-a28d-b1a207d0dc3b" name="Default Changelist" comment="">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/EMS/__init__.py" beforeDir="false" afterPath="$PROJECT_DIR$/EMS/__init__.py" afterDir="false" />
+    </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -15,20 +18,21 @@
     <session id="1654000217">
       <usages-collector id="statistics.lifecycle.project">
         <counts>
-          <entry key="project.open.time.0" value="1" />
-          <entry key="project.opened" value="1" />
+          <entry key="project.closed" value="1" />
+          <entry key="project.open.time.0" value="2" />
+          <entry key="project.opened" value="2" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.extensions.open">
         <counts>
-          <entry key="html" value="11" />
-          <entry key="py" value="11" />
+          <entry key="html" value="13" />
+          <entry key="py" value="25" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.types.open">
         <counts>
-          <entry key="HTML" value="11" />
-          <entry key="Python" value="11" />
+          <entry key="HTML" value="13" />
+          <entry key="Python" value="25" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.extensions.edit">
@@ -43,64 +47,29 @@
           <entry key="Python" value="94" />
         </counts>
       </usages-collector>
+      <usages-collector id="statistics.vcs.git.usages">
+        <counts>
+          <entry key="git.branch.checkout.local" value="1" />
+        </counts>
+      </usages-collector>
     </session>
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
       <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/EMS/settings.py">
+        <entry file="file://$PROJECT_DIR$/backstage/forms.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="1860">
-              <caret line="62" column="43" selection-start-line="62" selection-start-column="43" selection-end-line="62" selection-end-column="43" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/templates/base.html">
-          <provider selected="true" editor-type-id="text-editor" />
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/backstage/views.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="240">
-              <caret line="15" selection-start-line="15" selection-end-line="15" />
+            <state relative-caret-position="-4451">
               <folding>
-                <element signature="e#0#9#0" expanded="true" />
+                <element signature="e#0#24#0" expanded="true" />
               </folding>
             </state>
           </provider>
         </entry>
       </file>
       <file pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/templates/Homepage.html">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="210">
-              <caret line="7" column="33" selection-start-line="7" selection-start-column="33" selection-end-line="7" selection-end-column="33" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/EMS/urls.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="570">
-              <caret line="21" column="46" selection-start-line="21" selection-start-column="46" selection-end-line="21" selection-end-column="46" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/backstage/urls.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="120">
-              <caret line="7" column="35" selection-start-line="7" selection-start-column="35" selection-end-line="7" selection-end-column="35" />
-              <folding>
-                <element signature="e#0#37#0" expanded="true" />
-              </folding>
-            </state>
-          </provider>
+        <entry file="file://$PROJECT_DIR$/EMS/__init__.py">
+          <provider selected="true" editor-type-id="text-editor" />
         </entry>
       </file>
     </leaf>
@@ -116,7 +85,7 @@
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$/.." />
     <option name="RECENT_BRANCH_BY_REPOSITORY">
       <map>
-        <entry key="$PROJECT_DIR$/.." value="master" />
+        <entry key="$PROJECT_DIR$/.." value="backstage" />
       </map>
     </option>
   </component>
@@ -127,6 +96,7 @@
         <option value="$PROJECT_DIR$/EMS/settings.py" />
         <option value="$PROJECT_DIR$/backstage/views.py" />
         <option value="$PROJECT_DIR$/templates/Homepage.html" />
+        <option value="$PROJECT_DIR$/EMS/__init__.py" />
       </list>
     </option>
   </component>
@@ -137,20 +107,40 @@
     <sorting>DEFINITION_ORDER</sorting>
   </component>
   <component name="ProjectFrameBounds" extendedState="6">
-    <option name="x" value="527" />
+    <option name="x" value="526" />
     <option name="y" value="105" />
-    <option name="width" value="1103" />
-    <option name="height" value="1039" />
+    <option name="width" value="1104" />
+    <option name="height" value="1040" />
   </component>
   <component name="ProjectLevelVcsManager" settingsEditedManually="true">
     <ConfirmationsSetting value="2" id="Add" />
   </component>
   <component name="ProjectView">
-    <navigator proportions="" version="1">
+    <navigator currentView="Scope" currentSubView="Scope 'Project Files'; set:Project Files; class com.intellij.psi.search.scope.ProjectFilesScope" proportions="" version="1">
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
-      <pane id="Scope" />
+      <pane id="Scope">
+        <subPane subId="Scope 'Project Files'; set:Project Files; class com.intellij.psi.search.scope.ProjectFilesScope">
+          <expand>
+            <path>
+              <item name="EMS" type="3d21c010:ScopeViewTreeModel$ProjectNode" />
+              <item name="" type="442cc68d:ScopeViewTreeModel$RootNode" />
+            </path>
+            <path>
+              <item name="EMS" type="3d21c010:ScopeViewTreeModel$ProjectNode" />
+              <item name="" type="442cc68d:ScopeViewTreeModel$RootNode" />
+              <item name="backstage" type="9f88c78c:ScopeViewTreeModel$FileNode" />
+            </path>
+            <path>
+              <item name="EMS" type="3d21c010:ScopeViewTreeModel$ProjectNode" />
+              <item name="" type="442cc68d:ScopeViewTreeModel$RootNode" />
+              <item name="EMS" type="9f88c78c:ScopeViewTreeModel$FileNode" />
+            </path>
+          </expand>
+          <select />
+        </subPane>
+      </pane>
       <pane id="ProjectPane">
         <subPane>
           <expand>
@@ -161,12 +151,12 @@
             <path>
               <item name="EMS" type="b2602c69:ProjectViewProjectNode" />
               <item name="EMS" type="462c0819:PsiDirectoryNode" />
-              <item name="EMS" type="462c0819:PsiDirectoryNode" />
+              <item name="backstage" type="462c0819:PsiDirectoryNode" />
             </path>
             <path>
               <item name="EMS" type="b2602c69:ProjectViewProjectNode" />
               <item name="EMS" type="462c0819:PsiDirectoryNode" />
-              <item name="templates" type="462c0819:PsiDirectoryNode" />
+              <item name="EMS" type="462c0819:PsiDirectoryNode" />
             </path>
           </expand>
           <select />
@@ -187,6 +177,260 @@
       <recent name="E:\software_engineer\2019-Software-Engineering-Curriculum-Design\EMS\templates" />
     </key>
   </component>
+  <component name="RestoreUpdateTree" date="Moments ago" ActionInfo="_Update">
+    <UpdatedFiles>
+      <FILE-GROUP>
+        <option name="myUpdateName" value="Updated from server" />
+        <option name="myStatusName" value="Changed on server" />
+        <option name="mySupportsDeletion" value="false" />
+        <option name="myCanBeAbsent" value="false" />
+        <option name="myId" value="CHANGED_ON_SERVER" />
+        <FILE-GROUP>
+          <option name="myUpdateName" value="Updated" />
+          <option name="myStatusName" value="Changed" />
+          <option name="mySupportsDeletion" value="false" />
+          <option name="myCanBeAbsent" value="false" />
+          <option name="myId" value="UPDATED" />
+          <PATH vcs="Git" revision="">$PROJECT_DIR$/.idea/workspace.xml</PATH>
+          <PATH vcs="Git" revision="">$PROJECT_DIR$/EMS/__pycache__/__init__.cpython-36.pyc</PATH>
+          <PATH vcs="Git" revision="">$PROJECT_DIR$/EMS/__pycache__/settings.cpython-36.pyc</PATH>
+          <PATH vcs="Git" revision="">$PROJECT_DIR$/EMS/__pycache__/urls.cpython-36.pyc</PATH>
+          <PATH vcs="Git" revision="">$PROJECT_DIR$/EMS/settings.py</PATH>
+          <PATH vcs="Git" revision="">$PROJECT_DIR$/EMS/urls.py</PATH>
+          <PATH vcs="Git" revision="">$PROJECT_DIR$/backstage/models.py</PATH>
+          <PATH vcs="Git" revision="">$PROJECT_DIR$/backstage/urls.py</PATH>
+          <PATH vcs="Git" revision="">$PROJECT_DIR$/backstage/views.py</PATH>
+        </FILE-GROUP>
+        <FILE-GROUP>
+          <option name="myUpdateName" value="Created" />
+          <option name="myStatusName" value="Created" />
+          <option name="mySupportsDeletion" value="false" />
+          <option name="myCanBeAbsent" value="false" />
+          <option name="myId" value="CREATED" />
+          <PATH vcs="Git" revision="">$PROJECT_DIR$/../.idea/dataSources.xml</PATH>
+          <PATH vcs="Git" revision="">$PROJECT_DIR$/.idea/dataSources/40f14c15-f4ab-442e-996e-b3bc1b39d110.corrupted.20190326-023944.reason.txt</PATH>
+          <PATH vcs="Git" revision="">$PROJECT_DIR$/.idea/dataSources/40f14c15-f4ab-442e-996e-b3bc1b39d110.corrupted.20190326-023944.xml</PATH>
+          <PATH vcs="Git" revision="">$PROJECT_DIR$/.idea/dataSources/40f14c15-f4ab-442e-996e-b3bc1b39d110.corrupted.20190326-031313.reason.txt</PATH>
+          <PATH vcs="Git" revision="">$PROJECT_DIR$/.idea/dataSources/40f14c15-f4ab-442e-996e-b3bc1b39d110.corrupted.20190326-031313.xml</PATH>
+          <PATH vcs="Git" revision="">$PROJECT_DIR$/EMS/__pycache__/wsgi.cpython-36.pyc</PATH>
+          <PATH vcs="Git" revision="">$PROJECT_DIR$/backstage/__pycache__/__init__.cpython-36.pyc</PATH>
+          <PATH vcs="Git" revision="">$PROJECT_DIR$/backstage/__pycache__/admin.cpython-36.pyc</PATH>
+          <PATH vcs="Git" revision="">$PROJECT_DIR$/backstage/__pycache__/forms.cpython-36.pyc</PATH>
+          <PATH vcs="Git" revision="">$PROJECT_DIR$/backstage/__pycache__/models.cpython-36.pyc</PATH>
+          <PATH vcs="Git" revision="">$PROJECT_DIR$/backstage/__pycache__/urls.cpython-36.pyc</PATH>
+          <PATH vcs="Git" revision="">$PROJECT_DIR$/backstage/__pycache__/views.cpython-36.pyc</PATH>
+          <PATH vcs="Git" revision="">$PROJECT_DIR$/backstage/forms.py</PATH>
+          <PATH vcs="Git" revision="">$PROJECT_DIR$/backstage/media/files/229地图题范文.pdf</PATH>
+          <PATH vcs="Git" revision="">$PROJECT_DIR$/backstage/media/files/229地图题范文_3FDgz56.pdf</PATH>
+          <PATH vcs="Git" revision="">$PROJECT_DIR$/backstage/media/files/229地图题范文_9SX6Qtl.pdf</PATH>
+          <PATH vcs="Git" revision="">$PROJECT_DIR$/backstage/media/files/C7T2四线图.pdf</PATH>
+          <PATH vcs="Git" revision="">$PROJECT_DIR$/backstage/media/files/C7T2四线图_3WEBKot.pdf</PATH>
+          <PATH vcs="Git" revision="">$PROJECT_DIR$/backstage/media/files/C7T2四线图_5VoQYYx.pdf</PATH>
+          <PATH vcs="Git" revision="">$PROJECT_DIR$/backstage/media/files/C7T2四线图_6PfA3w2.pdf</PATH>
+          <PATH vcs="Git" revision="">$PROJECT_DIR$/backstage/media/files/C7T2四线图_HM2LmWN.pdf</PATH>
+          <PATH vcs="Git" revision="">$PROJECT_DIR$/backstage/media/files/C7T2四线图_nYsY7rg.pdf</PATH>
+          <PATH vcs="Git" revision="">$PROJECT_DIR$/backstage/media/files/C7T2四线图_xKAQNKF.pdf</PATH>
+          <PATH vcs="Git" revision="">$PROJECT_DIR$/backstage/media/image/default.png</PATH>
+          <PATH vcs="Git" revision="">$PROJECT_DIR$/backstage/media/web_img/Sending_Email.png</PATH>
+          <PATH vcs="Git" revision="">$PROJECT_DIR$/backstage/media/web_img/add_book.png</PATH>
+          <PATH vcs="Git" revision="">$PROJECT_DIR$/backstage/media/web_img/add_book1.png</PATH>
+          <PATH vcs="Git" revision="">$PROJECT_DIR$/backstage/media/web_img/announcement.png</PATH>
+          <PATH vcs="Git" revision="">$PROJECT_DIR$/backstage/media/web_img/announcement1.png</PATH>
+          <PATH vcs="Git" revision="">$PROJECT_DIR$/backstage/media/web_img/back.png</PATH>
+          <PATH vcs="Git" revision="">$PROJECT_DIR$/backstage/media/web_img/back1.png</PATH>
+          <PATH vcs="Git" revision="">$PROJECT_DIR$/backstage/media/web_img/back2.jpg</PATH>
+          <PATH vcs="Git" revision="">$PROJECT_DIR$/backstage/media/web_img/back2.png</PATH>
+          <PATH vcs="Git" revision="">$PROJECT_DIR$/backstage/media/web_img/back3.png</PATH>
+          <PATH vcs="Git" revision="">$PROJECT_DIR$/backstage/media/web_img/back4.png</PATH>
+          <PATH vcs="Git" revision="">$PROJECT_DIR$/backstage/media/web_img/back5.jpg</PATH>
+          <PATH vcs="Git" revision="">$PROJECT_DIR$/backstage/media/web_img/back6.jpg</PATH>
+          <PATH vcs="Git" revision="">$PROJECT_DIR$/backstage/media/web_img/bonjour.jpg</PATH>
+          <PATH vcs="Git" revision="">$PROJECT_DIR$/backstage/media/web_img/book.jpg</PATH>
+          <PATH vcs="Git" revision="">$PROJECT_DIR$/backstage/media/web_img/book1.png</PATH>
+          <PATH vcs="Git" revision="">$PROJECT_DIR$/backstage/media/web_img/book2.png</PATH>
+          <PATH vcs="Git" revision="">$PROJECT_DIR$/backstage/media/web_img/change.png</PATH>
+          <PATH vcs="Git" revision="">$PROJECT_DIR$/backstage/media/web_img/change1.jpg</PATH>
+          <PATH vcs="Git" revision="">$PROJECT_DIR$/backstage/media/web_img/change2.png</PATH>
+          <PATH vcs="Git" revision="">$PROJECT_DIR$/backstage/media/web_img/change3.png</PATH>
+          <PATH vcs="Git" revision="">$PROJECT_DIR$/backstage/media/web_img/change4.png</PATH>
+          <PATH vcs="Git" revision="">$PROJECT_DIR$/backstage/media/web_img/check.png</PATH>
+          <PATH vcs="Git" revision="">$PROJECT_DIR$/backstage/media/web_img/delete_user.png</PATH>
+          <PATH vcs="Git" revision="">$PROJECT_DIR$/backstage/media/web_img/department.png</PATH>
+          <PATH vcs="Git" revision="">$PROJECT_DIR$/backstage/media/web_img/dowload4.png</PATH>
+          <PATH vcs="Git" revision="">$PROJECT_DIR$/backstage/media/web_img/download.png</PATH>
+          <PATH vcs="Git" revision="">$PROJECT_DIR$/backstage/media/web_img/download1.png</PATH>
+          <PATH vcs="Git" revision="">$PROJECT_DIR$/backstage/media/web_img/download2.png</PATH>
+          <PATH vcs="Git" revision="">$PROJECT_DIR$/backstage/media/web_img/download3.png</PATH>
+          <PATH vcs="Git" revision="">$PROJECT_DIR$/backstage/media/web_img/download5.jpg</PATH>
+          <PATH vcs="Git" revision="">$PROJECT_DIR$/backstage/media/web_img/download7.png</PATH>
+          <PATH vcs="Git" revision="">$PROJECT_DIR$/backstage/media/web_img/feedback.png</PATH>
+          <PATH vcs="Git" revision="">$PROJECT_DIR$/backstage/media/web_img/feedback1.png</PATH>
+          <PATH vcs="Git" revision="">$PROJECT_DIR$/backstage/media/web_img/grades.png</PATH>
+          <PATH vcs="Git" revision="">$PROJECT_DIR$/backstage/media/web_img/paper.png</PATH>
+          <PATH vcs="Git" revision="">$PROJECT_DIR$/backstage/media/web_img/paper1.jpg</PATH>
+          <PATH vcs="Git" revision="">$PROJECT_DIR$/backstage/media/web_img/paper2.jpg</PATH>
+          <PATH vcs="Git" revision="">$PROJECT_DIR$/backstage/media/web_img/paper3.png</PATH>
+          <PATH vcs="Git" revision="">$PROJECT_DIR$/backstage/media/web_img/people.png</PATH>
+          <PATH vcs="Git" revision="">$PROJECT_DIR$/backstage/media/web_img/personal.png</PATH>
+          <PATH vcs="Git" revision="">$PROJECT_DIR$/backstage/media/web_img/personal1.png</PATH>
+          <PATH vcs="Git" revision="">$PROJECT_DIR$/backstage/media/web_img/search.jpg</PATH>
+          <PATH vcs="Git" revision="">$PROJECT_DIR$/backstage/media/web_img/search.png</PATH>
+          <PATH vcs="Git" revision="">$PROJECT_DIR$/backstage/media/web_img/search1.jpg</PATH>
+          <PATH vcs="Git" revision="">$PROJECT_DIR$/backstage/media/web_img/search2.png</PATH>
+          <PATH vcs="Git" revision="">$PROJECT_DIR$/backstage/media/web_img/start.png</PATH>
+          <PATH vcs="Git" revision="">$PROJECT_DIR$/backstage/media/web_img/statistic.jpg</PATH>
+          <PATH vcs="Git" revision="">$PROJECT_DIR$/backstage/media/web_img/statistic.png</PATH>
+          <PATH vcs="Git" revision="">$PROJECT_DIR$/backstage/media/web_img/statistic1.png</PATH>
+          <PATH vcs="Git" revision="">$PROJECT_DIR$/backstage/media/web_img/subscribe.jpg</PATH>
+          <PATH vcs="Git" revision="">$PROJECT_DIR$/backstage/migrations/0001_initial.py</PATH>
+          <PATH vcs="Git" revision="">$PROJECT_DIR$/backstage/migrations/__pycache__/0001_initial.cpython-36.pyc</PATH>
+          <PATH vcs="Git" revision="">$PROJECT_DIR$/backstage/migrations/__pycache__/__init__.cpython-36.pyc</PATH>
+          <PATH vcs="Git" revision="">$PROJECT_DIR$/courseScheduling/__pycache__/__init__.cpython-36.pyc</PATH>
+          <PATH vcs="Git" revision="">$PROJECT_DIR$/courseScheduling/__pycache__/admin.cpython-36.pyc</PATH>
+          <PATH vcs="Git" revision="">$PROJECT_DIR$/courseScheduling/__pycache__/models.cpython-36.pyc</PATH>
+          <PATH vcs="Git" revision="">$PROJECT_DIR$/courseScheduling/__pycache__/urls.cpython-36.pyc</PATH>
+          <PATH vcs="Git" revision="">$PROJECT_DIR$/courseScheduling/__pycache__/views.cpython-36.pyc</PATH>
+          <PATH vcs="Git" revision="">$PROJECT_DIR$/courseScheduling/migrations/__pycache__/__init__.cpython-36.pyc</PATH>
+          <PATH vcs="Git" revision="">$PROJECT_DIR$/courseSelection/__pycache__/__init__.cpython-36.pyc</PATH>
+          <PATH vcs="Git" revision="">$PROJECT_DIR$/courseSelection/__pycache__/admin.cpython-36.pyc</PATH>
+          <PATH vcs="Git" revision="">$PROJECT_DIR$/courseSelection/__pycache__/models.cpython-36.pyc</PATH>
+          <PATH vcs="Git" revision="">$PROJECT_DIR$/courseSelection/__pycache__/urls.cpython-36.pyc</PATH>
+          <PATH vcs="Git" revision="">$PROJECT_DIR$/courseSelection/__pycache__/views.cpython-36.pyc</PATH>
+          <PATH vcs="Git" revision="">$PROJECT_DIR$/courseSelection/migrations/__pycache__/__init__.cpython-36.pyc</PATH>
+          <PATH vcs="Git" revision="">$PROJECT_DIR$/graduationManagement/__pycache__/__init__.cpython-36.pyc</PATH>
+          <PATH vcs="Git" revision="">$PROJECT_DIR$/graduationManagement/__pycache__/admin.cpython-36.pyc</PATH>
+          <PATH vcs="Git" revision="">$PROJECT_DIR$/graduationManagement/__pycache__/models.cpython-36.pyc</PATH>
+          <PATH vcs="Git" revision="">$PROJECT_DIR$/graduationManagement/__pycache__/urls.cpython-36.pyc</PATH>
+          <PATH vcs="Git" revision="">$PROJECT_DIR$/graduationManagement/__pycache__/views.cpython-36.pyc</PATH>
+          <PATH vcs="Git" revision="">$PROJECT_DIR$/graduationManagement/migrations/__pycache__/__init__.cpython-36.pyc</PATH>
+          <PATH vcs="Git" revision="">$PROJECT_DIR$/scoreManagement/__pycache__/__init__.cpython-36.pyc</PATH>
+          <PATH vcs="Git" revision="">$PROJECT_DIR$/scoreManagement/__pycache__/admin.cpython-36.pyc</PATH>
+          <PATH vcs="Git" revision="">$PROJECT_DIR$/scoreManagement/__pycache__/models.cpython-36.pyc</PATH>
+          <PATH vcs="Git" revision="">$PROJECT_DIR$/scoreManagement/__pycache__/urls.cpython-36.pyc</PATH>
+          <PATH vcs="Git" revision="">$PROJECT_DIR$/scoreManagement/__pycache__/views.cpython-36.pyc</PATH>
+          <PATH vcs="Git" revision="">$PROJECT_DIR$/scoreManagement/migrations/__pycache__/__init__.cpython-36.pyc</PATH>
+          <PATH vcs="Git" revision="">$PROJECT_DIR$/static/bootstrap-3.3.7-dist/css/bootstrap-theme.css</PATH>
+          <PATH vcs="Git" revision="">$PROJECT_DIR$/static/bootstrap-3.3.7-dist/css/bootstrap-theme.css.map</PATH>
+          <PATH vcs="Git" revision="">$PROJECT_DIR$/static/bootstrap-3.3.7-dist/css/bootstrap-theme.min.css</PATH>
+          <PATH vcs="Git" revision="">$PROJECT_DIR$/static/bootstrap-3.3.7-dist/css/bootstrap-theme.min.css.map</PATH>
+          <PATH vcs="Git" revision="">$PROJECT_DIR$/static/bootstrap-3.3.7-dist/css/bootstrap.css</PATH>
+          <PATH vcs="Git" revision="">$PROJECT_DIR$/static/bootstrap-3.3.7-dist/css/bootstrap.css.map</PATH>
+          <PATH vcs="Git" revision="">$PROJECT_DIR$/static/bootstrap-3.3.7-dist/css/bootstrap.min.css</PATH>
+          <PATH vcs="Git" revision="">$PROJECT_DIR$/static/bootstrap-3.3.7-dist/css/bootstrap.min.css.map</PATH>
+          <PATH vcs="Git" revision="">$PROJECT_DIR$/static/bootstrap-3.3.7-dist/fonts/glyphicons-halflings-regular.eot</PATH>
+          <PATH vcs="Git" revision="">$PROJECT_DIR$/static/bootstrap-3.3.7-dist/fonts/glyphicons-halflings-regular.svg</PATH>
+          <PATH vcs="Git" revision="">$PROJECT_DIR$/static/bootstrap-3.3.7-dist/fonts/glyphicons-halflings-regular.ttf</PATH>
+          <PATH vcs="Git" revision="">$PROJECT_DIR$/static/bootstrap-3.3.7-dist/fonts/glyphicons-halflings-regular.woff</PATH>
+          <PATH vcs="Git" revision="">$PROJECT_DIR$/static/bootstrap-3.3.7-dist/fonts/glyphicons-halflings-regular.woff2</PATH>
+          <PATH vcs="Git" revision="">$PROJECT_DIR$/static/bootstrap-3.3.7-dist/js/bootstrap.js</PATH>
+          <PATH vcs="Git" revision="">$PROJECT_DIR$/static/bootstrap-3.3.7-dist/js/bootstrap.min.js</PATH>
+          <PATH vcs="Git" revision="">$PROJECT_DIR$/static/bootstrap-3.3.7-dist/js/npm.js</PATH>
+          <PATH vcs="Git" revision="">$PROJECT_DIR$/static/buct.jpg</PATH>
+          <PATH vcs="Git" revision="">$PROJECT_DIR$/static/js/dark.js</PATH>
+          <PATH vcs="Git" revision="">$PROJECT_DIR$/static/js/echarts.js</PATH>
+          <PATH vcs="Git" revision="">$PROJECT_DIR$/static/js/jquery-3.2.1.js</PATH>
+          <PATH vcs="Git" revision="">$PROJECT_DIR$/templates/Add_Announcement.html</PATH>
+          <PATH vcs="Git" revision="">$PROJECT_DIR$/templates/Announcement.html</PATH>
+          <PATH vcs="Git" revision="">$PROJECT_DIR$/templates/Change_Announcement.html</PATH>
+          <PATH vcs="Git" revision="">$PROJECT_DIR$/templates/Change_Details.html</PATH>
+          <PATH vcs="Git" revision="">$PROJECT_DIR$/templates/Homepage.html</PATH>
+          <PATH vcs="Git" revision="">$PROJECT_DIR$/templates/Login.html</PATH>
+          <PATH vcs="Git" revision="">$PROJECT_DIR$/templates/Personal_Details.html</PATH>
+          <PATH vcs="Git" revision="">$PROJECT_DIR$/templates/Sending_Emails.html</PATH>
+          <PATH vcs="Git" revision="">$PROJECT_DIR$/templates/Sending_Messages.html</PATH>
+          <PATH vcs="Git" revision="">$PROJECT_DIR$/templates/User_Operate.html</PATH>
+          <PATH vcs="Git" revision="">$PROJECT_DIR$/templates/User_Operate_Change.html</PATH>
+          <PATH vcs="Git" revision="">$PROJECT_DIR$/templates/Welcome.html</PATH>
+          <PATH vcs="Git" revision="">$PROJECT_DIR$/templates/base.html</PATH>
+        </FILE-GROUP>
+        <FILE-GROUP>
+          <option name="myUpdateName" value="Deleted" />
+          <option name="myStatusName" value="Deleted" />
+          <option name="mySupportsDeletion" value="false" />
+          <option name="myCanBeAbsent" value="true" />
+          <option name="myId" value="REMOVED_FROM_REPOSITORY" />
+          <PATH vcs="Git" revision="">$PROJECT_DIR$/.idea/encodings.xml</PATH>
+        </FILE-GROUP>
+        <FILE-GROUP>
+          <option name="myUpdateName" value="Restored" />
+          <option name="myStatusName" value="Will be restored" />
+          <option name="mySupportsDeletion" value="false" />
+          <option name="myCanBeAbsent" value="false" />
+          <option name="myId" value="RESTORED" />
+        </FILE-GROUP>
+      </FILE-GROUP>
+      <FILE-GROUP>
+        <option name="myUpdateName" value="Modified" />
+        <option name="myStatusName" value="Modified" />
+        <option name="mySupportsDeletion" value="false" />
+        <option name="myCanBeAbsent" value="false" />
+        <option name="myId" value="MODIFIED" />
+      </FILE-GROUP>
+      <FILE-GROUP>
+        <option name="myUpdateName" value="Skipped" />
+        <option name="myStatusName" value="Skipped" />
+        <option name="mySupportsDeletion" value="false" />
+        <option name="myCanBeAbsent" value="false" />
+        <option name="myId" value="SKIPPED" />
+      </FILE-GROUP>
+      <FILE-GROUP>
+        <option name="myUpdateName" value="Merged with conflicts" />
+        <option name="myStatusName" value="Will be merged with conflicts" />
+        <option name="mySupportsDeletion" value="false" />
+        <option name="myCanBeAbsent" value="false" />
+        <option name="myId" value="MERGED_WITH_CONFLICTS" />
+      </FILE-GROUP>
+      <FILE-GROUP>
+        <option name="myUpdateName" value="Merged with tree conflicts" />
+        <option name="myStatusName" value="Merged with tree conflicts" />
+        <option name="mySupportsDeletion" value="false" />
+        <option name="myCanBeAbsent" value="false" />
+        <option name="myId" value="MERGED_WITH_TREE_CONFLICT" />
+      </FILE-GROUP>
+      <FILE-GROUP>
+        <option name="myUpdateName" value="Merged with property conflicts" />
+        <option name="myStatusName" value="Will be merged with property conflicts" />
+        <option name="mySupportsDeletion" value="false" />
+        <option name="myCanBeAbsent" value="false" />
+        <option name="myId" value="MERGED_WITH_PROPERTY_CONFLICT" />
+      </FILE-GROUP>
+      <FILE-GROUP>
+        <option name="myUpdateName" value="Merged" />
+        <option name="myStatusName" value="Will be merged" />
+        <option name="mySupportsDeletion" value="false" />
+        <option name="myCanBeAbsent" value="false" />
+        <option name="myId" value="MERGED" />
+      </FILE-GROUP>
+      <FILE-GROUP>
+        <option name="myUpdateName" value="Not in repository" />
+        <option name="myStatusName" value="Not in repository" />
+        <option name="mySupportsDeletion" value="true" />
+        <option name="myCanBeAbsent" value="false" />
+        <option name="myId" value="UNKNOWN" />
+      </FILE-GROUP>
+      <FILE-GROUP>
+        <option name="myUpdateName" value="Locally added" />
+        <option name="myStatusName" value="Locally added" />
+        <option name="mySupportsDeletion" value="false" />
+        <option name="myCanBeAbsent" value="false" />
+        <option name="myId" value="LOCALLY_ADDED" />
+      </FILE-GROUP>
+      <FILE-GROUP>
+        <option name="myUpdateName" value="Locally removed" />
+        <option name="myStatusName" value="Locally removed" />
+        <option name="mySupportsDeletion" value="false" />
+        <option name="myCanBeAbsent" value="false" />
+        <option name="myId" value="LOCALLY_REMOVED" />
+      </FILE-GROUP>
+      <FILE-GROUP>
+        <option name="myUpdateName" value="Switched" />
+        <option name="myStatusName" value="Switched" />
+        <option name="mySupportsDeletion" value="false" />
+        <option name="myCanBeAbsent" value="false" />
+        <option name="myId" value="SWITCHED" />
+      </FILE-GROUP>
+    </UpdatedFiles>
+  </component>
   <component name="RunDashboard">
     <option name="ruleStates">
       <list>
@@ -198,6 +442,55 @@
         </RuleState>
       </list>
     </option>
+  </component>
+  <component name="RunManager">
+    <configuration default="true" type="Python.DjangoServer" factoryName="Django server">
+      <module name="EMS" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="E:\Envs\venv\data_base_homework\Scripts\python.exe" />
+      <option name="WORKING_DIRECTORY" value="" />
+      <option name="IS_MODULE_SDK" value="false" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <option name="launchJavascriptDebuger" value="false" />
+      <option name="port" value="8000" />
+      <option name="host" value="127.0.0.1" />
+      <option name="additionalOptions" value="" />
+      <option name="browserUrl" value="http://127.0.0.1:8000/" />
+      <option name="runTestServer" value="false" />
+      <option name="runNoReload" value="false" />
+      <option name="useCustomRunCommand" value="false" />
+      <option name="customRunCommand" value="" />
+      <method v="2" />
+    </configuration>
+    <configuration name="test" type="Python.DjangoServer" factoryName="Django server">
+      <module name="EMS" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+        <env name="DJANGO_SETTINGS_MODULE" value="EMS.settings" />
+      </envs>
+      <option name="SDK_HOME" value="E:\Envs\venv\data_base_homework\Scripts\python.exe" />
+      <option name="WORKING_DIRECTORY" value="" />
+      <option name="IS_MODULE_SDK" value="false" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <option name="launchJavascriptDebuger" value="false" />
+      <option name="port" value="8000" />
+      <option name="host" value="127.0.0.1" />
+      <option name="additionalOptions" value="" />
+      <option name="browserUrl" value="http://127.0.0.1:8000/" />
+      <option name="runTestServer" value="false" />
+      <option name="runNoReload" value="false" />
+      <option name="useCustomRunCommand" value="false" />
+      <option name="customRunCommand" value="" />
+      <method v="2" />
+    </configuration>
   </component>
   <component name="SvnConfiguration">
     <configuration />
@@ -218,16 +511,40 @@
       <option name="project" value="LOCAL" />
       <updated>1553584477221</updated>
     </task>
-    <option name="localTasksCounter" value="2" />
+    <task id="LOCAL-00002" summary="START">
+      <created>1553585579578</created>
+      <option name="number" value="00002" />
+      <option name="presentableId" value="LOCAL-00002" />
+      <option name="project" value="LOCAL" />
+      <updated>1553585579578</updated>
+    </task>
+    <task id="LOCAL-00003" summary="START">
+      <created>1553585714796</created>
+      <option name="number" value="00003" />
+      <option name="presentableId" value="LOCAL-00003" />
+      <option name="project" value="LOCAL" />
+      <updated>1553585714796</updated>
+    </task>
+    <option name="localTasksCounter" value="4" />
     <servers />
   </component>
   <component name="TimeTrackingManager">
     <option name="totallyTimeSpent" value="726000" />
   </component>
+  <component name="TodoView">
+    <todo-panel id="selected-file">
+      <is-autoscroll-to-source value="true" />
+    </todo-panel>
+    <todo-panel id="all">
+      <are-packages-shown value="true" />
+      <is-autoscroll-to-source value="true" />
+    </todo-panel>
+  </component>
   <component name="ToolWindowManager">
     <frame x="-7" y="-7" width="1550" height="838" extended-state="6" />
+    <editor active="true" />
     <layout>
-      <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.17895442" />
+      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.18096514" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
       <window_info id="Favorites" order="2" side_tool="true" />
       <window_info anchor="bottom" id="Message" order="0" />
@@ -236,11 +553,11 @@
       <window_info anchor="bottom" id="Debug" order="3" weight="0.4" />
       <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
       <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
-      <window_info anchor="bottom" id="TODO" order="6" />
+      <window_info anchor="bottom" id="TODO" order="6" weight="0.32907802" />
       <window_info anchor="bottom" id="Docker" order="7" show_stripe_button="false" />
-      <window_info anchor="bottom" id="Version Control" order="8" />
-      <window_info anchor="bottom" id="Database Changes" order="9" show_stripe_button="false" />
-      <window_info anchor="bottom" id="Event Log" order="10" side_tool="true" />
+      <window_info anchor="bottom" id="Version Control" order="8" sideWeight="0.49932975" weight="0.32907802" />
+      <window_info anchor="bottom" id="Database Changes" order="9" weight="0.32907802" />
+      <window_info anchor="bottom" id="Event Log" order="10" sideWeight="0.50067025" side_tool="true" weight="0.32907802" />
       <window_info anchor="bottom" id="Terminal" order="11" />
       <window_info anchor="bottom" id="Python Console" order="12" />
       <window_info anchor="right" id="Commander" internal_type="SLIDING" order="0" type="SLIDING" weight="0.4" />
@@ -264,56 +581,65 @@
     <entry file="file://$PROJECT_DIR$/templates/Welcome.html">
       <provider selected="true" editor-type-id="text-editor" />
     </entry>
-    <entry file="file://$PROJECT_DIR$/backstage/models.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="243">
-          <caret line="81" selection-start-line="81" selection-end-line="81" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/templates/base.html">
       <provider selected="true" editor-type-id="text-editor" />
     </entry>
-    <entry file="file://$PROJECT_DIR$/backstage/views.py">
+    <entry file="file://$PROJECT_DIR$/templates/Homepage.html">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="240">
-          <caret line="15" selection-start-line="15" selection-end-line="15" />
-          <folding>
-            <element signature="e#0#9#0" expanded="true" />
-          </folding>
+        <state relative-caret-position="90">
+          <caret line="3" column="6" selection-start-line="3" selection-start-column="6" selection-end-line="3" selection-end-column="6" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/backstage/models.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="90">
+          <caret line="3" selection-start-line="3" selection-end-line="3" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/EMS/urls.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="570">
-          <caret line="21" column="46" selection-start-line="21" selection-start-column="46" selection-end-line="21" selection-end-column="46" />
+        <state relative-caret-position="265">
+          <caret line="21" column="36" selection-start-line="21" selection-start-column="36" selection-end-line="21" selection-end-column="36" />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/backstage/urls.py">
+    <entry file="file://$PROJECT_DIR$/backstage/apps.py">
+      <provider selected="true" editor-type-id="text-editor" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/backstage/views.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="120">
-          <caret line="7" column="35" selection-start-line="7" selection-start-column="35" selection-end-line="7" selection-end-column="35" />
-          <folding>
-            <element signature="e#0#37#0" expanded="true" />
-          </folding>
+        <state relative-caret-position="90">
+          <caret line="3" selection-start-line="3" selection-end-line="3" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/EMS/settings.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1860">
-          <caret line="62" column="43" selection-start-line="62" selection-start-column="43" selection-end-line="62" selection-end-column="43" />
+        <state relative-caret-position="595">
+          <caret line="87" column="23" selection-start-line="87" selection-start-column="23" selection-end-line="87" selection-end-column="23" />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/templates/Homepage.html">
+    <entry file="file://$PROJECT_DIR$/backstage/urls.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="210">
-          <caret line="7" column="33" selection-start-line="7" selection-start-column="33" selection-end-line="7" selection-end-column="33" />
+        <state relative-caret-position="60">
+          <caret line="2" column="42" lean-forward="true" selection-start-line="2" selection-start-column="42" selection-end-line="2" selection-end-column="42" />
         </state>
       </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/backstage/forms.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-4451">
+          <folding>
+            <element signature="e#0#24#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/EMS/__init__.py">
+      <provider selected="true" editor-type-id="text-editor" />
     </entry>
   </component>
 </project>
