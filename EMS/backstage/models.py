@@ -1,7 +1,6 @@
 from django.db import models
 
 
-# Create your models here.
 class User(models.Model):
     '''用户表'''
 
@@ -79,3 +78,4 @@ class Announcement(models.Model):
 
     class Meta:
         db_table = 'announcement'
+
