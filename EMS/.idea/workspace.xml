@@ -1,0 +1,404 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ChangeListManager">
+    <list default="true" id="034b6cb8-cd81-402b-a28d-b1a207d0dc3b" name="Default Changelist" comment="">
+      <change afterPath="$PROJECT_DIR$/../.idea/dataSources.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/backstage/forms.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/backstage/media/files/229地图题范文.pdf" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/backstage/media/files/229地图题范文_3FDgz56.pdf" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/backstage/media/files/229地图题范文_9SX6Qtl.pdf" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/backstage/media/files/C7T2四线图.pdf" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/backstage/media/files/C7T2四线图_3WEBKot.pdf" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/backstage/media/files/C7T2四线图_5VoQYYx.pdf" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/backstage/media/files/C7T2四线图_6PfA3w2.pdf" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/backstage/media/files/C7T2四线图_HM2LmWN.pdf" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/backstage/media/files/C7T2四线图_nYsY7rg.pdf" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/backstage/media/files/C7T2四线图_xKAQNKF.pdf" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/backstage/media/image/default.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/backstage/media/web_img/Sending_Email.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/backstage/media/web_img/add_book.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/backstage/media/web_img/add_book1.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/backstage/media/web_img/announcement.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/backstage/media/web_img/announcement1.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/backstage/media/web_img/back.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/backstage/media/web_img/back1.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/backstage/media/web_img/back2.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/backstage/media/web_img/back2.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/backstage/media/web_img/back3.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/backstage/media/web_img/back4.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/backstage/media/web_img/back5.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/backstage/media/web_img/back6.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/backstage/media/web_img/bonjour.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/backstage/media/web_img/book.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/backstage/media/web_img/book1.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/backstage/media/web_img/book2.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/backstage/media/web_img/change.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/backstage/media/web_img/change1.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/backstage/media/web_img/change2.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/backstage/media/web_img/change3.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/backstage/media/web_img/change4.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/backstage/media/web_img/check.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/backstage/media/web_img/delete_user.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/backstage/media/web_img/department.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/backstage/media/web_img/dowload4.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/backstage/media/web_img/download.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/backstage/media/web_img/download1.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/backstage/media/web_img/download2.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/backstage/media/web_img/download3.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/backstage/media/web_img/download5.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/backstage/media/web_img/download7.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/backstage/media/web_img/feedback.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/backstage/media/web_img/feedback1.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/backstage/media/web_img/grades.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/backstage/media/web_img/paper.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/backstage/media/web_img/paper1.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/backstage/media/web_img/paper2.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/backstage/media/web_img/paper3.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/backstage/media/web_img/people.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/backstage/media/web_img/personal.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/backstage/media/web_img/personal1.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/backstage/media/web_img/search.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/backstage/media/web_img/search.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/backstage/media/web_img/search1.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/backstage/media/web_img/search2.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/backstage/media/web_img/start.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/backstage/media/web_img/statistic.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/backstage/media/web_img/statistic.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/backstage/media/web_img/statistic1.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/backstage/media/web_img/subscribe.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/static/bootstrap-3.3.7-dist/css/bootstrap-theme.css" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/static/bootstrap-3.3.7-dist/css/bootstrap-theme.css.map" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/static/bootstrap-3.3.7-dist/css/bootstrap-theme.min.css" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/static/bootstrap-3.3.7-dist/css/bootstrap-theme.min.css.map" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/static/bootstrap-3.3.7-dist/css/bootstrap.css" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/static/bootstrap-3.3.7-dist/css/bootstrap.css.map" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/static/bootstrap-3.3.7-dist/css/bootstrap.min.css" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/static/bootstrap-3.3.7-dist/css/bootstrap.min.css.map" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/static/bootstrap-3.3.7-dist/fonts/glyphicons-halflings-regular.eot" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/static/bootstrap-3.3.7-dist/fonts/glyphicons-halflings-regular.svg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/static/bootstrap-3.3.7-dist/fonts/glyphicons-halflings-regular.ttf" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/static/bootstrap-3.3.7-dist/fonts/glyphicons-halflings-regular.woff" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/static/bootstrap-3.3.7-dist/fonts/glyphicons-halflings-regular.woff2" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/static/bootstrap-3.3.7-dist/js/bootstrap.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/static/bootstrap-3.3.7-dist/js/bootstrap.min.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/static/bootstrap-3.3.7-dist/js/npm.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/static/buct.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/static/js/dark.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/static/js/echarts.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/static/js/jquery-3.2.1.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/templates/Add_Announcement.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/templates/Announcement.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/templates/Change_Announcement.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/templates/Change_Details.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/templates/Homepage.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/templates/Login.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/templates/Personal_Details.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/templates/Sending_Emails.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/templates/Sending_Messages.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/templates/User_Operate.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/templates/User_Operate_Change.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/templates/Welcome.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/templates/base.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/EMS.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/EMS.iml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/dataSources.local.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/dataSources.local.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/EMS/__init__.py" beforeDir="false" afterPath="$PROJECT_DIR$/EMS/__init__.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/EMS/settings.py" beforeDir="false" afterPath="$PROJECT_DIR$/EMS/settings.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/EMS/urls.py" beforeDir="false" afterPath="$PROJECT_DIR$/EMS/urls.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backstage/models.py" beforeDir="false" afterPath="$PROJECT_DIR$/backstage/models.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backstage/urls.py" beforeDir="false" afterPath="$PROJECT_DIR$/backstage/urls.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backstage/views.py" beforeDir="false" afterPath="$PROJECT_DIR$/backstage/views.py" afterDir="false" />
+    </list>
+    <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="DjangoConsoleOptions" custom-start-script="import sys; print('Python %s on %s' % (sys.version, sys.platform))&#10;import django; print('Django %s' % django.get_version())&#10;sys.path.extend([WORKING_DIR_AND_PYTHON_PATHS])&#10;if 'setup' in dir(django): django.setup()&#10;import django_manage_shell; django_manage_shell.run(PROJECT_ROOT)">
+    <option name="myCustomStartScript" value="import sys; print('Python %s on %s' % (sys.version, sys.platform))&#10;import django; print('Django %s' % django.get_version())&#10;sys.path.extend([WORKING_DIR_AND_PYTHON_PATHS])&#10;if 'setup' in dir(django): django.setup()&#10;import django_manage_shell; django_manage_shell.run(PROJECT_ROOT)" />
+  </component>
+  <component name="FUSProjectUsageTrigger">
+    <session id="1654000217">
+      <usages-collector id="statistics.lifecycle.project">
+        <counts>
+          <entry key="project.open.time.0" value="1" />
+          <entry key="project.opened" value="1" />
+        </counts>
+      </usages-collector>
+      <usages-collector id="statistics.file.extensions.open">
+        <counts>
+          <entry key="html" value="7" />
+          <entry key="py" value="3" />
+        </counts>
+      </usages-collector>
+      <usages-collector id="statistics.file.types.open">
+        <counts>
+          <entry key="HTML" value="7" />
+          <entry key="Python" value="3" />
+        </counts>
+      </usages-collector>
+      <usages-collector id="statistics.file.extensions.edit">
+        <counts>
+          <entry key="html" value="5" />
+          <entry key="py" value="94" />
+        </counts>
+      </usages-collector>
+      <usages-collector id="statistics.file.types.edit">
+        <counts>
+          <entry key="HTML" value="5" />
+          <entry key="Python" value="94" />
+        </counts>
+      </usages-collector>
+    </session>
+  </component>
+  <component name="FileEditorManager">
+    <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/EMS/settings.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="100">
+              <caret line="62" column="43" lean-forward="true" selection-start-line="62" selection-start-column="43" selection-end-line="62" selection-end-column="43" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/templates/base.html">
+          <provider selected="true" editor-type-id="text-editor" />
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/backstage/views.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="450">
+              <caret line="15" lean-forward="true" selection-start-line="15" selection-end-line="15" />
+              <folding>
+                <element signature="e#0#9#0" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/templates/Homepage.html">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="240">
+              <caret line="26" column="18" lean-forward="true" selection-start-line="26" selection-start-column="18" selection-end-line="26" selection-end-column="18" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/EMS/urls.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="63">
+              <caret line="21" column="46" lean-forward="true" selection-start-line="21" selection-start-column="46" selection-end-line="21" selection-end-column="46" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/backstage/urls.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="63">
+              <caret line="7" column="35" selection-start-line="7" selection-start-column="35" selection-end-line="7" selection-end-column="35" />
+              <folding>
+                <element signature="e#0#37#0" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+    </leaf>
+  </component>
+  <component name="FindInProjectRecents">
+    <findStrings>
+      <find>data</find>
+      <find>database</find>
+      <find>templates</find>
+    </findStrings>
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$/.." />
+  </component>
+  <component name="IdeDocumentHistory">
+    <option name="CHANGED_PATHS">
+      <list>
+        <option value="$PROJECT_DIR$/EMS/urls.py" />
+        <option value="$PROJECT_DIR$/EMS/settings.py" />
+        <option value="$PROJECT_DIR$/backstage/views.py" />
+        <option value="$PROJECT_DIR$/templates/Homepage.html" />
+      </list>
+    </option>
+  </component>
+  <component name="JsBuildToolGruntFileManager" detection-done="true" sorting="DEFINITION_ORDER" />
+  <component name="JsBuildToolPackageJson" detection-done="true" sorting="DEFINITION_ORDER" />
+  <component name="JsGulpfileManager">
+    <detection-done>true</detection-done>
+    <sorting>DEFINITION_ORDER</sorting>
+  </component>
+  <component name="ProjectFrameBounds" extendedState="6">
+    <option name="x" value="527" />
+    <option name="y" value="105" />
+    <option name="width" value="1103" />
+    <option name="height" value="1039" />
+  </component>
+  <component name="ProjectLevelVcsManager" settingsEditedManually="true">
+    <ConfirmationsSetting value="2" id="Add" />
+  </component>
+  <component name="ProjectView">
+    <navigator proportions="" version="1">
+      <foldersAlwaysOnTop value="true" />
+    </navigator>
+    <panes>
+      <pane id="Scope" />
+      <pane id="ProjectPane">
+        <subPane>
+          <expand>
+            <path>
+              <item name="EMS" type="b2602c69:ProjectViewProjectNode" />
+              <item name="EMS" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="EMS" type="b2602c69:ProjectViewProjectNode" />
+              <item name="EMS" type="462c0819:PsiDirectoryNode" />
+              <item name="EMS" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="EMS" type="b2602c69:ProjectViewProjectNode" />
+              <item name="EMS" type="462c0819:PsiDirectoryNode" />
+              <item name="templates" type="462c0819:PsiDirectoryNode" />
+            </path>
+          </expand>
+          <select />
+        </subPane>
+      </pane>
+    </panes>
+  </component>
+  <component name="PropertiesComponent">
+    <property name="WebServerToolWindowFactoryState" value="false" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
+    <property name="nodejs_interpreter_path.stuck_in_default_project" value="undefined stuck path" />
+    <property name="nodejs_npm_path_reset_for_default_project" value="true" />
+    <property name="settings.editor.selected.configurable" value="com.jetbrains.python.configuration.PyActiveSdkModuleConfigurable" />
+  </component>
+  <component name="RecentsManager">
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="E:\software_engineer\2019-Software-Engineering-Curriculum-Design\EMS" />
+      <recent name="E:\software_engineer\2019-Software-Engineering-Curriculum-Design\EMS\templates" />
+    </key>
+  </component>
+  <component name="RunDashboard">
+    <option name="ruleStates">
+      <list>
+        <RuleState>
+          <option name="name" value="ConfigurationTypeDashboardGroupingRule" />
+        </RuleState>
+        <RuleState>
+          <option name="name" value="StatusDashboardGroupingRule" />
+        </RuleState>
+      </list>
+    </option>
+  </component>
+  <component name="SvnConfiguration">
+    <configuration />
+  </component>
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="034b6cb8-cd81-402b-a28d-b1a207d0dc3b" name="Default Changelist" comment="" />
+      <created>1553571741150</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1553571741150</updated>
+      <workItem from="1553571742655" duration="726000" />
+    </task>
+    <servers />
+  </component>
+  <component name="TimeTrackingManager">
+    <option name="totallyTimeSpent" value="726000" />
+  </component>
+  <component name="ToolWindowManager">
+    <frame x="-7" y="-7" width="1550" height="838" extended-state="6" />
+    <editor active="true" />
+    <layout>
+      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.17895442" />
+      <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
+      <window_info id="Favorites" order="2" side_tool="true" />
+      <window_info anchor="bottom" id="Message" order="0" />
+      <window_info anchor="bottom" id="Find" order="1" />
+      <window_info anchor="bottom" id="Run" order="2" visible="true" weight="0.32907802" />
+      <window_info anchor="bottom" id="Debug" order="3" weight="0.4" />
+      <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
+      <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
+      <window_info anchor="bottom" id="TODO" order="6" />
+      <window_info anchor="bottom" id="Docker" order="7" show_stripe_button="false" />
+      <window_info anchor="bottom" id="Version Control" order="8" />
+      <window_info anchor="bottom" id="Database Changes" order="9" />
+      <window_info anchor="bottom" id="Event Log" order="10" side_tool="true" />
+      <window_info anchor="bottom" id="Terminal" order="11" />
+      <window_info anchor="bottom" id="Python Console" order="12" />
+      <window_info anchor="right" id="Commander" internal_type="SLIDING" order="0" type="SLIDING" weight="0.4" />
+      <window_info anchor="right" id="Ant Build" order="1" weight="0.25" />
+      <window_info anchor="right" content_ui="combo" id="Hierarchy" order="2" weight="0.25" />
+      <window_info anchor="right" id="SciView" order="3" />
+      <window_info anchor="right" id="Database" order="4" />
+    </layout>
+  </component>
+  <component name="TypeScriptGeneratedFilesManager">
+    <option name="version" value="1" />
+  </component>
+  <component name="VcsContentAnnotationSettings">
+    <option name="myLimit" value="2678400000" />
+  </component>
+  <component name="editorHistoryManager">
+    <entry file="file://$PROJECT_DIR$/backstage/urls.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="63">
+          <caret line="7" column="35" selection-start-line="7" selection-start-column="35" selection-end-line="7" selection-end-column="35" />
+          <folding>
+            <element signature="e#0#37#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/EMS/urls.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="63">
+          <caret line="21" column="46" lean-forward="true" selection-start-line="21" selection-start-column="46" selection-end-line="21" selection-end-column="46" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/EMS/settings.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="100">
+          <caret line="62" column="43" lean-forward="true" selection-start-line="62" selection-start-column="43" selection-end-line="62" selection-end-column="43" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/templates/base.html">
+      <provider selected="true" editor-type-id="text-editor" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/templates/Welcome.html">
+      <provider selected="true" editor-type-id="text-editor" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/backstage/views.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="450">
+          <caret line="15" lean-forward="true" selection-start-line="15" selection-end-line="15" />
+          <folding>
+            <element signature="e#0#9#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/templates/Homepage.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="240">
+          <caret line="26" column="18" lean-forward="true" selection-start-line="26" selection-start-column="18" selection-end-line="26" selection-end-column="18" />
+        </state>
+      </provider>
+    </entry>
+  </component>
+</project>
