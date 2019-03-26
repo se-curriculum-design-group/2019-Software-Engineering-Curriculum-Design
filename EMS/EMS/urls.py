@@ -17,12 +17,11 @@ from django.contrib import admin
 from django.urls import path
 from django.conf.urls import include
 
-
 urlpatterns = [
-    path('admin/', admin.site.urls),
-    path(r'backstage', include('backstage.urls')),
-    path(r'courseScheduling', include('courseScheduling.urls')),
-    path(r'courseSelection', include('courseSelection.urls')),
-    path(r'graduationManagement', include('graduationManagement.urls')),
-    path(r'scoreManagement', include('scoreManagement.urls')),
+    path('', include('backstage.urls')),
+    path('captcha/', include('captcha.urls')),
+    # path(r'courseScheduling', include('courseScheduling.urls')),
+    # path(r'courseSelection', include('courseSelection.urls')),
+    # path(r'graduationManagement', include('graduationManagement.urls')),
+    # path(r'scoreManagement', include('scoreManagement.urls')),
 ]

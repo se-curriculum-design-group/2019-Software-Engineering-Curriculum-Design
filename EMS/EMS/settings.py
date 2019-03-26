@@ -37,11 +37,12 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'EMS.backstage',
-    'EMS.courseScheduling',
-    'EMS.courseSelection',
-    'EMS.graduationManagement',
-    'EMS.scoreManagement',
+    'backstage',
+    'courseScheduling',
+    'courseSelection',
+    'graduationManagement',
+    'scoreManagement',
+    'captcha',
 ]
 
 MIDDLEWARE = [
@@ -59,7 +60,8 @@ ROOT_URLCONF = 'EMS.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
+        'DIRS': [os.path.join(BASE_DIR, 'templates')]
+        ,
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -85,7 +87,7 @@ DATABASES = {
         'NAME': 'EMS',
         'HOST': 'localhost',
         'PORT': 3306,
-        'USER': 'root',
+        'USER': 'EMS',
         'PASSWORD': 'password'
     }
 }
@@ -128,3 +130,10 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/2.1/howto/static-files/
 
 STATIC_URL = '/static/'
+STATICFILES_DIRS = [
+    os.path.join(BASE_DIR, "static"),
+]
+
+
+MEDIA_ROOT = os.path.join(BASE_DIR, 'backstage/media').replace('\\', '/')  # media即为图片上传的根路径
+MEDIA_URL = '/backstage/media/'
