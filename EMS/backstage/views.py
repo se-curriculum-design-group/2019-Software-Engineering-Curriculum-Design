@@ -11,7 +11,7 @@ from django.core import mail
 # Create your views here.
 
 def Welcome(request):
-    return render(request, 'Welcome.html')
+    return render(request, 'Welcome.html')  # 引入欢迎页
 
 
 def Login(request):
@@ -54,9 +54,9 @@ def Log_out(request):
     if not request.session.get('user_is_login', None):  # 原本未登录则无登出
         return redirect("backstage:Welcome")
 
-    request.session.flush()
+    request.session.flush()  # 清空所有session
 
-    return redirect("backstage:Welcome")
+    return redirect("backstage:Welcome")  # 重定向到欢迎页
 
 
 def Register(request):
@@ -68,12 +68,11 @@ def Homepage(request):
         return redirect('backstage:Login')
 
     if request.method == "GET":
-        announcement0 = models.Announcement.objects.filter(visible=True, receiver="全体成员")
-        announcement1 = models.Announcement.objects.filter(visible=True,
-                                                           receiver=request.session.get('user_department', None),
-                                                           year=request.session.get('user_start_year', None))
-        print(announcement0)
-        print(announcement1)
-        announcement = announcement0 | announcement1
-        print(announcement)
+        announcement_all = models.Announcement.objects.filter(visible=True, receiver="全体成员")  # 取全员广播
+        announcement_department = models.Announcement.objects.filter(visible=True,
+                                                                     receiver=request.session.get('user_department',
+                                                                                                  None),
+                                                                     year=request.session.get('user_start_year',
+                                                                                              None))  # 取部门年级广播
+        announcement = announcement_all | announcement_department  # 通知消息队列
         return render(request, 'Homepage.html', locals())
