@@ -1,0 +1,6 @@
+.idea/
+EMS/.idea/
+*.pdf
+*.iml
+*.pyc
+*/__pycache__/
