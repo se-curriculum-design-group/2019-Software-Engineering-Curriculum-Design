@@ -19,7 +19,7 @@ class User(models.Model):
     end_year = models.CharField(max_length=32, default='2023')
 
     def __str__(self):
-        return self.code
+        return self.codename
 
     class Meta:
         db_table = 'users'

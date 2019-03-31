@@ -24860,7 +24860,7 @@ function Scheduler(ecInstance, api, dataProcessorHandlers, visualHandlers) {
 
     // Fix current processors in case that in some rear cases that
     // processors might be registered after echarts instance created.
-    // Register processors incrementally for a echarts instance is
+    // register processors incrementally for a echarts instance is
     // not supported by this stream architecture.
     var dataProcessorHandlers = this._dataProcessorHandlers = dataProcessorHandlers.slice();
     var visualHandlers = this._visualHandlers = visualHandlers.slice();
@@ -27727,7 +27727,7 @@ echartsProto.appendData = function (params) {
 };
 
 /**
- * Register event
+ * register event
  * @method
  */
 echartsProto.on = createRegisterEventWithLowercaseName('on');
@@ -28465,14 +28465,14 @@ function getInstanceById(key) {
 }
 
 /**
- * Register theme
+ * register theme
  */
 function registerTheme(name, theme$$1) {
     themeStorage[name] = theme$$1;
 }
 
 /**
- * Register option preprocessor
+ * register option preprocessor
  * @param {Function} preprocessorFunc
  */
 function registerPreprocessor(preprocessorFunc) {
@@ -28488,7 +28488,7 @@ function registerProcessor(priority, processor) {
 }
 
 /**
- * Register postUpdater
+ * register postUpdater
  * @param {Function} postUpdateFunc
  */
 function registerPostUpdate(postUpdateFunc) {
@@ -48976,7 +48976,7 @@ function getEdgeShape(seriesScope, sourceLayout, targetLayout) {
 */
 
 /**
- * @file Register the actions of the tree
+ * @file register the actions of the tree
  * @author Deqing Li(annong035@gmail.com)
  */
 
@@ -67093,7 +67093,7 @@ var AxisPointerView = extendComponentView({
         var triggerOn = globalAxisPointerModel.get('triggerOn')
             || (globalTooltipModel && globalTooltipModel.get('triggerOn') || 'mousemove|click');
 
-        // Register global listener in AxisPointerView to enable
+        // register global listener in AxisPointerView to enable
         // AxisPointerView to be independent to Tooltip.
         register(
             'axisPointer',
@@ -77447,7 +77447,7 @@ registerLayout(PRIORITY_BRUSH, function (ecModel, api, payload) {
 });
 
 /**
- * Register the visual encoding if this modules required.
+ * register the visual encoding if this modules required.
  */
 registerVisual(PRIORITY_BRUSH, function (ecModel, api, payload) {
 

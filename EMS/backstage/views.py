@@ -10,13 +10,13 @@ from django.core import mail
 
 # Create your views here.
 
-def Welcome(request):
+def welcome(request):
     return render(request, 'Welcome.html')  # 引入欢迎页
 
 
-def Login(request):
+def login(request):
     if request.session.get('user_is_login', None):
-        return redirect('backstage:Homepage')
+        return redirect('backstage:homepage')
 
     if request.method == "POST":
         login_form = forms.UserForm(request.POST)
@@ -38,7 +38,7 @@ def Login(request):
                     request.session['user_start_year'] = user.start_year
                     message = "你好，欢迎回来！"
                     return redirect('backstage:Homepage')
-                    # return render(request, 'Homepage.html', locals())
+                    # return render(request, 'homepage.html', locals())
                 else:
                     message = "密码不正确！"
             else:
@@ -50,22 +50,22 @@ def Login(request):
     return render(request, 'Login.html', locals())
 
 
-def Log_out(request):
+def log_out(request):
     if not request.session.get('user_is_login', None):  # 原本未登录则无登出
-        return redirect("backstage:Welcome")
+        return redirect("backstage:welcome")
 
     request.session.flush()  # 清空所有session
 
-    return redirect("backstage:Welcome")  # 重定向到欢迎页
+    return redirect("backstage:welcome")  # 重定向到欢迎页
 
 
-def Register(request):
+def register(request):
     return
 
 
-def Homepage(request):
+def homepage(request):
     if not request.session.get('user_is_login', None):
-        return redirect('backstage:Login')
+        return redirect('backstage:login')
 
     if request.method == "GET":
         announcement_all = models.Announcement.objects.filter(visible=True, receiver="全体成员")  # 取全员广播

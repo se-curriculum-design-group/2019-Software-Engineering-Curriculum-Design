@@ -5,9 +5,10 @@ from django.conf import settings
 
 app_name = "backstage"
 urlpatterns = [
-                  path('', views.Welcome, name="Welcome"),
-                  path('Login/', views.Login, name='Login'),
-                  path('Log_out/', views.Log_out, name='Log_out'),
-                  path('Register/', views.Register, name='Register'),
-                  path('Homepage/', views.Homepage, name='Homepage'),
+                  path('', views.welcome, name="welcome"),
+                  path('login/', views.login, name='login'),
+                  path('log_out/', views.log_out, name='log_out'),
+                  path('register/', views.register, name='register'),
+                  path('', views.homepage, name='homepage'),
+                  path('homepage/', views.homepage, name='homepage'),
               ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
