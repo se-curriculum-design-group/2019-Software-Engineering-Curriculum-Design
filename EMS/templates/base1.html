@@ -67,10 +67,12 @@
                                 <!-- End header navigation menu -->
                                 <ul class="nav navbar-nav navbar-right">
                                     {% if request.session.user_is_login %}
-                                        <li><a href="#">当前在线：{{ request.session.user_codename }}</a></li>
+                                        <li><a href="#">当前在线：{{ request.session.user_code }}</a></li>
                                         <li><a href="{% url 'backstage:log_out' %}">登出</a></li>
                                     {% else %}
                                         <li><a href="{% url 'backstage:login' %}">登录</a></li>
+                                        <li><a href="{% url 'backstage:register' %}">注册</a></li>
+                                        <li><a href="{% url 'backstage:register_t' %}">注册1</a></li>
                                     {% endif %}
                                 </ul>
                             </div>
