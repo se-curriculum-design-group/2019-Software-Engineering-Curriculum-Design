@@ -1,28 +1,23 @@
 from django.db import models
+from django.contrib.auth.models import User
 
 
-class User(models.Model):
-    '''用户表'''
+class UserProfile(models.Model):
+    # Django Auth模块中User模型含有的字段
+    # username
+    # email
+    # password
+    # first_name
+    # last_name    # is_active
+    # is_staff
+    # is_superuser
+    # date_joined
 
-    gender = (
-        ('male', '男'),
-        ('female', '女'),
-    )
-    codename = models.CharField(max_length=128, unique=True, default='2016')
-    nickname = models.CharField(max_length=128, unique=False)
-    password = models.CharField(max_length=256)
-    email = models.EmailField(unique=True, default="")
-    department = models.ForeignKey("Dept", on_delete=models.CASCADE)
-    grant = models.CharField(max_length=32, default='3')
-    sex = models.CharField(max_length=32, choices=gender, default='男')
-    start_year = models.CharField(max_length=32, default='2019')
-    end_year = models.CharField(max_length=32, default='2023')
-
-    def __str__(self):
-        return self.code
-
-    class Meta:
-        db_table = 'users'
+    user = models.OneToOneField(User, on_delete=models.CASCADE, related_name='profile')
+    codename = models.CharField(max_length=128, unique=True, default='201600000')
+    # org = models.CharField('Organization', max_length=128, blank=True,)
+    department = models.ForeignKey("Dept", on_delete=models.CASCADE, default=1)
+    mod_data = models.DateTimeField('Last modified', auto_now=True)
 
 
 class Dept(models.Model):
@@ -78,4 +73,3 @@ class Announcement(models.Model):
 
     class Meta:
         db_table = 'announcement'
-
