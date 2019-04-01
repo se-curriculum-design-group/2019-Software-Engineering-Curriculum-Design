@@ -9422,7 +9422,7 @@ FC.datepickerLang = function(langCode, dpLangCode, dpOptions) {
 	// is jQuery UI Datepicker is on the page?
 	if ($.datepicker) {
 
-		// Register the language data.
+		// register the language data.
 		// FullCalendar and MomentJS use language codes like "pt-br" but Datepicker
 		// does it like "pt-BR" or if it doesn't have the language, maybe just "pt".
 		// Make an alias so the language can be referenced either way.

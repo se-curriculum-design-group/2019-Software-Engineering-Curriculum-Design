@@ -10,7 +10,7 @@
         <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" />
 
         <!-- Document title -->
-{#        <title>Frontend - Login</title>#}
+{#        <title>Frontend - login</title>#}
         <title>{% block title %}base{% endblock %}</title>
 
         <meta name="description" content="AppUI - Frontend Template & UI Framework" />
@@ -61,7 +61,7 @@
                                         <a href="">北京化工大学教务管理系统</a>
                                     </li>
                                     <li>
-                                        <a href="Homepage.html">主页</a>
+                                        <a href="{% url 'backstage:login' %}">主页</a>
                                     </li>
                                 </ul>
                                 <!-- End header navigation menu -->

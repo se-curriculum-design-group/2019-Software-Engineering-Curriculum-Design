@@ -16,6 +16,7 @@ def welcome(request):
     return render(request, 'Welcome.html')  # 引入欢迎页
 
 
+
 def login(request):  # 用户登录验证函数
     if request.session.get('user_is_login', None):  # 如果用户在session中存在记录，则跳过登录认证程序进入主页
         return redirect('backstage:Homepage')
