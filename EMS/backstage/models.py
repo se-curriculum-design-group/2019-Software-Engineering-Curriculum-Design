@@ -1,28 +1,31 @@
 from django.db import models
+from django.contrib.auth.models import User
 
 
-class User(models.Model):
-    '''用户表'''
-
+class Student(models.Model):
     gender = (
         ('male', '男'),
         ('female', '女'),
     )
-    codename = models.CharField(max_length=128, unique=True, default='2016')
-    nickname = models.CharField(max_length=128, unique=False)
-    password = models.CharField(max_length=256)
-    email = models.EmailField(unique=True, default="")
-    department = models.ForeignKey("Dept", on_delete=models.CASCADE)
-    grant = models.CharField(max_length=32, default='3')
+    user = models.OneToOneField(User, on_delete=models.CASCADE, related_name='student')
+    code = models.CharField(max_length=128, unique=True, default='201600000')
+    name = models.CharField(max_length=128, unique=False)
     sex = models.CharField(max_length=32, choices=gender, default='男')
+    age = models.CharField(max_length=128, unique=False)
     start_year = models.CharField(max_length=32, default='2019')
-    end_year = models.CharField(max_length=32, default='2023')
+    length = models.CharField(max_length=128, unique=False)
+    major = models.CharField(max_length=128, unique=False)
+    department = models.ForeignKey("Dept", on_delete=models.CASCADE, default=1)
+    mod_data = models.DateTimeField('Last modified', auto_now=True)
 
-    def __str__(self):
-        return self.code
 
-    class Meta:
-        db_table = 'users'
+class Teacher(models.Model):
+    user = models.OneToOneField(User, on_delete=models.CASCADE, related_name='teacher')
+    code = models.CharField(max_length=128, unique=True, default='201600')
+    name = models.CharField(max_length=128, unique=False)
+    department = models.ForeignKey("Dept", on_delete=models.CASCADE, default=1)
+    title = models.CharField(max_length=128, unique=False)
+    mod_data = models.DateTimeField('Last modified', auto_now=True)
 
 
 class Dept(models.Model):
@@ -46,6 +49,20 @@ class Dept(models.Model):
 
     class Meta:
         db_table = 'department'
+
+
+class Classes(models.Model):
+    class_id = models.CharField(max_length=128, unique=True, default='EEE0001')
+    name = models.CharField(max_length=128, unique=False)
+    type = models.CharField(max_length=128, unique=False)
+    size = models.CharField(max_length=128, unique=False)
+    department = models.ForeignKey("Dept", on_delete=models.CASCADE, default=1)
+
+
+class Major(models.Model):
+    name = models.CharField(max_length=128, unique=False)
+    length = models.CharField(max_length=128, unique=False)
+    major_plan = models.CharField(max_length=128, unique=False)
 
 
 class Announcement(models.Model):
@@ -78,4 +95,3 @@ class Announcement(models.Model):
 
     class Meta:
         db_table = 'announcement'
-
