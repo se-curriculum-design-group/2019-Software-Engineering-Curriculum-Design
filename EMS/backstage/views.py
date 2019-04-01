@@ -26,23 +26,33 @@ def login(request):  # 用户登录验证函数
         if login_form.is_valid():  # 验证输入数据的类型合法性
             username = login_form.cleaned_data['username']  # 取出前端用户名输入框中输入的用户名
             password = login_form.cleaned_data['password']  # 取出前端密码输入框中输入的用户名
-            user = auth.authenticate(username=username, password=password)
+            user = auth.authenticate(username=username, password=password)  # 在父类用户表中匹配输入
 
-            if user is not None and user.is_active:
+            if user is not None and user.is_active:  # 若在父类用户表中找到并该用户活跃
                 auth.login(request, user)
-                message = "welcome back!"
-                return render(request, 'Homepage.html', locals())
-            elif user is None:
+                user_is_teacher = models.Teacher.objects.filter(code=username)  # 尝试在teacher子表中查找，更小若预测错误开销更小
+                if user_is_teacher.first() is None:  # 若不在教师表中则在学生表中
+                    user_is_student = models.Student.objects.get(code=username)  # 尝试在student子表中查找
+                    request.session['user_is_login'] = True  # 将登录信息存入session
+                    request.session['user_code'] = user_is_student.code  # 传入编号
+                    request.session['user_name'] = user_is_student.name  # 传入姓名
+                    request.session['user_department'] = user_is_student.department_id  # 传入部门
+                else:
+                    request.session['user_is_login'] = True  # 将登录信息存入session
+                    request.session['user_code'] = user_is_teacher.code  # 传入编号
+                    request.session['user_name'] = user_is_teacher.name  # 传入姓名
+                    request.session['user_department'] = user_is_teacher.department_id  # 传入部门
+                return redirect('backstage:homepage')  # 重定向到主页
+            elif user is None:  # 如果用户不存在反馈前端信息
                 message = "用户不存在"
                 return render(request, 'Login.html', locals())
-            else:
+            else:  # 密码错误情况判断逻辑
                 # 登陆失败
-                print(user)
                 message = "密码错误，请重试！"
                 return render(request, 'Login.html', locals())
         return render(request, 'Login.html', locals())
 
-    login_form = forms.UserForm()
+    login_form = forms.UserForm()  # 调起表单传到前端等待输入
     return render(request, 'Login.html', locals())
 
 
@@ -57,25 +67,58 @@ def log_out(request):
 
 def register(request):
     if request.method == 'POST':
-        form = forms.RegistrationForm(request.POST)
-
+        form = forms.RegistrationForm(request.POST)  # 调起RegistrationForm注册表单
         if form.is_valid():
-            print(123)
-            username = form.cleaned_data['username']
+            usercode = form.cleaned_data['username']  # 提取各项表单数据
             email = form.cleaned_data['email']
             password = form.cleaned_data['password2']
+            name = form.cleaned_data['name']
+            sex = form.cleaned_data['sex']
+            age = form.cleaned_data['age']
+            start_year = form.cleaned_data['start_year']
+            length = form.cleaned_data['length']
+            major = form.cleaned_data['major']
 
-            user = models.User.objects.create_user(username=username, password=password, email=email)
-            user_profile = models.UserProfile(user=user, codename=username)
-            user_profile.save()
-            message = "注册成功"
+            user = models.User.objects.create_user(username=usercode, password=password, email=email,
+                                                   first_name=name)  # 在父类User中构建新对象
+            user_Student = models.Student(user=user, code=usercode, name=name, sex=sex, age=age,
+                                          start_year=start_year,
+                                          major=major)  # 在子类学生表中构建新对象
+            user_Student.save()  # 存入数据库
+            return redirect('backstage:login')  # 重定向到登录
+        message = "请修改输入"
+        return render(request, 'register.html', locals())
     else:
-        form = forms.RegistrationForm()
+        form = forms.RegistrationForm()  # 调起表单
     return render(request, 'register.html', {'form': form})
 
 
-def homepage(request):
-    if not request.session.get('user_is_login', None):
+def register_t(request):  # 对老师用户的注册，开发测试使用，请优先使用脚本生成必要数据
+    if request.method == 'POST':
+        form = forms.TeacherForm(request.POST)  # 调起TeacherForm注册表单
+        if form.is_valid():
+            usercode = form.cleaned_data['username']  # 提取各项表单数据
+            email = form.cleaned_data['email']
+            password = form.cleaned_data['password2']
+            name = form.cleaned_data['name']
+            title = form.cleaned_data['title']
+            department = form.cleaned_data['department']
+            user = models.User.objects.create_user(username=usercode, password=password, email=email,
+                                                   first_name=name)  # 在父类User中构建新对象
+
+            print(department)
+            user_Teacher = models.Teacher(user=user, code=usercode, name=name, title=title, department_id=department)
+            user_Teacher.save()
+            return redirect('backstage:login')
+        message = "请修改输入"
+        return render(request, 'register.html', locals())
+    else:
+        form = forms.TeacherForm()
+    return render(request, 'register.html', {'form': form})
+
+
+def homepage(request):  # 主页
+    if not request.session.get('user_is_login', None):  # 若用户登录信息缺失，重定向到登录页
         return redirect('backstage:login')
 
     if request.method == "GET":
