@@ -79,12 +79,13 @@ def register(request):
             start_year = form.cleaned_data['start_year']
             length = form.cleaned_data['length']
             major = form.cleaned_data['major']
-
+            major_id = models.Major.objects.filter(name=major).first()
+            print(major_id.id)
             user = models.User.objects.create_user(username=usercode, password=password, email=email,
                                                    first_name=name)  # 在父类User中构建新对象
             user_Student = models.Student(user=user, code=usercode, name=name, sex=sex, age=age,
                                           start_year=start_year,
-                                          major=major)  # 在子类学生表中构建新对象
+                                          major_id=major_id.id)  # 在子类学生表中构建新对象
             user_Student.save()  # 存入数据库
             return redirect('backstage:login')  # 重定向到登录
         message = "请修改输入"
