@@ -2,36 +2,36 @@ from django.db import models
 from django.contrib.auth.models import User
 
 
-class Student(models.Model):
-    gender = (
+class Student(models.Model):  # 学生表
+    gender = (  # 性别选择
         ('male', '男'),
         ('female', '女'),
     )
-    user = models.OneToOneField(User, on_delete=models.CASCADE, related_name='student')
-    code = models.CharField(max_length=128, unique=True, default='201600000')
-    name = models.CharField(max_length=128, unique=False)
-    sex = models.CharField(max_length=32, choices=gender, default='男')
-    age = models.CharField(max_length=128, unique=False)
-    start_year = models.CharField(max_length=32, default='2019')
-    length = models.CharField(max_length=128, unique=False)
-    major = models.CharField(max_length=128, unique=False)
-    department = models.ForeignKey("Dept", on_delete=models.CASCADE, default=1)
+    user = models.OneToOneField(User, on_delete=models.CASCADE, related_name='student')  # 一对一关联到User，定义关联名为student
+    code = models.CharField(max_length=128, unique=True, default='201600000')  # 定义学生学号
+    name = models.CharField(max_length=128, unique=False)  # 定义学生姓名
+    sex = models.CharField(max_length=32, choices=gender, default='男')  # 定义学生性别
+    age = models.CharField(max_length=128, unique=False)  # 定义学生年龄
+    start_year = models.CharField(max_length=32, default='2019')  # 定义入学年
+    length = models.CharField(max_length=128, unique=False)  # 定义学制
+    major = models.ForeignKey("Major", on_delete=models.CASCADE, default=1)  # 外键关联主修
+    department = models.ForeignKey("Dept", on_delete=models.CASCADE, default=1)  # 外键部门
     mod_data = models.DateTimeField('Last modified', auto_now=True)
 
     def __str__(self):
         return self.codename
 
 
-class Teacher(models.Model):
-    user = models.OneToOneField(User, on_delete=models.CASCADE, related_name='teacher')
-    code = models.CharField(max_length=128, unique=True, default='201600')
-    name = models.CharField(max_length=128, unique=False)
-    department = models.ForeignKey("Dept", on_delete=models.CASCADE, default=1)
-    title = models.CharField(max_length=128, unique=False)
+class Teacher(models.Model):  # 定义teacher表
+    user = models.OneToOneField(User, on_delete=models.CASCADE, related_name='teacher')  # 一对一关联到User，连接名teacher，
+    code = models.CharField(max_length=128, unique=True, default='201600')  # 定义编号
+    name = models.CharField(max_length=128, unique=False)  # 定义姓名
+    department = models.ForeignKey("Dept", on_delete=models.CASCADE, default=1)  # 外键关联学院
+    title = models.CharField(max_length=128, unique=False)  # 定义职级
     mod_data = models.DateTimeField('Last modified', auto_now=True)
 
 
-class Dept(models.Model):
+class Dept(models.Model):  # 定义学院
     dep = (
         ('信息科学与技术学院', '信息科学与技术学院'),
         ('化学工程学院', '化学工程学院'),
@@ -54,18 +54,18 @@ class Dept(models.Model):
         db_table = 'department'
 
 
-class Classes(models.Model):
-    class_id = models.CharField(max_length=128, unique=True, default='EEE0001')
-    name = models.CharField(max_length=128, unique=False)
-    type = models.CharField(max_length=128, unique=False)
-    size = models.CharField(max_length=128, unique=False)
-    department = models.ForeignKey("Dept", on_delete=models.CASCADE, default=1)
+class Classes(models.Model):  # 定义课程表
+    class_id = models.CharField(max_length=128, unique=True, default='EEE0001')  # 定义课程ID
+    name = models.CharField(max_length=128, unique=False)  # 定义课程名
+    type = models.CharField(max_length=128, unique=False)  # 定义课程类型
+    size = models.CharField(max_length=128, unique=False)  # 定义课程容量
+    department = models.ForeignKey("Dept", on_delete=models.CASCADE, default=1)  # 定义开课学院
 
 
-class Major(models.Model):
-    name = models.CharField(max_length=128, unique=False)
-    length = models.CharField(max_length=128, unique=False)
-    major_plan = models.CharField(max_length=128, unique=False)
+class Major(models.Model):  # 定义主修表
+    name = models.CharField(max_length=128, unique=False)  # 定义专业名字
+    length = models.CharField(max_length=128, unique=False)  # 定义专业学制
+    major_plan = models.CharField(max_length=128, unique=False)  # 定义专业培养计划
 
 
 class Announcement(models.Model):
