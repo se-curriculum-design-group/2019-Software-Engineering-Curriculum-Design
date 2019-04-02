@@ -18,8 +18,7 @@ class Student(models.Model):  # 学生表
     department = models.ForeignKey("Dept", on_delete=models.CASCADE, default=1)  # 外键部门
     mod_data = models.DateTimeField('Last modified', auto_now=True)
 
-    def __str__(self):
-        return self.codename
+    
 
 
 class Teacher(models.Model):  # 定义teacher表
