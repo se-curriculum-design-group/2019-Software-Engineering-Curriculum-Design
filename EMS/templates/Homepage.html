@@ -1,0 +1,52 @@
+{% extends 'base2.html' %}
+
+{% block title %}
+    主页
+{% endblock %}
+
+{% block content %}
+    <div class="container-fluid">
+        <div class="row">
+{#            <div class="col-sm-2">#}
+{#                <a href="#" class="list-group-item active">管理</a>#}
+{#                <a href="#" class="list-group-item">#}
+{#                    <img src="/backstage/media/web_img/grades.png" style="margin-right:15px; width:20px ">成绩查看</a>#}
+{#                <a href="#" class="list-group-item">#}
+{#                    <img src="/backstage/media/web_img/personal1.png" style="margin-right:15px; width:20px ">个人信息</a>#}
+{#                <a href="#" class="list-group-item">#}
+{#                    <img src="/backstage/media/web_img/change2.png" style="margin-right:15px; width:20px ">修改信息</a>#}
+{#                <a href="#" class="list-group-item">#}
+{#                    <img src="/backstage/media/web_img/Sending_Email.png"#}
+{#                         style="margin-right:15px; width:20px ">邮件发送</a>#}
+{#                <a href="#" class="list-group-item">#}
+{#                    <img src="/backstage/media/web_img/announcement1.png"#}
+{#                         style="margin-right:15px; width:20px ">通知管理</a>#}
+{#                <a href="#" class="list-group-item">#}
+{#                    <img src="/backstage/media/web_img/delete_user.png"#}
+{#                         style="margin-right:15px; width:20px ">用户管理</a>#}
+{#            </div>#}
+            <div class="col-sm-10">
+                {% if message %}
+                    <div class="alert alert-info alert-dismissible" role="alert">
+                        <button type="button" class="close" data-dismiss="alert" aria-label="close">
+                            <span aria-disabled="true">×</span>
+                        </button>
+                        <strong>
+                            {{ message }}
+                        </strong>
+                    </div>
+                {% endif %}
+
+                <div>
+                    <h2 class="text-center" style="margin-top: 100px;">这里是各种公告和通知</h2>
+
+                    {% for foo in announcement %}
+                        <h3 class="text-center" style="">{{ forloop.counter }}.主题：{{ foo.title }} </h3>
+                        <h4 class="text-center" style="">正文：{{ foo.messages }}</h4>
+                    {% endfor %}
+
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
