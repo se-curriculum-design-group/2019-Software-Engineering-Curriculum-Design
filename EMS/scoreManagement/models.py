@@ -15,7 +15,7 @@ class Course(models.Model):
     # 课程性质
     course_type = models.CharField(max_length=128, null=True)
     # 该门课程在该专业对应的学分
-    score = models.FloatField(null=True)
+    score = models.FloatField()
 
     def __str__(self):
         return "-".join([self.cno, self.cname, self.college.short_name])

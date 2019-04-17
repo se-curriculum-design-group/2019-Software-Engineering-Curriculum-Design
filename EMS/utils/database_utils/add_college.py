@@ -122,9 +122,9 @@ if __name__ == '__main__':
     # print(len(colleges))
     # add_college()
     # college_information()
-    info_init = InfoInit(csv_file)
+    # info_init = InfoInit(csv_file)
     # info_init.views()
     # info_init.insert()
     # info_init.create_adm()
-    info_init.create_student()
+    # info_init.create_student()
     pass
