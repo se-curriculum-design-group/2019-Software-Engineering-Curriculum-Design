@@ -99,3 +99,8 @@ In [4]: len(Teacher.objects.all())
 Out[4]: 1159
 
 ```
+
+## Possible Problem
+
+如果在直接执行`source ems.sql`的时候，遇到外键问题，无法创建`course`表。
+可以直接打开`ems.sql`找到相应的语句粘贴在MySQL终端执行。
