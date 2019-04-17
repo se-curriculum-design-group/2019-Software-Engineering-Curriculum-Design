@@ -2,7 +2,6 @@ from django.db import models
 from django.contrib.auth.models import User
 
 
-
 # 学院
 class College(models.Model):
     # 学院名
