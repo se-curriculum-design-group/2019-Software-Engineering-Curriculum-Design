@@ -216,52 +216,56 @@
 # BYTE    RootString[RootStringSize]  // Root string, little-endian UTF-16
 
 
-
 import optparse
 import struct
+
 
 class FontError(Exception):
     """Error related to font handling"""
     pass
 
+
 def multichar(str):
     vals = struct.unpack('4B', str[:4])
     return (vals[0] << 24) + (vals[1] << 16) + (vals[2] << 8) + vals[3]
 
+
 def multicharval(v):
     return struct.pack('4B', (v >> 24) & 0xFF, (v >> 16) & 0xFF, (v >> 8) & 0xFF, v & 0xFF)
+
 
 class EOT:
     EOT_VERSION = 0x00020001
     EOT_MAGIC_NUMBER = 0x504c
     EOT_DEFAULT_CHARSET = 0x01
-    EOT_FAMILY_NAME_INDEX = 0    # order of names in variable portion of EOT header
+    EOT_FAMILY_NAME_INDEX = 0  # order of names in variable portion of EOT header
     EOT_STYLE_NAME_INDEX = 1
     EOT_VERSION_NAME_INDEX = 2
     EOT_FULL_NAME_INDEX = 3
     EOT_NUM_NAMES = 4
-    
+
     EOT_HEADER_PACK = '<4L10B2BL2H7L18x'
 
+
 class OpenType:
-    SFNT_CFF = multichar('OTTO')            # Postscript CFF SFNT version
-    SFNT_TRUE = 0x10000                     # Standard TrueType version
-    SFNT_APPLE = multichar('true')          # Apple TrueType version
-    
+    SFNT_CFF = multichar('OTTO')  # Postscript CFF SFNT version
+    SFNT_TRUE = 0x10000  # Standard TrueType version
+    SFNT_APPLE = multichar('true')  # Apple TrueType version
+
     SFNT_UNPACK = '>I4H'
     TABLE_DIR_UNPACK = '>4I'
-    
-    TABLE_HEAD = multichar('head')          # TrueType table tags
+
+    TABLE_HEAD = multichar('head')  # TrueType table tags
     TABLE_NAME = multichar('name')
     TABLE_OS2 = multichar('OS/2')
     TABLE_GLYF = multichar('glyf')
     TABLE_CFF = multichar('CFF ')
-    
+
     OS2_FSSELECTION_ITALIC = 0x1
     OS2_UNPACK = '>4xH2xH22x10B4L4xH14x2L'
-    
+
     HEAD_UNPACK = '>8xL'
-    
+
     NAME_RECORD_UNPACK = '>6H'
     NAME_ID_FAMILY = 1
     NAME_ID_STYLE = 2
@@ -269,10 +273,11 @@ class OpenType:
     NAME_ID_FULL = 4
     NAME_ID_VERSION = 5
     NAME_ID_POSTSCRIPT = 6
-    PLATFORM_ID_UNICODE = 0                 # Mac OS uses this typically
+    PLATFORM_ID_UNICODE = 0  # Mac OS uses this typically
     PLATFORM_ID_MICROSOFT = 3
-    ENCODING_ID_MICROSOFT_UNICODEBMP = 1    # with Microsoft platformID BMP-only Unicode encoding
-    LANG_ID_MICROSOFT_EN_US = 0x0409         # with Microsoft platformID EN US lang code
+    ENCODING_ID_MICROSOFT_UNICODEBMP = 1  # with Microsoft platformID BMP-only Unicode encoding
+    LANG_ID_MICROSOFT_EN_US = 0x0409  # with Microsoft platformID EN US lang code
+
 
 def eotname(ttf):
     i = ttf.rfind('.')
@@ -280,9 +285,11 @@ def eotname(ttf):
         ttf = ttf[:i]
     return ttf + '.eotlite'
 
+
 def readfont(f):
     data = open(f, 'rb').read()
     return data
+
 
 def get_table_directory(data):
     """read the SFNT header and table directory"""
@@ -293,11 +300,11 @@ def get_table_directory(data):
     sfntvers, numTables = struct.unpack(OpenType.SFNT_UNPACK, data[:sfntsize])[:2]
     if sfntvers != OpenType.SFNT_CFF and sfntvers != OpenType.SFNT_TRUE:
         raise FontError, 'invalid font type';
-    
+
     font = {}
     font['version'] = sfntvers
     font['numTables'] = numTables
-    
+
     # create set of offsets, lengths for tables
     table_dir_size = struct.calcsize(OpenType.TABLE_DIR_UNPACK)
     if sfntsize + table_dir_size * numTables > datalen:
@@ -308,10 +315,11 @@ def get_table_directory(data):
         end = start + table_dir_size
         tag, check, bongo, dirlen = struct.unpack(OpenType.TABLE_DIR_UNPACK, data[start:end])
         table_dir[tag] = {'offset': bongo, 'length': dirlen, 'checksum': check}
-    
+
     font['tableDir'] = table_dir
-    
+
     return font
+
 
 def get_name_records(nametable):
     """reads through the name records within name table"""
@@ -324,30 +332,32 @@ def get_name_records(nametable):
         raise FontError, 'names exceed size of name table'
     name['count'] = count
     name['strOffset'] = strOffset
-    
+
     # read through the name records
     namerecs = {}
     for i in range(0, count):
         start = headersize + i * namerecsize
         end = start + namerecsize
-        platformID, encodingID, languageID, nameID, namelen, offset = struct.unpack(OpenType.NAME_RECORD_UNPACK, nametable[start:end])
+        platformID, encodingID, languageID, nameID, namelen, offset = struct.unpack(OpenType.NAME_RECORD_UNPACK,
+                                                                                    nametable[start:end])
         if platformID != OpenType.PLATFORM_ID_MICROSOFT or \
-           encodingID != OpenType.ENCODING_ID_MICROSOFT_UNICODEBMP or \
-           languageID != OpenType.LANG_ID_MICROSOFT_EN_US:
+                encodingID != OpenType.ENCODING_ID_MICROSOFT_UNICODEBMP or \
+                languageID != OpenType.LANG_ID_MICROSOFT_EN_US:
             continue
         namerecs[nameID] = {'offset': offset, 'length': namelen}
-        
+
     name['namerecords'] = namerecs
     return name
+
 
 def make_eot_name_headers(fontdata, nameTableDir):
     """extracts names from the name table and generates the names header portion of the EOT header"""
     nameoffset = nameTableDir['offset']
     namelen = nameTableDir['length']
-    name = get_name_records(fontdata[nameoffset : nameoffset + namelen])
+    name = get_name_records(fontdata[nameoffset: nameoffset + namelen])
     namestroffset = name['strOffset']
     namerecs = name['namerecords']
-    
+
     eotnames = (OpenType.NAME_ID_FAMILY, OpenType.NAME_ID_STYLE, OpenType.NAME_ID_VERSION, OpenType.NAME_ID_FULL)
     nameheaders = []
     for nameid in eotnames:
@@ -355,112 +365,113 @@ def make_eot_name_headers(fontdata, nameTableDir):
             namerecord = namerecs[nameid]
             noffset = namerecord['offset']
             nlen = namerecord['length']
-            nformat = '%dH' % (nlen / 2)		# length is in number of bytes
+            nformat = '%dH' % (nlen / 2)  # length is in number of bytes
             start = nameoffset + namestroffset + noffset
             end = start + nlen
             nstr = struct.unpack('>' + nformat, fontdata[start:end])
             nameheaders.append(struct.pack('<H' + nformat + '2x', nlen, *nstr))
         else:
             nameheaders.append(struct.pack('4x'))  # len = 0, padding = 0
-    
+
     return ''.join(nameheaders)
+
 
 # just return a null-string (len = 0)
 def make_root_string():
     return struct.pack('2x')
 
+
 def make_eot_header(fontdata):
     """given ttf font data produce an EOT header"""
     fontDataSize = len(fontdata)
     font = get_table_directory(fontdata)
-    
+
     # toss out .otf fonts, t2embed library doesn't support these
     tableDir = font['tableDir']
-    
+
     # check for required tables
     required = (OpenType.TABLE_HEAD, OpenType.TABLE_NAME, OpenType.TABLE_OS2)
     for table in required:
         if not (table in tableDir):
             raise FontError, 'missing required table ' + multicharval(table)
-            
+
     # read name strings
-    
+
     # pull out data from individual tables to construct fixed header portion
     # need to calculate eotSize before packing
     version = EOT.EOT_VERSION
     flags = 0
     charset = EOT.EOT_DEFAULT_CHARSET
     magicNumber = EOT.EOT_MAGIC_NUMBER
-    
+
     # read values from OS/2 table
     os2Dir = tableDir[OpenType.TABLE_OS2]
     os2offset = os2Dir['offset']
     os2size = struct.calcsize(OpenType.OS2_UNPACK)
-    
+
     if os2size > os2Dir['length']:
         raise FontError, 'OS/2 table invalid length'
-    
-    os2fields = struct.unpack(OpenType.OS2_UNPACK, fontdata[os2offset : os2offset + os2size])
-    
+
+    os2fields = struct.unpack(OpenType.OS2_UNPACK, fontdata[os2offset: os2offset + os2size])
+
     panose = []
     urange = []
     codepage = []
-    
+
     weight, fsType = os2fields[:2]
     panose[:10] = os2fields[2:12]
     urange[:4] = os2fields[12:16]
     fsSelection = os2fields[16]
     codepage[:2] = os2fields[17:19]
-    
+
     italic = fsSelection & OpenType.OS2_FSSELECTION_ITALIC
-    
+
     # read in values from head table
     headDir = tableDir[OpenType.TABLE_HEAD]
     headoffset = headDir['offset']
     headsize = struct.calcsize(OpenType.HEAD_UNPACK)
-    
+
     if headsize > headDir['length']:
         raise FontError, 'head table invalid length'
-        
-    headfields = struct.unpack(OpenType.HEAD_UNPACK, fontdata[headoffset : headoffset + headsize])
+
+    headfields = struct.unpack(OpenType.HEAD_UNPACK, fontdata[headoffset: headoffset + headsize])
     checkSumAdjustment = headfields[0]
-    
+
     # make name headers
     nameheaders = make_eot_name_headers(fontdata, tableDir[OpenType.TABLE_NAME])
     rootstring = make_root_string()
-    
+
     # calculate the total eot size
     eotSize = struct.calcsize(EOT.EOT_HEADER_PACK) + len(nameheaders) + len(rootstring) + fontDataSize
     fixed = struct.pack(EOT.EOT_HEADER_PACK,
                         *([eotSize, fontDataSize, version, flags] + panose + [charset, italic] +
                           [weight, fsType, magicNumber] + urange + codepage + [checkSumAdjustment]))
-    
+
     return ''.join((fixed, nameheaders, rootstring))
- 
-    
+
+
 def write_eot_font(eot, header, data):
-    open(eot,'wb').write(''.join((header, data)))
+    open(eot, 'wb').write(''.join((header, data)))
     return
 
-def main():
 
+def main():
     # deal with options
     p = optparse.OptionParser()
     p.add_option('--output', '-o', default="world")
     options, args = p.parse_args()
-    
+
     # iterate over font files
     for f in args:
         data = readfont(f)
         if len(data) == 0:
-            print 'Error reading %s' % f
+            print
+            'Error reading %s' % f
         else:
             eot = eotname(f)
             header = make_eot_header(data)
             write_eot_font(eot, header, data)
-        
+
 
 if __name__ == '__main__':
     main()
-    
-    

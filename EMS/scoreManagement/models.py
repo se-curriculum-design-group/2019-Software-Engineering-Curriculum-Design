@@ -7,14 +7,18 @@ from backstage.models import Teacher, Student,\
 class Course(models.Model):
     # 课程编号，长度必须为9位，如：MAT13904T--高数
     # 3位英文+5位数字+一位英文
-    cno = models.CharField(max_length=9, primary_key=True)
+    cno = models.CharField(max_length=9)
     # 课程名称，需要与编号对应
     cname = models.CharField(max_length=128)
     # 开课学院，需要从学院中选取对应的老师来上课
     college = models.ForeignKey(to=College, on_delete=models.CASCADE)
+    # 课程性质
+    course_type = models.CharField(max_length=128, null=True)
+    # 该门课程在该专业对应的学分
+    score = models.FloatField(null=True)
 
     def __str__(self):
-        return self.cno
+        return "-".join([self.cno, self.cname, self.college.short_name])
 
     class Meta:
         db_table = 'course'
@@ -28,13 +32,9 @@ class MajorCourses(models.Model):
     # 对应到的专业计划信息
     # 注意，这里都是外键，需要传入的是对象引用
     mno = models.ForeignKey(to=MajorPlan, on_delete=models.CASCADE)
-    # 有多种课程性质，具体课参照**全校课表**
-    course_type = models.CharField(max_length=128)
-    # 该门课程在该专业对应的学分
-    score = models.IntegerField()
     # 该门课程在该专业对应的总学时
     hour_total = models.IntegerField()
-    # 讲课学时
+    # 讲课学时，总学时中用于讲课的学时
     hour_class = models.IntegerField()
     # 实践学时, hour_total - hour_class
     hour_other = models.IntegerField()

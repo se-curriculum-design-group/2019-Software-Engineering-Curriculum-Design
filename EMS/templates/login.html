@@ -1,0 +1,132 @@
+{% load staticfiles %}
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+
+    <head>
+
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <title>登录界面</title>
+
+        <link rel="stylesheet" href="http://fonts.googleapis.com/css?family=Roboto:400,100,300,500">
+        <link rel="stylesheet" href="{% static 'assets/bootstrap/css/bootstrap.min.css' %}">
+        <link rel="stylesheet" href="{% static 'assets/font-awesome/css/font-awesome.min.css' %}">
+		<link rel="stylesheet" href="{% static 'assets/css/form-elements.css' %}">
+        <link rel="stylesheet" href="{% static 'assets/css/style.css' %}">
+
+
+        <link rel="shortcut icon" href="{% static 'assets/ico/favicon.png' %}">
+        <link rel="apple-touch-icon-precomposed" sizes="144x144" href="{% static 'assets/ico/apple-touch-icon-144-precomposed.png' %}">
+        <link rel="apple-touch-icon-precomposed" sizes="114x114" href="{% static 'assets/ico/apple-touch-icon-114-precomposed.png' %}">
+        <link rel="apple-touch-icon-precomposed" sizes="72x72" href="{% static 'assets/ico/apple-touch-icon-72-precomposed.png' %}">
+        <link rel="apple-touch-icon-precomposed" href="{% static 'assets/ico/apple-touch-icon-57-precomposed.png' %}">
+
+    </head>
+
+    <body style="background-image: {% static 'assets/img/backgrounds/background.jpg' %}">
+        <!-- Top content -->
+{#        <div class="top-content">#}
+        <div class="container">
+
+            <div class="inner-bg">
+                <div class="container">
+                    <div class="row">
+                        <div class="col-sm-8 col-sm-offset-2 text">
+                            <h1><strong>登录教务管理系统</strong></h1>
+                            <div class="description">
+                            	<p>
+	                            	请登录，没有账号？
+                                    <a href="register.html"><strong>注册</strong></a>
+                            	</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-sm-6 col-sm-offset-3 form-box">
+                        	<div class="form-top">
+                        		<div class="form-top-left">
+                        			<h3>登录界面</h3>
+                            		<!--<p>Enter your username and password to log on:</p>-->
+                        		</div>
+                        		<div class="form-top-right">
+                        			<i class="fa fa-key"></i>
+                        		</div>
+                            </div>
+                            <div class="form-bottom">
+			                    <form role="form" action="{% url 'backstage:login' %}" method="post" class="login-form">
+                                    {% csrf_token %}
+			                    	<div class="form-group">
+			                    		<label class="sr-only" for="form-username">Username</label>
+			                        	<input type="text" name="username" placeholder="Username..." class="form-username form-control" id="form-username">
+			                        </div>
+			                        <div class="form-group">
+			                        	<label class="sr-only" for="form-password">Password</label>
+			                        	<input type="password" name="password" placeholder="Password..." class="form-password form-control" id="form-password">
+			                        </div>
+			                        <button type="submit" class="btn">登录</button>
+			                    </form>
+		                    </div>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-sm-6 col-sm-offset-3 social-login">
+                        	<h3>
+                                <a class="btn btn-link-1" href="{% url 'backstage:register' %}">注册</a>
+                            </h3>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+        </div>
+        <footer class="main-footer">
+    <div class="pull-right hidden-xs">
+      <b>Version</b> 1.0.0
+    </div>
+    <strong>Copyright &copy; 2019-<a href="https://www.buct.edu.cn" target="_blank">Beijing University of Chemical Technology</a>.</strong> All rights
+    reserved.
+  </footer>
+
+
+        <!-- Javascript -->
+        <script src="{% static 'assets/js/jquery-1.11.1.min.js' %}"></script>
+        <script src="{% static 'assets/bootstrap/js/bootstrap.min.js' %}"></script>
+        <script src="{% static 'assets/js/jquery.backstretch.min.js' %}"></script>
+        <script src="{% static 'assets/js/scripts.js' %}"></script>
+
+
+        <script>
+            jQuery(document).ready(function() {
+
+    /*
+        Fullscreen background
+    */
+     $.backstretch("{% static 'assets/img/backgrounds/background.jpg' %}");
+
+    /*
+        Form validation
+    */
+    $('.login-form input[type="text"], .login-form input[type="password"], .login-form textarea').on('focus', function() {
+    	$(this).removeClass('input-error');
+    });
+
+    $('.login-form').on('submit', function(e) {
+
+    	$(this).find('input[type="text"], input[type="password"], textarea').each(function(){
+    		if( $(this).val() === "" ) {
+    			e.preventDefault();
+    			$(this).addClass('input-error');
+    		}
+    		else {
+    			$(this).removeClass('input-error');
+    		}
+    	});
+
+    });
+});
+        </script>
+    </body>
+</html>

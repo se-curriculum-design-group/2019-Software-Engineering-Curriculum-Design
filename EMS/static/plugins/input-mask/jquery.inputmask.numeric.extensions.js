@@ -44,8 +44,9 @@ Optional extensions on the jquery.inputmask base
 
                 var escapedGroupSeparator = $.inputmask.escapeRegex.call(this, opts.groupSeparator);
                 var escapedRadixPoint = $.inputmask.escapeRegex.call(this, opts.radixPoint);
-                var currentBufferStr = currentBuffer.join(''), strippedBufferStr = currentBufferStr.replace(new RegExp(escapedGroupSeparator, "g"), "").replace(new RegExp(escapedRadixPoint), ""),
-                groupOffset = currentBufferStr.length - strippedBufferStr.length;
+                var currentBufferStr = currentBuffer.join(''),
+                    strippedBufferStr = currentBufferStr.replace(new RegExp(escapedGroupSeparator, "g"), "").replace(new RegExp(escapedRadixPoint), ""),
+                    groupOffset = currentBufferStr.length - strippedBufferStr.length;
                 return calculatedLength + groupOffset;
             },
             postFormat: function (buffer, pos, reformatOnly, opts) {
@@ -94,7 +95,7 @@ Optional extensions on the jquery.inputmask base
                     if (radixPosition != -1) {
                         var masksets = $input.data('_inputmask')['masksets'];
                         var activeMasksetIndex = $input.data('_inputmask')['activeMasksetIndex'];
-                        for (var i = 1; i <= opts.digits && i < opts.getMaskLength(masksets[activeMasksetIndex]["_buffer"], masksets[activeMasksetIndex]["greedy"], masksets[activeMasksetIndex]["repeat"], buffer, opts) ; i++) {
+                        for (var i = 1; i <= opts.digits && i < opts.getMaskLength(masksets[activeMasksetIndex]["_buffer"], masksets[activeMasksetIndex]["greedy"], masksets[activeMasksetIndex]["repeat"], buffer, opts); i++) {
                             if (buffer[radixPosition + i] == undefined || buffer[radixPosition + i] == "") buffer[radixPosition + i] = "0";
                         }
                         input._valueSet(buffer.join(''));
@@ -111,7 +112,7 @@ Optional extensions on the jquery.inputmask base
                         if (chrs == "") return false;
                         if (!strict && pos <= 1 && buffer[0] === '0' && new RegExp("[\\d-]").test(chrs) && buffer.join('').length == 1) { //handle first char
                             buffer[0] = "";
-                            return { "pos": 0 };
+                            return {"pos": 0};
                         }
 
                         var cbuf = strict ? buffer.slice(0, pos) : buffer.slice();
@@ -142,7 +143,7 @@ Optional extensions on the jquery.inputmask base
                                         if (isValid) {
                                             buffer[pos] = "0";
                                             pos++;
-                                            return { "pos": pos };
+                                            return {"pos": pos};
                                         }
                                     }
                                 }
@@ -151,7 +152,7 @@ Optional extensions on the jquery.inputmask base
 
                         if (isValid != false && !strict && chrs != opts.radixPoint) {
                             var newPos = opts.postFormat(buffer, pos, false, opts);
-                            return { "pos": newPos };
+                            return {"pos": newPos};
                         }
 
                         return isValid;

@@ -18,7 +18,8 @@ from django.urls import path
 from django.conf.urls import include
 
 urlpatterns = [
-    # path('', include('backstage.urls')),
+    path('', include('backstage.urls')),
+    path(r'scoreManagement/', include('scoreManagement.urls')),
     # path('captcha/', include('captcha.urls')),
     # path(r'courseScheduling', include('courseScheduling.urls')),
     # path(r'courseSelection', include('courseSelection.urls')),

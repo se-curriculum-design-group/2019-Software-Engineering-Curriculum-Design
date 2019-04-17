@@ -88,7 +88,7 @@
                 }
                 s._carve().init();
                 s._configure()
-                 ._draw();
+                    ._draw();
             };
 
             if (this.$.data('kontroled')) return;
@@ -104,10 +104,10 @@
 
                     // UI
                     cursor: this.$.data('cursor') === true && 30
-                            || this.$.data('cursor') || 0,
+                        || this.$.data('cursor') || 0,
                     thickness: this.$.data('thickness')
-                               && Math.max(Math.min(this.$.data('thickness'), 1), 0.01)
-                               || 0.35,
+                        && Math.max(Math.min(this.$.data('thickness'), 1), 0.01)
+                        || 0.35,
                     lineCap: this.$.data('linecap') || 'butt',
                     width: this.$.data('width') || 200,
                     height: this.$.data('height') || 200,
@@ -128,7 +128,7 @@
                     release: null, // function (value) {}
 
                     // Output formatting, allows to add unit: %, ms ...
-                    format: function(v) {
+                    format: function (v) {
                         return v;
                     },
                     parse: function (v) {
@@ -149,7 +149,7 @@
                 // fieldset = array of integer
                 this.v = {};
                 this.i = this.$.find('input');
-                this.i.each(function(k) {
+                this.i.each(function (k) {
                     var $this = $(this);
                     s.i[k] = $this;
                     s.v[k] = s.o.parse($this.val());
@@ -205,26 +205,28 @@
 
             if (!this.c) {
                 throw {
-                    name:        "CanvasNotSupportedException",
-                    message:     "Canvas not supported. Please use excanvas on IE8.0.",
-                    toString:    function(){return this.name + ": " + this.message}
+                    name: "CanvasNotSupportedException",
+                    message: "Canvas not supported. Please use excanvas on IE8.0.",
+                    toString: function () {
+                        return this.name + ": " + this.message
+                    }
                 }
             }
 
             // hdpi support
             this.scale = (window.devicePixelRatio || 1) / (
-                            this.c.webkitBackingStorePixelRatio ||
-                            this.c.mozBackingStorePixelRatio ||
-                            this.c.msBackingStorePixelRatio ||
-                            this.c.oBackingStorePixelRatio ||
-                            this.c.backingStorePixelRatio || 1
-                         );
+                this.c.webkitBackingStorePixelRatio ||
+                this.c.mozBackingStorePixelRatio ||
+                this.c.msBackingStorePixelRatio ||
+                this.c.oBackingStorePixelRatio ||
+                this.c.backingStorePixelRatio || 1
+            );
 
             // detects relative width / height
-            this.relativeWidth =  this.o.width % 1 !== 0
-                                  && this.o.width.indexOf('%');
+            this.relativeWidth = this.o.width % 1 !== 0
+                && this.o.width.indexOf('%');
             this.relativeHeight = this.o.height % 1 !== 0
-                                  && this.o.height.indexOf('%');
+                && this.o.height.indexOf('%');
             this.relative = this.relativeWidth || this.relativeHeight;
 
             // computes size and carves the component
@@ -258,12 +260,12 @@
             return this;
         };
 
-        this._carve = function() {
+        this._carve = function () {
             if (this.relative) {
                 var w = this.relativeWidth ?
-                        this.$div.parent().width() *
-                        parseInt(this.o.width) / 100
-                        : this.$div.parent().width(),
+                    this.$div.parent().width() *
+                    parseInt(this.o.width) / 100
+                    : this.$div.parent().width(),
                     h = this.relativeHeight ?
                         this.$div.parent().height() *
                         parseInt(this.o.height) / 100
@@ -316,9 +318,9 @@
         this._touch = function (e) {
             var touchMove = function (e) {
                 var v = s.xy2val(
-                            e.originalEvent.touches[s.t].pageX,
-                            e.originalEvent.touches[s.t].pageY
-                        );
+                    e.originalEvent.touches[s.t].pageX,
+                    e.originalEvent.touches[s.t].pageY
+                );
 
                 if (v == s.cv) return;
 
@@ -423,7 +425,7 @@
             }
 
             if (this.relative) {
-                $(window).resize(function() {
+                $(window).resize(function () {
                     s._carve().init();
                     s._draw();
                 });
@@ -455,28 +457,37 @@
         };
 
         this._validate = function (v) {
-            var val = (~~ (((v < 0) ? -0.5 : 0.5) + (v/this.o.step))) * this.o.step;
+            var val = (~~(((v < 0) ? -0.5 : 0.5) + (v / this.o.step))) * this.o.step;
             return Math.round(val * 100) / 100;
         };
 
         // Abstract methods
-        this.listen = function () {}; // on start, one time
-        this.extend = function () {}; // each time configure triggered
-        this.init = function () {}; // each time configure triggered
-        this.change = function (v) {}; // on change
-        this.val = function (v) {}; // on release
-        this.xy2val = function (x, y) {}; //
-        this.draw = function () {}; // on change / on release
-        this.clear = function () { this._clear(); };
+        this.listen = function () {
+        }; // on start, one time
+        this.extend = function () {
+        }; // each time configure triggered
+        this.init = function () {
+        }; // each time configure triggered
+        this.change = function (v) {
+        }; // on change
+        this.val = function (v) {
+        }; // on release
+        this.xy2val = function (x, y) {
+        }; //
+        this.draw = function () {
+        }; // on change / on release
+        this.clear = function () {
+            this._clear();
+        };
 
         // Utils
         this.h2rgba = function (h, a) {
             var rgb;
-            h = h.substring(1,7)
+            h = h.substring(1, 7)
             rgb = [
-                parseInt(h.substring(0,2), 16),
-                parseInt(h.substring(2,4), 16),
-                parseInt(h.substring(4,6), 16)
+                parseInt(h.substring(0, 2), 16),
+                parseInt(h.substring(2, 4), 16),
+                parseInt(h.substring(4, 6), 16)
             ];
 
             return "rgba(" + rgb[0] + "," + rgb[1] + "," + rgb[2] + "," + a + ")";
@@ -502,7 +513,7 @@
         this.lineWidth = null;
         this.cursorExt = null;
         this.w2 = null;
-        this.PI2 = 2*Math.PI;
+        this.PI2 = 2 * Math.PI;
 
         this.extend = function () {
             this.o = $.extend({
@@ -522,7 +533,9 @@
                 if (triggerRelease !== false
                     && v != this.v
                     && this.rH
-                    && this.rH(v) === false) { return; }
+                    && this.rH(v) === false) {
+                    return;
+                }
 
                 this.cv = this.o.stopper ? max(min(v, this.o.max), this.o.min) : v;
                 this.v = this.cv;
@@ -537,9 +550,9 @@
             var a, ret;
 
             a = Math.atan2(
-                        x - (this.x + this.w2),
-                        - (y - this.y - this.w2)
-                    ) - this.angleOffset;
+                x - (this.x + this.w2),
+                -(y - this.y - this.w2)
+            ) - this.angleOffset;
 
             if (this.o.flip) {
                 a = this.angleArc - a - this.PI2;
@@ -574,9 +587,9 @@
                         v = s._validate(s.o.parse(s.$.val()))
                             + (
                                 deltaX > 0 || deltaY > 0
-                                ? s.o.step
-                                : deltaX < 0 || deltaY < 0 ? -s.o.step : 0
-                              );
+                                    ? s.o.step
+                                    : deltaX < 0 || deltaY < 0 ? -s.o.step : 0
+                            );
 
                     v = max(min(v, s.o.max), s.o.min);
 
@@ -633,7 +646,7 @@
                             && e.preventDefault();
 
                             // arrows
-                            if ($.inArray(kc,[37,38,39,40]) > -1) {
+                            if ($.inArray(kc, [37, 38, 39, 40]) > -1) {
                                 e.preventDefault();
 
                                 var v = s.o.parse(s.$.val()) + kv[kc] * m;
@@ -674,7 +687,9 @@
 
         this.init = function () {
             if (this.v < this.o.min
-                || this.v > this.o.max) { this.v = this.o.min; }
+                || this.v > this.o.max) {
+                this.v = this.o.min;
+            }
 
             this.$.val(this.v);
             this.w2 = this.w / 2;
@@ -705,24 +720,24 @@
             ) + 2;
 
             this.o.displayInput
-                && this.i.css({
-                        'width' : ((this.w / 2 + 4) >> 0) + 'px',
-                        'height' : ((this.w / 3) >> 0) + 'px',
-                        'position' : 'absolute',
-                        'vertical-align' : 'middle',
-                        'margin-top' : ((this.w / 3) >> 0) + 'px',
-                        'margin-left' : '-' + ((this.w * 3 / 4 + 2) >> 0) + 'px',
-                        'border' : 0,
-                        'background' : 'none',
-                        'font' : this.o.fontWeight + ' ' + ((this.w / s) >> 0) + 'px ' + this.o.font,
-                        'text-align' : 'center',
-                        'color' : this.o.inputColor || this.o.fgColor,
-                        'padding' : '0px',
-                        '-webkit-appearance': 'none'
-                        }) || this.i.css({
-                            'width': '0px',
-                            'visibility': 'hidden'
-                        });
+            && this.i.css({
+                'width': ((this.w / 2 + 4) >> 0) + 'px',
+                'height': ((this.w / 3) >> 0) + 'px',
+                'position': 'absolute',
+                'vertical-align': 'middle',
+                'margin-top': ((this.w / 3) >> 0) + 'px',
+                'margin-left': '-' + ((this.w * 3 / 4 + 2) >> 0) + 'px',
+                'border': 0,
+                'background': 'none',
+                'font': this.o.fontWeight + ' ' + ((this.w / s) >> 0) + 'px ' + this.o.font,
+                'text-align': 'center',
+                'color': this.o.inputColor || this.o.fgColor,
+                'padding': '0px',
+                '-webkit-appearance': 'none'
+            }) || this.i.css({
+                'width': '0px',
+                'visibility': 'hidden'
+            });
         };
 
         this.change = function (v) {
@@ -735,24 +750,24 @@
         };
 
         this.arc = function (v) {
-          var sa, ea;
-          v = this.angle(v);
-          if (this.o.flip) {
-              sa = this.endAngle + 0.00001;
-              ea = sa - v - 0.00001;
-          } else {
-              sa = this.startAngle - 0.00001;
-              ea = sa + v + 0.00001;
-          }
-          this.o.cursor
-              && (sa = ea - this.cursorExt)
-              && (ea = ea + this.cursorExt);
+            var sa, ea;
+            v = this.angle(v);
+            if (this.o.flip) {
+                sa = this.endAngle + 0.00001;
+                ea = sa - v - 0.00001;
+            } else {
+                sa = this.startAngle - 0.00001;
+                ea = sa + v + 0.00001;
+            }
+            this.o.cursor
+            && (sa = ea - this.cursorExt)
+            && (ea = ea + this.cursorExt);
 
-          return {
-              s: sa,
-              e: ea,
-              d: this.o.flip && !this.o.cursor
-          };
+            return {
+                s: sa,
+                e: ea,
+                d: this.o.flip && !this.o.cursor
+            };
         };
 
         this.draw = function () {
@@ -766,8 +781,8 @@
 
             if (this.o.bgColor !== "none") {
                 c.beginPath();
-                    c.strokeStyle = this.o.bgColor;
-                    c.arc(this.xy, this.xy, this.radius, this.endAngle - 0.00001, this.startAngle + 0.00001, true);
+                c.strokeStyle = this.o.bgColor;
+                c.arc(this.xy, this.xy, this.radius, this.endAngle - 0.00001, this.startAngle + 0.00001, true);
                 c.stroke();
             }
 
@@ -781,7 +796,7 @@
             }
 
             c.beginPath();
-            c.strokeStyle = r ? this.o.fgColor : this.fgColor ;
+            c.strokeStyle = r ? this.o.fgColor : this.fgColor;
             c.arc(this.xy, this.xy, this.radius, a.s, a.e, a.d);
             c.stroke();
         };

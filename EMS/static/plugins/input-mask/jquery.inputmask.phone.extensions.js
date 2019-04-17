@@ -24,7 +24,9 @@ When using this extension make sure you specify the correct url to get the masks
             mask: function (opts) {
                 opts.definitions = {
                     'p': {
-                        validator: function () { return false; },
+                        validator: function () {
+                            return false;
+                        },
                         cardinality: 1
                     },
                     '#': {
@@ -41,7 +43,7 @@ When using this extension make sure you specify the correct url to get the masks
                         maskList = response;
                     }
                 });
-    
+
                 maskList.splice(0, 0, "+p(ppp)ppp-pppp");
                 return maskList;
             }

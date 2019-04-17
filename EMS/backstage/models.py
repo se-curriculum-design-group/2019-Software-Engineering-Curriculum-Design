@@ -29,7 +29,7 @@ class Major(models.Model):
     in_college = models.ForeignKey(to=College, on_delete=models.CASCADE)
 
     def __str__(self):
-        return "-".join(self.mcode, self.mname)
+        return "-".join([self.mno, self.mname])
 
     class Meta:
         db_table = 'major'
@@ -97,7 +97,7 @@ class Student(User):
     in_year = models.IntegerField()
 
     def __str__(self):
-        return "-".join(self.username, self.name)
+        return "-".join([self.username, self.name])
 
     class Meta:
         db_table = 'student'
@@ -123,7 +123,7 @@ class Teacher(User):
     description = models.TextField(null=True)
 
     def __str__(self):
-        return "-".join(self.username, self.name)
+        return "-".join([self.username, self.name])
 
     class Meta:
         db_table = 'teacher'
