@@ -2,98 +2,147 @@ from django.db import models
 from django.contrib.auth.models import User
 
 
-class Student(models.Model):  # 学生表
-    gender = (  # 性别选择
-        ('male', '男'),
-        ('female', '女'),
-    )
-    user = models.OneToOneField(User, on_delete=models.CASCADE, related_name='student')  # 一对一关联到User，定义关联名为student
-    code = models.CharField(max_length=128, unique=True, default='201600000')  # 定义学生学号
-    name = models.CharField(max_length=128, unique=False)  # 定义学生姓名
-    sex = models.CharField(max_length=32, choices=gender, default='男')  # 定义学生性别
-    age = models.CharField(max_length=128, unique=False)  # 定义学生年龄
-    start_year = models.CharField(max_length=32, default='2019')  # 定义入学年
-    length = models.CharField(max_length=128, unique=False)  # 定义学制
-    major = models.ForeignKey("Major", on_delete=models.CASCADE, default=1)  # 外键关联主修
-    department = models.ForeignKey("Dept", on_delete=models.CASCADE, default=1)  # 外键部门
-    mod_data = models.DateTimeField('Last modified', auto_now=True)
+# 学院
+class College(models.Model):
+    # 学院名
+    name = models.CharField(unique=True, max_length=128)
+    # 学院简称
+    short_name = models.CharField(unique=True, max_length=128)
 
-    
-
-
-class Teacher(models.Model):  # 定义teacher表
-    user = models.OneToOneField(User, on_delete=models.CASCADE, related_name='teacher')  # 一对一关联到User，连接名teacher，
-    code = models.CharField(max_length=128, unique=True, default='201600')  # 定义编号
-    name = models.CharField(max_length=128, unique=False)  # 定义姓名
-    department = models.ForeignKey("Dept", on_delete=models.CASCADE, default=1)  # 外键关联学院
-    title = models.CharField(max_length=128, unique=False)  # 定义职级
-    mod_data = models.DateTimeField('Last modified', auto_now=True)
-
-
-class Dept(models.Model):  # 定义学院
-    dep = (
-        ('信息科学与技术学院', '信息科学与技术学院'),
-        ('化学工程学院', '化学工程学院'),
-        ('材料科学与工程学院', '材料科学与工程学院'),
-        ('机电工程学院', '机电工程学院'),
-        ('经济管理学院', '经济管理学院'),
-        ('理学院', '理学院'),
-        ('文法学院', '文法学院'),
-        ('生命科学与技术学院', '生命科学与技术学院'),
-        ('继续教育学院', '继续教育学院'),
-        ('马克思主义学院', '马克思主义学院'),
-        ('国际教育学院', '国际教育学院'),
-        ('侯德榜工程师学院', '侯德榜工程师学院'),
-        ('能源学院', '能源学院'),
-        ('巴黎居里工程师学院', '巴黎居里工程师学院'),
-    )
-    name = models.CharField(max_length=32, choices=dep, default="BUCT", unique=True)
+    def __str__(self):
+        return self.name
 
     class Meta:
-        db_table = 'department'
+        db_table = 'college'
 
 
-class Classes(models.Model):  # 定义课程表
-    class_id = models.CharField(max_length=128, unique=True, default='EEE0001')  # 定义课程ID
-    name = models.CharField(max_length=128, unique=False)  # 定义课程名
-    type = models.CharField(max_length=128, unique=False)  # 定义课程类型
-    size = models.CharField(max_length=128, unique=False)  # 定义课程容量
-    department = models.ForeignKey("Dept", on_delete=models.CASCADE, default=1)  # 定义开课学院
+# 专业
+class Major(models.Model):
+    # 专业代码,如0403。
+    # 04是所在学院的排序，03是专业在院中的排序
+    mno = models.CharField(unique=True, max_length=20)
+    # 专业名称，唯一，如：计算机科学与技术， 化学工程与工艺
+    mname = models.CharField(max_length=128, default="")
+    # 专业简称，如：计算机科学与技术--计科， 化学工程与工业--化工
+    short_name = models.CharField(max_length=20)
+    # 所属学院，外键
+    in_college = models.ForeignKey(to=College, on_delete=models.CASCADE)
 
-
-class Major(models.Model):  # 定义主修表
-    name = models.CharField(max_length=128, unique=False)  # 定义专业名字
-    length = models.CharField(max_length=128, unique=False)  # 定义专业学制
-    major_plan = models.CharField(max_length=128, unique=False)  # 定义专业培养计划
-
-
-class Announcement(models.Model):
-    dep = (
-        ('全体成员', '全体成员'),
-        ('信息科学与技术学院', '信息科学与技术学院'),
-        ('化学工程学院', '化学工程学院'),
-        ('材料科学与工程学院', '材料科学与工程学院'),
-        ('机电工程学院', '机电工程学院'),
-        ('经济管理学院', '经济管理学院'),
-        ('理学院', '理学院'),
-        ('文法学院', '文法学院'),
-        ('生命科学与技术学院', '生命科学与技术学院'),
-        ('继续教育学院', '继续教育学院'),
-        ('马克思主义学院', '马克思主义学院'),
-        ('国际教育学院', '国际教育学院'),
-        ('侯德榜工程师学院', '侯德榜工程师学院'),
-        ('能源学院', '能源学院'),
-        ('巴黎居里工程师学院', '巴黎居里工程师学院'),
-        ('个人', '个人'),
-    )
-    title = models.TextField(max_length=150, default='通知')
-    messages = models.TextField(max_length=150)
-    author = models.CharField(max_length=128)
-    receiver = models.CharField(max_length=32, choices=dep, default='全体成员')
-    year = models.CharField(max_length=32, default='2016')
-    receiver_grade = models.CharField(max_length=32, default="2016"),
-    visible = models.BooleanField(default=True)
-    time = models.DateTimeField(auto_now_add=True)
+    def __str__(self):
+        return "-".join(self.mcode, self.mname)
 
     class Meta:
-        db_table = 'announcement'
+        db_table = 'major'
+
+
+# 专业信息
+class MajorPlan(models.Model):
+    # 学年，该专业下的那个年级的学生
+    year = models.IntegerField()
+    # 专业名称，对应了需要的专业
+    major = models.ForeignKey(to=Major, on_delete=models.CASCADE)
+    # 专业计划班级数
+    cls_num = models.IntegerField()
+    # 专业计划人数
+    people_num = models.IntegerField()
+    # 毕业最低学分
+    score_grad = models.IntegerField()
+    # 学制：毕业需要学习的年数, 4
+    stu_years = models.IntegerField()
+    # 该年级专业需要修学的课程数,80, 88...
+    course_num = models.IntegerField()
+
+    def __str__(self):
+        return str(self.year) + '-' + str(self.major)
+
+    class Meta:
+        db_table = 'major_plan'
+        unique_together = (
+            'year', 'major'
+        )
+
+
+# 行政班
+class AdmClass(models.Model):
+    # 行政班名，如：计科1605
+    name = models.CharField(max_length=10, unique=True)
+    # 行政班所属专业，由 major.short_name + in_year + 编号（自增）构成
+    # 例如：计科1605， 化工1606
+    major = models.ForeignKey(to=MajorPlan, on_delete=models.CASCADE)
+
+    def __str__(self):
+        return self.name
+
+    class Meta:
+        db_table = 'adm_class'
+
+
+# 学生
+class Student(User):
+    # 学生姓名
+    name = models.CharField(max_length=128)
+    # 学号，必须10位，例如：2016011186
+    # username = models.CharField()
+    # 登录所需密码，初始密码设置为学号
+    # password = models.CharField()
+    # 学生性别
+    sex = models.BooleanField(default=True)
+    # 目前已修学分
+    score_got = models.IntegerField()
+    # 所在的行政班级，外键
+    in_cls = models.ForeignKey(to=AdmClass, on_delete=models.CASCADE)
+
+    # 入学年份，用int表示即可，该学生入学的年份
+    # 考虑可能留级的情况，入学年份与专业年级不对应
+    in_year = models.IntegerField()
+
+    def __str__(self):
+        return "-".join(self.username, self.name)
+
+    class Meta:
+        db_table = 'student'
+
+
+# 教师
+class Teacher(User):
+    # 教师姓名
+    name = models.CharField(max_length=128)
+    # username, 自带字段
+    # 同时也就是教师工号，设置为9位，与学生区分
+    # password, 自带字段，默认与工号相同
+    sex = models.BooleanField(default=True)
+    # 教师所属学院
+    college = models.ForeignKey(to=College, on_delete=models.CASCADE)
+    # 教师入职的年份
+    in_year = models.IntegerField()
+    # 学历，在个人信息中显示。如：博士，博士后...
+    edu_background = models.CharField(null=True, max_length=128)
+    # 在校职位，如：教授，副教授，讲师等
+    title = models.CharField(default='讲师', max_length=128)
+    # 教师个人简介，可空
+    description = models.TextField(null=True)
+
+    def __str__(self):
+        return "-".join(self.username, self.name)
+
+    class Meta:
+        db_table = 'teacher'
+
+
+# 教室
+class ClassRoom(models.Model):
+    # 教室编号，如：A-302， B阶-202
+    crno = models.CharField(primary_key=True, max_length=128)
+    # 教室类型，阶教180人，中等教室120人，小教室50人
+    # 教室类型需要和教室编号对应
+    crtype = models.CharField(null=False, max_length=10)
+
+    # 教室能够容纳的学生数目，需要与类型对应
+    contain_num = models.IntegerField()
+
+    def __str__(self):
+        return self.crno
+
+    class Meta:
+        db_table = 'class_room'
+
