@@ -19,7 +19,10 @@ from django.conf.urls import include
 
 urlpatterns = [
     path('', include('backstage.urls')),
-    path(r'scoreManagement/', include('scoreManagement.urls')),
+    path('scoreManagement/', include('scoreManagement.urls')),
+    path('courseSelection/', include('courseSelection.urls')),
+    path('courseScheduling/', include('courseScheduling.urls')),
+    path('graduationManagement/', include('graduationManagement.urls')),
     # path('captcha/', include('captcha.urls')),
     # path(r'courseScheduling', include('courseScheduling.urls')),
     # path(r'courseSelection', include('courseSelection.urls')),

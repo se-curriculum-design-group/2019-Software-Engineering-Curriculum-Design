@@ -1,14 +1,43 @@
 import os
+from django.contrib.auth import authenticate, login, logout, models
+from django.contrib.auth.decorators import login_required
+from django.http import HttpResponse
+from django.views.decorators.csrf import csrf_exempt
 from django.shortcuts import render, redirect
+
+from backstage.models import Student, Teacher
 
 
 def welcome(request):
     return render(request, 'base.html')
 
 
-def login(request):
+def goto_login(request):
     return render(request, 'login.html')
-    pass
+
+
+@csrf_exempt
+def mylogin(request):
+    username = request.POST.get('username')
+    password = request.POST.get('password')
+    print(request.POST)
+    print(username)
+    print(password)
+    if 10 == len(username):
+        # 学号的长度是10位
+        # user = authenticate(username=username, password=password)
+        user = Student.objects.get(username=username, password=password)
+        print(user)
+        print(type(user))
+    else:
+        user = Teacher.objects.get(username=username, password=password)
+        print(type(user))
+        print(user)
+    if user:
+        login(request, user)
+        return redirect('backstage:welcome')
+    else:
+        return HttpResponse("登录失败，请重试。")
 
 
 def register(request):
@@ -16,5 +45,8 @@ def register(request):
     pass
 
 
-def logout(request):
-    pass
+@login_required
+def mylogout(request):
+    print("-------------------------")
+    logout(request)
+    return redirect("backstage:welcome")

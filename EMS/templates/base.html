@@ -63,7 +63,7 @@
                 <span>logout</span>
             </a>
             <ul class="dropdown-menu">
-              <li class="header" href="{% url 'backstage:logout' %}">登出</li>
+              <li class="header" href="{% url 'backstage:mylogout' %}">登出</li>
             </ul>
           </li>
           <!-- 用户信息: style can be found in dropdown.less -->
@@ -71,12 +71,12 @@
           <li class="dropdown user user-menu">
             <a href="#" class="dropdown-toggle pull-right image" data-toggle="dropdown">
               <img src="{% static 'dist/img/head.jpg' %}" style="width: 25px;height:25px;" class="user-image" alt="User Image">
-              <span class="hidden-xs">您好！{{ request.user.username }}</span>
+              <span class="hidden-xs">您好！{{ request.user.name }}</span>
             </a>
           </li>
             {% else %}
             <li class="dropdown user user-menu">
-            <a href="{% url 'backstage:login' %}" class="dropdown-toggle pull-right image" data-toggle="dropdown">
+            <a href="{% url 'backstage:goto_login' %}" class="dropdown-toggle pull-right image">
               <span class="hidden-xs">您尚未登录，请登录！</span>
             </a>
           </li>
@@ -128,7 +128,7 @@
         </li>
 
         <li class="treeview">
-          <a href="{% url '#' %}">
+          <a href="{% url 'scoreManagement:welcome' %}">
             <i class="fa fa-table"></i> <span>成绩管理</span>
             <span class="pull-right-container">
               <i class="fa fa-angle-left pull-right"></i>
@@ -137,7 +137,7 @@
         </li>
 
         <li class="treeview">
-          <a href="#">
+          <a href="{% url 'courseSelection:welcome' %}">
             <i class="fa fa-table"></i> <span>选课</span>
             <span class="pull-right-container">
               <i class="fa fa-angle-left pull-right"></i>
@@ -146,7 +146,7 @@
         </li>
 
           <li class="treeview">
-          <a href="#">
+          <a href="{% url 'courseScheduling:welcome' %}">
             <i class="fa fa-table"></i> <span>排课</span>
             <span class="pull-right-container">
               <i class="fa fa-angle-left pull-right"></i>
@@ -155,7 +155,7 @@
         </li>
 
           <li class="treeview">
-          <a href="#">
+          <a href="{% url 'graduationManagement:welcome' %}">
             <i class="fa fa-table"></i> <span>毕业设计</span>
             <span class="pull-right-container">
               <i class="fa fa-angle-left pull-right"></i>

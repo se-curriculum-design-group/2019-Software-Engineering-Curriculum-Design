@@ -5,5 +5,5 @@ from . import views
 
 app_name = 'scoreManagement'
 urlpatterns = [
-                  path('welcome/', views.welcome, "welcome")
+                  path('welcome/', views.welcome, name="welcome"),
               ]

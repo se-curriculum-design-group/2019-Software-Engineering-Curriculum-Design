@@ -9,11 +9,11 @@
 //     /*
 //         Form validation
 //     */
-//     $('.login-form input[type="text"], .login-form input[type="password"], .login-form textarea').on('focus', function() {
+//     $('.mylogin-form input[type="text"], .mylogin-form input[type="password"], .mylogin-form textarea').on('focus', function() {
 //     	$(this).removeClass('input-error');
 //     });
 //
-//     $('.login-form').on('submit', function(e) {
+//     $('.mylogin-form').on('submit', function(e) {
 //
 //     	$(this).find('input[type="text"], input[type="password"], textarea').each(function(){
 //     		if( $(this).val() == "" ) {
