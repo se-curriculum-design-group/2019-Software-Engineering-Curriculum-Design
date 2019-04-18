@@ -37,7 +37,7 @@ def mylogin(request):
     if user:
         login(request, user)
         context = {
-            'name': user.name
+            'user': user
         }
         return render(request, 'base.html', context)
     else:

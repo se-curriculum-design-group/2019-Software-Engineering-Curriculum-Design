@@ -2,7 +2,7 @@ import pandas as pd
 import os
 from random import randint, choice, choices
 from backstage.models import Student, Major, College, MajorPlan, Teacher, AdmClass, ClassRoom
-from scoreManagement.models import Course, MajorCourses, Teaching, AllCourseTable
+from scoreManagement.models import Course, MajorCourses, Teaching
 
 
 base_dir = '../others/'
@@ -11,7 +11,6 @@ print(xls_file)
 
 item_list = []
 data_frames = []
-
 
 
 for xls_name in xls_file:

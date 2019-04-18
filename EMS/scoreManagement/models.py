@@ -76,32 +76,3 @@ class Teaching(models.Model):
         db_table = 'teaching_table'
 
 
-# 全校课表，注意这是一张用于参考的表
-# 没有实际含义的对应的外键
-class AllCourseTable(models.Model):
-    # 开课状态，默认开课--0
-    state = models.BooleanField(default=True)
-    # 课程编号--1
-    cno = models.CharField(max_length=128)
-    # 课程名称--2
-    cname = models.CharField(max_length=128)
-    # 学分--3
-    score = models.IntegerField()
-    # 4
-    exam_method = models.BooleanField(default=True)
-    # 5
-    course_type = models.CharField(max_length=128)
-    # 6
-    teachers = models.CharField(max_length=128)
-    # 7
-    teach_class_name = models.CharField(max_length=128)
-    # 8
-    week_duration = models.CharField(max_length=128)
-    # 9
-    class_time = models.CharField(max_length=128)
-    class_location = models.CharField(max_length=128)
-    college = models.CharField(max_length=128)
-    adm_classes = models.CharField(max_length=128)
-    year = models.CharField(max_length=128)
-    semester = models.IntegerField()
-
