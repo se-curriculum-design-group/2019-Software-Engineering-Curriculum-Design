@@ -6,6 +6,7 @@ from django.views.decorators.csrf import csrf_exempt
 from django.shortcuts import render, redirect
 
 from backstage.models import Student, Teacher
+from utils import make_encode
 
 
 def welcome(request):
@@ -20,22 +21,25 @@ def goto_login(request):
 def mylogin(request):
     username = request.POST.get('username')
     password = request.POST.get('password')
-    print(request.POST)
+    password = make_encode(password)
     print(username)
     print(password)
     if 10 == len(username):
         # 学号的长度是10位
         # user = authenticate(username=username, password=password)
         user = Student.objects.get(username=username, password=password)
-        print(user)
+        print(user.name)
         print(type(user))
     else:
         user = Teacher.objects.get(username=username, password=password)
         print(type(user))
-        print(user)
+        print(user.name)
     if user:
         login(request, user)
-        return redirect('backstage:welcome')
+        context = {
+            'name': user.name
+        }
+        return render(request, 'base.html', context)
     else:
         return HttpResponse("登录失败，请重试。")
 
@@ -49,4 +53,4 @@ def register(request):
 def mylogout(request):
     print("-------------------------")
     logout(request)
-    return redirect("backstage:welcome")
+    return render(request, 'base.html')

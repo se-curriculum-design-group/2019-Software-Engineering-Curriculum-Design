@@ -49,29 +49,21 @@
 
       <div class="navbar-custom-menu">
         <ul class="nav navbar-nav">
-          <!-- Notifications: style can be found in dropdown.less -->
-          <li class="dropdown notifications-menu">
-              <a href="\admin\" target="_blank" class="dropdown-toggle">
-                  <i class="fa fa-bank"></i>
-                  <span>Admin</span>
-            </a>
-          </li>
-          <!-- Tasks: style can be found in dropdown.less -->
-          <li class="dropdown tasks-menu">
-            <a href="#">
-                <i class="fa fa-coffee" href="#"></i>
-                <span>logout</span>
-            </a>
-            <ul class="dropdown-menu">
-              <li class="header" href="{% url 'backstage:mylogout' %}">登出</li>
-            </ul>
-          </li>
           <!-- 用户信息: style can be found in dropdown.less -->
             {% if request.user.is_authenticated %}
+            <li class="dropdown tasks-menu">
+                <a href="{% url 'backstage:mylogout' %}">
+                    <i class="fa fa-coffee" href="#"></i>
+                    <span>logout</span>
+                </a>
+                <ul class="dropdown-menu">
+                  <li class="header" href="{% url 'backstage:mylogout' %}">登出</li>
+                </ul>
+          </li>
           <li class="dropdown user user-menu">
             <a href="#" class="dropdown-toggle pull-right image" data-toggle="dropdown">
               <img src="{% static 'dist/img/head.jpg' %}" style="width: 25px;height:25px;" class="user-image" alt="User Image">
-              <span class="hidden-xs">您好！{{ request.user.name }}</span>
+              <span class="hidden-xs">您好！{{ name }}</span>
             </a>
           </li>
             {% else %}

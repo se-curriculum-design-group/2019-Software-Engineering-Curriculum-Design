@@ -24,11 +24,13 @@ def insert_teacher():
             for tt in t.split(';'):
                 name = tt
                 year = randint(1980, 2018)
+                username = str(year) + "%05d" % cnt
                 teacher = Teacher.objects.create(
                     name=name,
-                    username=str(year) + "%05d" % cnt,
+                    username=username,
                     sex=choice([True, False]),
                     college=choice(colleges),
+                    password=username,
                     in_year=year,
                     edu_background=choice(['博士', '博士后']),
                     title=choice(['教授', '副教授', '副教授', '副教授', '副教授', '讲师', '讲师', '讲师', '讲师', '讲师'])
