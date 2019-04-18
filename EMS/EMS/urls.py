@@ -21,7 +21,7 @@ urlpatterns = [
     path('', include('backstage.urls')),
     path('captcha/', include('captcha.urls')),
     # path(r'courseScheduling', include('courseScheduling.urls')),
-    # path(r'courseSelection', include('courseSelection.urls')),
+    path(r'courseSelection/', include('courseSelection.urls')),
     # path(r'graduationManagement', include('graduationManagement.urls')),
     # path(r'scoreManagement', include('scoreManagement.urls')),
 ]

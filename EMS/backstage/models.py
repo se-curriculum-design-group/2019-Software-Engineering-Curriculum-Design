@@ -221,6 +221,7 @@ class Teaching(models.Model):
 # TODO::完成候选课表和选课后表
 # 候选课表
 class CourseForSelect(models.Model):
+
     class Meta:
         db_table = 'course_for_select'
 

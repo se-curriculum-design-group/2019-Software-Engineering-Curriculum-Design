@@ -80,6 +80,7 @@ def homepage(request):  # 主页
                                                                                               None))  # 取部门年级广播
         announcement = announcement_all | announcement_department  # 通知消息队列
         return render(request, 'Homepage.html', locals())
-
+def courseSelection(request):
+    return render(request,)
 
 
