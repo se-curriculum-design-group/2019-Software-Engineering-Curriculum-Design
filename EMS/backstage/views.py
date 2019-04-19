@@ -29,14 +29,12 @@ def mylogin(request):
         try:
             user = Student.objects.get(username=username, password=password)
         except:
-            ret = {'not_exist': True}
-            return JsonResponse(ret)
+            return JsonResponse({})
     else:
         try:
             user = Teacher.objects.get(username=username, password=password)
         except:
-            ret = {'not_exist': True}
-            return JsonResponse(ret)
+            return JsonResponse({})
     login(request, user)
     return redirect("backstage:welcome")
 

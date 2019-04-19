@@ -106,13 +106,22 @@
     });
 
     $('.login-form').on('submit', function(e) {
+        $(this).find('input[type="text"]').each(function () {
+            if (!($(this).val().length === 9 || $(this).val().length === 10)) {
+                e.preventDefault();
+                $(this).addClass('input-error');
+            }
+        });
     	$(this).find('input[type="text"], input[type="password"], textarea').each(function(){
-    		if( $(this).val() === "" ) {
+    		if( $(this).val() === "") {
     			e.preventDefault();
     			$(this).addClass('input-error');
     		}
     		else {
     			$(this).removeClass('input-error');
+    			$.post('{% url 'backstage:mylogin' %}',function(data,status){
+                alert("数据: " + data + "\n状态: " + status);
+            });
     		}
     	});
     });
