@@ -6,8 +6,8 @@ from django.conf import settings
 
 app_name = "backstage"
 urlpatterns = [
-                path('', views.welcome, name="welcome"),
-                url(r'^goto_login/$', views.goto_login, name='goto_login'),
+                path('welcome', views.welcome, name="welcome"),
+                path('', views.goto_login, name='goto_login'),
                 url(r'^mylogin/$', views.mylogin, name='mylogin'),
                 url(r'^mylogout/$', views.mylogout, name='mylogout'),
                 url(r'^register/$', views.register, name='register'),

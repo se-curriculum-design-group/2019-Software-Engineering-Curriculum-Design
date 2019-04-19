@@ -6,4 +6,5 @@ from . import views
 app_name = 'graduationManagement'
 urlpatterns = [
                   path('', views.welcome, name="welcome"),
+                  path('func', views.func, name="func"),
               ]
