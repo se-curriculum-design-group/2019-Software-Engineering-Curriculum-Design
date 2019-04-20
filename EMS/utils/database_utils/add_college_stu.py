@@ -6,6 +6,7 @@ from backstage.models import College, Major, AdmClass, Student,\
     Teacher, ClassRoom, MajorPlan
 from scoreManagement.models import Course, Teaching
 from django.db.utils import IntegrityError
+from . import make_encoding
 
 
 base_dir = '../others/'
@@ -43,28 +44,32 @@ class InfoInit:
     def insert(self):
         for row in self.major_plan.iterrows():
             major = Major.objects.get(mno=row[1][1])
+            try:
+                mp = MajorPlan.objects.create(
+                    major=major,
+                    year=row[1][0],
+                    people_num=row[1][4],
+                    course_num=row[1][5],
+                    cls_num=row[1][6],
+                    score_grad=row[1][7],
+                    stu_years=4
+                )
+            except:
+                pass
 
-            mp = MajorPlan.objects.create(
-                major=major,
-                year=row[1][0],
-                people_num=row[1][4],
-                course_num=row[1][5],
-                cls_num=row[1][6],
-                score_grad=row[1][7],
-                stu_years=4
-            )
-            mp.save()
-        pass
 
     def views(self):
         college = College.objects.get(name='信息科学与技术学院')
         for row in self.major_plan.iterrows():
-            Major.objects.create(
-                mno=row[1][1],
-                mname=row[1][2],
-                short_name=row[1][3],
-                in_college=college
-            )
+            try:
+                Major.objects.create(
+                    mno=row[1][1],
+                    mname=row[1][2],
+                    short_name=row[1][3],
+                    in_college=college
+                )
+            except:
+                pass
 
     def create_adm(self):
         major_plans = MajorPlan.objects.all()
@@ -72,11 +77,14 @@ class InfoInit:
             prefix = major_plan.major.short_name
             for i in range(major_plan.cls_num):
                 subfix = str(major_plan.year)[2:]+"%02d"%(i+1)
-                adm_class = AdmClass.objects.create(
-                    name=prefix+subfix,
-                    major=major_plan
-                )
-                adm_class.save()
+                try:
+                    adm_class = AdmClass.objects.create(
+                        name=prefix+subfix,
+                        major=major_plan
+                    )
+                except:
+                    pass
+
 
     def create_student(self):
         major_plans = MajorPlan.objects.all()
@@ -89,27 +97,29 @@ class InfoInit:
                 year = major_plan.year
                 sno = str(year) + "%06d" % cnt
                 name = choice(last_name) + "".join(choice(first_name) for i in range(2))
-                student = Student.objects.create(
-                    username=sno,
-                    password=sno,
-                    name=name,
-                    sex=choice([True, False]),
-                    score_got=int(major_plan.score_grad*0.8),
-                    in_cls=choice(adm_set),
-                    in_year=year
-                )
-                student.save()
-                cnt += 1
-                print("Success: %d" % len(Student.objects.all()))
+                try:
+                    student = Student.objects.create(
+                        username=sno,
+                        password=make_encoding.make_encode(sno),
+                        name=name,
+                        sex=choice([True, False]),
+                        score_got=int(major_plan.score_grad*0.8),
+                        in_cls=choice(adm_set),
+                        in_year=year
+                    )
+                    cnt += 1
+                    print("Success: %d" % len(Student.objects.all()))
+                except:
+                    pass
 
 
 def add_college():
+    assert len(colleges) == len(college_short_names)
     for name, short_name in zip(colleges, college_short_names):
         college = College.objects.create(
             name=name,
             short_name=short_name
         )
-        college.save()
 
 
 def college_information():
@@ -120,11 +130,11 @@ def college_information():
 
 if __name__ == '__main__':
     # print(len(colleges))
-    # add_college()
+    add_college()
     # college_information()
-    # info_init = InfoInit(csv_file)
-    # info_init.views()
-    # info_init.insert()
-    # info_init.create_adm()
-    # info_init.create_student()
+    info_init = InfoInit(csv_file)
+    info_init.views()
+    info_init.insert()
+    info_init.create_adm()
+    info_init.create_student()
     pass

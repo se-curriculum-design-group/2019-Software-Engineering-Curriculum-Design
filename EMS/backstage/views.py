@@ -11,7 +11,13 @@ from utils import make_encode
 
 
 def welcome(request):
-    return render(request, 'base.html')
+    name = request.session['name']
+    user_type = request.session['user_type']
+    context = {
+        'name': name,
+        'user_type': user_type
+    }
+    return render(request, 'base.html', context)
 
 
 def goto_login(request):
@@ -25,7 +31,7 @@ def mylogin(request):
         request.session['username'] = username
         request.session['name'] = user.name
         request.session['password'] = password
-        request.session['type'] = user_type
+        request.session['user_type'] = user_type
 
     if request.POST:
         username = request.POST.get('username')
