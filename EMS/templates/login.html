@@ -131,10 +131,9 @@
     	    '{% url 'backstage:mylogin' %}',
             info,
            function (data, status) {
-               if (!data){
+               if (data){
                    e.preventDefault();
-                   $(this).addClass('input-error');
-                   alert("用户不存在，检查输入");
+                   $(this).find('input[type="password"]').addClass('input-error');
                }
            }
         )

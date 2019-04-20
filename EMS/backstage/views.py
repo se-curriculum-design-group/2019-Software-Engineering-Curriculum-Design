@@ -59,6 +59,18 @@ def mylogin(request):
                 return JsonResponse({})
 
 
+def student_view(request):
+    raise NotImplemented
+
+
+def admin_view(request):
+    raise NotImplemented
+
+
+def teacher_view(request):
+    raise NotImplemented
+
+
 @login_required
 def mylogout(request):
     logout(request)
