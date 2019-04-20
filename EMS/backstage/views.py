@@ -5,9 +5,8 @@ from django.http import HttpResponse, JsonResponse
 from django.views.decorators.csrf import csrf_exempt
 from django.shortcuts import render, redirect, get_object_or_404
 
-import xml.etree.ElementTree as ET
 
-from backstage.models import Student, Teacher
+from backstage.models import Student, Teacher, User
 from utils import make_encode
 
 
@@ -21,28 +20,51 @@ def goto_login(request):
 
 @csrf_exempt
 def mylogin(request):
-    username = request.POST.get('username')
-    password = request.POST.get('password')
-    # 对密码进行加密
-    password = make_encode(password)
-    if 10 == len(username):
-        # 学号的长度是10位
-        user = get_object_or_404(Student, username=username, password=password)
-    else:
-        user = get_object_or_404(Teacher, username=username, password=password)
-    if not user:
-        if request.is_ajax():
-            return JsonResponse({'no_exist': True})
-    login(request, user)
-    return redirect("backstage:welcome")
 
+    def save_session(user_type):
+        request.session['username'] = username
+        request.session['name'] = user.name
+        request.session['password'] = password
+        request.session['type'] = user_type
 
-def register(request):
-    return render(request, 'register.html')
-    pass
+    if request.POST:
+        username = request.POST.get('username')
+        password = request.POST.get('password')
+        # 对密码进行加密
+        password = make_encode(password)
+        if 10 == len(username):
+            # 学号的长度是10位
+            try:
+                user = Student.objects.get(username=username, password=password)
+                login(request, user)
+                save_session('学生')
+                return redirect('backstage:welcome')
+            except:
+                return JsonResponse({})
+        elif 9 == len(username):
+            try:
+                user = Student.objects.get(username=username, password=password)
+                login(request, user)
+                save_session('学生')
+                return redirect('backstage:welcome')
+            except:
+                return JsonResponse({})
+        else:
+            try:
+                user = User.objects.get(username=username, password=password)
+                login(request, user)
+                save_session('管理员')
+                return redirect('backstage:welcome')
+            except:
+                return JsonResponse({})
 
 
 @login_required
 def mylogout(request):
     logout(request)
     return render(request, 'base.html')
+
+
+@login_required
+def register(request):
+    raise NotImplemented

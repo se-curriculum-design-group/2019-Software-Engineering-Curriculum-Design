@@ -38,7 +38,7 @@
                             <div class="description">
                             	<p>
 	                            	请登录，没有账号？
-                                    <a href="register.html"><strong>注册</strong></a>
+                                    <strong>请联系管理员</strong>
                             	</p>
                             </div>
                         </div>
@@ -55,7 +55,7 @@
                         		</div>
                             </div>
                             <div class="form-bottom">
-			                    <form role="form" action="{% url 'backstage:mylogin' %}" method="post" class="login-form">
+			                    <form role="form" method="post" action="{% url 'backstage:mylogin' %}" class="login-form">
                                     {% csrf_token %}
 			                    	<div class="form-group">
 			                    		<label class="sr-only" for="form-username">Username</label>
@@ -119,11 +119,25 @@
     		}
     		else {
     			$(this).removeClass('input-error');
-    			$.get('{% url 'backstage:mylogin' %}',function(data,status){
-                alert("数据: " + data + "\n状态: " + status);
-            });
     		}
     	});
+    	let username = $(this).find('input[type="text"]').val();
+    	let password = $(this).find('input[type="password"]').val();
+    	let info = {
+    	    "username": username,
+            "password": password
+        };
+    	$.post(
+    	    '{% url 'backstage:mylogin' %}',
+            info,
+           function (data, status) {
+               if (!data){
+                   e.preventDefault();
+                   $(this).addClass('input-error');
+                   alert("用户不存在，检查输入");
+               }
+           }
+        )
     });
 });
         </script>
