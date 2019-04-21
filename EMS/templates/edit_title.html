@@ -1,0 +1,167 @@
+{% extends 'base2.html' %}
+
+{% block title %}
+    主页
+{% endblock %}
+
+{% block content %}
+    <main class="app-layout-content">
+    <div class="container-fluid">
+    <h2 class="section-title">教师编辑题目</h2>
+    <div class="col-md-9" >
+          <div class="card">
+              <div class="card-header">
+                  <h4>教师编辑题目</h4>
+                  <ul class="card-actions">
+                      <li>
+                          <button type="button"><i class="ion-more"></i></button>
+                      </li>
+                  </ul>
+              </div>
+              <div class="card-block">
+                <form class="form-horizontal" action="base_forms_elements.html" method="post" enctype="multipart/form-data" onsubmit="return false;">
+
+                    <div class="form-group">
+                        <label class="col-xs-12" for="example-text-input">标题</label>
+                        <div class="col-sm-9">
+                            <input class="form-control" type="text" id="example-text-input" name="example-text-input" placeholder="Text..">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-xs-12">题目类别</label>
+                        <div class="col-xs-12">
+                            <label class="checkbox-inline" for="example-inline-checkbox1">
+                            <input type="checkbox" id="example-inline-checkbox1" name="example-inline-checkbox1" value="option1">机器学习
+                        </label>
+                            <label class="checkbox-inline" for="example-inline-checkbox2">
+                            <input type="checkbox" id="example-inline-checkbox2" name="example-inline-checkbox2" value="option2">数据挖掘
+                        </label>
+                            <label class="checkbox-inline" for="example-inline-checkbox3">
+                            <input type="checkbox" id="example-inline-checkbox3" name="example-inline-checkbox3" value="option3">云计算
+                        </label>
+                            <label class="checkbox-inline" for="example-inline-checkbox4">
+                            <input type="checkbox" id="example-inline-checkbox4" name="example-inline-checkbox4" value="option4">网络安全
+                        </label>
+                            <label class="checkbox-inline" for="example-inline-checkbox5">
+                            <input type="checkbox" id="example-inline-checkbox5" name="example-inline-checkbox5" value="option5">数字图像处理
+                        </label>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-xs-12" for="example-textarea-input">题目要求</label>
+                        <div class="col-xs-12">
+                            <textarea class="form-control" id="example-textarea-input" name="example-textarea-input" rows="6" placeholder="Content.."></textarea>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="col-xs-12" for="example-textarea-input">学生要求</label>
+                        <div class="col-xs-12">
+                            <textarea class="form-control" id="example-textarea-input" name="example-textarea-input" rows="6" placeholder="Content.."></textarea>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-xs-12" for="example-select">Select</label>
+                        <div class="col-sm-9">
+                            <select class="form-control" id="example-select" name="example-select" size="1">
+                                <option value="0">Please select</option>
+                                <option value="1">Option #1</option>
+                                <option value="2">Option #2</option>
+                                <option value="3">Option #3</option>
+                            </select>
+                        </div>
+                    </div>
+{#                    <div class="form-group">#}
+{#                        <label class="col-xs-12" for="example-multiple-select">Multiple Select</label>#}
+{#                        <div class="col-sm-9">#}
+{#                            <select class="form-control" id="example-multiple-select" name="example-multiple-select" size="5" multiple="">#}
+{#                                <option value="1">Option #1</option>#}
+{#                                <option value="2">Option #2</option>#}
+{#                                <option value="3">Option #3</option>#}
+{#                                <option value="4">Option #4</option>#}
+{#                                <option value="5">Option #5</option>#}
+{#                                <option value="6">Option #6</option>#}
+{#                                <option value="7">Option #7</option>#}
+{#                                <option value="8">Option #8</option>#}
+{#                                <option value="9">Option #9</option>#}
+{#                                <option value="10">Option #10</option>#}
+{#                            </select>#}
+{#                        </div>#}
+{#                    </div>#}
+{#                    <div class="form-group">#}
+{#                        <label class="col-xs-12">Radios</label>#}
+{#                        <div class="col-xs-12">#}
+{#                            <div class="radio">#}
+{#                                <label for="example-radio1">#}
+{#                                    <input type="radio" id="example-radio1" name="example-radios" value="option1"> Option 1#}
+{#                                </label>#}
+{#                            </div>#}
+{#                            <div class="radio">#}
+{#                                <label for="example-radio2">#}
+{#                                    <input type="radio" id="example-radio2" name="example-radios" value="option2"> Option 2#}
+{#                                </label>#}
+{#                            </div>#}
+{#                            <div class="radio">#}
+{#                                <label for="example-radio3">#}
+{#                                <input type="radio" id="example-radio3" name="example-radios" value="option3"> Option 3#}
+{#                            </label>#}
+{#                            </div>#}
+{#                        </div>#}
+{#                    </div>#}
+{#                    <div class="form-group">#}
+{#                        <label class="col-xs-12">Inline Radios</label>#}
+{#                        <div class="col-xs-12">#}
+{#                            <label class="radio-inline" for="example-inline-radio1">#}
+{#                            <input type="radio" id="example-inline-radio1" name="example-inline-radios" value="option1"> One#}
+{#                        </label>#}
+{#                            <label class="radio-inline" for="example-inline-radio2">#}
+{#                            <input type="radio" id="example-inline-radio2" name="example-inline-radios" value="option2"> Two#}
+{#                        </label>#}
+{#                            <label class="radio-inline" for="example-inline-radio3">#}
+{#                            <input type="radio" id="example-inline-radio3" name="example-inline-radios" value="option3"> Three#}
+{#                        </label>#}
+{#                        </div>#}
+{#                    </div>#}
+{#                    <div class="form-group">#}
+{#                        <label class="col-xs-12">Checkboxes</label>#}
+{#                        <div class="col-xs-12">#}
+{#                            <div class="checkbox">#}
+{#                                <label for="example-checkbox1">#}
+{#                                <input type="checkbox" id="example-checkbox1" name="example-checkbox1" value="option1"> Option 1#}
+{#                            </label>#}
+{#                            </div>#}
+{#                            <div class="checkbox">#}
+{#                                <label for="example-checkbox2">#}
+{#                                <input type="checkbox" id="example-checkbox2" name="example-checkbox2" value="option2"> Option 2#}
+{#                            </label>#}
+{#                            </div>#}
+{#                            <div class="checkbox">#}
+{#                                <label for="example-checkbox3">#}
+{#                                <input type="checkbox" id="example-checkbox3" name="example-checkbox3" value="option3"> Option 3#}
+{#                            </label>#}
+{#                            </div>#}
+{#                        </div>#}
+{#                    </div>#}
+
+                    <div class="form-group">
+                        <label class="col-xs-12" for="example-file-input">相关文档说明</label>
+                        <div class="col-xs-12">
+                            <input type="file" id="example-file-input" name="example-file-input">
+                        </div>
+                    </div>
+
+                    <div class="form-group m-b-0">
+                        <div class="col-xs-12">
+                             <button class="btn btn-app" type="submit">Submit</button>
+                        </div>
+                    </div>
+                </form>
+              </div>
+            <!-- .card-block -->
+        </div>
+        <!-- .card -->
+        <!-- End Default Elements -->
+    </div>
+    </div>
+    </main>
+{% endblock %}

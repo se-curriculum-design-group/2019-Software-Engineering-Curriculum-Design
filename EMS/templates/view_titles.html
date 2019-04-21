@@ -1,0 +1,215 @@
+{% extends 'base2.html' %}
+
+{% block title %}
+    主页
+{% endblock %}
+
+{% block content %}
+    <main class="app-layout-content">
+        <div class="col-lg-12">
+                                <!-- Message List -->
+                                <div class="card">
+                                    <div class="card-header">
+                                        <div class="h4">学生选题界面</div>
+                                        <ul class="card-actions">
+                                            <li>
+                                                <button class="js-tooltip" title="" type="button" data-toggle="card-action" data-original-title="Previous 15 Messages"><i class="ion-ios-arrow-left"></i></button>
+                                            </li>
+                                            <li>
+                                                <button class="js-tooltip" title="" type="button" data-toggle="card-action" data-original-title="Next 15 Messages"><i class="ion-ios-arrow-right"></i></button>
+                                            </li>
+                                            <li>
+                                                <button type="button" data-toggle="card-action" data-action="refresh_toggle" data-action-mode="demo"><i class="ion-refresh"></i></button>
+                                            </li>
+                                            <li>
+                                                <button type="button" data-toggle="card-action" data-action="fullscreen_toggle"><i class="ion-android-expand"></i></button>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                    <div class="card-block">
+                                        <!-- Messages Options -->
+                                        <div>
+                                            <p class="btn-group">
+                                                <button class="btn btn-default" type="button"><i class="ion-archive"></i> <span class="m-l-xs hidden-xs">导出</span></button>
+                                            </p>
+                                        </div>
+                                        <!-- End Messages Options -->
+
+                                        <!-- Messages & Checkable Table (.js-table-checkable class is initialized in App() -> uiHelperTableToolsCheckable()) -->
+                                        <div class="pull-r-l">
+                                            <table class="js-table-checkable table table-hover table-vcenter m-b-0">
+                                                <tbody>
+                                                    <tr class="">
+                                                        <td class="text-center">
+                                                            <label class="css-input css-checkbox css-checkbox-default">
+											<input type="checkbox"><span></span>
+										</label>
+                                                        </td>
+                                                        <td class="hidden-xs font-500">教师姓名</td>
+                                                        <td>
+                                                            <a class="font-500" data-toggle="modal" data-target="#modal-message" href="#">毕设题目</a>
+                                                            <div class="text-muted">此处是毕设题目的具体规定要求....</div>
+                                                        </td>
+                                                        <td class="visible-lg text-muted"></td>
+                                                        <td class="visible-lg text-muted">
+                                                            <em>3 days ago</em>
+                                                        </td>
+                                                    </tr>
+                                                    <tr class="">
+                                                        <td class="text-center w-10">
+                                                            <label class="css-input css-checkbox css-checkbox-default">
+											<input type="checkbox"><span></span>
+										</label>
+                                                        </td>
+                                                        <td class="hidden-xs font-500 w-20">Diana Day</td>
+                                                        <td>
+                                                            <a class="font-500" data-toggle="modal" data-target="#modal-message" href="#">Special Offer: 30% off subscriptions</a>
+                                                            <div class="text-muted">It's a pleasure to have you on our service..</div>
+                                                        </td>
+                                                        <td class="visible-lg text-muted" style="width: 80px;">
+                                                            <i class="ion-paperclip"></i> (3)
+                                                        </td>
+                                                        <td class="visible-lg text-muted w-15">
+                                                            <em>2 min ago</em>
+                                                        </td>
+                                                    </tr>
+                                                    <tr class="">
+                                                        <td class="text-center">
+                                                            <label class="css-input css-checkbox css-checkbox-default">
+											<input type="checkbox"><span></span>
+										</label>
+                                                        </td>
+                                                        <td class="hidden-xs font-500">Deborah Cox</td>
+                                                        <td>
+                                                            <a class="font-500" data-toggle="modal" data-target="#modal-message" href="#">Apply to the Ambassador program for...</a>
+                                                            <div class="text-muted">We are glad you decided to go with a vip..</div>
+                                                        </td>
+                                                        <td class="visible-lg text-muted">
+                                                            <i class="ion-paperclip"></i> (2)
+                                                        </td>
+                                                        <td class="visible-lg text-muted">
+                                                            <em>10 min ago</em>
+                                                        </td>
+                                                    </tr>
+                                                    <tr class="">
+                                                        <td class="text-center">
+                                                            <label class="css-input css-checkbox css-checkbox-default">
+											<input type="checkbox"><span></span>
+										</label>
+                                                        </td>
+                                                        <td class="hidden-xs font-500">Joan Morris</td>
+                                                        <td>
+                                                            <a class="font-500" data-toggle="modal" data-target="#modal-message" href="#">Inspiration Inside: Welcome to the C...</a>
+                                                            <div class="text-muted">An update is under way for your app..</div>
+                                                        </td>
+                                                        <td class="visible-lg text-muted"></td>
+                                                        <td class="visible-lg text-muted">
+                                                            <em>25 min ago</em>
+                                                        </td>
+                                                    </tr>
+                                                    <tr class="">
+                                                        <td class="text-center">
+                                                            <label class="css-input css-checkbox css-checkbox-default">
+											<input type="checkbox"><span></span>
+										</label>
+                                                        </td>
+                                                        <td class="hidden-xs font-500">Betty Torres</td>
+                                                        <td>
+                                                            <a class="font-500" data-toggle="modal" data-target="#modal-message" href="#">Invoice for transaction 1796151</a>
+                                                            <div class="text-muted">You had a new sale and earned..</div>
+                                                        </td>
+                                                        <td class="visible-lg text-muted">
+                                                            <i class="ion-paperclip"></i> (1)
+                                                        </td>
+                                                        <td class="visible-lg text-muted">
+                                                            <em>30 min ago</em>
+                                                        </td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td class="text-center">
+                                                            <label class="css-input css-checkbox css-checkbox-default">
+											<input type="checkbox"><span></span>
+										</label>
+                                                        </td>
+                                                        <td class="hidden-xs font-500">Olivia Shaw</td>
+                                                        <td>
+                                                            <a class="font-500" data-toggle="modal" data-target="#modal-message" href="#">Invoice for transaction 1796150</a>
+                                                            <div class="text-muted">Your account is inactive for a long time and..</div>
+                                                        </td>
+                                                        <td class="visible-lg text-muted"></td>
+                                                        <td class="visible-lg text-muted">
+                                                            <em>1 hour ago</em>
+                                                        </td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td class="text-center">
+                                                            <label class="css-input css-checkbox css-checkbox-default">
+											<input type="checkbox"><span></span>
+										</label>
+                                                        </td>
+                                                        <td class="hidden-xs font-500">Diana Day</td>
+                                                        <td>
+                                                            <a class="font-500" data-toggle="modal" data-target="#modal-message" href="#">You've got a reply from Maria</a>
+                                                            <div class="text-muted">This is a notification about our new product..</div>
+                                                        </td>
+                                                        <td class="visible-lg text-muted">
+                                                            <i class="ion-paperclip"></i> (1)
+                                                        </td>
+                                                        <td class="visible-lg text-muted">
+                                                            <em>1 day ago</em>
+                                                        </td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td class="text-center">
+                                                            <label class="css-input css-checkbox css-checkbox-default">
+											<input type="checkbox"><span></span>
+										</label>
+                                                        </td>
+                                                        <td class="hidden-xs font-500">Denise Bowman</td>
+                                                        <td>
+                                                            <a class="font-500" data-toggle="modal" data-target="#modal-message" href="#">Inspiration Inside: Welcome to the C...</a>
+                                                            <div class="text-muted">Our Book is out! You can buy a copy and..</div>
+                                                        </td>
+                                                        <td class="visible-lg text-muted">
+                                                            <i class="ion-paperclip"></i> (9)
+                                                        </td>
+                                                        <td class="visible-lg text-muted">
+                                                            <em>1 day ago</em>
+                                                        </td>
+                                                    </tr>
+                                                    <tr class="">
+                                                        <td class="text-center">
+                                                            <label class="css-input css-checkbox css-checkbox-default">
+											<input type="checkbox"><span></span>
+										</label>
+                                                        </td>
+                                                        <td class="hidden-xs font-500">Judy Campbell</td>
+                                                        <td>
+                                                            <a class="font-500" data-toggle="modal" data-target="#modal-message" href="#">Tim has just replied to your review</a>
+                                                            <div class="text-muted">The monthly report you requested for..</div>
+                                                        </td>
+                                                        <td class="visible-lg text-muted">
+                                                            <i class="ion-paperclip"></i> (6)
+                                                        </td>
+                                                        <td class="visible-lg text-muted">
+                                                            <em>3 days ago</em>
+                                                        </td>
+                                                    </tr>
+
+
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                        <!-- End Messages -->
+                                    </div>
+                                    <!-- .card-block -->
+                                </div>
+                                <!-- .card -->
+                                <!-- End Message List -->
+                            </div>
+        <div style="margin-left: 350px;margin-bottom:100px;top:200px">
+        <button class="btn btn-lg btn-app" type="button" style="width:150px;margin-right:70px">提交</button>
+        <button class="btn btn-lg btn-app-outline" type="button" style="width:150px">取消</button>
+        </div>
+    </main>
+{% endblock %}

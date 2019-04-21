@@ -120,6 +120,19 @@
 </div>
 
 {% block content %}{% endblock %}
-
+<script src="{% static 'assets/js/core/jquery.min.js' %}"></script>
+<script src="{% static 'assets/js/core/bootstrap.min.js' %}"></script>
+<script src="{% static 'assets/js/core/jquery.slimscroll.min.js' %}"></script>
+<script src="{% static 'assets/js/core/jquery.scrollLock.min.js' %}"></script>
+<script src="{% static 'assets/js/core/jquery.placeholder.min.js' %}"></script>
+<script src="{% static 'assets/js/app.js' %}"></script>
+<script src="{% static 'assets/js/app-custom.js' %}"></script>
+<script>
+            $(function()
+            {
+                // Init page helpers (Table Tools helper + Easy Pie Chart plugin)
+                App.initHelpers('table-tools');
+            });
+</script>
 </body>
 </html>
