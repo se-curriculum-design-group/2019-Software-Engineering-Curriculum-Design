@@ -37,7 +37,7 @@ class MajorCourses(models.Model):
     # cname = cno.cname
     # 对应到的专业计划信息
     # 注意，这里都是外键，需要传入的是对象引用
-    mno = models.OneToOneField(to=MajorPlan, on_delete=models.CASCADE)
+    mno = models.ForeignKey(to=MajorPlan, on_delete=models.CASCADE)
     # 该门课程在该专业对应的总学时
     hour_total = models.IntegerField()
     # 讲课学时，总学时中用于讲课的学时
@@ -53,7 +53,7 @@ class MajorCourses(models.Model):
     exam_method = models.BooleanField(default=True)
 
     def __str__(self):
-        return "-".join([self.cno.__str__(), self.mno, self.year, self.semester])
+        return "-".join([self.cno.__str__(), self.mno.__str__(), str(self.year), str(self.semester)])
 
     class Meta:
         # 设置数据库中表的显示名称
@@ -76,7 +76,7 @@ class Teaching(models.Model):
     weight = models.FloatField()
 
     def __str__(self):
-        return '-'.join([self.tno, self.mcno])
+        return '-'.join([str(self.tno), str(self.mcno)])
 
     class Meta:
         db_table = 'teaching_table'
@@ -88,6 +88,9 @@ class CourseScore(models.Model):
     sno = models.ForeignKey(to=Student, on_delete=models.CASCADE)
     # 总成绩
     score = models.FloatField()
+
+    def __str__(self):
+        return '-'.join([str(self.sno), str(self.teaching), str(self.score)])
 
     class Meta:
         db_table = 'course_score'
@@ -107,6 +110,9 @@ class EvaluationForm(models.Model):
     item6 = models.CharField(max_length=128)
     description = models.TextField()
     is_finish = models.BooleanField()
+
+    def __str__(self):
+        return str(self.teaching)
 
     class Meta:
         db_table = 'evaluation_form'
