@@ -33,6 +33,10 @@ class Major(models.Model):
 
     class Meta:
         db_table = 'major'
+        unique_together = (
+            'mno',
+            'mname'
+        )
 
 
 # 专业信息

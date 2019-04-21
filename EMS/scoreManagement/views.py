@@ -17,5 +17,13 @@ def welcome(request):
         'students': students,
         'teachers': teachers,
     }
-    return render(request, 'scoreManage/scoreManagement.html', context)
+    return render(request, 'scoreManage/adm_score_manage.html', context)
 
+
+def score_home_page(request):
+    if request.session['user_type'] == '学生':
+        return render(request, 'scoreManage/student_score_manage.html')
+    elif request.session['user_type'] == '教师':
+        return render(request, 'scoreManage/student_score_manage.html')
+    else:
+        return render(request, 'scoreManage/adm_score_manage.html')

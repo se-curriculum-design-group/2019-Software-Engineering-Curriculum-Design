@@ -18,10 +18,16 @@ class Course(models.Model):
     score = models.FloatField()
 
     def __str__(self):
-        return "-".join([self.cno, self.cname, self.college.short_name])
+        return "-".join([self.cno, self.cname, self.course_type])
 
     class Meta:
         db_table = 'course'
+        unique_together = (
+            'cno',
+            'cname',
+            'course_type'
+        )
+
 
 
 # 专业对应课程信息
@@ -47,7 +53,7 @@ class MajorCourses(models.Model):
     exam_method = models.BooleanField(default=True)
 
     def __str__(self):
-        return "-".join(self.cno, self.mno, self.year, self.semester)
+        return "-".join([self.cno.__str__(), self.mno.__str__(), str(self.year), str(self.semester)])
 
     class Meta:
         # 设置数据库中表的显示名称
@@ -61,18 +67,53 @@ class MajorCourses(models.Model):
 # 教师授课
 class Teaching(models.Model):
     # 教授课程的教师工号
-    tno = models.ForeignKey(to=Teacher, on_delete=models.CASCADE)
+    tno = models.ManyToManyField(to=Teacher)
     # 教授课程的教师名称，为了显示方便，可以冗余
     # tname = tno.username
     # 这门课对应所在的专业培养计划
-    mcno = models.ForeignKey(to=MajorCourses, on_delete=models.CASCADE)
+    mcno = models.ManyToManyField(to=MajorCourses)
     # 教师给的本课程的平时分权重，如：0.3, 0.2 ...
     weight = models.FloatField()
 
     def __str__(self):
-        return self.tno
+        return '-'.join([str(self.tno), str(self.mcno)])
 
     class Meta:
         db_table = 'teaching_table'
 
+
+class CourseScore(models.Model):
+    # 对应的课程表
+    teaching = models.ForeignKey(to=Teaching, on_delete=models.CASCADE)
+    sno = models.ForeignKey(to=Student, on_delete=models.CASCADE)
+    # 总成绩
+    score = models.FloatField()
+
+    def __str__(self):
+        return '-'.join([str(self.sno), str(self.teaching), str(self.score)])
+
+    class Meta:
+        db_table = 'course_score'
+        unique_together = (
+            'teaching',
+            'sno'
+        )
+
+
+class EvaluationForm(models.Model):
+    teaching = models.OneToOneField(to=Teaching, on_delete=models.CASCADE)
+    item1 = models.CharField(max_length=128)
+    item2 = models.CharField(max_length=128)
+    item3 = models.CharField(max_length=128)
+    item4 = models.CharField(max_length=128)
+    item5 = models.CharField(max_length=128)
+    item6 = models.CharField(max_length=128)
+    description = models.TextField()
+    is_finish = models.BooleanField()
+
+    def __str__(self):
+        return str(self.teaching)
+
+    class Meta:
+        db_table = 'evaluation_form'
 

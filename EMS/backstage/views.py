@@ -1,16 +1,23 @@
 import os
 from django.contrib.auth import authenticate, login, logout, models
 from django.contrib.auth.decorators import login_required
-from django.http import HttpResponse
+from django.http import HttpResponse, JsonResponse
 from django.views.decorators.csrf import csrf_exempt
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404
 
-from backstage.models import Student, Teacher
+
+from backstage.models import Student, Teacher, User
 from utils import make_encode
 
 
 def welcome(request):
-    return render(request, 'base.html')
+    name = request.session['name']
+    user_type = request.session['user_type']
+    context = {
+        'name': name,
+        'user_type': user_type
+    }
+    return render(request, 'base.html', context)
 
 
 def goto_login(request):
@@ -19,38 +26,70 @@ def goto_login(request):
 
 @csrf_exempt
 def mylogin(request):
-    username = request.POST.get('username')
-    password = request.POST.get('password')
-    password = make_encode(password)
-    print(username)
-    print(password)
-    if 10 == len(username):
-        # 学号的长度是10位
-        # user = authenticate(username=username, password=password)
-        user = Student.objects.get(username=username, password=password)
-        print(user.name)
-        print(type(user))
-    else:
-        user = Teacher.objects.get(username=username, password=password)
-        print(type(user))
-        print(user.name)
-    if user:
-        login(request, user)
-        context = {
-            'user': user
-        }
-        return render(request, 'base.html', context)
-    else:
-        return HttpResponse("登录失败，请重试。")
+
+    def save_session(user_type):
+        request.session['username'] = username
+        request.session['name'] = user.name
+        request.session['password'] = password
+        request.session['user_type'] = user_type
+
+    if request.POST:
+        username = request.POST.get('username')
+        password = request.POST.get('password')
+        # 对密码进行加密
+        password = make_encode(password)
+        if 10 == len(username):
+            # 学号的长度是10位
+            try:
+                user = Student.objects.get(username=username, password=password)
+                login(request, user)
+                save_session('学生')
+                return redirect('backstage:student_view')
+            except:
+                return JsonResponse({})
+        elif 9 == len(username):
+            try:
+                user = Teacher.objects.get(username=username, password=password)
+                login(request, user)
+                save_session('教师')
+                return redirect('backstage:teacher_view')
+            except:
+                return JsonResponse({})
+        else:
+            try:
+                user = User.objects.get(username=username, password=password)
+                login(request, user)
+                save_session('管理员')
+                return redirect('backstage:admin_view')
+            except:
+                return JsonResponse({})
 
 
-def register(request):
-    return render(request, 'register.html')
-    pass
+@login_required
+def student_view(request):
+    return render(request, 'student_base.html')
+
+
+@login_required
+def admin_view(request):
+    return render(request, 'adm_base.html')
+
+
+@login_required
+def teacher_view(request):
+    return render(request, 'teacher_base.html')
 
 
 @login_required
 def mylogout(request):
-    print("-------------------------")
     logout(request)
     return render(request, 'base.html')
+
+
+def backstage_manage(request):
+    return render(request, 'backstage/adm_backstage_manage.html')
+
+
+@login_required
+def register(request):
+    raise NotImplemented

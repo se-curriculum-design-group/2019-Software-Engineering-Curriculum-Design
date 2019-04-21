@@ -6,7 +6,7 @@ from scoreManagement.models import Course, Teaching
 from django.db.utils import IntegrityError
 
 
-def make_encode(password):
+def make_encode(password:str):
     m = sha3_256(password.encode())
     return m.hexdigest()
 
