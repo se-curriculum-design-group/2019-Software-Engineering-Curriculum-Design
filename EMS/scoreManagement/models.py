@@ -84,7 +84,7 @@ class Teaching(models.Model):
 
 class CourseScore(models.Model):
     # 对应的课程表
-    teaching = models.OneToOneField(to=Teaching, on_delete=models.CASCADE)
+    teaching = models.ForeignKey(to=Teaching, on_delete=models.CASCADE)
     sno = models.ForeignKey(to=Student, on_delete=models.CASCADE)
     # 总成绩
     score = models.FloatField()
