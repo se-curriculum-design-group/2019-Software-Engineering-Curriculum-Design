@@ -4,3 +4,4 @@ EMS/.idea/
 *.iml
 *.pyc
 */__pycache__/
+.vscode/
