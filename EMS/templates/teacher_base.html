@@ -1,2 +1,33 @@
 {% extends 'base.html' %}
 {% load staticfiles %}
+
+{% block left_side_block %}
+    <li class="treeview">
+        <a href="{% url 'scoreManagement:score_home_page' %}">
+            <i class="fa fa-dashboard"></i> <span>教师成绩管理</span>
+            <span class="pull-right-container">
+              <i class="fa fa-angle-left pull-right"></i>
+            </span>
+        </a>
+    </li>
+
+    <li class="treeview">
+        <a href="#">
+            <i class="fa fa-dashboard"></i> <span>查询空闲教室</span>
+            <span class="pull-right-container">
+              <i class="fa fa-angle-left pull-right"></i>
+            </span>
+        </a>
+    </li>
+
+
+    <li class="treeview">
+        <a href="#">
+            <i class="fa fa-dashboard"></i> <span>查看个人信息</span>
+            <span class="pull-right-container">
+              <i class="fa fa-angle-left pull-right"></i>
+            </span>
+        </a>
+    </li>
+
+{% endblock %}

@@ -44,15 +44,15 @@ def mylogin(request):
                 user = Student.objects.get(username=username, password=password)
                 login(request, user)
                 save_session('学生')
-                return redirect('backstage:welcome')
+                return redirect('backstage:student_view')
             except:
                 return JsonResponse({})
         elif 9 == len(username):
             try:
-                user = Student.objects.get(username=username, password=password)
+                user = Teacher.objects.get(username=username, password=password)
                 login(request, user)
-                save_session('学生')
-                return redirect('backstage:welcome')
+                save_session('教师')
+                return redirect('backstage:teacher_view')
             except:
                 return JsonResponse({})
         else:
@@ -60,7 +60,7 @@ def mylogin(request):
                 user = User.objects.get(username=username, password=password)
                 login(request, user)
                 save_session('管理员')
-                return redirect('backstage:welcome')
+                return redirect('backstage:admin_view')
             except:
                 return JsonResponse({})
 
@@ -84,6 +84,10 @@ def teacher_view(request):
 def mylogout(request):
     logout(request)
     return render(request, 'base.html')
+
+
+def backstage_manage(request):
+    return render(request, 'backstage/adm_backstage_manage.html')
 
 
 @login_required
