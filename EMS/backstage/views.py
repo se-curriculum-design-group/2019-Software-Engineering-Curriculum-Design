@@ -65,16 +65,19 @@ def mylogin(request):
                 return JsonResponse({})
 
 
+@login_required
 def student_view(request):
-    raise NotImplemented
+    return render(request, 'student_base.html')
 
 
+@login_required
 def admin_view(request):
-    raise NotImplemented
+    return render(request, 'adm_base.html')
 
 
+@login_required
 def teacher_view(request):
-    raise NotImplemented
+    return render(request, 'teacher_base.html')
 
 
 @login_required
