@@ -108,6 +108,7 @@ class EvaluationForm(models.Model):
     item4 = models.CharField(max_length=128)
     item5 = models.CharField(max_length=128)
     item6 = models.CharField(max_length=128)
+    "该老师认真负责-A"
     description = models.TextField()
     is_finish = models.BooleanField()
 

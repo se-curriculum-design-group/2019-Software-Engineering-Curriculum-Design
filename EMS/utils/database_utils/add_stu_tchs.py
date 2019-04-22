@@ -6,7 +6,7 @@ from backstage.models import College, Major, AdmClass, Student,\
     Teacher, ClassRoom, MajorPlan
 from scoreManagement.models import Course, Teaching
 from django.db.utils import IntegrityError
-
+from .make_encoding import make_encode
 
 class CollegeInit:
     college_names = [
