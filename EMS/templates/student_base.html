@@ -1,6 +1,11 @@
 {% extends "base.html" %}
 {% block title %}欢迎登录教务管理系统{% endblock %}
 
+{% block custom_menu %}
+        <!-- 不同用户自定义的顶部的导航栏 -->
+{% endblock %}
+
+
 {% block left_side_block %}
     <li class="treeview">
         <a href="{% url 'scoreManagement:score_home_page' %}">
