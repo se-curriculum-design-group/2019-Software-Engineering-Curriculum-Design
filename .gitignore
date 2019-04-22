@@ -1,7 +1,12 @@
 .idea/
+.idea/*
 EMS/.idea/
+EMS/.idea/*
 *.pdf
 *.iml
 *.pyc
 */__pycache__/
 .vscode/
+.vscode/*
+EMS/.vscode/
+EMS/.vscode/*

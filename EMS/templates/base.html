@@ -57,10 +57,14 @@
             <a href="#" class="sidebar-toggle" data-toggle="offcanvas" role="button">
                 <span class="sr-only">Toggle navigation</span>
             </a>
-
-            {% block custom_menu %}
-                <!-- 不同用户自定义的顶部的导航栏 -->
-            {% endblock %}
+            <!-- Collect the nav links, forms, and other content for toggling -->
+            <div class="collapse navbar-collapse pull-left" id="navbar-collapse">
+                <ul class="nav navbar-nav">
+                    {% block custom_nav %}
+                        <!-- 不同用户自定义的顶部的导航栏 -->
+                    {% endblock %}
+                </ul>
+            </div>
 
             <div class="navbar-custom-menu">
                 <ul class="nav navbar-nav">
