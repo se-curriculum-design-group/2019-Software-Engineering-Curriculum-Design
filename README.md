@@ -1,235 +1,77 @@
-# 2019年软件工程课程设计--成绩管理子系统开发分支
+# 2019年软件工程课程设计
 
-Author: LuoD
+**New Version**, **new design** and **new base**...Happy coding and hacking. :+1
+采用的新的前端框架，全新的模板继承设计。规范了项目结构。
 ---
 
-## 描述
+## 查看运行效果
 
-创建了基本的表格与和成绩管理相关的表格，搭建了项目基础框架。
+![login_form](EMS/static/img/readme_img/login.png)
+![base_info](EMS/static/img/readme_img/base_info.png)
+![score_manage](EMS/static/img/readme_img/score_manage.png)
+![view_stu](EMS/static/img/readme_img/view_stu.png)
 
-包括学生、教师、课程、专业、学院、专业计划、专业课程计划、教师授课表。
+## 关于角色和如何登录
 
-![course](EMS/utils/imgs/img1.png)
+### 角色分类
 
-![usage](EMS/utils/imgs/img2.png)
+系统总共有三类角色：学生、教师、管理员，均采用继承和扩展Django自带User类的方式实现。
 
-## backstage中的表
+- 学生，采用默认字段username为学号。同时默认密码password与学号相同（在存入数据库时实现了加密）。（默认学号为10位，不可修改）
+- 教师，采用默认字段username为工号。同时默认密码password与工号相同（在存入数据库时实现了加密）。（默认工号为9位，不可修改）
+- 管理员，默认为Django superuser。可以通过`python manage.py createsuperuser`命令创建。
 
-![backstage_table](EMS/utils/imgs/backstageModel.png)
+### 如何获取
 
-## backstage中的表
-
-**学院表**
-
-|字段名|描述|备注|
-|:----:|:-----:|:-------:|
-|name|学院名|
-|short_name|学院简称|
-
-**专业表**
-
-|字段名|描述|备注|
-|:----:|:-----:|:---------:|
-|mno|专业代码|如0403，04是所在学院的排序，03是在专业中的排序|
-|mname|专业名称|唯一，如：计算机科学与技术， 化学工程与工艺|
-|short_name|专业简称|如：计算机科学与技术--计科， 化学工程与工业--化工|
-|in_college|所属学院|外键|
-
-**专业信息**
-
-|字段名|描述|备注|
-|:----:|:-----:|:---------:|
-|year|学年|该专业下的那个年级的学生|
-|major|专业名称|对应了需要的专业|
-|cls_num|专业计划班级数|
-|people_num|专业计划人数|
-|score_grad|毕业最低学分|
-|stu_years|学制|毕业需要学习的年数, 4|
-|course_num|该年级专业需要修学的课程数|80, 88...|
-
-**行政班**
-
-|字段名|描述|备注|
-|:----:|:-----:|:---------:|
-|name|行政班名|如：计科1605|
-|major|行政班所属专业|由 major.short_name + in_year + 编号（自增）构成,例如：计科1605， 化工1606|
-
-**学生**
-
-|字段名|描述|备注|
-|:----:|:-----:|:---------:|
-|name|学生姓名|
-|username|学号|必须10位，例如：2016011186|
-|password|登录所需密码|初始密码设置为学号|
-|sex|学生性别|
-|score_got|目前已修学分|
-|in_cls|所在的行政班级|外键|
-|in_year|入学年份|用int表示即可，该学生入学的年份，考虑可能留级的情况，入学年份与专业年级不对应|
-
-**教师**
-
-|字段名|描述|备注|
-|:----:|:-----:|:---------:|
-|name|教师姓名|
-|username|自带字段，同时也就是教师工号|设置为9位，与学生区分|
-|password|自带字段，登录所需密码|默认与工号相同|
-|sex|性别|
-|college|教师所属学院|
-|in_year|教师入职的年份|
-|edu_background|学历|在个人信息中显示,如：博士，博士后...|
-|title|在校职位|如：教授，副教授，讲师等|
-|description|教师个人简介|可空|
-
-**教室**
-
-|字段名|描述|备注|
-|:----:|:-----:|:---------:|
-|crno|教室编号|如：A-302， B阶-202|
-|crtype|教室类型|阶教180人，中等教室120人，小教室50人,教室类型需要和教室编号对应|
-|contain_num|教室能够容纳的学生数目|需要与类型对应|
-
-## scoreManagement中的表
-
-![scoreManagement_tables](EMS/utils/imgs/score_manage.png)
-
-# backstage中的表
-
- **课程信息表**
-
-|字段名|描述|备注|
-|:---:|:---:|:---:|
-|cno|课程编号|长度必须为9位，如：MAT13904T--高数，3位英文+5位数字+一位英文|
-|cname|课程名称|需要与编号对应|
-|college|开课学院|需要从学院中选取对应的老师来上课|
-|course_type|课程性质||
-|score|该门课程在该专业对应的学分||
-
-**专业对应课程信息表**
-
-|字段名|描述|备注|
-|:---:|:---:|:---:|
-|cno|课程编号||
-|mno|对应到的专业计划信息|注意，这里都是外键，需要传入的是对象引用|
-|hour_total|总学时|该门课程在该专业对应的总学时|
-|hour_class|讲课学时|总学时中用于讲课的学时|
-|hour_other|实践学时|hour_total - hour_class|
-|year|开课学年|主要这里的开课学年与MajorPlan中的年级不同，这里是指上这门课的学年|
-|semester|开课学期|1，2，3学期，3表示小学期|
-|exam_method|考核方式|考核--True or 考察--False|
-
-**教师授课表**
-
-|字段名|描述|备注|
-|:---:|:---:|:---:|
-|tno|教师工号|教授课程的教师工号|
-|tname|教师名称|教授课程的教师名称，为了显示方便，可以冗余|
-|mcno|这门课对应所在的专业培养计划||
-|weight|教师给的本课程的平时分权重|如：0.3，0.2|
-
-**全校课表**
-
-注意这是一张用于参考的表，没有实际含义的对应的外键
-
-|字段名|描述|备注|
-|:---:|:---:|:---:|
-|state|开课状态，默认开课--0||
-|cno|课程编号--1||
-|cname|课程名称--2||
-|score|学分--3||
-|exam_method|考核方式--4||
-|course_type|课程类型--5||
-|teachers|--6||
-|teach_class_name|--7||
-|week_duration|--8||
-|class_time|--9||
-|class_location|--10||
-|college|--11||
-|adm_classes|--12||
-|year|--13||
-|semester|--14||
-
-
-
-## 用法
-
-1. 删除`backstage`和`scoreManagement`下面的迁移文件。重新生成迁移文件。
-2. 进入MySQL数据库，`create database ems2`（为了测试，这里用的是`ems2`）。
-3.
-```
-(Webdev) C:\Users\LuoD\Documents\Repos\2019-Software-Engineering-Curriculum-Design\EMS>python manage.py makemigrations
-Migrations for 'backstage':
-  backstage\migrations\0001_initial.py
-    - Create model AdmClass
-    - Create model ClassRoom
-    - Create model College
-    - Create model Major
-    - Create model MajorPlan
-    - Create model Student
-    - Create model Teacher
-    - Add field major to admclass
-    - Alter unique_together for majorplan (1 constraint(s))
-Migrations for 'scoreManagement':
-  scoreManagement\migrations\0001_initial.py
-    - Create model AllCourseTable
-    - Create model Course
-    - Create model MajorCourses
-    - Create model Teaching
-    - Alter unique_together for majorcourses (1 constraint(s))
-
-(Webdev) C:\Users\LuoD\Documents\Repos\2019-Software-Engineering-Curriculum-Design\EMS>python manage.py migrate
-Operations to perform:
-  Apply all migrations: admin, auth, backstage, captcha, contenttypes, scoreManagement, sessions
-Running migrations:
-  Applying contenttypes.0001_initial... OK
-  Applying auth.0001_initial... OK
-  Applying admin.0001_initial... OK
-  Applying admin.0002_logentry_remove_auto_add... OK
-  Applying admin.0003_logentry_add_action_flag_choices... OK
-  Applying contenttypes.0002_remove_content_type_name... OK
-  Applying auth.0002_alter_permission_name_max_length... OK
-  Applying auth.0003_alter_user_email_max_length... OK
-  Applying auth.0004_alter_user_username_opts... OK
-  Applying auth.0005_alter_user_last_login_null... OK
-  Applying auth.0006_require_contenttypes_0002... OK
-  Applying auth.0007_alter_validators_add_error_messages... OK
-  Applying auth.0008_alter_user_username_max_length... OK
-  Applying auth.0009_alter_user_last_name_max_length... OK
-  Applying backstage.0001_initial... OK
-  Applying captcha.0001_initial... OK
-  Applying scoreManagement.0001_initial... OK
-  Applying sessions.0001_initial... OK
-
-(Webdev) C:\Users\LuoD\Documents\Repos\2019-Software-Engineering-Curriculum-Design\EMS>python manage.py migrate
-Operations to perform:
-  Apply all migrations: admin, auth, backstage, captcha, contenttypes, scoreManagement, sessions
-Running migrations:
-  No migrations to apply.
-
+**强烈建议通过Django ORM方式获取所关心的信息，而不要去数据库中疯狂操作**。
 
 ```
-4. MySQL中运行`source ems.sql`。即可将数据导入数据库中。
-5. 进入交互式IPython进行测试。
+In [1]: from backstage.models import Student, Teacher
 
-```
-(Webdev) C:\Users\LuoD\Documents\Repos\2019-Software-Engineering-Curriculum-Design\EMS>python manage.py shell
-Python 3.6.7 (default, Feb 28 2019, 07:28:18) [MSC v.1900 64 bit (AMD64)]
-Type 'copyright', 'credits' or 'license' for more information
-IPython 7.4.0 -- An enhanced Interactive Python. Type '?' for help.
+In [2]: Student.objects.first()
+Out[2]: <Student: 2016000001-孙章衡>
 
-In [1]: cd utils/database_utils/
-C:\Users\LuoD\Documents\Repos\2019-Software-Engineering-Curriculum-Design\EMS\utils\database_utils
+In [3]: Teacher.objects.first()
+Out[3]: <Teacher: 201100001-兰金叻>
 
-In [2]: run add_college.py
+In [4]: len(Student.objects.all())
+Out[4]: 649
 
-In [3]: len(Student.objects.all())
-Out[3]: 649
-
-In [4]: len(Teacher.objects.all())
-Out[4]: 1159
-
+In [5]: len(Teacher.objects.all())
+Out[5]: 1033
 ```
 
-## Possible Problem
+## 不同角色视图说明
 
-如果在直接执行`source ems.sql`的时候，遇到外键问题，无法创建`course`表。
-可以直接打开`ems.sql`找到相应的语句粘贴在MySQL终端执行。
+采用Django模板继承机制实现不同角色看到的视图不同。在templates文件夹下有四个文件分别为`base.html`,`student_base.html`,`teacher_base.html`,`adm_base.html`。其中`base.html`为所有的基础模板，定义了界面的基准色调，和左侧Slider Bar，顶部导航栏，登录头像，登录状态提示，登出等。
+其他三个文件分别继承于`base.html`，并且自定义了自己的Slider Bar和顶部导航栏。其于各个模块中的`html`文件均继承于上述三个文件，确保了不同的角色登录看到的功能均不相同。
+
+其于子模块子需要在`{% block content %} {% endblock %}`内部书写`<section></section>`内容即可。
+
+## 如何安装和运行本项目
+
+1. clone本项目
+2. 配置数据库，生成迁移文件（注意删除之前的迁移文件，如果你没有迁移过的话）。
+3. 导入数据。进入mysql控制台，激活对应数据库，`source ems.sql`即可导入数据。
+4. 运行项目。`python manage.py runserver`即可在浏览器`8000`端口查看。
+
+## 关于如何开发提交代码
+
+为了避免各个小组，互相提交代码，导致冲突、覆盖等事情的发生。要求熟练掌握github的使用，遵守合理的开发流程。具体可以参考这篇[博文](https://www.cnblogs.com/selimsong/p/9059964.html)。
+
+首先clone下来主分支项目后，各小组有各自的项目分支，可以在自己的分支上开发代码，测试新的功能特性。
+
+```
+git checkout xxxx
+```
+
+并且可以将代码推送到远程仓库，进行保存。但是务必要确保自己开发的代码要时长和主分支同步，要不然看不到别人的工作。也可以创建更多的本地分支，因为git创建分支的代价很小。可以随意地在本地创建分支来开发新的功能或者测试bug，而确保主分支上的代码都是干净清晰可以执行的。
+
+在开发或者测试新的功能特性完毕之后，要与主分支合并代码。这时重新`checkout master`回到主分支，进行合并。合并完成后就可以推送到远程仓库。
+
+为了避免合并冲突，建议使用图形化工具来避免冲突。这里推荐Github Desktop软件和VS Code插件来查看和解决冲突。虽然PyCharm也自带了图形化的merge工具，个人测试效果不好。
+
+关于冲突的说明，只有当不同人对于同一个文件的同一个地方的代码进行修改的时候才会出现不可消解的冲突，这个时候需要代码编辑者自己做决策。因此在源代码中也会出现像`>>>>>>`,`<<<<<<`,`=======`这样的符号，PyCharm等代码检查工具一片飘红，会让人很紧张。但其实是git在询问你要保留哪一段代码，需要你手动删除解决。这相当于是一个代码复审的过程，避免了错误的修改出现也很重要。
+
+对于添加文件，添加代码等操作多半是不会造成不可消解冲突的，但是这也带来了新的问题，就是很多没用的文件一直被保存而上传，因此需要创建者及时将无用的文件删除。如`.pyc`文件，这种文件不适合上传到github中，请及时删除`git rm -f *.pyc`。还有一些用来测试的`py`文件和`html`文件，也要及时删除，保持项目结构精简。
+
