@@ -88,6 +88,9 @@ class CourseScore(models.Model):
     sno = models.ForeignKey(to=Student, on_delete=models.CASCADE)
     # 总成绩
     score = models.FloatField()
+    commen_score = models.FloatField(default=0)
+    final_score = models.FloatField(default=0)
+
 
     def __str__(self):
         return '-'.join([str(self.sno), str(self.teaching), str(self.score)])

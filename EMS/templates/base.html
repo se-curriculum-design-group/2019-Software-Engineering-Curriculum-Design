@@ -155,6 +155,8 @@
 </div>
 <!-- ./wrapper -->
 
+<!-- 这些是默认加载的js脚本 -->
+
 <!-- jQuery 2.2.3 -->
 <script src="{% static 'AdminLTE/plugins/jQuery/jquery-2.2.3.min.js' %}"></script>
 <!-- jQuery UI 1.11.4 -->
@@ -165,6 +167,18 @@
 </script>
 <!-- Bootstrap 3.3.6 -->
 <script src="{% static 'AdminLTE/bootstrap/js/bootstrap.min.js' %}"></script>
+<!-- DataTables -->
+<script src="{% static 'AdminLTE/plugins/datatables/jquery.dataTables.min.js' %}"></script>
+<script src="{% static 'AdminLTE/plugins/datatables/dataTables.bootstrap.min.js' %}"></script>
+<!-- SlimScroll -->
+<script src="{% static 'AdminLTE/plugins/slimScroll/jquery.slimscroll.min.js' %}"></script>
+<!-- FastClick -->
+<script src="{% static 'AdminLTE/plugins/fastclick/fastclick.js' %}"></script>
+<!-- AdminLTE App -->
+<script src="{% static 'AdminLTE/dist/js/app.min.js' %}"></script>
+<!-- AdminLTE for demo purposes -->
+<script src="{% static 'AdminLTE/dist/js/demo.js' %}"></script>
+<!-- page script -->
 
 {% block script %}{% endblock %}
 

@@ -2,7 +2,7 @@ from django.shortcuts import render, redirect
 from django.http import HttpResponse
 
 from backstage.models import Student, Teacher, College, Major, MajorPlan, ClassRoom, AdmClass
-from scoreManagement.models import Course, MajorPlan, MajorCourses
+from scoreManagement.models import Course, MajorPlan, MajorCourses, CourseScore
 
 
 def welcome(request):
@@ -17,6 +17,14 @@ def welcome(request):
         'students': students,
         'teachers': teachers,
     }
+    return render(request, 'scoreManage/adm_score_manage.html', context)
+
+
+def adm_all_course_score(request):
+    all_course_score = CourseScore.objects.all()[:10]
+    first_course_score = CourseScore.objects.first()
+
+    context = {'all_course_score': all_course_score}
     return render(request, 'scoreManage/adm_score_manage.html', context)
 
 
