@@ -1,0 +1,52 @@
+{% extends 'base.html' %}
+
+{% block left_side_block %}
+    <li class="treeview">
+        <a href="{% url 'backstage:backstage_manage' %}">
+            <i class="fa fa-dashboard"></i> <span>后台信息维护</span>
+            <span class="pull-right-container">
+              <i class="fa fa-angle-left pull-right"></i>
+            </span>
+        </a>
+    </li>
+
+    <li class="treeview">
+        <a href="{% url 'scoreManagement:score_home_page' %}">
+            <i class="fa fa-table"></i> <span>成绩管理</span>
+            <span class="pull-right-container">
+              <i class="fa fa-angle-left pull-right"></i>
+            </span>
+        </a>
+    </li>
+
+    <li class="treeview">
+        <a href="{% url 'courseSelection:selection_home_page' %}">
+            <i class="fa fa-table"></i> <span>选课</span>
+            <span class="pull-right-container">
+              <i class="fa fa-angle-left pull-right"></i>
+            </span>
+        </a>
+    </li>
+
+    <li class="treeview">
+        <a href="{% url 'courseScheduling:scheduling_home_page' %}">
+            <i class="fa fa-table"></i> <span>排课</span>
+            <span class="pull-right-container">
+              <i class="fa fa-angle-left pull-right"></i>
+            </span>
+        </a>
+    </li>
+
+    <li class="treeview">
+        <a href="{% url 'graduationManagement:graduation_home_page' %}">
+            <i class="fa fa-table"></i> <span>毕业设计</span>
+            <span class="pull-right-container">
+              <i class="fa fa-angle-left pull-right"></i>
+            </span>
+        </a>
+    </li>
+{% endblock %}
+
+{% block content %}
+
+{% endblock %}

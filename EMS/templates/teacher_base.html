@@ -1,0 +1,102 @@
+{% extends 'base.html' %}
+{% load staticfiles %}
+
+{% block custom_nav %}
+    <li class="dropdown">
+        <a href="#" class="dropdown-toggle" data-toggle="dropdown">信息查询 <span
+                class="caret"></span></a>
+        <ul class="dropdown-menu" role="menu">
+            <li><a href="#">查看个人信息</a></li>
+            <li><a href="#">查看个人课表</a></li>
+            <li><a href="#">查看全校课表</a></li>
+            <li><a href="#">查询空闲教室</a></li>
+            <li class="divider"></li>
+            <li><a href="#">查看专业培养计划</a></li>
+            <li><a href="#">查看专业课程计划</a></li>
+        </ul>
+    </li>
+
+    <li class="dropdown">
+        <a href="#" class="dropdown-toggle" data-toggle="dropdown">成绩管理<span
+                class="caret"></span></a>
+        <ul class="dropdown-menu" role="menu">
+            <li><a href="#">成绩录入</a></li>
+            <li><a href="#">导出成绩</a></li>
+            <li class="divider"></li>
+            <li><a href="#">查看成绩统计</a></li>
+        </ul>
+    </li>
+
+    <li><a href="#">查看选课情况</a></li>
+
+    <li class="dropdown">
+        <a href="#" class="dropdown-toggle" data-toggle="dropdown">毕业设计 <span
+                class="caret"></span></a>
+        <ul class="dropdown-menu" role="menu">
+            <li><a href="#">发布课题</a></li>
+            <li><a href="#">查看选题情况</a></li>
+            <li><a href="#">查看提交文档</a></li>
+            <li class="divider"></li>
+            <li><a href="#">成绩打分</a></li>
+        </ul>
+    </li>
+{% endblock %}
+
+{% block left_side_block %}
+    <li class="treeview">
+        <a href="#">
+            <i class="fa fa-dashboard"></i> <span>信息查询</span>
+            <span class="pull-right-container">
+              <i class="fa fa-angle-left pull-right"></i>
+            </span>
+        </a>
+        <ul class="treeview-menu">
+            <li><a href="#"><i class="fa fa-circle-o"></i>查看个人信息</a></li>
+            <li><a href="#"><i class="fa fa-circle-o"></i>查看个人课表</a></li>
+            <li><a href="#"><i class="fa fa-circle-o"></i>查看全校课表</a></li>
+            <li><a href="#"><i class="fa fa-circle-o"></i>查看专业培养计划</a></li>
+            <li><a href="#"><i class="fa fa-circle-o"></i>查看专业课程计划</a></li>
+            <li><a href="#"><i class="fa fa-circle-o"></i>查询空闲教室</a></li>
+        </ul>
+    </li>
+
+    <li class="treeview">
+        <a href="#">
+            <i class="fa fa-flag"></i> <span>成绩管理</span>
+            <span class="pull-right-container">
+              <i class="fa fa-angle-left pull-right"></i>
+            </span>
+        </a>
+        <ul class="treeview-menu">
+            <li><a href="#"><i class="fa fa-circle-o"></i>成绩录入</a></li>
+            <li><a href="#"><i class="fa fa-circle-o"></i>查看成绩统计</a></li>
+            <li><a href="#"><i class="fa fa-circle-o"></i>导出成绩</a></li>
+        </ul>
+    </li>
+
+    <li class="treeview">
+        <a href="#">
+            <i class="fa fa-line-chart"></i> <span>查看选课情况</span>
+            <span class="pull-right-container">
+              <i class="fa fa-angle-left pull-right"></i>
+            </span>
+        </a>
+    </li>
+
+    <li class="treeview">
+        <a href="#">
+            <i class="fa fa-graduation-cap" aria-hidden="true"></i> <span>毕业设计</span>
+            <span class="pull-right-container">
+              <i class="fa fa-angle-left pull-right"></i>
+            </span>
+        </a>
+        <ul class="treeview-menu">
+            <li><a href="#"><i class="fa fa-circle-o"></i>发布课题</a></li>
+            <li><a href="#"><i class="fa fa-circle-o"></i>查看选题情况</a></li>
+            <li><a href="#"><i class="fa fa-circle-o"></i>查看提交文档</a></li>
+            <li><a href="#"><i class="fa fa-circle-o"></i>成绩打分</a></li>
+        </ul>
+    </li>
+
+
+{% endblock %}
