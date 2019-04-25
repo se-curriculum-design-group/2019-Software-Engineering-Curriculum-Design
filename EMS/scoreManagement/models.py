@@ -67,11 +67,11 @@ class MajorCourses(models.Model):
 # 教师授课
 class Teaching(models.Model):
     # 教授课程的教师工号
-    tno = models.ManyToManyField(to=Teacher)
+    tno = models.ForeignKey(to=Teacher, on_delete=models.CASCADE, default=None)
     # 教授课程的教师名称，为了显示方便，可以冗余
     # tname = tno.username
     # 这门课对应所在的专业培养计划
-    mcno = models.ManyToManyField(to=MajorCourses)
+    mcno = models.ForeignKey(to=MajorCourses, on_delete=models.CASCADE, default=None)
     # 教师给的本课程的平时分权重，如：0.3, 0.2 ...
     weight = models.FloatField()
 
@@ -80,6 +80,10 @@ class Teaching(models.Model):
 
     class Meta:
         db_table = 'teaching_table'
+        unique_together = (
+            'tno',
+            'mcno'
+        )
 
 
 class CourseScore(models.Model):

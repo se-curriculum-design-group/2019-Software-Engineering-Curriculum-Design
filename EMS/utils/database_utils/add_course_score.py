@@ -18,7 +18,7 @@ def rand_score_choice():
     返回一个看似合理分布的成绩
     :return: int
     """
-    score_choice = [randint(30, 40), randint(40, 60), randint(60, 80), randint(60, 80), randint(70, 90), randint(80, 100)]
+    score_choice = [randint(50, 80), randint(40, 60), randint(60, 80), randint(60, 80), randint(70, 90), randint(80, 100)]
     return choice(score_choice)
 
 
@@ -80,7 +80,7 @@ def add_course_score():
             )
     print(len(CourseScore.objects.all()))
 
-# add_course_score()
+add_course_score()
 
 
 def show_10_course_score():
