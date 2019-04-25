@@ -40,22 +40,21 @@
                         <th>课程编号</th>
                         <th>课程名称</th>
                         <th>考核方式</th>
-                        <th>总分</th>
                         <th>平时分</th>
                         <th>考试成绩</th>
+                        <th>总分</th>
                     </tr>
                     </thead>
                     <tbody>
                     {% for course_score in all_course_score %}
                         <tr>
                             <td>{{ forloop.counter }}</td>
-
                             <td>{{ course_score.teaching.mcno.year }}</td>
                             <td>{{ course_score.teaching.mcno.semester }}</td>
                             <td>{{ course_score.sno.username }}</td>
                             <td>{{ course_score.teaching.mcno.cno.cno }}</td>
                             <td>{{ course_score.teaching.mcno.cno.cname }}</td>
-                            {% if course_score.teaching.mcno.exam_method %}
+                            {% if course_score.teaching.mcno.exam_method == True %}
                                 <td>考核</td>
                             {% else %}
                                 <td>考察</td>
@@ -76,8 +75,8 @@
                         <th>课程编号</th>
                         <th>课程名称</th>
                         <th>考核方式</th>
-                        <th>考试成绩</th>
                         <th>平时分</th>
+                        <th>考试成绩</th>
                         <th>总分</th>
                     </tr>
                     </tfoot>
@@ -87,46 +86,48 @@
     </section>
 {% endblock %}
 
-<script>
-    $(function () {
-        $("#all_course_score").DataTable({
-            "paging": true,       <!-- 允许分页 -->
-            "lengthChange": true, <!-- 允许改变每页显示的行数 -->
-            "searching": true,    <!-- 允许内容搜索 -->
-            "ordering": true,     <!-- 允许排序 -->
-            "info": true,         <!-- 显示信息 -->
-            "autoWidth": false,    <!-- 固定宽度 -->
-            "language": {
-                "sProcessing": "处理中...",
-                "sLengthMenu": "显示 _MENU_ 项结果",
-                "sZeroRecords": "没有匹配结果",
-                "sInfo": "显示第 _START_ 至 _END_ 项结果，共 _TOTAL_ 项",
-                "sInfoEmpty": "显示第 0 至 0 项结果，共 0 项",
-                "sInfoFiltered": "(由 _MAX_ 项结果过滤)",
-                "sInfoPostFix": "",
-                "sSearch": "搜索:",
-                "sUrl": "",
-                "sEmptyTable": "表中数据为空",
-                "sLoadingRecords": "载入中...",
-                "sInfoThousands": ",",
-                "oPaginate": {
-                    "sFirst": "首页",
-                    "sPrevious": "上页",
-                    "sNext": "下页",
-                    "sLast": "末页"
+{% block script %}
+    <script>
+        $(function () {
+            var all_course_scores = $("#all_course_score").DataTable({
+                "paging": true,       <!-- 允许分页 -->
+                "lengthChange": true, <!-- 允许改变每页显示的行数 -->
+                "searching": true,    <!-- 允许内容搜索 -->
+                "ordering": true,     <!-- 允许排序 -->
+                "info": true,         <!-- 显示信息 -->
+                "autoWidth": false,    <!-- 固定宽度 -->
+                "language": {
+                    "sProcessing": "处理中...",
+                    "sLengthMenu": "显示 _MENU_ 项结果",
+                    "sZeroRecords": "没有匹配结果",
+                    "sInfo": "显示第 _START_ 至 _END_ 项结果，共 _TOTAL_ 项",
+                    "sInfoEmpty": "显示第 0 至 0 项结果，共 0 项",
+                    "sInfoFiltered": "(由 _MAX_ 项结果过滤)",
+                    "sInfoPostFix": "",
+                    "sSearch": "搜索:",
+                    "sUrl": "",
+                    "sEmptyTable": "表中数据为空",
+                    "sLoadingRecords": "载入中...",
+                    "sInfoThousands": ",",
+                    "oPaginate": {
+                        "sFirst": "首页",
+                        "sPrevious": "上页",
+                        "sNext": "下页",
+                        "sLast": "末页"
+                    },
+                    "oAria": {
+                        "sSortAscending": ": 以升序排列此列",
+                        "sSortDescending": ": 以降序排列此列"
+                    }
                 },
-                "oAria": {
-                    "sSortAscending": ": 以升序排列此列",
-                    "sSortDescending": ": 以降序排列此列"
-                }
-            },
-            "columnDefs": [{
-                "searchable": false,
-                "orderable": true,
-                "targets": 0
-            }],
-            "order": [[0, 'asc']]
+                "columnDefs": [{
+                    "searchable": false,
+                    "orderable": true,
+                    "targets": "_all",
+                    "defaultContent": "-"
+                }],
+                "order": [[0, 'asc']]
+            });
         });
-    });
-</script>
-
+    </script>
+{% endblock %}

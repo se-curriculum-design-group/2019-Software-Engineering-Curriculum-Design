@@ -17,14 +17,14 @@ def welcome(request):
         'students': students,
         'teachers': teachers,
     }
-    return render(request, 'scoreManage/adm_score_manage.html', context)
+    return render(request, 'scoreManage/student_score_manage.html', context)
 
 
 def adm_all_course_score(request):
     all_course_score = CourseScore.objects.all()[:20]
-    first_course_score = CourseScore.objects.first()
 
-    context = {'all_course_score': all_course_score}
+    print(len(all_course_score))
+    context = {"all_course_score": all_course_score}
     return render(request, 'scoreManage/adm_score_manage.html', context)
 
 

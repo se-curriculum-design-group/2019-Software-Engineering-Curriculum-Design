@@ -70,14 +70,19 @@ def get_all_teaching():
 
 
 def add_course_score():
+    teaching_list = list(get_all_teaching())
     # 对单个学生进行修改，假设其课程都选上了
     for student in Student.objects.all():
-        for teaching in get_all_teaching():
-            CourseScore.objects.create(
-                teaching=teaching,
-                sno=student,
-                score=rand_score_choice()
-            )
+        my_course_list = choices(teaching_list, k=randint(70, 90))
+        for teaching in my_course_list:
+            try:
+                CourseScore.objects.create(
+                    teaching=teaching,
+                    sno=student,
+                    score=rand_score_choice()
+                )
+            except:
+                print("Error: %d" %(len(CourseScore.objects.all())))
     print(len(CourseScore.objects.all()))
 
 add_course_score()

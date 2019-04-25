@@ -60,3 +60,10 @@ def test4():
 # for course_score in CourseScore.objects.all()[:20]:
 #     for major_course in course_score.teaching.mcno.all():
 
+def test5():
+    for course_score in CourseScore.objects.all()[:10]:
+        print(course_score.teaching.mcno.year)
+        print(course_score.teaching.mcno.semester)
+
+
+print(CourseScore.objects.filter(sno=Student.objects.get(username='2016000002')))

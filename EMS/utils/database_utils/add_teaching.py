@@ -54,9 +54,10 @@ def add_teaching_hard2():
 def add_teaching_hard3():
     # 找到所有2016级的计科要上的课程
     cs_major_major_courses = MajorCourses.objects.filter(mno=major_plan)
-    for teacher in Teacher.objects.all()[10:]:
+    college = College.objects.get(name='信息科学与技术学院')
+    for teacher in Teacher.objects.filter(college=college):
         college = teacher.college
-        course_set = cs_major_major_courses.filter(cno__college=college)
+        course_set = cs_major_major_courses
         if len(course_set) == 0:
             continue
         courses = choices(list(course_set), k=randint(1, len(course_set)))
@@ -72,7 +73,7 @@ def add_teaching_hard3():
     print(len(Teaching.objects.all()))
 
 
-# add_teaching_hard3()
+add_teaching_hard3()
 
 
 def show_teaching_10():
