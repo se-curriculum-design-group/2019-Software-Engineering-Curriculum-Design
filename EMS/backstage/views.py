@@ -5,7 +5,6 @@ from django.http import HttpResponse, JsonResponse
 from django.views.decorators.csrf import csrf_exempt
 from django.shortcuts import render, redirect, get_object_or_404
 
-
 from backstage.models import Student, Teacher, User
 from utils import make_encode
 
@@ -26,7 +25,6 @@ def goto_login(request):
 
 @csrf_exempt
 def mylogin(request):
-
     def save_session(user_type):
         request.session['username'] = username
         if user_type == '管理员':
@@ -99,3 +97,21 @@ def backstage_manage(request):
 @login_required
 def register(request):
     raise NotImplemented
+
+
+def my_personal_details(request):
+    if request.method == "GET":
+        username = request.session.get('username', False)
+        if len(username) == 10:
+            try:
+                user = Student.objects.get(username=username)
+                return render(request, 'backstage/my_personal_details.html', locals())
+            except:
+                return JsonResponse({})
+        else:
+            try:
+                user = Teacher.objects.get(username=username)
+                return render(request, 'backstage/my_personal_details.html', locals())
+            except:
+                return JsonResponse({})
+
