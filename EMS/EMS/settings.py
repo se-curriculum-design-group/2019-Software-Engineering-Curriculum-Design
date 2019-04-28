@@ -83,8 +83,9 @@ WSGI_APPLICATION = 'EMS.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'EMS',
-        'HOST': 'localhost',
+        # 'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+        'NAME': 'ems',
+        'HOST': '127.0.0.1',
         'PORT': 3306,
         'USER': 'EMS',
         'PASSWORD': 'password'
