@@ -29,7 +29,10 @@ def mylogin(request):
 
     def save_session(user_type):
         request.session['username'] = username
-        request.session['name'] = user.name
+        if user_type == '管理员':
+            request.session['name'] = username
+        else:
+            request.session['name'] = user.name
         request.session['password'] = password
         request.session['user_type'] = user_type
 
@@ -46,7 +49,8 @@ def mylogin(request):
                 save_session('学生')
                 return redirect('backstage:student_view')
             except:
-                return JsonResponse({})
+                return redirect('backstage:goto_login')
+                # return JsonResponse({"not_exist": "1"})
         elif 9 == len(username):
             try:
                 user = Teacher.objects.get(username=username, password=password)
@@ -54,7 +58,8 @@ def mylogin(request):
                 save_session('教师')
                 return redirect('backstage:teacher_view')
             except:
-                return JsonResponse({})
+                return redirect("backstage:goto_login")
+                # return JsonResponse({"not_exist": "1"})
         else:
             try:
                 user = User.objects.get(username=username, password=password)
@@ -62,7 +67,8 @@ def mylogin(request):
                 save_session('管理员')
                 return redirect('backstage:admin_view')
             except:
-                return JsonResponse({})
+                return redirect("backstage:goto_login")
+                # return JsonResponse({"not_exist": "1"})
 
 
 @login_required

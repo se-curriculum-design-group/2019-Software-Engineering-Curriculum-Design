@@ -1,7 +1,5 @@
-{% extends 'base.html' %}
+{% extends 'adm_base.html' %}
 {% load staticfiles %}
-{% load static %}
-{% block title %}成绩管理系统{% endblock %}
 
 {% block content %}
     <section class="content-header">
@@ -10,15 +8,14 @@
         </h1>
         <ol class="breadcrumb">
             <li><a href="{% url 'scoreManagement:welcome' %}"><i class="fa fa-dashboard"></i> 主页</a></li>
-            <li class="active">成绩管理</li>
+            <li class="active">全校成绩查询</li>
         </ol>
-
     </section>
 
     <section class="content">
         <div class="box">
             <div class="box-header">
-                <h3 class="box-title">学生总表</h3>
+                <h3 class="box-title">全校课程成绩表</h3>
                 <div class="btn-group pull-right ">
                     <button id='add' class="btn btn-primary" type="button">
                         <span class="glyphicon glyphicon-plus"></span>增加
@@ -32,41 +29,50 @@
                 </div>
             </div>
             <div class="box-body">
-                <table id="stu_table" class="table table-bordered table-striped">
+                <table id="all_course_table" class="table table-bordered table-striped">
                     <thead>
                     <tr>
                         <th>编号</th>
-                        <th>学号</th>
-                        <th>所在班级</th>
-                        <th>姓名</th>
-                        <th>性别</th>
-                        <th>已修学分</th>
+                        <th>学年</th>
+                        <th>学期</th>
+                        <th>学生学号</th>
+                        <th>课程号</th>
+                        <th>考核方式</th>
+                        <th>平时成绩</th>
+                        <th>考试成绩</th>
+                        <th>总分</th>
                     </tr>
                     </thead>
                     <tbody>
-                    {% for student in students %}
+                    {% for course_score in all_course_score %}
                         <tr>
                             <td>{{ forloop.counter }}</td>
-                            <td>{{ student.username }}</td>
-                            <td>{{ student.in_cls.name }}</td>
-                            <td>{{ student.name }}</td>
-                            {% if student.sex == True %}
-                                <td>男</td>
+                            <td>{{ course_score.teaching.mcno.year }}</td>
+                            <td>{{ course_score.teaching.mcno.semester }}</td>
+                            <td>{{ course_score.sno.username }}</td>
+                            <td>{{ course_score.teaching.mcno.cno.cno }}</td>
+                            {% if course_score.teaching.mcno.exam_method  == True %}
+                                <td>考核</td>
                             {% else %}
-                                <td>女</td>
+                                <td>考察</td>
                             {% endif %}
-                            <td>{{ student.score_got }}</td>
+                            <td>{{ course_score.commen_score }}</td>
+                            <td>{{ course_score.final_score }}</td>
+                            <td>{{ course_score.score }}</td>
                         </tr>
                     {% endfor %}
                     </tbody>
                     <tfoot>
                     <tr>
                         <th>编号</th>
-                        <th>学号</th>
-                        <th>所在班级</th>
-                        <th>姓名</th>
-                        <th>性别</th>
-                        <th>已修学分</th>
+                        <th>学年</th>
+                        <th>学期</th>
+                        <th>学生学号</th>
+                        <th>课程号</th>
+                        <th>考核方式</th>
+                        <th>平时成绩</th>
+                        <th>考试成绩</th>
+                        <th>总分</th>
                     </tr>
                     </tfoot>
                 </table>
@@ -87,61 +93,14 @@
                     </button>
                 </div>
             </div>
-            <div class="box-body">
-                <table id="teacher_table" class="table table-bordered table-striped">
-                    <thead>
-                    <tr>
-                        <th>编号</th>
-                        <th>工号</th>
-                        <th>姓名</th>
-                        <th>性别</th>
-                        <th>所在学院</th>
-                        <th>入职年份</th>
-                        <th>学历</th>
-                        <th>职称</th>
-                        <th>个人简介</th>
-                    </tr>
-                    </thead>
-                    <tbody>
-                    {% for teacher in teachers %}
-                        <tr>
-                            <td>{{ forloop.counter }}</td>
-                            <td>{{ teacher.username }}</td>
-                            <td>{{ teacher.name }}</td>
-                            {% if teacher.sex == True %}
-                                <td>男</td>
-                            {% else %}
-                                <td>女</td>
-                            {% endif %}
-                            <td>{{ teacher.college.name }}</td>
-                            <td>{{ teacher.in_year }}</td>
-                            <td>{{ teacher.edu_background }}</td>
-                            <td>{{ teacher.title }}</td>
-                            <td>{{ teacher.description }}</td>
-                        </tr>
-                    {% endfor %}
-                    </tbody>
-                    <tfoot>
-                    <tr>
-                        <th>编号</th>
-                        <th>工号</th>
-                        <th>姓名</th>
-                        <th>性别</th>
-                        <th>所在学院</th>
-                        <th>入职年份</th>
-                        <th>学历</th>
-                        <th>职称</th>
-                        <th>个人简介</th>
-                    </tr>
-                    </tfoot>
-                </table>
-            </div>
         </div>
     </section>
 
 {% endblock %}
 
 {% block script %}
+
+
     <!-- jQuery 2.2.3 -->
     <script src="{% static 'AdminLTE/plugins/jQuery/jquery-2.2.3.min.js' %}"></script>
     <!-- Bootstrap 3.3.6 -->
@@ -162,7 +121,7 @@
 
         $(function () {
 
-            var table = $('#stu_table').DataTable({
+            var table = $('#all_course_table').DataTable({
                 "paging": true,       <!-- 允许分页 -->
                 "lengthChange": true, <!-- 允许改变每页显示的行数 -->
                 "searching": true,    <!-- 允许内容搜索 -->
@@ -201,55 +160,7 @@
                 "order": [[0, 'asc']]
             });
 
-            var table2 = $('#teacher_table').DataTable({
-                "paging": true,       <!-- 允许分页 -->
-                "lengthChange": true, <!-- 允许改变每页显示的行数 -->
-                "searching": true,    <!-- 允许内容搜索 -->
-                "ordering": true,     <!-- 允许排序 -->
-                "info": true,         <!-- 显示信息 -->
-                "autoWidth": false,    <!-- 固定宽度 -->
-                "language": {
-                    "sProcessing": "处理中...",
-                    "sLengthMenu": "显示 _MENU_ 项结果",
-                    "sZeroRecords": "没有匹配结果",
-                    "sInfo": "显示第 _START_ 至 _END_ 项结果，共 _TOTAL_ 项",
-                    "sInfoEmpty": "显示第 0 至 0 项结果，共 0 项",
-                    "sInfoFiltered": "(由 _MAX_ 项结果过滤)",
-                    "sInfoPostFix": "",
-                    "sSearch": "搜索:",
-                    "sUrl": "",
-                    "sEmptyTable": "表中数据为空",
-                    "sLoadingRecords": "载入中...",
-                    "sInfoThousands": ",",
-                    "oPaginate": {
-                        "sFirst": "首页",
-                        "sPrevious": "上页",
-                        "sNext": "下页",
-                        "sLast": "末页"
-                    },
-                    "oAria": {
-                        "sSortAscending": ": 以升序排列此列",
-                        "sSortDescending": ": 以降序排列此列"
-                    }
-                },
-                "columnDefs": [{
-                    "searchable": false,
-                    "orderable": true,
-                    "targets": 0
-                }],
-                "order": [[0, 'asc']]
-            });
-
-            $('#stu_table tbody').on('click', 'tr', function (e) {
-                if ($(this).hasClass('selected')) {
-                    $(this).removeClass('selected');
-                } else {
-                    table.$('tr.selected').removeClass('selected');
-                    $(this).addClass('selected');
-                }
-            });
-
-            $('#teacher_table').on('click', 'tr', function (e) {
+            $('#all_course_table tbody').on('click', 'tr', function (e) {
                 if ($(this).hasClass('selected')) {
                     $(this).removeClass('selected');
                 } else {
