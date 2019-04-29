@@ -1,79 +1,101 @@
 import os
-from django.shortcuts import render, redirect
-from . import models
-from . import forms
-import datetime
-# 邮件模块
-from django.conf import settings
-from django.core import mail
+from django.contrib.auth import authenticate, login, logout, models
+from django.contrib.auth.decorators import login_required
+from django.http import HttpResponse, JsonResponse
+from django.views.decorators.csrf import csrf_exempt
+from django.shortcuts import render, redirect, get_object_or_404
 
 
-# Create your views here.
-
-def Welcome(request):
-    return render(request, 'Welcome.html')
+from backstage.models import Student, Teacher, User
+from utils import make_encode
 
 
-def Login(request):
-    if request.session.get('user_is_login', None):
-        return redirect('backstage:Homepage')
-
-    if request.method == "POST":
-        login_form = forms.UserForm(request.POST)
-        message = "请检查填写的内容！(验证码)"
-
-        if login_form.is_valid():
-            username = login_form.cleaned_data['username']
-            password = login_form.cleaned_data['password']
-
-            user = models.User.objects.filter(codename=username)
-            if user:
-                user = user.first()
-                if user.password == password:
-                    request.session['user_is_login'] = True
-                    request.session['user_codename'] = user.codename
-                    request.session['user_nickname'] = user.nickname
-                    request.session['user_department'] = user.department_id
-                    request.session['user_grant'] = user.grant
-                    request.session['user_start_year'] = user.start_year
-                    message = "你好，欢迎回来！"
-                    return redirect('backstage:Homepage')
-                    # return render(request, 'Homepage.html', locals())
-                else:
-                    message = "密码不正确！"
-            else:
-                message = "用户不存在!"
-                return render(request, 'Welcome.html', locals())
-        return render(request, 'Login.html', locals())
-
-    login_form = forms.UserForm()
-    return render(request, 'Login.html', locals())
+def welcome(request):
+    name = request.session['name']
+    user_type = request.session['user_type']
+    context = {
+        'name': name,
+        'user_type': user_type
+    }
+    return render(request, 'base.html', context)
 
 
-def Log_out(request):
-    if not request.session.get('user_is_login', None):  # 原本未登录则无登出
-        return redirect("backstage:Welcome")
-
-    request.session.flush()
-
-    return redirect("backstage:Welcome")
+def goto_login(request):
+    return render(request, 'login.html')
 
 
-def Register(request):
-    return
+@csrf_exempt
+def mylogin(request):
+
+    def save_session(user_type):
+        request.session['username'] = username
+        if user_type == '管理员':
+            request.session['name'] = username
+        else:
+            request.session['name'] = user.name
+        request.session['password'] = password
+        request.session['user_type'] = user_type
+
+    if request.POST:
+        username = request.POST.get('username')
+        password = request.POST.get('password')
+        # 对密码进行加密
+        password = make_encode(password)
+        if 10 == len(username):
+            # 学号的长度是10位
+            try:
+                user = Student.objects.get(username=username, password=password)
+                login(request, user)
+                save_session('学生')
+                return redirect('backstage:student_view')
+            except:
+                return redirect('backstage:goto_login')
+                # return JsonResponse({"not_exist": "1"})
+        elif 9 == len(username):
+            try:
+                user = Teacher.objects.get(username=username, password=password)
+                login(request, user)
+                save_session('教师')
+                return redirect('backstage:teacher_view')
+            except:
+                return redirect("backstage:goto_login")
+                # return JsonResponse({"not_exist": "1"})
+        else:
+            try:
+                user = User.objects.get(username=username, password=password)
+                login(request, user)
+                save_session('管理员')
+                return redirect('backstage:admin_view')
+            except:
+                return redirect("backstage:goto_login")
+                # return JsonResponse({"not_exist": "1"})
 
 
-def Homepage(request):
-    if not request.session.get('user_is_login', None):
-        return redirect('backstage:Login')
+@login_required
+def student_view(request):
+    return render(request, 'student_base.html')
 
-    if request.method == "GET":
-        announcement0 = models.Announcement.objects.filter(visible=True, receiver="全体成员")
-        announcement1 = models.Announcement.objects.filter(visible=True,
-                                                           receiver=request.session.get('user_department', None),
-                                                           year=request.session.get('user_start_year', None))
-        print(announcement0)
-        print(announcement1)
-        announcement = announcement0 | announcement1
-        print(announcement)
-        return render(request, 'Homepage.html', locals())
+
+@login_required
+def admin_view(request):
+    return render(request, 'adm_base.html')
+
+
+@login_required
+def teacher_view(request):
+    return render(request, 'teacher_base.html')
+
+
+@login_required
+def mylogout(request):
+    logout(request)
+    return render(request, 'base.html')
+
+
+def backstage_manage(request):
+    return render(request, 'backstage/adm_backstage_manage.html')
+
+
+@login_required
+def register(request):
+    raise NotImplemented
