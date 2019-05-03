@@ -1,4 +1,4 @@
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, Http404
 from django.http import HttpResponse
 
 from backstage.models import Student, Teacher, College, Major, MajorPlan, ClassRoom, AdmClass
@@ -7,7 +7,7 @@ from scoreManagement.models import Course, MajorPlan, MajorCourses, CourseScore
 from django.http import HttpResponse, JsonResponse
 import json
 from backstage.models import Student, Teacher, College, Major, MajorPlan, ClassRoom, AdmClass
-from scoreManagement.models import Course, MajorPlan, MajorCourses, CourseScore
+from scoreManagement.models import Course, MajorPlan, MajorCourses, CourseScore, Teaching
 
 
 def welcome(request):
@@ -26,11 +26,14 @@ def welcome(request):
 
 
 def adm_all_course_score(request):
-    all_course_score = CourseScore.objects.all()[:20]
+    if (request.session['user_type'] != '管理员'):
+        all_course_score = CourseScore.objects.all()[:20]
 
-    print(len(all_course_score))
-    context = {"all_course_score": all_course_score}
-    return render(request, 'scoreManage/adm_score_manage.html', context)
+        print(len(all_course_score))
+        context = {"all_course_score": all_course_score}
+        return render(request, 'scoreManage/adm_score_manage.html', context)
+    else:
+        return Http404()
 
 
 def score_home_page(request):
