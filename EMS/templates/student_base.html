@@ -30,7 +30,7 @@
         </ul>
     </li>
 
-    <li><a href="#">教学评价</a></li>
+    <li><a href="{% url 'scoreManagement:assess_teacher' %}">教学评价</a></li>
 {% endblock %}
 
 
@@ -77,7 +77,7 @@
         </ul>
     </li>
     <li class="treeview">
-        <a href="#">
+        <a href="{% url 'scoreManagement:assess_teacher' %}">
             <i class="fa fa-share"></i> <span>教学评价</span>
             <span class="pull-right-container">
               <i class="fa fa-angle-left pull-right"></i>

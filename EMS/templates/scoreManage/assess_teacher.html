@@ -9,55 +9,64 @@
         </ol>
     </section>
     <section class="content">
-    <form id="submit_all" method="post" action="submit_all">{% csrf_token %}
         <div class="row">
-            <div class="col-md-4">
-                <div class="box">
-                    <div class="box-header with-border">
-                        <h3 class="box-title" style="font-size: 13px;">可评价教学班：已评{{ num1 }}门，未评{{ num2 }}门；</h3>
-                        <input type="hidden" name="num2" value={{ num2 }}>
-                    </div>
-                    <!-- /.box-header -->
-                    <div class="box-body">
-                        <table class="table table-bordered" style="font-size: 12px;">
-                            <tr>
-                                <th style="width: 60px">状态</th>
-                                <th style="width: 150px">课程</th>
-                                <th style="width: 50px">类型</th>
-                                <th style="width: 70px">教师</th>
-                            </tr>
-                            {% for item in log %}
+            <form id="submit_all" method="get" action="{% url 'scoreManagement:submit_all' %}">{% csrf_token %}
+
+                <div class="col-md-4">
+                    <div class="box">
+                        <div class="box-header with-border">
+                            <h3 class="box-title" style="font-size: 13px;">可评价教学班：已评{{ num1 }}门，未评{{ num2 }}门；</h3>
+                            <input type="hidden" name="num2" value={{ num2 }}>
+                        </div>
+                        <!-- /.box-header -->
+                        <div class="box-body">
+                            <table class="table table-bordered" style="font-size: 12px;">
                                 <tr>
-                                {% if flag == False %}
-                                    {% if item.state == False %}
-                                        <td><a onclick="show1({{ forloop.counter0 }})" style="color: grey">未保存</a></td>
-                                    {% elif item.state == True %}
-                                        <td><a onclick="show1({{ forloop.counter0 }})" style="color: forestgreen">已保存</a></td>
-                                    {% endif %}
-                                {% else %}
-                                    <td><a onclick="show2({{ forloop.counter0 }})" style="color: forestgreen">已保存</a></td>
-                                {% endif %}
-                                    <td>{{ item.cname }}</td>
-                                    <td>{{ item.type }}</td>
-                                    <td>{{ item.tname }}</td>
+                                    <th style="width: 60px">状态</th>
+                                    <th style="width: 150px">课程</th>
+                                    <th style="width: 50px">类型</th>
+                                    <th style="width: 70px">教师</th>
                                 </tr>
+                                {% for item in log %}
+                                    <tr>
+                                        {% if flag == False %}
+                                            {% if item.state == False %}
+                                                <td><a onclick="show1({{ forloop.counter0 }})"
+                                                       style="color: grey">未保存</a></td>
+                                            {% elif item.state == True %}
+                                                <td><a onclick="show1({{ forloop.counter0 }})"
+                                                       style="color: forestgreen">已保存</a></td>
+                                            {% endif %}
+                                        {% else %}
+                                            <td><a onclick="show2({{ forloop.counter0 }})" style="color: forestgreen">已保存</a>
+                                            </td>
+                                        {% endif %}
+                                        <td>{{ item.cname }}</td>
+                                        <td>{{ item.type }}</td>
+                                        <td>{{ item.tname }}</td>
+                                    </tr>
 
 
-                            {% endfor %}
-                        </table>
-                        {% if flag == True %}
-                            <label style="margin-left: 100px; margin-top: 10px">您已提交！</label>
-                        {% elif num2 == 0 %}
-                            <button type="submit" name="submit_all" class="btn btn-primary btn-flat" style="margin-left: 100px; margin-top: 10px">全部提交</button>
-                        {% else %}
-                            <button type="submit" name="submit_all" class="btn btn-primary btn-flat" style="margin-left: 100px; margin-top: 10px" disabled="disabled">全部提交</button>
-                        {% endif %}
+                                {% endfor %}
+                            </table>
+                            {% if flag == True %}
+                                <label style="margin-left: 100px; margin-top: 10px">您已提交！</label>
+                            {% elif num2 == 0 %}
+                                <button type="submit" class="btn btn-primary btn-flat" formtarget="_parent"
+                                        style="margin-left: 100px; margin-top: 10px">全部提交
+                                </button>
+                            {% else %}
+                                <button type="submit" class="btn btn-primary btn-flat" formtarget="_parent"
+                                        style="margin-left: 100px; margin-top: 10px" disabled="disabled">全部提交
+                                </button>
+                            {% endif %}
+                        </div>
                     </div>
                 </div>
-            </div>
+            </form>
             {% for item in log %}
                 <div class="col-md-8">
-                    <form method="get" action="submit_result">
+                    <form method="get" action="{% url 'scoreManagement:submit_result' %}">{% csrf_token %}
                         <div class="box" id="d{{ forloop.counter0 }}" name="dv1" style="display: none;">
                             <div class="box-header">
                                 <h3 class="box-title">教师名——{{ item.tname }}</h3>
@@ -75,19 +84,24 @@
                                             <!-- radio -->
                                             <div class="form-group" style="margin-bottom: 0">
                                                 <label>
-                                                    <input type="radio" name="r1" class="minimal-red" style="margin-right: 5px"  value="A" checked="checked">
+                                                    <input id="r1a{{ forloop.counter0 }}" type="radio" name="r1" class="minimal-red"
+                                                           style="margin-right: 5px" value="A" checked="checked">
                                                 </label>
                                                 <label>
-                                                    <input type="radio" name="r1" class="minimal" style="margin-right: 5px" value="B">
+                                                    <input id="r1b{{ forloop.counter0 }}" type="radio" name="r1" class="minimal"
+                                                           style="margin-right: 5px" value="B">
                                                 </label>
                                                 <label>
-                                                    <input type="radio" name="r1" class="minimal" style="margin-right: 5px" value="C">
+                                                    <input id="r1c{{ forloop.counter0 }}" type="radio" name="r1" class="minimal"
+                                                           style="margin-right: 5px" value="C">
                                                 </label>
                                                 <label>
-                                                    <input type="radio" name="r1" class="minimal" style="margin-right: 5px" value="D">
+                                                    <input id="r1d{{ forloop.counter0 }}" type="radio" name="r1" class="minimal"
+                                                           style="margin-right: 5px" value="D">
                                                 </label>
                                                 <label>
-                                                    <input type="radio" name="r1" class="minimal" style="margin-right: 5px" value="E">
+                                                    <input id="r1e{{ forloop.counter0 }}" type="radio" name="r1" class="minimal"
+                                                           style="margin-right: 5px" value="E">
                                                 </label>
                                             </div>
                                         </td>
@@ -95,22 +109,27 @@
                                     <tr>
                                         <td>教师对教授本门课程充满激情、自信</td>
                                         <td>
-                                        <!-- radio -->
+                                            <!-- radio -->
                                             <div class="form-group" style="margin-bottom: 0">
                                                 <label>
-                                                    <input type="radio" name="r2" class="minimal" style="margin-right: 5px" value="A" checked>
+                                                    <input id="r2a{{ forloop.counter0 }}" type="radio" name="r2" class="minimal"
+                                                           style="margin-right: 5px" value="A" checked>
                                                 </label>
                                                 <label>
-                                                    <input type="radio" name="r2" class="minimal" style="margin-right: 5px" value="B">
+                                                    <input id="r2b{{ forloop.counter0 }}" type="radio" name="r2" class="minimal"
+                                                           style="margin-right: 5px" value="B">
                                                 </label>
                                                 <label>
-                                                    <input type="radio" name="r2" class="minimal" style="margin-right: 5px" value="C">
+                                                    <input id="r2c{{ forloop.counter0 }}" type="radio" name="r2" class="minimal"
+                                                           style="margin-right: 5px" value="C">
                                                 </label>
                                                 <label>
-                                                    <input type="radio" name="r2" class="minimal" style="margin-right: 5px" value="D">
+                                                    <input id="r2d{{ forloop.counter0 }}" type="radio" name="r2" class="minimal"
+                                                           style="margin-right: 5px" value="D">
                                                 </label>
                                                 <label>
-                                                    <input type="radio" name="r2" class="minimal" style="margin-right: 5px" value="E">
+                                                    <input id="r2e{{ forloop.counter0 }}" type="radio" name="r2" class="minimal"
+                                                           style="margin-right: 5px" value="E">
                                                 </label>
                                             </div>
                                         </td>
@@ -121,19 +140,24 @@
                                             <!-- radio -->
                                             <div class="form-group" style="margin-bottom: 0">
                                                 <label>
-                                                    <input type="radio" name="r3" class="minimal" style="margin-right: 5px" value="A" checked>
+                                                    <input id="r3a{{ forloop.counter0 }}" type="radio" name="r3" class="minimal"
+                                                           style="margin-right: 5px" value="A" checked>
                                                 </label>
                                                 <label>
-                                                    <input type="radio" name="r3" class="minimal" style="margin-right: 5px" value="B">
+                                                    <input id="r3b{{ forloop.counter0 }}" type="radio" name="r3" class="minimal"
+                                                           style="margin-right: 5px" value="B">
                                                 </label>
                                                 <label>
-                                                    <input type="radio" name="r3" class="minimal" style="margin-right: 5px" value="C">
+                                                    <input id="r3c{{ forloop.counter0 }}" type="radio" name="r3" class="minimal"
+                                                           style="margin-right: 5px" value="C">
                                                 </label>
                                                 <label>
-                                                    <input type="radio" name="r3" class="minimal" style="margin-right: 5px" value="D">
+                                                    <input id="r3d{{ forloop.counter0 }}" type="radio" name="r3" class="minimal"
+                                                           style="margin-right: 5px" value="D">
                                                 </label>
                                                 <label>
-                                                    <input type="radio" name="r3" class="minimal" style="margin-right: 5px" value="E">
+                                                    <input id="r3e{{ forloop.counter0 }}" type="radio" name="r3" class="minimal"
+                                                           style="margin-right: 5px" value="E">
                                                 </label>
                                             </div>
                                         </td>
@@ -144,19 +168,24 @@
                                             <!-- radio -->
                                             <div class="form-group" style="margin-bottom: 0">
                                                 <label>
-                                                    <input type="radio" name="r4" class="minimal" style="margin-right: 5px" value="A" checked>
+                                                    <input id="r4a{{ forloop.counter0 }}" type="radio" name="r4" class="minimal"
+                                                           style="margin-right: 5px" value="A" checked>
                                                 </label>
                                                 <label>
-                                                    <input type="radio" name="r4" class="minimal" style="margin-right: 5px" value="B">
+                                                    <input id="r4b{{ forloop.counter0 }}" type="radio" name="r4" class="minimal"
+                                                           style="margin-right: 5px" value="B">
                                                 </label>
                                                 <label>
-                                                    <input type="radio" name="r4" class="minimal" style="margin-right: 5px" value="C">
+                                                    <input id="r4c{{ forloop.counter0 }}" type="radio" name="r4" class="minimal"
+                                                           style="margin-right: 5px" value="C">
                                                 </label>
                                                 <label>
-                                                    <input type="radio" name="r4" class="minimal" style="margin-right: 5px" value="D">
+                                                    <input id="r4d{{ forloop.counter0 }}" type="radio" name="r4" class="minimal"
+                                                           style="margin-right: 5px" value="D">
                                                 </label>
                                                 <label>
-                                                    <input type="radio" name="r4" class="minimal" style="margin-right: 5px" value="E">
+                                                    <input id="r4e{{ forloop.counter0 }}" type="radio" name="r4" class="minimal"
+                                                           style="margin-right: 5px" value="E">
                                                 </label>
                                             </div>
                                         </td>
@@ -167,19 +196,24 @@
                                             <!-- radio -->
                                             <div class="form-group" style="margin-bottom: 0">
                                                 <label>
-                                                    <input type="radio" name="r5" class="minimal" style="margin-right: 5px" value="A" checked>
+                                                    <input id="r5a{{ forloop.counter0 }}" type="radio" name="r5" class="minimal"
+                                                           style="margin-right: 5px" value="A" checked>
                                                 </label>
                                                 <label>
-                                                    <input type="radio" name="r5" class="minimal" style="margin-right: 5px" value="B">
+                                                    <input id="r5b{{ forloop.counter0 }}" type="radio" name="r5" class="minimal"
+                                                           style="margin-right: 5px" value="B">
                                                 </label>
                                                 <label>
-                                                    <input type="radio" name="r5" class="minimal" style="margin-right: 5px" value="C">
+                                                    <input id="r5c{{ forloop.counter0 }}" type="radio" name="r5" class="minimal"
+                                                           style="margin-right: 5px" value="C">
                                                 </label>
                                                 <label>
-                                                    <input type="radio" name="r5" class="minimal" style="margin-right: 5px" value="D">
+                                                    <input id="r5d{{ forloop.counter0 }}" type="radio" name="r5" class="minimal"
+                                                           style="margin-right: 5px" value="D">
                                                 </label>
                                                 <label>
-                                                    <input type="radio" name="r5" class="minimal" style="margin-right: 5px" value="E">
+                                                    <input id="r5e{{ forloop.counter0 }}" type="radio" name="r5" class="minimal"
+                                                           style="margin-right: 5px" value="E">
                                                 </label>
                                             </div>
                                         </td>
@@ -190,19 +224,24 @@
                                             <!-- radio -->
                                             <div class="form-group" style="margin-bottom: 0">
                                                 <label>
-                                                    <input type="radio" name="r6" class="minimal" style="margin-right: 5px" value="A" checked>
+                                                    <input id="r6a{{ forloop.counter0 }}" type="radio" name="r6" class="minimal"
+                                                           style="margin-right: 5px" value="A" checked>
                                                 </label>
                                                 <label>
-                                                    <input type="radio" name="r6" class="minimal" style="margin-right: 5px" value="B">
+                                                    <input id="r6b{{ forloop.counter0 }}" type="radio" name="r6" class="minimal"
+                                                           style="margin-right: 5px" value="B">
                                                 </label>
                                                 <label>
-                                                    <input type="radio" name="r6" class="minimal" style="margin-right: 5px" value="C">
+                                                    <input id="r6c{{ forloop.counter0 }}" type="radio" name="r6" class="minimal"
+                                                           style="margin-right: 5px" value="C">
                                                 </label>
                                                 <label>
-                                                    <input type="radio" name="r6" class="minimal" style="margin-right: 5px" value="D">
+                                                    <input id="r6d{{ forloop.counter0 }}" type="radio" name="r6" class="minimal"
+                                                           style="margin-right: 5px" value="D">
                                                 </label>
                                                 <label>
-                                                    <input type="radio" name="r6" class="minimal" style="margin-right: 5px" value="E">
+                                                    <input id="r6e{{ forloop.counter0 }}" type="radio" name="r6" class="minimal"
+                                                           style="margin-right: 5px" value="E">
                                                 </label>
                                             </div>
                                         </td>
@@ -213,19 +252,24 @@
                                             <!-- radio -->
                                             <div class="form-group" style="margin-bottom: 0">
                                                 <label>
-                                                    <input type="radio" name="r7" class="minimal" style="margin-right: 5px" value="A" checked>
+                                                    <input id="r7a{{ forloop.counter0 }}" type="radio" name="r7" class="minimal"
+                                                           style="margin-right: 5px" value="A" checked>
                                                 </label>
                                                 <label>
-                                                    <input type="radio" name="r7" class="minimal" style="margin-right: 5px" value="B">
+                                                    <input id="r7b{{ forloop.counter0 }}" type="radio" name="r7" class="minimal"
+                                                           style="margin-right: 5px" value="B">
                                                 </label>
                                                 <label>
-                                                    <input type="radio" name="r7" class="minimal" style="margin-right: 5px" value="C">
+                                                    <input id="r7c{{ forloop.counter0 }}" type="radio" name="r7" class="minimal"
+                                                           style="margin-right: 5px" value="C">
                                                 </label>
                                                 <label>
-                                                    <input type="radio" name="r7" class="minimal" style="margin-right: 5px" value="D">
+                                                    <input id="r7d{{ forloop.counter0 }}" type="radio" name="r7" class="minimal"
+                                                           style="margin-right: 5px" value="D">
                                                 </label>
                                                 <label>
-                                                    <input type="radio" name="r7" class="minimal" style="margin-right: 5px" value="E">
+                                                    <input id="r7e{{ forloop.counter0 }}" type="radio" name="r7" class="minimal"
+                                                           style="margin-right: 5px" value="E">
                                                 </label>
                                             </div>
                                         </td>
@@ -236,25 +280,30 @@
                                             <!-- radio -->
                                             <div class="form-group" style="margin-bottom: 0">
                                                 <label>
-                                                    <input type="radio" name="r8" class="minimal" style="margin-right: 5px;" value="A" checked>
+                                                    <input id="r8a{{ forloop.counter0 }}" type="radio" name="r8" class="minimal"
+                                                           style="margin-right: 5px;" value="A" checked>
                                                 </label>
                                                 <label>
-                                                    <input type="radio" name="r8" class="minimal" style="margin-right: 5px" value="B">
+                                                    <input id="r8b{{ forloop.counter0 }}" type="radio" name="r8" class="minimal"
+                                                           style="margin-right: 5px" value="B">
                                                 </label>
                                                 <label>
-                                                    <input type="radio" name="r8" class="minimal" style="margin-right: 5px" value="C">
+                                                    <input id="r8c{{ forloop.counter0 }}" type="radio" name="r8" class="minimal"
+                                                           style="margin-right: 5px" value="C">
                                                 </label>
                                                 <label>
-                                                    <input type="radio" name="r8" class="minimal" style="margin-right: 5px" value="D">
+                                                    <input id="r8d{{ forloop.counter0 }}" type="radio" name="r8" class="minimal"
+                                                           style="margin-right: 5px" value="D">
                                                 </label>
                                                 <label>
-                                                    <input type="radio" name="r8" class="minimal" style="margin-right: 5px" value="E">
+                                                    <input id="r8e{{ forloop.counter0 }}" type="radio" name="r8" class="minimal"
+                                                           style="margin-right: 5px" value="E">
                                                 </label>
                                             </div>
                                         </td>
                                     </tr>
-                            </table>
-                        </div>
+                                </table>
+                            </div>
                             <!-- /.box-body -->
                             <div class="box-footer">
                                 <div class="input-group">
@@ -265,7 +314,9 @@
                                             <input type="hidden" name="item_sno" value={{ item.student }}>
                                             <input type="hidden" name="item_cno" value={{ item.course }}>
                                             <input type="hidden" name="item_tno" value={{ item.teacher }}>
-                                            <button id="submit_result" type="submit" name="submit_result" class="btn btn-primary btn-flat" style="margin-top: 24px">保存</button>
+                                            <button id="submit_result" type="submit" formtarget="_parent"
+                                                    name="submit_result" class="btn btn-primary btn-flat"
+                                                    style="margin-top: 24px">保存</button>
                                         {% endif %}
                                     </span>
                                 </div>
@@ -368,14 +419,15 @@
                         <div class="box-footer">
                             <div class="input-group">
                                 <label>评语：</label>
-                                <input type="text" placeholder="{{ item.text }}" class="form-control" disabled="disabled">
+                                <input type="text" placeholder="{{ item.text }}" class="form-control"
+                                       disabled="disabled">
                             </div>
                         </div>
                     </div>
                 </div>
             {% endfor %}
         </div>
-    </form>
+
     </section>
 {% endblock %}
 
@@ -611,6 +663,7 @@
                 }
             }
         }
+
         function show2(num) {
             var divs = document.getElementsByName("dv2");
             for (var i = 0; i < divs.length; i++) {
@@ -621,5 +674,6 @@
                 }
             }
         }
+
     </script>
 {% endblock %}
