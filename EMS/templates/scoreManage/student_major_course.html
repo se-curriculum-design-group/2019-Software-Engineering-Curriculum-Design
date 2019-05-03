@@ -135,7 +135,7 @@
         $(document).ready(function() {
             var year = $('#major').val();
             const myData = {"year": year};
-            $.get(
+            {% comment %} $.get(
                 '{% url "scoreManagement:_ajax" %}',
                 myData,
                 function (ret, status) {
@@ -145,7 +145,7 @@
                         alert("NO");
                     }
                 }
-            );
+            ); {% endcomment %}
 
          var table = $('#major_course_table').DataTable(
         {
