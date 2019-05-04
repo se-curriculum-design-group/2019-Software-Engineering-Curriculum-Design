@@ -29,7 +29,6 @@ class Course(models.Model):
         )
 
 
-
 # 专业对应课程信息
 class MajorCourses(models.Model):
     # 课程编号
@@ -71,7 +70,8 @@ class Teaching(models.Model):
     # 教授课程的教师名称，为了显示方便，可以冗余
     # tname = tno.username
     # 这门课对应所在的专业培养计划
-    mcno = models.ForeignKey(to=MajorCourses, on_delete=models.CASCADE, default=None)
+    mcno = models.ForeignKey(
+        to=MajorCourses, on_delete=models.CASCADE, default=None)
     # 教师给的本课程的平时分权重，如：0.3, 0.2 ...
     weight = models.FloatField()
 
@@ -95,7 +95,6 @@ class CourseScore(models.Model):
     commen_score = models.FloatField(default=0)
     final_score = models.FloatField(default=0)
 
-
     def __str__(self):
         return '-'.join([str(self.sno), str(self.teaching), str(self.score)])
 
@@ -106,22 +105,36 @@ class CourseScore(models.Model):
             'sno'
         )
 
+# 学生评价表
+
 
 class EvaluationForm(models.Model):
-    teaching = models.OneToOneField(to=Teaching, on_delete=models.CASCADE)
-    item1 = models.CharField(max_length=128)
-    item2 = models.CharField(max_length=128)
-    item3 = models.CharField(max_length=128)
-    item4 = models.CharField(max_length=128)
-    item5 = models.CharField(max_length=128)
-    item6 = models.CharField(max_length=128)
-    "该老师认真负责-A"
-    description = models.TextField()
-    is_finish = models.BooleanField()
+    # 三个对象引用
+    student = models.ForeignKey(
+        to=Student, on_delete=models.CASCADE, default=None)
+    course = models.ForeignKey(
+        to=MajorCourses, on_delete=models.CASCADE, default=None)
+    teacher = models.ForeignKey(
+        to=Teacher, on_delete=models.CASCADE, default=None)
+
+    # 八个评分项（A=100 B=90 C=75 D=60 E=50）
+    item1 = models.IntegerField(default=0)
+    item2 = models.IntegerField(default=0)
+    item3 = models.IntegerField(default=0)
+    item4 = models.IntegerField(default=0)
+    item5 = models.IntegerField(default=0)
+    item6 = models.IntegerField(default=0)
+    item7 = models.IntegerField(default=0)
+    item8 = models.IntegerField(default=0)
+    # 评语
+    description = models.TextField(default="无")
+    # 总分，在前端算完返回给后台
+    sum = models.FloatField(default=0)
+    # 是否已提交
+    is_finish = models.BooleanField(default=False)
 
     def __str__(self):
-        return str(self.teaching)
+        return "-".join([self.student.__str__(), self.course.__str__(), self.teacher.__str__(), str(self.sum)])
 
     class Meta:
         db_table = 'evaluation_form'
-
