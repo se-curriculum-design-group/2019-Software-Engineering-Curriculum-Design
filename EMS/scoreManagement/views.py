@@ -87,9 +87,9 @@ def _ajax(request):
     print(request.GET['year'])
     data = {"yes": True}
     return JsonResponse(data)
+
+
 # 学生评教
-
-
 def assess_teacher(request):
     # 判断该学生是否已经全部提交过
     def judge(s):
