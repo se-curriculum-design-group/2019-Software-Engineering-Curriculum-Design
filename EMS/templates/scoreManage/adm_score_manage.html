@@ -3,20 +3,19 @@
 
 {% block content %}
     <section class="content-header">
-        <h1>查询全校成绩
+        <h1>成绩管理子系统
             <small>Info</small>
         </h1>
         <ol class="breadcrumb">
             <li><a href="{% url 'scoreManagement:welcome' %}"><i class="fa fa-dashboard"></i> 主页</a></li>
-            <li class="active">成绩管理</li>
-            <li class="active">查询全校成绩</li>
+            <li class="active">全校成绩查询</li>
         </ol>
     </section>
+
     <section class="content">
         <div class="box">
             <div class="box-header">
-                <h3 class="box-title">查询全校成绩查询</h3>
-                <div></div>
+                <h3 class="box-title">全校课程成绩表</h3>
                 <div class="btn-group pull-right ">
                     <button id='add' class="btn btn-primary" type="button">
                         <span class="glyphicon glyphicon-plus"></span>增加
@@ -30,17 +29,16 @@
                 </div>
             </div>
             <div class="box-body">
-                <table id="all_course_score" class="table table-bordered table-striped">
+                <table id="all_course_table" class="table table-bordered table-striped">
                     <thead>
                     <tr>
                         <th>编号</th>
                         <th>学年</th>
                         <th>学期</th>
                         <th>学生学号</th>
-                        <th>课程编号</th>
-                        <th>课程名称</th>
+                        <th>课程号</th>
                         <th>考核方式</th>
-                        <th>平时分</th>
+                        <th>平时成绩</th>
                         <th>考试成绩</th>
                         <th>总分</th>
                     </tr>
@@ -53,29 +51,26 @@
                             <td>{{ course_score.teaching.mcno.semester }}</td>
                             <td>{{ course_score.sno.username }}</td>
                             <td>{{ course_score.teaching.mcno.cno.cno }}</td>
-                            <td>{{ course_score.teaching.mcno.cno.cname }}</td>
-                            {% if course_score.teaching.mcno.exam_method == True %}
+                            {% if course_score.teaching.mcno.exam_method  == True %}
                                 <td>考核</td>
                             {% else %}
                                 <td>考察</td>
                             {% endif %}
-                            <td>{{ course_score.final_score }}</td>
                             <td>{{ course_score.commen_score }}</td>
+                            <td>{{ course_score.final_score }}</td>
                             <td>{{ course_score.score }}</td>
-                        <tr>
+                        </tr>
                     {% endfor %}
                     </tbody>
-
                     <tfoot>
                     <tr>
                         <th>编号</th>
                         <th>学年</th>
                         <th>学期</th>
                         <th>学生学号</th>
-                        <th>课程编号</th>
-                        <th>课程名称</th>
+                        <th>课程号</th>
                         <th>考核方式</th>
-                        <th>平时分</th>
+                        <th>平时成绩</th>
                         <th>考试成绩</th>
                         <th>总分</th>
                     </tr>
@@ -83,13 +78,52 @@
                 </table>
             </div>
         </div>
+        <div class="box">
+            <div class="box-header">
+                <h3 class="box-title">教师总表</h3>
+                <div class="btn-group pull-right ">
+                    <button id='add' class="btn btn-primary" type="button">
+                        <span class="glyphicon glyphicon-plus"></span>增加
+                    </button>
+                    <button id='change' class="btn btn-info" type="button">
+                        <span class="glyphicon glyphicon-pencil"></span>修改
+                    </button>
+                    <button id='delete' class="btn btn-success" type="button">
+                        <span class="glyphicon glyphicon-remove"></span>删除
+                    </button>
+                </div>
+            </div>
+        </div>
     </section>
+
 {% endblock %}
 
 {% block script %}
+
+
+    <!-- jQuery 2.2.3 -->
+    <script src="{% static 'AdminLTE/plugins/jQuery/jquery-2.2.3.min.js' %}"></script>
+    <!-- Bootstrap 3.3.6 -->
+    <script src="{% static 'AdminLTE/bootstrap/js/bootstrap.min.js' %}"></script>
+    <!-- DataTables -->
+    <script src="{% static 'AdminLTE/plugins/datatables/jquery.dataTables.min.js' %}"></script>
+    <script src="{% static 'AdminLTE/plugins/datatables/dataTables.bootstrap.min.js' %}"></script>
+    <!-- SlimScroll -->
+    <script src="{% static 'AdminLTE/plugins/slimScroll/jquery.slimscroll.min.js' %}"></script>
+    <!-- FastClick -->
+    <script src="{% static 'AdminLTE/plugins/fastclick/fastclick.js' %}"></script>
+    <!-- AdminLTE App -->
+    <script src="{% static 'AdminLTE/dist/js/app.min.js' %}"></script>
+    <!-- AdminLTE for demo purposes -->
+    <script src="{% static 'AdminLTE/dist/js/demo.js' %}"></script>
+    <!-- page script -->
     <script>
+
+
         $(function () {
-            var all_course_scores = $("#all_course_score").DataTable({
+
+
+            var table = $('#all_course_table').DataTable({
                 "paging": true,       <!-- 允许分页 -->
                 "lengthChange": true, <!-- 允许改变每页显示的行数 -->
                 "searching": true,    <!-- 允许内容搜索 -->
@@ -123,11 +157,115 @@
                 "columnDefs": [{
                     "searchable": false,
                     "orderable": true,
-                    "targets": "_all",
-                    "defaultContent": "-"
+                    "targets": 0
                 }],
                 "order": [[0, 'asc']]
             });
-        });
+
+            $('#all_course_table tbody').on('click', 'tr', function (e) {
+                if ($(this).hasClass('selected')) {
+                    $(this).removeClass('selected');
+                } else {
+                    table.$('tr.selected').removeClass('selected');
+                    $(this).addClass('selected');
+                }
+            });
+
+            $('#add').click(function () {
+                console.log("new car.");
+                $('#addCar').modal();
+            });
+
+            $('#change').click(function () {
+                console.log("change car");
+                if (table.rows('.selected').data().length) {
+                    $("#changeCar").modal();
+                    var rowData = table.rows('.selected').data()[0];
+                    var inputs = $('#changeCar').find('input');
+                    for (let i = 0; i < inputs.length; i++) {
+                        $(inputs[i]).val(rowData[i]);
+                    }
+                } else {
+                    alert("请选择一个项目！");
+                }
+            });
+
+            $('#delete').click(function () {
+                console.log("delete car");
+                if (table.rows('.selected').data().length) {
+                    $("#deleteCar").modal();
+                    $('#sureToDelete').click(function () {
+                        var rowData = table.rows('.selected').data()[0];
+                        const cno = rowData[1];
+                        const data = {'cno': cno};
+                        $.get('#',
+                            data,
+                            function (rec, status) {
+                                if (status === 'success') {
+                                    alert('删除成功');
+                                    table.row('.selected').remove().draw(false);
+                                } else {
+                                    alert('删除失败！');
+                                }
+                            }
+                        );
+                    });
+                } else {
+                    alert("请选择一个要删除的项目。");
+                }
+
+            });
+
+            $('#sureToChange').click(function () {
+                var rowData = table.rows('.selected').data()[0];
+                const cnoOld = rowData[1];
+                const cno = $('#changeCarCNo').val();
+                const ctype = $("#changeCarType").val();
+                const coil = $("#changeCarOild").val();
+                const isava = $('#changeCarAva').val();
+                var isgood;
+                if (isava === '正常') {
+                    isgood = true;
+                } else {
+                    isgood = false;
+                }
+                const data = {
+                    'cnoOld': cnoOld,
+                    'cno': cno,
+                    'ctype': ctype,
+                    'coil': coil,
+                    'isgood': isgood
+                };
+                $.get(
+                    '#',
+                    data,
+                    function (rec) {
+                        if (!rec) {
+                            alert('修改失败，车牌号重复');
+                        } else {
+                            var tds = Array.prototype.slice.call($('.selected td'));
+                            const newcno = rec['newcno'];
+                            const newctype = rec['newctype'];
+                            const newoil = rec['newoil'];
+                            var avg;
+                            console.log(rec['ava']);
+                            console.log(typeof (rec['ava']));
+                            if (rec['ava']) {
+                                avg = '正常';
+                            } else {
+                                avg = '故障'
+                            }
+                            tds[1].innerHTML = newcno;
+                            tds[2].innerHTML = newctype;
+                            tds[3].innerHTML = newoil;
+                            tds[4].innerHTML = avg;
+                            alert("修改成功");
+                        }
+                    }
+                );
+            });
+        })
+
+
     </script>
 {% endblock %}

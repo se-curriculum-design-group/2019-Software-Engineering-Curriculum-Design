@@ -14,20 +14,6 @@
 
     <section class="content">
         <div class="box">
-            <div class="box-header">
-                <h3 class="box-title">学生总表</h3>
-                <div class="btn-group pull-right ">
-                    <button id='add' class="btn btn-primary" type="button">
-                        <span class="glyphicon glyphicon-plus"></span>增加
-                    </button>
-                    <button id='change' class="btn btn-info" type="button">
-                        <span class="glyphicon glyphicon-pencil"></span>修改
-                    </button>
-                    <button id='delete' class="btn btn-success" type="button">
-                        <span class="glyphicon glyphicon-remove"></span>删除
-                    </button>
-                </div>
-            </div>
             <div class="box-body">
                 <table id="stu_table" class="table table-bordered table-striped">
                     <thead>
@@ -158,10 +144,8 @@
     <script src="{% static 'AdminLTE/dist/js/demo.js' %}"></script>
     <!-- page script -->
     <script>
-
         $(function () {
-
-            var table = $('#stu_table').DataTable({
+  var table = $('#stu_table').DataTable({
                 "paging": true,       <!-- 允许分页 -->
                 "lengthChange": true, <!-- 允许改变每页显示的行数 -->
                 "searching": true,    <!-- 允许内容搜索 -->
