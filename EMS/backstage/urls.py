@@ -16,4 +16,5 @@ urlpatterns = [
                   path('hello_admin', views.admin_view, name='admin_view'),
                   path('backstage_manage', views.backstage_manage, name='backstage_manage'),
                   path('my_personal_details', views.my_personal_details, name='my_personal_details'),
+
               ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

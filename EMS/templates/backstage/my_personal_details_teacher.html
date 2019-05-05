@@ -100,21 +100,25 @@
             <div class="col-lg-4">
                 <div class="card card-small mb-4 pt-3">
                     <div class="card-header border-bottom text-center">
-                        <div class="mb-3 mx-auto" >
+                        <div class="mb-3 mx-auto">
                             <h2 class="mb-0">{{ user.name }}</h2>
                         </div>
                     </div>
                     <ul class="list-group list-group-flush">
                         <li class="list-group-item px-4">
-                            <strong class="text-muted d-block mb-2">学号:</strong>
+                            <strong class="text-muted d-block mb-2">工号:</strong>
                             <span>{{ user.username }}</span>
                         </li>
                         <li class="list-group-item px-4">
-                            <strong class="text-muted d-block mb-2">班级:</strong>
-                            <span>{{ user.in_cls }}</span>
+                            <strong class="text-muted d-block mb-2">教育背景:</strong>
+                            <span>{{ user.edu_background }}</span>
                         </li>
                         <li class="list-group-item px-4">
-                            <strong class="text-muted d-block mb-2">入学年份：</strong>
+                            <strong class="text-muted d-block mb-2">头衔:</strong>
+                            <span>{{ user.title }}</span>
+                        </li>
+                        <li class="list-group-item px-4">
+                            <strong class="text-muted d-block mb-2">入职年份：</strong>
                             <span>{{ user.in_year }}</span>
                         </li>
                         <li class="list-group-item px-4">
@@ -126,10 +130,6 @@
                             {% endif %}
                         </li>
                         <li class="list-group-item p-4">
-                            <strong class="text-muted d-block mb-2">获得学分：</strong>
-                            <span>{{ user.score_got }}</span>
-                        </li>
-                        <li class="list-group-item p-4">
                             <strong class="text-muted d-block mb-2">最后登录时间：</strong>
                             <span>{{ user.last_login.date.isoformat }}</span>
                         </li>
@@ -139,7 +139,7 @@
                         </li>
                         <li class="list-group-item p-4">
                             <strong class="text-muted d-block mb-2">描述：</strong>
-                            <span>123</span>
+                            <span>{{ user.description }}</span>
                         </li>
                     </ul>
                 </div>
@@ -161,7 +161,7 @@
                                                 <label for="feFirstName">姓名：</label>
                                                 <span class="form-control">{{ user.name }}</span></div>
                                             <div class="form-group col-md-6">
-                                                <label for="feFirstName">学号：</label>
+                                                <label for="feFirstName">工号：</label>
                                                 <span class="form-control">{{ user.username }}</span></div>
                                         </div>
                                         <div class="form-row">
