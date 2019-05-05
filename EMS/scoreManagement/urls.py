@@ -8,6 +8,8 @@ app_name = 'scoreManagement'
 urlpatterns = [
     path('welcome', views.welcome, name="welcome"),
     path('score_home_page', views.score_home_page, name="score_home_page"),
+     path('student_score', views.student_score, name="student_score"),
+    path('student_own_study', views.student_own_study, name="student_own_study"),
     path('adm_all_course_score', views.adm_all_course_score,
          name="adm_all_course_score"),
     path('std_view_major_course', views.std_view_major_course,

@@ -1,12 +1,12 @@
 from django.shortcuts import render, redirect, Http404
 from django.views.decorators.csrf import csrf_exempt
-
+from django.http import JsonResponse, HttpResponseRedirect
+from django.db.models import Q
 import json
-from scoreManagement.models import Course, MajorPlan, MajorCourses, CourseScore, Teaching
 
 from backstage.models import Student, Teacher, College, Major, MajorPlan, ClassRoom, AdmClass, User
 from scoreManagement.models import Teaching, Course, MajorPlan, MajorCourses, CourseScore, EvaluationForm
-from django.http import JsonResponse, HttpResponseRedirect
+
 
 
 def welcome(request):
@@ -44,6 +44,90 @@ def score_home_page(request):
         return render(request, 'scoreManage/teacher_score_manage.html')
     else:
         return render(request, 'scoreManage/adm_score_manage.html')
+
+
+def student_score(request):
+    sno = request.session['username'];
+    student = Student.objects.get(username=sno)
+    course_score = CourseScore.objects.filter(sno=student)
+    context = {"my_course_score": course_score}
+    return render(request, "scoreManage/my_course_score.html", context)
+
+def student_own_study(request):
+    sno = request.session['username']
+    student = Student.objects.get(username=sno)
+    course_list = \
+        CourseScore.objects.filter(sno=student).\
+        order_by("teaching__mcno__year","teaching__mcno__semester")
+    year_semester=\
+        course_list.values_list("teaching__mcno__year","teaching__mcno__semester").\
+            distinct()
+    #总学分
+    sum=Student.objects.get(username=sno).score_got
+    # 毕业所需学分
+    sum_req=student.in_cls.major.score_grad
+    #总绩点
+    gpa=0
+    for course_list_item in course_list:
+       a=course_list_item.teaching.mcno.cno.score
+       b=course_list_item.score
+       if b>=90:
+           gpa=gpa+a/sum*4
+       elif b>=80 and b<90:
+           gpa=gpa+a/sum *3
+       elif b>=70 and b<80:
+           gpa=gpa+a/sum*2
+       elif b>=60 and b<70:
+           gpa=gpa+a/sum*1
+       else:
+           gpa=gpa
+    
+     #每个学期的平均绩点
+    semester_GPA_list=[]
+     #每个学期的总学分
+    semester_sum_list=[]
+    #每个学期选课的数量
+    semester_num_list=[]
+    for  year_semester_item in year_semester:
+        semester_course =\
+            course_list.filter(
+                Q(teaching__mcno__year=year_semester_item[0]),
+                Q(teaching__mcno__semester=year_semester_item[1])
+            )
+        semester_num_list.append(semester_course.count())
+        semester_sum=0
+        semester_GPA=0
+        for year_semester_course_item in  semester_course:
+            a=year_semester_course_item.teaching.mcno.cno.score
+            semester_sum=semester_sum+a
+        semester_sum_list.append(semester_sum)
+        for year_semester_course_item in  semester_course:
+            a = year_semester_course_item.teaching.mcno.cno.score
+            b = year_semester_course_item.score
+            if b >= 90:
+                 semester_GPA= semester_GPA + a /semester_sum * 4
+            elif b >= 80 and b < 90:
+                semester_GPA= semester_GPA + a / semester_sum * 3
+            elif b >= 70 and b < 80:
+                semester_GPA = semester_GPA + a / semester_sum * 2
+            elif b >= 60 and b < 70:
+                semester_GPA = semester_GPA + a / semester_sum * 1
+            else:
+                 semester_GPA = semester_GPA
+        semester_GPA_list.append(semester_GPA)
+    context = {
+        "student_name":student.name,
+        "my_scoresum":sum,
+        "my_gpa":round(gpa,2),
+        "my_year_semester":year_semester,
+        "semester_GPA":semester_GPA_list,
+        "semester_scoresum":semester_sum_list,
+        "my_score_gg":sum_req,
+        "my_score_g":round(sum/sum_req,2),
+        "semester_num":semester_num_list,
+    }
+    return render(request, "scoreManage/student_own_study.html",context)
+
 
 
 def std_view_major_course(request):
