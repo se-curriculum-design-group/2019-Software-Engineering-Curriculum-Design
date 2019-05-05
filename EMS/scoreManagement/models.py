@@ -29,7 +29,6 @@ class Course(models.Model):
         )
 
 
-
 # 专业对应课程信息
 class MajorCourses(models.Model):
     # 课程编号
@@ -71,7 +70,8 @@ class Teaching(models.Model):
     # 教授课程的教师名称，为了显示方便，可以冗余
     # tname = tno.username
     # 这门课对应所在的专业培养计划
-    mcno = models.ForeignKey(to=MajorCourses, on_delete=models.CASCADE, default=None)
+    mcno = models.ForeignKey(
+        to=MajorCourses, on_delete=models.CASCADE, default=None)
     # 教师给的本课程的平时分权重，如：0.3, 0.2 ...
     weight = models.FloatField()
 
@@ -94,7 +94,6 @@ class CourseScore(models.Model):
     score = models.FloatField()
     commen_score = models.FloatField(default=0)
     final_score = models.FloatField(default=0)
-
 
     def __str__(self):
         return '-'.join([str(self.sno), str(self.teaching), str(self.score)])
@@ -134,4 +133,3 @@ class EvaluationForm(models.Model):
 
     class Meta:
         db_table = 'evaluation_form'
-

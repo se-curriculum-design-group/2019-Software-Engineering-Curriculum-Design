@@ -1,10 +1,13 @@
-from django.shortcuts import render, redirect
-from django.http import HttpResponse
+from django.shortcuts import render, redirect, Http404
 from django.views.decorators.csrf import csrf_exempt
 
-from backstage.models import Student, Teacher, College, Major, MajorPlan, ClassRoom, AdmClass,User
-from scoreManagement.models import Teaching, Course, MajorPlan, MajorCourses, CourseScore, EvaluationForm
-from django.http import JsonResponse,HttpResponseRedirect
+import json
+from scoreManagement.models import Course, MajorPlan, MajorCourses, CourseScore, Teaching
+
+from backstage.models import Student, Teacher, College, Major, MajorPlan, ClassRoom, AdmClass, User
+from scoreManagement.models import Teacshing, Course, MajorPlan, MajorCourses, CourseScore, EvaluationForm
+from django.http import JsonResponse, HttpResponseRedirect
+
 
 def welcome(request):
     students = Student.objects.all()
@@ -24,11 +27,14 @@ def welcome(request):
 
 
 def adm_all_course_score(request):
-    all_course_score = CourseScore.objects.all()[:20]
+    if (request.session['user_type'] != '管理员'):
+        all_course_score = CourseScore.objects.all()[:20]
 
-    print(len(all_course_score))
-    context = {"all_course_score": all_course_score}
-    return render(request, 'scoreManage/adm_score_manage.html', context)
+        print(len(all_course_score))
+        context = {"all_course_score": all_course_score}
+        return render(request, 'scoreManage/adm_score_manage.html', context)
+    else:
+        return Http404()
 
 
 def score_home_page(request):
@@ -39,7 +45,51 @@ def score_home_page(request):
     else:
         return render(request, 'scoreManage/adm_score_manage.html')
 
+
+def std_view_major_course(request):
+    sno = request.session['username']
+    student = Student.objects.get(username=sno)
+    # my_major_plan = student.in_cls.major
+    all_major_course = MajorCourses.objects.all()
+    all_college = College.objects.all()
+    all_course_type = Course.objects.values("course_type").distinct()
+    all_year = MajorCourses.objects.values("year").order_by("year").distinct()
+    all_major = Major.objects.all()
+    context = {"all_major_course": all_major_course,
+               "all_college": all_college,
+               "all_course": all_course_type,
+               "all_year": all_year,
+               "student": student,
+               "all_major": all_major
+               }
+    return render(request, "scoreManage/student_major_course.html", context)
+
+
+def std_view_major_plan(request):
+    sno = request.session['username']
+    student = Student.objects.get(username=sno)
+    all_major_plan = MajorPlan.objects.all()
+    all_college = College.objects.all()
+    all_year = MajorPlan.objects.values("year").order_by("year").distinct()
+    college_id = request.GET.get('stat_type_id', None)
+    all_major = Major.objects.all()
+    context = {
+        "all_major_plan": all_major_plan,
+        "all_college": all_college,
+        "all_year": all_year,
+        "student": student,
+        "all_major": all_major
+    }
+    return render(request, "scoreManage/student_major_plan.html", context)
+
+
+def _ajax(request):
+    print(request.GET['year'])
+    data = {"yes": True}
+    return JsonResponse(data)
 # 学生评教
+
+
 def assess_teacher(request):
     # 判断该学生是否已经全部提交过
     def judge(s):
@@ -56,12 +106,12 @@ def assess_teacher(request):
     log = []
     stuno = request.session['username']
     sno_id = stuno[4:]  # 得到学生id
-    stu = Student.objects.filter(username = stuno)
-    courses = CourseScore.objects.filter(sno = sno_id)  # 从选课表中找出该学生修的课程
+    stu = Student.objects.filter(username=stuno)
+    courses = CourseScore.objects.filter(sno=sno_id)  # 从选课表中找出该学生修的课程
     num1 = 0
     sum = 0
     for item1 in courses:
-        teachings = Teaching.objects.filter(id = item1.teaching_id)
+        teachings = Teaching.objects.filter(id=item1.teaching_id)
         for item2 in teachings:
             if item2.mcno.year == 2017 and item2.mcno.semester == 1:
                 # print(item2)
@@ -89,7 +139,8 @@ def assess_teacher(request):
                 temp['text'] = "无"
                 temp['flag'] = False
                 try:
-                    temp1 = EvaluationForm.objects.get(student_id=sno_id, course_id=item2.mcno.id, teacher_id=item2.tno_id)
+                    temp1 = EvaluationForm.objects.get(
+                        student_id=sno_id, course_id=item2.mcno.id, teacher_id=item2.tno_id)
                     temp['r1'] = temp1.item1
                     temp['r2'] = temp1.item2
                     temp['r3'] = temp1.item3
@@ -122,9 +173,9 @@ def assess_teacher(request):
     # print(log)
     num2 = sum-num1
     flag = judge(sno_id)
-    context = {'log' : log, 'num1': num1, 'num2': num2, 'flag': flag}
+    context = {'log': log, 'num1': num1, 'num2': num2, 'flag': flag}
 
-    return render(request, 'scoreManage/assess_teacher.html', context = context)
+    return render(request, 'scoreManage/assess_teacher.html', context=context)
 
 
 # 学生提交评价信息
@@ -184,10 +235,13 @@ def submit_result(request):
         # print(course)
         print("!!!")
         try:
-            EvaluationForm.objects.get(student=student, course=course, teacher=teacher)
-            EvaluationForm.objects.filter(student=student, course=course, teacher=teacher).update(item1=r1, item2=r2, item3=r3, item4=r4, item5=r5, item6=r6, item7=r7, item8=r8, description=text, sum=ave, is_finish=False)
+            EvaluationForm.objects.get(
+                student=student, course=course, teacher=teacher)
+            EvaluationForm.objects.filter(student=student, course=course, teacher=teacher).update(
+                item1=r1, item2=r2, item3=r3, item4=r4, item5=r5, item6=r6, item7=r7, item8=r8, description=text, sum=ave, is_finish=False)
         except:
-            EvaluationForm.objects.create(student=student, course=course, teacher=teacher, item1=r1, item2=r2, item3=r3, item4=r4, item5=r5, item6=r6, item7=r7, item8=r8, description=text, sum=ave, is_finish=False)
+            EvaluationForm.objects.create(student=student, course=course, teacher=teacher, item1=r1, item2=r2,
+                                          item3=r3, item4=r4, item5=r5, item6=r6, item7=r7, item8=r8, description=text, sum=ave, is_finish=False)
         return redirect('./assess_teacher')
 
 # # 最终的提交，提交后不可更改
