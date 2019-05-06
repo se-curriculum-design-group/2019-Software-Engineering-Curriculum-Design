@@ -33,8 +33,9 @@
         <a href="#" class="dropdown-toggle" data-toggle="dropdown">毕业设计 <span
                 class="caret"></span></a>
         <ul class="dropdown-menu" role="menu">
-            <li><a href="#">题目浏览</a></li>
-            <li><a href="#">题目提交</a></li>
+            <li><a href="{% url 'graduationManagement:student_choose_project' %}">题目浏览</a></li>
+            <li><a href="{% url 'graduationManagement:student_submit_project' %}">题目提交</a></li>
+            <li><a href="{% url 'graduationManagement:student_view_score' %}">查看成绩</a></li>
         </ul>
     </li>
 
@@ -80,8 +81,9 @@
             </span>
         </a>
         <ul class="treeview-menu">
-            <li><a href="#"><i class="fa fa-circle-o"></i>题目浏览</a></li>
-            <li><a href="#"><i class="fa fa-circle-o"></i>题目提交</a></li>
+            <li><a href="{% url 'graduationManagement:student_choose_project' %}"><i class="fa fa-circle-o"></i>题目浏览</a></li>
+            <li><a href="{% url 'graduationManagement:student_submit_project' %}"><i class="fa fa-circle-o"></i>题目提交</a></li>
+            <li><a href="{% url 'graduationManagement:student_view_score' %}"><i class="fa fa-circle-o"></i>查看成绩</a></li>
         </ul>
     </li>
     <li class="treeview">

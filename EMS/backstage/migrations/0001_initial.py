@@ -1,3 +1,4 @@
+
 from django.conf import settings
 import django.contrib.auth.models
 from django.db import migrations, models
