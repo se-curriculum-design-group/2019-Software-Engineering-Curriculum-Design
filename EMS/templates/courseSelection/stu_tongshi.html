@@ -1,0 +1,161 @@
+{% extends "base.html" %}
+{% block title %}欢迎登录教务管理系统{% endblock %}
+
+{% block custom_nav %}
+    <li class="dropdown">
+        <a href="#" class="dropdown-toggle" data-toggle="dropdown">信息查询 <span
+                class="caret"></span></a>
+        <ul class="dropdown-menu" role="menu">
+            <li><a href="#">查看个人信息</a></li>
+            <li><a href="#">查看个人课表</a></li>
+            <li><a href="#">查看全校课表</a></li>
+            <li><a href="#">查询空闲教室</a></li>
+            <li class="divider"></li>
+            <li><a href="#">查看专业培养计划</a></li>
+            <li><a href="#">查看专业课程计划</a></li>
+            <li class="divider"></li>
+            <li><a href="#">查看考试成绩</a></li>
+            <li><a href="#">查看个人学业情况</a></li>
+        </ul>
+    </li>
+
+    <li class="dropdown">
+        <a href="#" class="dropdown-toggle" data-toggle="dropdown">选课 <span
+                class="caret"></span></a>
+        <ul class="dropdown-menu" role="menu">
+            <li><a href="{% url 'courseSelection:stu_tongshi' %}">通识课</a></li>
+            <li><a href="{% url 'courseSelection:stu_major' %}">专业选修</a></li>
+            <li><a href="#">查看全校课表</a></li>
+        </ul>
+    </li>
+
+    <li class="dropdown">
+        <a href="#" class="dropdown-toggle" data-toggle="dropdown">毕业设计 <span
+                class="caret"></span></a>
+        <ul class="dropdown-menu" role="menu">
+            <li><a href="#">题目浏览</a></li>
+            <li><a href="#">题目提交</a></li>
+        </ul>
+    </li>
+
+    <li><a href="#">教学评价</a></li>
+{% endblock %}
+
+
+{% block left_side_block %}
+    <!-- 不同用户自定义的左侧的侧边栏 -->
+    <li class="treeview">
+        <a href="{% url 'scoreManagement:score_home_page' %}">
+            <i class="fa fa-dashboard"></i> <span>信息查询</span>
+            <span class="pull-right-container">
+              <i class="fa fa-angle-left pull-right"></i>
+            </span>
+        </a>
+        <ul class="treeview-menu">
+            <li><a href="#"><i class="fa fa-circle-o"></i>查看个人信息</a></li>
+            <li><a href="#"><i class="fa fa-circle-o"></i>查看个人课表</a></li>
+            <li><a href="#"><i class="fa fa-circle-o"></i>查看全校课表</a></li>
+            <li><a href="#"><i class="fa fa-circle-o"></i>查看专业培养计划</a></li>
+            <li><a href="#"><i class="fa fa-circle-o"></i>查看专业课程计划</a></li>
+            <li><a href="#"><i class="fa fa-circle-o"></i>查询空闲教室</a></li>
+            <li><a href="#"><i class="fa fa-circle-o"></i>查看考试成绩</a></li>
+            <li><a href="#"><i class="fa fa-circle-o"></i>查看个人学业情况</a></li>
+        </ul>
+    </li>
+
+    <li class="treeview">
+        <a href="#">
+            <i class="fa fa-table"></i> <span>选课</span>
+            <span class="pull-right-container">
+              <i class="fa fa-angle-left pull-right"></i>
+            </span>
+        </a>
+    </li>
+
+    <li class="treeview">
+        <a href="#">
+            <i class="fa fa-folder"></i> <span>毕业设计</span>
+            <span class="pull-right-container">
+              <i class="fa fa-angle-left pull-right"></i>
+            </span>
+        </a>
+        <ul class="treeview-menu">
+            <li><a href="#"><i class="fa fa-circle-o"></i>题目浏览</a></li>
+            <li><a href="#"><i class="fa fa-circle-o"></i>题目提交</a></li>
+        </ul>
+    </li>
+    <li class="treeview">
+        <a href="#">
+            <i class="fa fa-share"></i> <span>教学评价</span>
+            <span class="pull-right-container">
+              <i class="fa fa-angle-left pull-right"></i>
+            </span>
+        </a>
+    </li>
+{% endblock %}
+ {% block content %}
+        <section class="content-header">
+        <h1>选课子系统
+            <small>Info</small>
+        </h1>
+        <ol class="breadcrumb">
+            <li><a href="{% url 'scoreManagement:welcome' %}"><i class="fa fa-dashboard"></i> 主页</a></li>
+            <li class="active">通识课</li>
+        </ol>
+    </section>
+        <section class="content">
+        <div class="box">
+            <div class="box-header">
+                <h3 class="box-title">通识课</h3>
+                <div class="btn-group pull-right ">
+                    <button id='college' class="btn btn-primary" type="button">
+                        <span class="glyphicon glyphicon-plus"></span>学院
+                    </button>
+                    <button id='major' class="btn btn-info" type="button">
+                        <span class="glyphicon glyphicon-pencil"></span>专业
+                    </button>
+                </div>
+            </div>
+            <div class="box-body">
+                <table id="stu_table" class="table table-bordered table-striped">
+                    <thead>
+                    <tr>
+                        <th>编号</th>
+                        <th>学号</th>
+                        <th>所在班级</th>
+                        <th>姓名</th>
+                        <th>性别</th>
+                        <th>已修学分</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    {% for student in students %}
+                        <tr>
+                            <td>{{ forloop.counter }}</td>
+                            <td>{{ student.username }}</td>
+                            <td>{{ student.in_cls.name }}</td>
+                            <td>{{ student.name }}</td>
+                            {% if student.sex == True %}
+                                <td>男</td>
+                            {% else %}
+                                <td>女</td>
+                            {% endif %}
+                            <td>{{ student.score_got }}</td>
+                        </tr>
+                    {% endfor %}
+                    </tbody>
+                    <tfoot>
+                    <tr>
+                        <th>编号</th>
+                        <th>学号</th>
+                        <th>所在班级</th>
+                        <th>姓名</th>
+                        <th>性别</th>
+                        <th>已修学分</th>
+                    </tr>
+                    </tfoot>
+                </table>
+            </div>
+        </div>
+    </section>
+ {% endblock %}
