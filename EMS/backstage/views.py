@@ -5,10 +5,8 @@ from django.http import HttpResponse, JsonResponse
 from django.views.decorators.csrf import csrf_exempt
 from django.shortcuts import render, redirect, get_object_or_404
 
-
 from backstage.models import Student, Teacher, User
 from utils import make_encode
-
 
 def welcome(request):
     name = request.session['name']

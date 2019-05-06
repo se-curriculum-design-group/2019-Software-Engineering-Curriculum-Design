@@ -223,3 +223,4 @@ def delete(request):
 
 def teacher(request):#教师查看授课选课情况
     return render(request,"courseSelection/teacher.html")
+
