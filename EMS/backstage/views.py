@@ -26,7 +26,6 @@ def goto_login(request):
 
 @csrf_exempt
 def mylogin(request):
-
     def save_session(user_type):
         request.session['username'] = username
         if user_type == '管理员':
