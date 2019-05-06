@@ -29,7 +29,10 @@ def mylogin(request):
 
     def save_session(user_type):
         request.session['username'] = username
-        request.session['name'] = user.name
+        if user_type == '管理员':
+            request.session['name'] = username
+        else:
+            request.session['name'] = user.name
         request.session['password'] = password
         request.session['user_type'] = user_type
 
@@ -44,43 +47,53 @@ def mylogin(request):
                 user = Student.objects.get(username=username, password=password)
                 login(request, user)
                 save_session('学生')
-                return redirect('backstage:welcome')
+                return redirect('backstage:student_view')
             except:
-                return JsonResponse({})
+                return redirect('backstage:goto_login')
+                # return JsonResponse({"not_exist": "1"})
         elif 9 == len(username):
             try:
-                user = Student.objects.get(username=username, password=password)
+                user = Teacher.objects.get(username=username, password=password)
                 login(request, user)
-                save_session('学生')
-                return redirect('backstage:welcome')
+                save_session('教师')
+                return redirect('backstage:teacher_view')
             except:
-                return JsonResponse({})
+                return redirect("backstage:goto_login")
+                # return JsonResponse({"not_exist": "1"})
         else:
             try:
                 user = User.objects.get(username=username, password=password)
                 login(request, user)
                 save_session('管理员')
-                return redirect('backstage:welcome')
+                return redirect('backstage:admin_view')
             except:
-                return JsonResponse({})
+                return redirect("backstage:goto_login")
+                # return JsonResponse({"not_exist": "1"})
 
 
+@login_required
 def student_view(request):
-    raise NotImplemented
+    return render(request, 'student_base.html')
 
 
+@login_required
 def admin_view(request):
-    raise NotImplemented
+    return render(request, 'adm_base.html')
 
 
+@login_required
 def teacher_view(request):
-    raise NotImplemented
+    return render(request, 'teacher_base.html')
 
 
 @login_required
 def mylogout(request):
     logout(request)
     return render(request, 'base.html')
+
+
+def backstage_manage(request):
+    return render(request, 'backstage/adm_backstage_manage.html')
 
 
 @login_required

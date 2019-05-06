@@ -1,0 +1,355 @@
+{% extends 'teacher_base.html' %}
+{% load staticfiles %}
+{% block content %}
+    <section class="content-header">
+        <h1>成绩管理子系统
+            <small>Info</small>
+        </h1>
+        <ol class="breadcrumb">
+            <li><a href="{% url 'scoreManagement:welcome' %}"><i class="fa fa-dashboard"></i> 主页</a></li>
+            <li class="active">成绩管理</li>
+        </ol>
+
+    </section>
+
+    <section class="content">
+        <div class="box">
+            <div class="box-header">
+                <h3 class="box-title">学生总表</h3>
+                <div class="btn-group pull-right ">
+                    <button id='add' class="btn btn-primary" type="button">
+                        <span class="glyphicon glyphicon-plus"></span>增加
+                    </button>
+                    <button id='change' class="btn btn-info" type="button">
+                        <span class="glyphicon glyphicon-pencil"></span>修改
+                    </button>
+                    <button id='delete' class="btn btn-success" type="button">
+                        <span class="glyphicon glyphicon-remove"></span>删除
+                    </button>
+                </div>
+            </div>
+            <div class="box-body">
+                <table id="stu_table" class="table table-bordered table-striped">
+                    <thead>
+                    <tr>
+                        <th>编号</th>
+                        <th>学号</th>
+                        <th>所在班级</th>
+                        <th>姓名</th>
+                        <th>性别</th>
+                        <th>已修学分</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    {% for student in students %}
+                        <tr>
+                            <td>{{ forloop.counter }}</td>
+                            <td>{{ student.username }}</td>
+                            <td>{{ student.in_cls.name }}</td>
+                            <td>{{ student.name }}</td>
+                            {% if student.sex == True %}
+                                <td>男</td>
+                            {% else %}
+                                <td>女</td>
+                            {% endif %}
+                            <td>{{ student.score_got }}</td>
+                        </tr>
+                    {% endfor %}
+                    </tbody>
+                    <tfoot>
+                    <tr>
+                        <th>编号</th>
+                        <th>学号</th>
+                        <th>所在班级</th>
+                        <th>姓名</th>
+                        <th>性别</th>
+                        <th>已修学分</th>
+                    </tr>
+                    </tfoot>
+                </table>
+            </div>
+        </div>
+        <div class="box">
+            <div class="box-header">
+                <h3 class="box-title">教师总表</h3>
+                <div class="btn-group pull-right ">
+                    <button id='add' class="btn btn-primary" type="button">
+                        <span class="glyphicon glyphicon-plus"></span>增加
+                    </button>
+                    <button id='change' class="btn btn-info" type="button">
+                        <span class="glyphicon glyphicon-pencil"></span>修改
+                    </button>
+                    <button id='delete' class="btn btn-success" type="button">
+                        <span class="glyphicon glyphicon-remove"></span>删除
+                    </button>
+                </div>
+            </div>
+            <div class="box-body">
+                <table id="teacher_table" class="table table-bordered table-striped">
+                    <thead>
+                    <tr>
+                        <th>编号</th>
+                        <th>工号</th>
+                        <th>姓名</th>
+                        <th>性别</th>
+                        <th>所在学院</th>
+                        <th>入职年份</th>
+                        <th>学历</th>
+                        <th>职称</th>
+                        <th>个人简介</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    {% for teacher in teachers %}
+                        <tr>
+                            <td>{{ forloop.counter }}</td>
+                            <td>{{ teacher.username }}</td>
+                            <td>{{ teacher.name }}</td>
+                            {% if teacher.sex == True %}
+                                <td>男</td>
+                            {% else %}
+                                <td>女</td>
+                            {% endif %}
+                            <td>{{ teacher.college.name }}</td>
+                            <td>{{ teacher.in_year }}</td>
+                            <td>{{ teacher.edu_background }}</td>
+                            <td>{{ teacher.title }}</td>
+                            <td>{{ teacher.description }}</td>
+                        </tr>
+                    {% endfor %}
+                    </tbody>
+                    <tfoot>
+                    <tr>
+                        <th>编号</th>
+                        <th>工号</th>
+                        <th>姓名</th>
+                        <th>性别</th>
+                        <th>所在学院</th>
+                        <th>入职年份</th>
+                        <th>学历</th>
+                        <th>职称</th>
+                        <th>个人简介</th>
+                    </tr>
+                    </tfoot>
+                </table>
+            </div>
+        </div>
+    </section>
+
+{% endblock %}
+
+{% block script %}
+    <!-- jQuery 2.2.3 -->
+    <script src="{% static 'AdminLTE/plugins/jQuery/jquery-2.2.3.min.js' %}"></script>
+    <!-- Bootstrap 3.3.6 -->
+    <script src="{% static 'AdminLTE/bootstrap/js/bootstrap.min.js' %}"></script>
+    <!-- DataTables -->
+    <script src="{% static 'AdminLTE/plugins/datatables/jquery.dataTables.min.js' %}"></script>
+    <script src="{% static 'AdminLTE/plugins/datatables/dataTables.bootstrap.min.js' %}"></script>
+    <!-- SlimScroll -->
+    <script src="{% static 'AdminLTE/plugins/slimScroll/jquery.slimscroll.min.js' %}"></script>
+    <!-- FastClick -->
+    <script src="{% static 'AdminLTE/plugins/fastclick/fastclick.js' %}"></script>
+    <!-- AdminLTE App -->
+    <script src="{% static 'AdminLTE/dist/js/app.min.js' %}"></script>
+    <!-- AdminLTE for demo purposes -->
+    <script src="{% static 'AdminLTE/dist/js/demo.js' %}"></script>
+    <!-- page script -->
+    <script>
+
+        $(function () {
+
+            var table = $('#stu_table').DataTable({
+                "paging": true,       <!-- 允许分页 -->
+                "lengthChange": true, <!-- 允许改变每页显示的行数 -->
+                "searching": true,    <!-- 允许内容搜索 -->
+                "ordering": true,     <!-- 允许排序 -->
+                "info": true,         <!-- 显示信息 -->
+                "autoWidth": false,    <!-- 固定宽度 -->
+                "language": {
+                    "sProcessing": "处理中...",
+                    "sLengthMenu": "显示 _MENU_ 项结果",
+                    "sZeroRecords": "没有匹配结果",
+                    "sInfo": "显示第 _START_ 至 _END_ 项结果，共 _TOTAL_ 项",
+                    "sInfoEmpty": "显示第 0 至 0 项结果，共 0 项",
+                    "sInfoFiltered": "(由 _MAX_ 项结果过滤)",
+                    "sInfoPostFix": "",
+                    "sSearch": "搜索:",
+                    "sUrl": "",
+                    "sEmptyTable": "表中数据为空",
+                    "sLoadingRecords": "载入中...",
+                    "sInfoThousands": ",",
+                    "oPaginate": {
+                        "sFirst": "首页",
+                        "sPrevious": "上页",
+                        "sNext": "下页",
+                        "sLast": "末页"
+                    },
+                    "oAria": {
+                        "sSortAscending": ": 以升序排列此列",
+                        "sSortDescending": ": 以降序排列此列"
+                    }
+                },
+                "columnDefs": [{
+                    "searchable": false,
+                    "orderable": true,
+                    "targets": 0
+                }],
+                "order": [[0, 'asc']]
+            });
+
+            var table2 = $('#teacher_table').DataTable({
+                "paging": true,       <!-- 允许分页 -->
+                "lengthChange": true, <!-- 允许改变每页显示的行数 -->
+                "searching": true,    <!-- 允许内容搜索 -->
+                "ordering": true,     <!-- 允许排序 -->
+                "info": true,         <!-- 显示信息 -->
+                "autoWidth": false,    <!-- 固定宽度 -->
+                "language": {
+                    "sProcessing": "处理中...",
+                    "sLengthMenu": "显示 _MENU_ 项结果",
+                    "sZeroRecords": "没有匹配结果",
+                    "sInfo": "显示第 _START_ 至 _END_ 项结果，共 _TOTAL_ 项",
+                    "sInfoEmpty": "显示第 0 至 0 项结果，共 0 项",
+                    "sInfoFiltered": "(由 _MAX_ 项结果过滤)",
+                    "sInfoPostFix": "",
+                    "sSearch": "搜索:",
+                    "sUrl": "",
+                    "sEmptyTable": "表中数据为空",
+                    "sLoadingRecords": "载入中...",
+                    "sInfoThousands": ",",
+                    "oPaginate": {
+                        "sFirst": "首页",
+                        "sPrevious": "上页",
+                        "sNext": "下页",
+                        "sLast": "末页"
+                    },
+                    "oAria": {
+                        "sSortAscending": ": 以升序排列此列",
+                        "sSortDescending": ": 以降序排列此列"
+                    }
+                },
+                "columnDefs": [{
+                    "searchable": false,
+                    "orderable": true,
+                    "targets": 0
+                }],
+                "order": [[0, 'asc']]
+            });
+
+            $('#stu_table tbody').on('click', 'tr', function (e) {
+                if ($(this).hasClass('selected')) {
+                    $(this).removeClass('selected');
+                } else {
+                    table.$('tr.selected').removeClass('selected');
+                    $(this).addClass('selected');
+                }
+            });
+
+            $('#teacher_table').on('click', 'tr', function (e) {
+                if ($(this).hasClass('selected')) {
+                    $(this).removeClass('selected');
+                } else {
+                    table.$('tr.selected').removeClass('selected');
+                    $(this).addClass('selected');
+                }
+            });
+
+            $('#add').click(function () {
+                console.log("new car.");
+                $('#addCar').modal();
+            });
+
+            $('#change').click(function () {
+                console.log("change car");
+                if (table.rows('.selected').data().length) {
+                    $("#changeCar").modal();
+                    var rowData = table.rows('.selected').data()[0];
+                    var inputs = $('#changeCar').find('input');
+                    for (let i = 0; i < inputs.length; i++) {
+                        $(inputs[i]).val(rowData[i]);
+                    }
+                } else {
+                    alert("请选择一个项目！");
+                }
+            });
+
+            $('#delete').click(function () {
+                console.log("delete car");
+                if (table.rows('.selected').data().length) {
+                    $("#deleteCar").modal();
+                    $('#sureToDelete').click(function () {
+                        var rowData = table.rows('.selected').data()[0];
+                        const cno = rowData[1];
+                        const data = {'cno': cno};
+                        $.get('#',
+                            data,
+                            function (rec, status) {
+                                if (status === 'success') {
+                                    alert('删除成功');
+                                    table.row('.selected').remove().draw(false);
+                                } else {
+                                    alert('删除失败！');
+                                }
+                            }
+                        );
+                    });
+                } else {
+                    alert("请选择一个要删除的项目。");
+                }
+
+            });
+
+            $('#sureToChange').click(function () {
+                var rowData = table.rows('.selected').data()[0];
+                const cnoOld = rowData[1];
+                const cno = $('#changeCarCNo').val();
+                const ctype = $("#changeCarType").val();
+                const coil = $("#changeCarOild").val();
+                const isava = $('#changeCarAva').val();
+                var isgood;
+                if (isava === '正常') {
+                    isgood = true;
+                } else {
+                    isgood = false;
+                }
+                const data = {
+                    'cnoOld': cnoOld,
+                    'cno': cno,
+                    'ctype': ctype,
+                    'coil': coil,
+                    'isgood': isgood
+                };
+                $.get(
+                    '#',
+                    data,
+                    function (rec) {
+                        if (!rec) {
+                            alert('修改失败，车牌号重复');
+                        } else {
+                            var tds = Array.prototype.slice.call($('.selected td'));
+                            const newcno = rec['newcno'];
+                            const newctype = rec['newctype'];
+                            const newoil = rec['newoil'];
+                            var avg;
+                            console.log(rec['ava']);
+                            console.log(typeof (rec['ava']));
+                            if (rec['ava']) {
+                                avg = '正常';
+                            } else {
+                                avg = '故障'
+                            }
+                            tds[1].innerHTML = newcno;
+                            tds[2].innerHTML = newctype;
+                            tds[3].innerHTML = newoil;
+                            tds[4].innerHTML = avg;
+                            alert("修改成功");
+                        }
+                    }
+                );
+            });
+        })
+
+
+    </script>
+{% endblock %}

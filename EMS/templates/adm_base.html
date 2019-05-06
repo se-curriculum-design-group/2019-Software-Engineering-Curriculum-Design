@@ -1,0 +1,121 @@
+{% extends "base.html" %}
+{% block title %}欢迎登录教务管理系统{% endblock %}
+
+{% block custom_nav %}
+    <li class="dropdown">
+        <a href="#" class="dropdown-toggle" data-toggle="dropdown">基本信息管理<span
+                class="caret"></span></a>
+        <ul class="dropdown-menu" role="menu">
+            <li><a href="#">学生信息管理</a></li>
+            <li><a href="#">教师信息管理</a></li>
+            <li class="divider"></li>
+            <li><a href="#">课程信息管理</a></li>
+            <li><a href="#">教室信息管理</a></li>
+        </ul>
+    </li>
+
+    <li><a href="#">手动排课</a></li>
+    
+    <li class="dropdown">
+        <a href="#" class="dropdown-toggle" data-toggle="dropdown">课业管理<span
+                class="caret"></span></a>
+        <ul class="dropdown-menu" role="menu">
+            <li><a href="#">全校课表管理</a></li>
+            <li><a href="#">空闲教室管理</a></li>
+            <li class="divider"></li>
+            <li><a href="#">查看选课情况</a></li>
+            <li><a href="#">查看毕设选题情况</a></li>
+            <li><a href="#">查看教学评价</a></li>
+        </ul>
+    </li>
+    <li class="dropdown">
+        <a href="#" class="dropdown-toggle" data-toggle="dropdown">成绩管理<span
+                class="caret"></span></a>
+        <ul class="dropdown-menu" role="menu">
+
+            <li><a href="#">成绩信息管理</a></li>
+
+            <li><a href="#">审核复议申请</a></li>
+            <li class="divider"></li>
+            <li><a href="#">查看统计报表</a></li>
+        </ul>
+    </li>
+    <li class="dropdown">
+        <a href="#" class="dropdown-toggle" data-toggle="dropdown">通知邮件管理<span
+                class="caret"></span></a>
+        <ul class="dropdown-menu" role="menu">
+            <li><a href="#">发送通知</a></li>
+            <li><a href="#">查看通知</a></li>
+            <li class="divider"></li>
+            <li><a href="#">发送邮件</a></li>
+            <li><a href="#">查看邮件</a></li>
+
+        </ul>
+    </li>
+
+{% endblock %}
+
+
+{% block left_side_block %}
+    <!-- 不同用户自定义的左侧的侧边栏 -->
+    <li class="treeview">
+        <a href="{% url 'scoreManagement:score_home_page' %}">
+            <i class="fa fa-dashboard"></i> <span>基本信息管理</span>
+            <span class="pull-right-container">
+              <i class="fa fa-angle-left pull-right"></i>
+            </span>
+        </a>
+        <ul class="treeview-menu">
+            <li><a href="#"><i class="fa fa-circle-o"></i>学生信息管理</a></li>
+            <li><a href="#"><i class="fa fa-circle-o"></i>教师信息管理</a></li>
+            <li><a href="#"><i class="fa fa-circle-o"></i>课程信息管理</a></li>
+            <li><a href="#"><i class="fa fa-circle-o"></i>教室信息管理</a></li>
+
+        </ul>
+    </li>
+
+    <li class="treeview">
+        <a href="#">
+            <i class="fa fa-table"></i> <span>成绩管理</span>
+            <span class="pull-right-container">
+              <i class="fa fa-angle-left pull-right"></i>
+            </span>
+        </a>
+        <ul class="treeview-menu">
+            <li><a href="#"><i class="fa fa-circle-o"></i>成绩信息管理</a></li>
+            <li><a href="#"><i class="fa fa-circle-o"></i>审核复议申请</a></li>
+            <li><a href="#"><i class="fa fa-circle-o"></i>查看统计报表</a></li>
+        </ul>
+    </li>
+
+    <li class="treeview">
+        <a href="#">
+            <i class="fa fa-folder"></i> <span>课业管理</span>
+            <span class="pull-right-container">
+              <i class="fa fa-angle-left pull-right"></i>
+            </span>
+        </a>
+        <ul class="treeview-menu">
+            <li><a href="#"><i class="fa fa-circle-o"></i>全校课表管理</a></li>
+            <li><a href="#"><i class="fa fa-circle-o"></i>空闲教室管理</a></li>
+            <li><a href="#"><i class="fa fa-circle-o"></i>手动排课</a></li>
+            <li class="divider"></li>
+            <li><a href="#"><i class="fa fa-circle-o"></i>查看选课情况</a></li>
+            <li><a href="#"><i class="fa fa-circle-o"></i>查看毕设选题情况</a></li>
+            <li><a href="#"><i class="fa fa-circle-o"></i>查看教学评价</a></li>
+        </ul>
+    </li>
+    <li class="treeview">
+        <a href="#">
+            <i class="fa fa-share"></i> <span>教学评价</span>
+            <span class="pull-right-container">
+              <i class="fa fa-angle-left pull-right"></i>
+            </span>
+        </a>
+        <li><a href="#"><i class="fa fa-circle-o"></i>发送通知</a></li>
+        <li><a href="#"><i class="fa fa-circle-o"></i>查看通知</a></li>
+        <li class="divider"></li>
+        <li><a href="#"><i class="fa fa-circle-o"></i>发送邮件</a></li>
+        <li><a href="#"><i class="fa fa-circle-o"></i>查看邮件</a></li>
+    </li>
+{% endblock %}
