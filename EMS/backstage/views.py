@@ -118,21 +118,28 @@ def my_personal_details(request):
     else:
         new_password = request.POST.get('Password')
         username = request.session.get('username', False)
-        if len(username) == 10:
-            try:
-                user = Student.objects.get(username=username)
-                change_user = User.objects.get(username=username)
-                change_user.password = make_encode(new_password)
-                change_user.save()
-                return render(request, 'backstage/my_personal_details.html', locals())
-            except:
-                return JsonResponse({})
+        if new_password != "":
+            if len(username) == 10:
+                try:
+                    user = Student.objects.get(username=username)
+                    change_user = User.objects.get(username=username)
+                    change_user.password = make_encode(new_password)
+                    change_user.save()
+                    return render(request, 'backstage/my_personal_details.html', locals())
+                except:
+                    return JsonResponse({})
+            else:
+                try:
+                    user = Teacher.objects.get(username=username)
+                    change_user = User.objects.get(username=username)
+                    change_user.password = new_password
+                    change_user.save()
+                    return render(request, 'backstage/my_personal_details_teacher.html', locals())
+                except:
+                    return JsonResponse({})
         else:
-            try:
-                user = Teacher.objects.get(username=username)
-                change_user = User.objects.get(username=username)
-                change_user.password = new_password
-                change_user.save()
-                return render(request, 'backstage/my_personal_details_teacher.html', locals())
-            except:
-                return JsonResponse({})
+            print("输入修改值为空，返回主页")
+            if len(username) == 10:
+                return render(request, 'student_base.html')
+            else:
+                return render(request, 'teacher_base.html')
