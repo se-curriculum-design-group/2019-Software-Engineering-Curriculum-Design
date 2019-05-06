@@ -125,3 +125,7 @@ class EvaluationForm(models.Model):
     class Meta:
         db_table = 'evaluation_form'
 
+# student = Student.objects.get()
+# student.in_cls
+# student.in_cls.major
+# MajorCourses.objects.filter(year=2019, semester=2, mno=student.in_cls.major)
