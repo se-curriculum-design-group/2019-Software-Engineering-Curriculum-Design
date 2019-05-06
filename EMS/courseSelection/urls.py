@@ -10,7 +10,7 @@ from django.conf import settings
 app_name = 'courseSelection'
 urlpatterns = [
 
-          path('', views.welcome, name="welcome"),
+                  path('', views.welcome, name="welcome"),
                   path('selection_home_page', views.selection_home_page, name="selection_home_page"),
                   path('stu_tongshi', views.stu_tongshi, name="stu_tongshi"),
                   path('stu_major', views.stu_major, name="stu_major"),

@@ -18,6 +18,7 @@ class Teacher_Schedule_result(models.Model):
     current_number = models.IntegerField()
     MAX_number = models.IntegerField()
     state = models.CharField(max_length=128)
+    # hhhhs
 
     def __str__(self):
         return "-".join([str(self.tno),str(self.crno),str(self.crtype),str(self.contain_num),str(self.time),
