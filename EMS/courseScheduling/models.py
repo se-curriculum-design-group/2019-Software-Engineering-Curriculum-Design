@@ -22,10 +22,8 @@ class Schedule_result(models.Model):
             'sno', 'tno', 'where', 'time'
         )
 
-
+"""
 class Teacher_Schedule_result(models.Model):
-    """
-    """
     tno = models.ForeignKey(to=Teaching, on_delete=models.CASCADE)
     where = models.ForeignKey(to=ClassRoom, on_delete=models.CASCADE)
     time = models.CharField(max_length=128, null=False)
@@ -40,4 +38,4 @@ class Teacher_Schedule_result(models.Model):
         unique_together = (
               'tno', 'where', 'time'
         )
-
+"""

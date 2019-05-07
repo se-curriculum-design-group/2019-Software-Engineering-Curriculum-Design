@@ -20,7 +20,7 @@
     </li>
 
     <li class="dropdown">
-        <a href="#" class="dropdown-toggle" data-toggle="dropdown">选课 <span
+        <a href="{% url 'courseSelection:select_course' %}" class="dropdown-toggle" data-toggle="dropdown">选课 <span
                 class="caret"></span></a>
         <ul class="dropdown-menu" role="menu">
             <li><a href="{% url 'courseSelection:stu_tongshi' %}">通识课</a></li>
@@ -65,7 +65,7 @@
     </li>
 
     <li class="treeview">
-        <a href="#">
+        <a href="{% url 'courseSelection:select_course' %}">
             <i class="fa fa-table"></i> <span>选课</span>
             <span class="pull-right-container">
               <i class="fa fa-angle-left pull-right"></i>
