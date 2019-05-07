@@ -1,12 +1,17 @@
 <h1 align='center'>2019 计科1605班软件工程课程设计</h1>
 <div align='center'>
-五一节后最新进展。New Version, new design and new features... Happy coding and hacking. 
+<strong>五一节后最新进展。</strong>
 </div>
 <div align='center'>
+<strong>New Version</strong>, new design and new features... Happy coding and hacking. 
+</div>
+<div align='center'>
+<sub>
 组长：罗登、蔡锐 、张云皓、何显、朱迪迪
+</sub>
 </div>
 
-<br>
+<br/>
 
 ## 查看运行效果
 
