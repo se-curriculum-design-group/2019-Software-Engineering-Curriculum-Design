@@ -5,6 +5,7 @@ EMS/.idea/*
 *.pdf
 *.iml
 *.pyc
+*.pyc~Stached*
 */__pycache__/
 .vscode/
 .vscode/*
