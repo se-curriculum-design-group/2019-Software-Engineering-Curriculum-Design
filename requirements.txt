@@ -1,0 +1,4 @@
+django==2.1.7
+pymysql
+numpy
+pandas

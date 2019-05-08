@@ -22,22 +22,20 @@ class Schedule_result(models.Model):
             'sno', 'tno', 'where', 'time'
         )
 
+"""
+class Teacher_Schedule_result(models.Model):
+    tno = models.ForeignKey(to=Teaching, on_delete=models.CASCADE)
+    where = models.ForeignKey(to=ClassRoom, on_delete=models.CASCADE)
+    time = models.CharField(max_length=128, null=False)
+    current_number = models.IntegerField()
+    MAX_number = models.IntegerField()
+    state = models.CharField(max_length=128)
 
-# class Teacher_Schedule_result(models.Model):
-#     """
-#     """
-#     tno = models.ForeignKey(to=Teaching, on_delete=models.CASCADE)
-#     where = models.ForeignKey(to=ClassRoom, on_delete=models.CASCADE)
-#     time = models.CharField(max_length=128, null=False)
-#     current_number = models.IntegerField()
-#     MAX_number = models.IntegerField()
-#     state = models.CharField(max_length=128)
-
-#     def __str__(self):
-#         return "-".join([self.tno, self.where, self.time, ])
-#     class Meta:
-#         db_table = 'Teacher_Schedule_result'
-#         unique_together = (
-#               'tno', 'where', 'time'
-#         )
-
+    def __str__(self):
+        return "-".join([self.tno, self.where, self.time, ])
+    class Meta:
+        db_table = 'Teacher_Schedule_result'
+        unique_together = (
+              'tno', 'where', 'time'
+        )
+"""
