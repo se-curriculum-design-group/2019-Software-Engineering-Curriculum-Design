@@ -18,8 +18,9 @@ before_install:
   # - sudo systemctl restart mysql
   # - sudo mysql_upgrade
   - mysql --version 
-  - mysql -e 'DROP DATABASE IF EXISTS ems;' 
   - mysql -e 'CREATE DATABASE IF NOT EXISTS ems;'
+  - mysql -e 'create user "EMS"@"localhost" identified by "password";'
+  - mysql -e 'grant all ON *.* to "EMS"@"localhost";'
   - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then
       brew update;
       brew install python3 redis memcached;
