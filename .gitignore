@@ -1,11 +1,12 @@
 .idea/
-**/.idea/
 .vscode/
-**/.vscode/
 *.pdf
 *.py[cod]
+__init__.cpython-36.pyc
+**cpython-36**
 *$py.class
-*.pyc~Stached*
+*..pyc~Stashed changes
+__pycache__/
 **/__pycache__/
 **/migrations/*
 !**migrations/__init__.py
