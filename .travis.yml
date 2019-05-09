@@ -34,5 +34,7 @@ install:
 # command to run tests
 script: 
   - cd EMS
+  - python manage.py makemigrations
+  - python manage.py migrate
   - python manage.py test
 
