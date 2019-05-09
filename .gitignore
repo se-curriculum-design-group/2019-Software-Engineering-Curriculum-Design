@@ -11,4 +11,5 @@ EMS/.idea/*
 .vscode/*
 EMS/.vscode/
 EMS/.vscode/*
+*migrations/*
 *initial.py
