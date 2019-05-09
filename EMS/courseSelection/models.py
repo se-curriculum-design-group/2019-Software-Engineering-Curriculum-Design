@@ -7,7 +7,7 @@ from backstage.models import Teacher, Student,\
     College, MajorPlan, AdmClass, ClassRoom
 from scoreManagement.models import Course,MajorCourses,Teaching
 
-
+#
 # class Teacher_Schedule_result(models.Model):
 #     tno = models.ForeignKey(to=Teaching,on_delete=models.CASCADE)
 #     where = models.ForeignKey(to=ClassRoom,on_delete=models.CASCADE)

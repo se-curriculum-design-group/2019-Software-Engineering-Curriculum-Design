@@ -32,40 +32,29 @@ class Teacher_Schedule_result(models.Model):
     state = models.CharField(max_length=128)
 
     def __str__(self):
-        return "-".join([self.tno, self.where, self.time, ])
+        return "-".join([str(self.tno),str(self.where),str(self.crtype),str(self.contain_num),str(self.time),
+                         str(self.current_number),str(self.MAX_number),str(self.state)])
     class Meta:
         db_table = 'Teacher_Schedule_result'
         unique_together = (
               'tno', 'where', 'time'
         )
 
-"""
-2019-05-08 20:43:00 0x484c Error in foreign key constraint of table ems/#sql-17bc_6cd:
- FOREIGN KEY (`where_id`) REFERENCES `class_room` (`crno`):
-Cannot find an index in the referenced table where the
-referenced columns appear as the first columns, or column types
-in the table and the referenced table do not match for constraint.
-Note that the internal storage type of ENUM and SET changed in
-tables created with >= InnoDB-4.1.12, and such columns in old tables
-cannot be referenced by such columns in new tables.
-Please refer to http://dev.mysql.com/doc/refman/8.0/en/innodb-foreign-key-constraints.html for correct foreign key definition.
+class Classroom_other_schedule (models.Model):
+    #外键教室
+    crno = models.ForeignKey(to=ClassRoom, on_delete=models.CASCADE)
+    #时间定义同上
+    time = models.CharField(max_length=128, null=False, default='')
+    def __str__(self):
+        return "-".join([self.crno, self.time])
+    class Meta:
+        db_table = 'Classroom_other_schedule'
 
-/*建立连接使用的编码*/
-set character_set_connection=utf8;
-/*数据库的编码*/
-set character_set_database=utf8;
-/*结果集的编码*/
-set character_set_results=utf8;
-/*数据库服务器的编码*/
-set character_set_server=utf8mb4;
-
-set character_set_system=utf8mb4;
-
-set collation_connection=utf8mb4;
-
-set collation_database=utf8mb4;
-
-set collation_server=utf8mb4;
-
-修改全局字符集
-"""
+class Exam_Schedule(models.Model):
+    tno_mno_course = models.ForeignKey(to=Teacher_Schedule_result, on_delete=models.CASCADE)
+    time = models.CharField(max_length=128, null=False)
+    where = models.ForeignKey(to=ClassRoom, on_delete=models.CASCADE)
+    def __str__(self):
+        return "-".join([self.tno_mno, self.time, self.where])
+    class Meta:
+        db_table = 'Exam_Schedule'
