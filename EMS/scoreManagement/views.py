@@ -26,10 +26,8 @@ def welcome(request):
 
 
 def adm_all_course_score(request):
-    if (request.session['user_type'] != '管理员'):
-        all_course_score = CourseScore.objects.all()[:20]
-
-        print(len(all_course_score))
+    if request.session['user_type'] == '管理员':
+        all_course_score = CourseScore.objects.all()
         context = {"all_course_score": all_course_score}
         return render(request, 'scoreManage/adm_score_manage.html', context)
     else:
@@ -48,7 +46,7 @@ def score_home_page(request):
 def student_score(request):
     if request.session['user_type'] != '学生':
         redirect("scoreManagement:welcome")
-    sno = request.session['username'];
+    sno = request.session['username']
     student = Student.objects.get(username=sno)
     course_score = CourseScore.objects.filter(sno=student)
     context = {"my_course_score": course_score}

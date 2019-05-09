@@ -11,5 +11,4 @@ urlpatterns = [
                   path('student_submit_project',views.student_submit_project,name="student_submit_project"),
                   path('teacher_edit_project',views.teacher_edit_project,name="teacher_edit_project"),
                   path('student_view_score',views.student_view_score,name="student_view_score")
-
               ]
