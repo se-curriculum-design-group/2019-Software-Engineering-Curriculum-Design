@@ -322,7 +322,7 @@ def coures_time_generate(schedule, time):
                     if rest > 0:
                        rest -= 2
                        weektime_cur += 1
-                    if weektime_cur + bias >17 and cnt <2:
+                    if weektime_cur + bias >17 and cnt < 2:
                         return None
                 for i, e in enumerate(course_3):
                     if check_hazard(weekday, e, schedule, 1+bias, weektime_cur+bias):
