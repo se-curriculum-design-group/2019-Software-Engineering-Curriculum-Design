@@ -1,6 +1,8 @@
 from django.db import models
+from backstage.models import Student, Teacher
+from scoreManagement.models import Teaching, MajorCourses, ClassRoom
 from backstage.models import Student, Teacher, ClassRoom
-from scoreManagement.models import Teaching, MajorCourses
+
 
 class Schedule_result(models.Model):
     """
@@ -22,8 +24,6 @@ class Schedule_result(models.Model):
 
 
 class Teacher_Schedule_result(models.Model):
-    """
-    """
     tno = models.ForeignKey(to=Teaching, on_delete=models.CASCADE)
     where = models.ForeignKey(to=ClassRoom, on_delete=models.CASCADE)
     time = models.CharField(max_length=128, null=False)

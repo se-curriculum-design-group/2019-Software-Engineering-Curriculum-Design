@@ -149,4 +149,3 @@ class ClassRoom(models.Model):
 
     class Meta:
         db_table = 'class_room'
-

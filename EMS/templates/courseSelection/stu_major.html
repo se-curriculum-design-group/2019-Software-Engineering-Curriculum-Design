@@ -1,0 +1,356 @@
+{% extends "base.html" %}
+{% block title %}欢迎登录教务管理系统{% endblock %}
+
+{% block custom_nav %}
+    <li class="dropdown">
+        <a href="#" class="dropdown-toggle" data-toggle="dropdown">信息查询 <span
+                class="caret"></span></a>
+        <ul class="dropdown-menu" role="menu">
+            <li><a href="#">查看个人信息</a></li>
+            <li><a href="#">查看个人课表</a></li>
+            <li><a href="#">查看全校课表</a></li>
+            <li><a href="#">查询空闲教室</a></li>
+            <li class="divider"></li>
+            <li><a href="#">查看专业培养计划</a></li>
+            <li><a href="#">查看专业课程计划</a></li>
+            <li class="divider"></li>
+            <li><a href="#">查看考试成绩</a></li>
+            <li><a href="#">查看个人学业情况</a></li>
+        </ul>
+    </li>
+
+    <li class="dropdown">
+        <a href="#" class="dropdown-toggle" data-toggle="dropdown">选课 <span
+                class="caret"></span></a>
+        <ul class="dropdown-menu" role="menu">
+            <li><a href="{% url 'courseSelection:stu_tongshi' %}">通识课</a></li>
+            <li><a href="{% url 'courseSelection:stu_major' %}">专业选修</a></li>
+            <li><a href="#">查看全校课表</a></li>
+        </ul>
+    </li>
+
+    <li class="dropdown">
+        <a href="#" class="dropdown-toggle" data-toggle="dropdown">毕业设计 <span
+                class="caret"></span></a>
+        <ul class="dropdown-menu" role="menu">
+            <li><a href="#">题目浏览</a></li>
+            <li><a href="#">题目提交</a></li>
+        </ul>
+    </li>
+
+    <li><a href="#">教学评价</a></li>
+{% endblock %}
+
+
+{% block left_side_block %}
+    <!-- 不同用户自定义的左侧的侧边栏 -->
+    <li class="treeview">
+        <a href="{% url 'scoreManagement:score_home_page' %}">
+            <i class="fa fa-dashboard"></i> <span>信息查询</span>
+            <span class="pull-right-container">
+              <i class="fa fa-angle-left pull-right"></i>
+            </span>
+        </a>
+        <ul class="treeview-menu">
+            <li><a href="#"><i class="fa fa-circle-o"></i>查看个人信息</a></li>
+            <li><a href="#"><i class="fa fa-circle-o"></i>查看个人课表</a></li>
+            <li><a href="#"><i class="fa fa-circle-o"></i>查看全校课表</a></li>
+            <li><a href="#"><i class="fa fa-circle-o"></i>查看专业培养计划</a></li>
+            <li><a href="#"><i class="fa fa-circle-o"></i>查看专业课程计划</a></li>
+            <li><a href="#"><i class="fa fa-circle-o"></i>查询空闲教室</a></li>
+            <li><a href="#"><i class="fa fa-circle-o"></i>查看考试成绩</a></li>
+            <li><a href="#"><i class="fa fa-circle-o"></i>查看个人学业情况</a></li>
+        </ul>
+    </li>
+
+    <li class="treeview">
+        <a href="#">
+            <i class="fa fa-table"></i> <span>选课</span>
+            <span class="pull-right-container">
+              <i class="fa fa-angle-left pull-right"></i>
+            </span>
+        </a>
+    </li>
+
+    <li class="treeview">
+        <a href="#">
+            <i class="fa fa-folder"></i> <span>毕业设计</span>
+            <span class="pull-right-container">
+              <i class="fa fa-angle-left pull-right"></i>
+            </span>
+        </a>
+        <ul class="treeview-menu">
+            <li><a href="#"><i class="fa fa-circle-o"></i>题目浏览</a></li>
+            <li><a href="#"><i class="fa fa-circle-o"></i>题目提交</a></li>
+        </ul>
+    </li>
+    <li class="treeview">
+        <a href="#">
+            <i class="fa fa-share"></i> <span>教学评价</span>
+            <span class="pull-right-container">
+              <i class="fa fa-angle-left pull-right"></i>
+            </span>
+        </a>
+    </li>
+{% endblock %}
+ {% block content %}
+        <section class="content-header">
+        <h1>选课子系统
+            <small>Info</small>
+        </h1>
+        <ol class="breadcrumb">
+            <li><a href="{% url 'scoreManagement:welcome' %}"><i class="fa fa-dashboard"></i> 主页</a></li>
+            <li class="active">通识课</li>
+        </ol>
+    </section>
+        <section class="content">
+        <div class="box">
+            <div class="box-header">
+                <h3 class="box-title">专业选修课</h3>
+                <div class="btn-group pull-right ">
+                    <button id='college' class="btn btn-primary" type="button">
+                        <span class="glyphicon glyphicon-plus"></span>学院
+                    </button>
+                    <button id='major' class="btn btn-info" type="button">
+                        <span class="glyphicon glyphicon-pencil"></span>专业
+                    </button>
+                </div>
+            </div>
+            <div class="box-body">
+                <table id="majorCourse" class="table table-bordered table-striped">
+                    <thead>
+                    <tr>
+
+                        <th>课程号</th>
+                        <th>课程名</th>
+                        <th>学时</th>
+                        <th>选课人数</th>
+                        <th>课程容量</th>
+                        <th>授课教师</th>
+                        <th>上课教室</th>
+                        <th>上课时间</th>
+                        <th>选课</th>
+                    </tr>
+                    </thead>
+                </table>
+            </div>
+            <div class="box-body">
+                <table id="courseSelected" class="table table-bordered table-striped">
+                    <thead>
+                    <tr>
+
+                        <th>课程号</th>
+                        <th>课程名</th>
+                        <th>学时</th>
+                        <th>选课人数</th>
+                        <th>课程容量</th>
+                        <th>授课教师</th>
+                        <th>上课教室</th>
+                        <th>上课时间</th>
+                        <th>退课</th>
+                    </tr>
+                    </thead>
+                </table>
+            </div>
+        </div>
+    </section>
+ {% endblock %}
+{% block script %}
+    <script>
+    {#+'</td><td>'+'<input type="button" onclick="dele(this)" class="btn btn-danger" name='+i+'  value="退课">'#}
+    var data = eval('{{data|safe}}');
+    var dat = eval('{{dat|safe}}');//已选课数据
+    var trans = 0;
+    majorCourse = document.getElementById("majorCourse");
+    courseSelected = document.getElementById("courseSelected");
+
+    {#----------------------候选课程---------------------------#}
+    var class_week = new Array(data.length);
+    for(var i=0;i<data.length;i++) {
+        class_week[i] = new Array();
+        times = data[i]["上课时间"].split(",");
+        for (var j = 0; j < times.length; j++) {
+            class_week[i].push(times[j].split("-"));
+        }
+        {#alert(class_week[i].length);#}
+        tmp = new Array();//classweek每个索引都是不同的周
+        for (var j = 0; j < class_week[i].length; j++) {
+            var di = {
+                "week": class_week[i][j][2] + "-" + class_week[i][j][3] + "周",
+                "course": class_week[i][j][0] + "-" + class_week[i][j][1] + "节"
+            };
+            {#alert(di['week']);#}
+            {#alert(di['course']);#}
+            tmp.push(di);
+        }
+        {#alert(tmp);#}
+        {#times.split()#}
+        var strr = "";
+        for (var k = 0; k < tmp.length; k++) {
+            strr += tmp[k]["course"];
+            strr += "(";
+            strr += tmp[k]["week"];
+            strr += ")";
+            if (k < (tmp.length - 1)) {
+                strr += " ,";
+            }
+        }
+        if (data[i]["选课人数"] < data[i]["课程容量"]) {
+            if (data[i]["if_chosen"] == 0) {
+                majorCourse.innerHTML += '<tr ><td>' + data[i]["课程号"] + '</td><td>' + data[i]["课程名"] + '</td><td>' + data[i]["学时"] + '</td><td>' + data[i]["选课人数"] + '</td><td>' + data[i]["课程容量"] + '</td><td>' + data[i]["授课教师"] + '</td><td>' + data[i]["上课教室"] + '</td><td>' + strr + '</td><td>' + '<input type="button" onclick="test(this)" class="btn btn-primary" id=' + i + ' value="选课">' + '</td></tr>';
+            }
+            else {
+                majorCourse.innerHTML += '<tr ><td>' + data[i]["课程号"] + '</td><td>' + data[i]["课程名"] + '</td><td>' + data[i]["学时"] + '</td><td>' + data[i]["选课人数"] + '</td><td>' + data[i]["课程容量"] + '</td><td>' + data[i]["授课教师"] + '</td><td>' + data[i]["上课教室"] + '</td><td>' + strr + '</td><td>' + '<input type="button"  class="btn btn-success" id=' + i + ' value="已选">' + '</td></tr>';
+            }
+        }
+    }
+
+
+    {#----------------------已选课程---------------------------#}
+
+    var class_week = new Array(dat.length);
+    for(var i=0;i<dat.length;i++)
+    {
+        class_week[i]=new Array();
+        times=dat[i]["上课时间"].split(",");
+        for(var j=0;j<times.length;j++)
+        {
+            class_week[i].push(times[j].split("-"));
+        }
+        {#alert(class_week[i].length);#}
+        tmp = new Array();//classweek每个索引都是不同的周
+        for(var j=0;j<class_week[i].length;j++)
+        {
+            var di = {"week":class_week[i][j][2]+"-"+class_week[i][j][3]+"周","course":class_week[i][j][0]+"-"+class_week[i][j][1]+"节"};
+            {#alert(di['week']);#}
+            {#alert(di['course']);#}
+            tmp.push(di);
+        }
+        {#alert(tmp);#}
+        {#times.split()#}
+        var strr="";
+        for(var k=0;k<tmp.length;k++)
+        {
+            strr+=tmp[k]["course"];
+            strr+="(";
+            strr+=tmp[k]["week"];
+            strr+=")";
+            if(k<(tmp.length-1))
+            {
+                strr+=" ,";
+            }
+        }
+        courseSelected.innerHTML+='<tr ><td>'+dat[i]["课程号"]+'</td><td>'+dat[i]["课程名"]+'</td><td>'+dat[i]["学时"]+'</td><td>'+dat[i]["选课人数"]+'</td><td>'+dat[i]["课程容量"]+'</td><td>'+dat[i]["授课教师"]+'</td><td>'+dat[i]["上课教室"]+'</td><td>'+ strr+ '</td><td>'+'<input type="button" onclick="dele(this)" class="btn btn-danger"  name='+i+' value="退课">'+'</td></tr>';
+        trans+=1;
+    }
+
+
+
+    {#----------------------选课---------------------------#}
+        function test(obj){
+            {#alert(obj);#}
+            {#alert(obj.id);#}
+            {#alert(obj.value);#}
+            {#alert("sud");#}
+                {#alert(data[obj.id]["id"]);#}
+                $.ajax({
+                    url: '/courseSelection/select_course',
+                    type: 'GET',
+                    data: {id:data[obj.id]["id"]},
+                    traditional:true,
+                    dataType: 'JSON',
+                    success: function(arg) {
+                        if(arg["flag"]==1)
+                        {
+                            changeColor = document.getElementById(obj.id);
+                            changeColor.className = "btn btn-success";
+                            changeColor.value = "已选";
+                            changeColor.onclick=null;
+
+                            {#var rows = majorCourses.getElementsByTagName("tr");#}
+                            {#var first = rows[1];#}
+
+                            courseSelected.innerHTML+='<tr ><td>'+obj.parentNode.parentNode.cells[0].innerHTML+'</td><td>'+obj.parentNode.parentNode.cells[1].innerHTML+'</td><td>'+obj.parentNode.parentNode.cells[2].innerHTML+'</td><td>'+arg["tot"]+'</td><td>'+obj.parentNode.parentNode.cells[4].innerHTML+'</td><td>'+obj.parentNode.parentNode.cells[5].innerHTML+'</td><td>'+obj.parentNode.parentNode.cells[6].innerHTML+'</td><td>'+ obj.parentNode.parentNode.cells[7].innerHTML+ '</td><td>'+'<input type="button" onclick="dele(this)" class="btn btn-danger"  name='+trans+' value="退课">'+'</td></tr>';
+                            var tmp={};
+                            obj.parentNode.parentNode.cells[3].innerHTML = arg["tot"];
+                            dat.push(data[obj.id]);
+
+                            trans+=1;
+                        }
+                        else if(arg["flag"]==0)
+                        {
+                            alert("时间冲突，请选择其他课程！！");
+                        }
+                        else if(arg["flag"]==3)
+                        {
+                            alert("容量已满,无法选课!");
+                        }
+                    }
+                });
+        }
+
+    {#----------------------退课---------------------------#}
+        function dele(obj){
+            {#alert(obj);#}
+                {#alert(obj.name);#}
+                $.ajax({
+                    url: '/courseSelection/delete_course',
+                    type: 'GET',
+                    data: {id: dat[obj.name]["id"]},
+                    traditional: true,
+                    dataType: 'JSON',
+                    success: function (arg) {
+
+                        var valueTd;
+                        var tr;
+                       // alert(valueTd.innerHTML);
+                        for(var i = 0;i<data.length;i++)
+                        {
+                            if(data[i]["id"]==arg["ID"])
+                            {
+                                //alert(i);
+                                valueTd = majorCourse.rows[i+1].cells[3];
+                                valueTd.innerHTML = arg["tot"];
+                                {#tr = document.getElementById(i);#}
+                                {#alert(tr);#}
+                                {#tr.className = "btn btn-primary";#}
+                                {#tr.onclick = test;#}
+                                {#tr.id = "fuck";#}
+                                tr = majorCourse.rows[i+1].cells[8];
+                                tr.innerHTML = '<input type="button" onclick="test(this)" class="btn btn-primary" id=' + i + ' value="选课">'
+                                {#alert(tr);#}
+                               //   tr.id = ;
+                               //majorCourse  = arg["tot"];
+                                break;
+                            }
+                        }
+
+                            tr = obj.parentNode.parentNode;
+                            tr.parentNode.removeChild(tr);
+
+
+
+
+
+                       /* if (arg["flag"] == 1) {
+                            changeColor = document.getElementById(obj.id);
+                            changeColor.className = "btn btn-success";
+                            changeColor.value = "已选";
+                            changeColor.onclick = null;
+
+                            var rows = majorCourses.getElementsByTagName("tr");
+                            var first = rows[1];
+
+                            courseSelected.innerHTML += '<tr name=' + i + '><td>' + obj.parentNode.parentNode.cells[0].innerHTML + '</td><td>' + obj.parentNode.parentNode.cells[1].innerHTML + '</td><td>' + obj.parentNode.parentNode.cells[2].innerHTML + '</td><td>' + arg["tot"] + '</td><td>' + obj.parentNode.parentNode.cells[4].innerHTML + '</td><td>' + obj.parentNode.parentNode.cells[5].innerHTML + '</td><td>' + obj.parentNode.parentNode.cells[6].innerHTML + '</td><td>' + obj.parentNode.parentNode.cells[7].innerHTML + '</td><td>' + '<input type="button" onclick="dele(this)" class="btn btn-danger" id=' + i + ' name=' + i + ' value="退课">' + '</td></tr>';
+                            obj.parentNode.parentNode.cells[3].innerHTML = arg["tot"];
+
+                        }*/
+                       // else {
+                         //   alert("时间冲突，请选择其他课程！！");
+                        //}
+                    }
+                });
+        }
+
+    </script>
+{% endblock %}

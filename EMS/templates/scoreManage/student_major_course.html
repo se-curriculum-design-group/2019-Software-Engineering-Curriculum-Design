@@ -18,7 +18,7 @@
                 <h3 class="box-title">查询专业课程</h3>
                 <div></div>
                 <div class="box-header ">
-                  <span>专业 </span><select id="major" class="select2-container" style="width: 10%">
+                  <span>专业 </span><select id="major" class="select2-container">
                     {% for item in all_major%}
                         {% if item == student.in_cls.major.major%}
                         <option value="{{ item}}" selected="selected">{{ item}}</option>
