@@ -190,7 +190,7 @@ def select_course(request):
                         cstart = 13
                     if cend == 0:
                         cend = 13
-                    print("sickfuck",np.sum(X[int(week[0]):int(week[1])+1,Day,cstart:cend+1]))
+                    
                     if np.sum(X[int(week[0]):int(week[1])+1,Day,cstart:cend+1]) != 0:
                         flag = 0
                         print(flag)
@@ -198,7 +198,6 @@ def select_course(request):
 
 
                 if(flag):
-                    print("sick")
                     new_cord = courseSelected()
                     new_cord.sno = stu_new
                     new_cord.cno = teach
