@@ -1,3 +1,10 @@
+[![Open Source Love](https://badges.frapsoft.com/os/v1/open-source.svg?v=102)](https://github.com/ellerbrock/open-source-badge/)
+[![Open Source Love](https://badges.frapsoft.com/os/mit/mit.svg?v=102)](https://github.com/ellerbrock/open-source-badge/)
+[![star this repo](http://githubbadges.com/star.svg?user=se-curriculum-design-group&repo=2019-Software-Engineering-Curriculum-Design&style=flat)](https://github.com/se-curriculum-design-group/2019-Software-Engineering-Curriculum-Design)
+[![fork this repo](http://githubbadges.com/fork.svg?user=se-curriculum-design-group&repo=2019-Software-Engineering-Curriculum-Design&style=flat)](https://github.com/se-curriculum-design-group/2019-Software-Engineering-Curriculum-Design)
+ [![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg?style=flat-square)](https://github.com/se-curriculum-design-group/2019-Software-Engineering-Curriculum-Design/pulls)
+<br/>
+
 <h1 align='center'>2019 计科1605班软件工程课程设计</h1>
 <div align='center'>
 <strong>五一节后最新进展。</strong>

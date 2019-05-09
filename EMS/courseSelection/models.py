@@ -10,10 +10,10 @@ from scoreManagement.models import Course,MajorCourses,Teaching
 
 class Teacher_Schedule_result(models.Model):
     tno = models.ForeignKey(to=Teaching,on_delete=models.CASCADE)
-    # where = models.ForeignKey(to=ClassRoom,on_delete=models.CASCADE)
-    crno = models.CharField(max_length=128)
-    crtype = models.CharField(null=False, max_length=10)
-    contain_num = models.IntegerField()
+    where = models.ForeignKey(to=ClassRoom,on_delete=models.CASCADE)
+    # crno = models.CharField(max_length=128)
+    # crtype = models.CharField(null=False, max_length=10)
+    # contain_num = models.IntegerField()
     time = models.CharField(max_length=128,null=False)
     current_number = models.IntegerField()
     MAX_number = models.IntegerField()
