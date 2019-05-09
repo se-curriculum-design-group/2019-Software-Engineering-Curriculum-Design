@@ -1,3 +1,4 @@
+[![Build Status](https://travis-ci.com/se-curriculum-design-group/2019-Software-Engineering-Curriculum-Design.svg?branch=master)](https://travis-ci.com/se-curriculum-design-group/2019-Software-Engineering-Curriculum-Design)
 [![Open Source Love](https://badges.frapsoft.com/os/v1/open-source.svg?v=102)](https://github.com/ellerbrock/open-source-badge/)
 [![Open Source Love](https://badges.frapsoft.com/os/mit/mit.svg?v=102)](https://github.com/ellerbrock/open-source-badge/)
 [![star this repo](http://githubbadges.com/star.svg?user=se-curriculum-design-group&repo=2019-Software-Engineering-Curriculum-Design&style=flat)](https://github.com/se-curriculum-design-group/2019-Software-Engineering-Curriculum-Design)
