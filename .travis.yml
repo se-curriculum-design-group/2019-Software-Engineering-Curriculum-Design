@@ -28,7 +28,7 @@ before_install:
     fi
 
 install:
-  - pip install -r requirements.txt --use-mirrors
+  - pip install -r requirements.txt
 #  - pip install boxx/
 # command to run tests
 script: 
