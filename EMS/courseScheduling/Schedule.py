@@ -335,7 +335,7 @@ def coures_time_generate(schedule, time):
                         break
                 if cnt == 2:
                     return res
-    if time < 56 :
+    if time < 56:
         weektime_base = int(time/3)
         for bias in range(8):
             cnt = 0
