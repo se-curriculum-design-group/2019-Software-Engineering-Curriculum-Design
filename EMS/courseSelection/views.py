@@ -4,45 +4,47 @@ from django.http import HttpResponse
 from django.http import JsonResponse
 from backstage.models import Student, Teacher, College, Major, MajorPlan, ClassRoom, AdmClass
 from scoreManagement.models import Course, MajorPlan, MajorCourses, CourseScore,Teaching
-from .models import Teacher_Schedule_result,courseSelected
+from courseScheduling.models import Teacher_Schedule_result
+from courseSelection.models import courseSelected
 import json
 import numpy as np
 
 def welcome(request):
     return render(request, 'courseSelection/welcome.html')
-def resultAdd(request):
-    teaching = Teaching.objects.all()
-    for i in teaching:
-        new_cord = Teacher_Schedule_result()
-        new_cord.tno = i
-        new_cord.contain_num = 190
-        new_cord.current_number = 0
-        new_cord.MAX_number = 190
-        new_cord.time = "1-2-4-5,2-6-7-8"
-        new_cord.crtype ="阶教"
-        new_cord.crno="A阶-104"
-        new_cord.state="无"
-        new_cord.save()
-
-    # new_cord = Teacher_Schedule_result()
-    # new_cord.tno = teaching
-    # new_cord.time = "1-2-4-5, 2-6-7-8"
-    # new_cord.crtype = "阶教"
-    # new_cord.crno = "A阶-104"
-    # new_cord.contain_num = 190
-    # new_cord.current_number = 0
-    # new_cord.MAX_number = 190
-    # new_cord.state = "无"
-    # new_cord.save()
-
-    student = Student.objects.all()
-    plan = MajorPlan.objects.all()
-    for j in plan:
-        print(j)
-    print("asdasd")
-    for i in student:
-        print(i.in_cls)
-    return HttpResponse("asd")
+# def resultAdd(request):
+#     teaching = Teaching.objects.all()
+#     for i in teaching:
+#         new_cord = Teacher_Schedule_result()
+#         new_cord.tno = i
+#         # new_cord.contain_num = 190
+#         new_cord.current_number = 0
+#         new_cord.MAX_number = 190
+#         new_cord.time = "1-2-4-5,2-6-7-8"
+#         # new_cord.crtype ="阶教"
+#         # new_cord.crno="A阶-104"
+#
+#         new_cord.state="无"
+#         new_cord.save()
+#
+#     # new_cord = Teacher_Schedule_result()
+#     # new_cord.tno = teaching
+#     # new_cord.time = "1-2-4-5, 2-6-7-8"
+#     # new_cord.crtype = "阶教"
+#     # new_cord.crno = "A阶-104"
+#     # new_cord.contain_num = 190
+#     # new_cord.current_number = 0
+#     # new_cord.MAX_number = 190
+#     # new_cord.state = "无"
+#     # new_cord.save()
+#
+#     student = Student.objects.all()
+#     plan = MajorPlan.objects.all()
+#     for j in plan:
+#         print(j)
+#     print("asdasd")
+#     for i in student:
+#         print(i.in_cls)
+#     return HttpResponse("asd")
 def selection_home_page(request):
     if request.session['user_type'] == '学生':
         return render(request, 'courseSelection/student_selection_manage.html')
@@ -54,11 +56,14 @@ def stu_tongshi(request):
     return render(request,"courseSelection/stu_tongshi.html")
 
 def stu_major(request):
-    majorC = Teacher_Schedule_result.objects.all()[:10]
+    majorC = Teacher_Schedule_result.objects.all()[:3]
     data=[]
     dat = []
     haveChosen={}
 
+    #     # crno = models.CharField(max_length=128)
+    #     # crtype = models.CharField(null=False, max_length=10)
+    #     # contain_num = models.IntegerField()
     sno = request.session["username"]
     courseChosen = courseSelected.objects.filter(sno__username=sno)
     for c in courseChosen:
@@ -71,7 +76,7 @@ def stu_major(request):
         tmp["选课人数"] = c.cno.current_number
         tmp["课程容量"] = c.cno.MAX_number
         tmp["授课教师"] = c.cno.tno.tno.name
-        tmp["上课教室"] = c.cno.crno
+        tmp["上课教室"] = c.cno.where.crno
         tmp["上课时间"] = c.cno.time
         dat.append(tmp)
     for major in majorC:
@@ -88,7 +93,7 @@ def stu_major(request):
         tmp["选课人数"] = major.current_number
         tmp["课程容量"] = major.MAX_number
         tmp["授课教师"] = major.tno.tno.name
-        tmp["上课教室"] = major.crno
+        tmp["上课教室"] = major.where.crno
         tmp["上课时间"] = major.time
         if tmp["选课人数"] <tmp["课程容量"]:
             data.append(tmp)

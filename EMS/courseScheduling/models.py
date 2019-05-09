@@ -22,7 +22,7 @@ class Schedule_result(models.Model):
             'sno', 'tno', 'where', 'time'
         )
 
-"""
+
 class Teacher_Schedule_result(models.Model):
     tno = models.ForeignKey(to=Teaching, on_delete=models.CASCADE)
     where = models.ForeignKey(to=ClassRoom, on_delete=models.CASCADE)
@@ -38,4 +38,34 @@ class Teacher_Schedule_result(models.Model):
         unique_together = (
               'tno', 'where', 'time'
         )
+
+"""
+2019-05-08 20:43:00 0x484c Error in foreign key constraint of table ems/#sql-17bc_6cd:
+ FOREIGN KEY (`where_id`) REFERENCES `class_room` (`crno`):
+Cannot find an index in the referenced table where the
+referenced columns appear as the first columns, or column types
+in the table and the referenced table do not match for constraint.
+Note that the internal storage type of ENUM and SET changed in
+tables created with >= InnoDB-4.1.12, and such columns in old tables
+cannot be referenced by such columns in new tables.
+Please refer to http://dev.mysql.com/doc/refman/8.0/en/innodb-foreign-key-constraints.html for correct foreign key definition.
+
+/*建立连接使用的编码*/
+set character_set_connection=utf8;
+/*数据库的编码*/
+set character_set_database=utf8;
+/*结果集的编码*/
+set character_set_results=utf8;
+/*数据库服务器的编码*/
+set character_set_server=utf8mb4;
+
+set character_set_system=utf8mb4;
+
+set collation_connection=utf8mb4;
+
+set collation_database=utf8mb4;
+
+set collation_server=utf8mb4;
+
+修改全局字符集
 """

@@ -1,39 +1,42 @@
 from django.db import models
 from django.db import models
-
+from courseScheduling.models import Teacher_Schedule_result
 # Create your models here.
 
 from backstage.models import Teacher, Student,\
     College, MajorPlan, AdmClass, ClassRoom
 from scoreManagement.models import Course,MajorCourses,Teaching
 
-
-class Teacher_Schedule_result(models.Model):
-    tno = models.ForeignKey(to=Teaching,on_delete=models.CASCADE)
-    # where = models.ForeignKey(to=ClassRoom,on_delete=models.CASCADE)
-    crno = models.CharField(max_length=128)
-    crtype = models.CharField(null=False, max_length=10)
-    contain_num = models.IntegerField()
-    time = models.CharField(max_length=128,null=False)
-    current_number = models.IntegerField()
-    MAX_number = models.IntegerField()
-    state = models.CharField(max_length=128)
-    # hhhhs
-
-    def __str__(self):
-        return "-".join([str(self.tno),str(self.crno),str(self.crtype),str(self.contain_num),str(self.time),
-                         str(self.current_number),str(self.MAX_number),str(self.state)])
-    class Meta:
-        db_table = 'Teacher_Schedule_result'
-        unique_together=(
-            'tno','time'
-        )
+#
+# class Teacher_Schedule_result(models.Model):
+#     tno = models.ForeignKey(to=Teaching,on_delete=models.CASCADE)
+#     where = models.ForeignKey(to=ClassRoom,on_delete=models.CASCADE)
+#     # crno = models.CharField(max_length=128)
+#     # crtype = models.CharField(null=False, max_length=10)
+#     # contain_num = models.IntegerField()
+#     time = models.CharField(max_length=128,null=False)
+#     current_number = models.IntegerField()
+#     MAX_number = models.IntegerField()
+#     state = models.CharField(max_length=128)
+#     # hhhhs
+#
+#     def __str__(self):
+#         return "-".join([str(self.tno),str(self.crno),str(self.crtype),str(self.contain_num),str(self.time),
+#                          str(self.current_number),str(self.MAX_number),str(self.state)])
+#     class Meta:
+#         db_table = 'Teacher_Schedule_result'
+#         unique_together=(
+#             'tno','time'
+#         )
 
 
 class courseSelected(models.Model):
     sno = models.ForeignKey(to=Student,on_delete=models.CASCADE)
     cno = models.ForeignKey(to=Teacher_Schedule_result,on_delete=models.CASCADE)
     score = models.FloatField()
+
+    class Meta:
+        db_table = "courseSelected"
 
 # class TeachersCourse(models.Model):
 #     tno = models.ForeignKey(to=Teacher,on_delete=models.CASCADE)
