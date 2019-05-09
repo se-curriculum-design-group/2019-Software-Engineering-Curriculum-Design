@@ -20,7 +20,6 @@ before_install:
   - mysql --version 
   - mysql -e 'DROP DATABASE IF EXISTS ems;' 
   - mysql -e 'CREATE DATABASE IF NOT EXISTS ems;'
-  - mysql -e 'use ems; source ems.sql;'
   - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then
       brew update;
       brew install python3 redis memcached;
