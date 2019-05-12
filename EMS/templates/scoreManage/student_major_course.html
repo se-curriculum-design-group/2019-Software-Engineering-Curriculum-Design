@@ -19,7 +19,7 @@
                 <div></div>
                 <div class="box-header ">
                     <div class="form-group">
-                        <label>专业</label><select id="major" class="form-control select2" style="width: 15%;">
+                        <label style="color: red">专业：</label><select id="major" class="form-control select2" style="width: 20%;">
                         {% for item in all_major %}
                             {% if item == student.in_cls.major.major %}
                                 <option value="{{ item }}" selected="selected">{{ item }}</option>
@@ -28,19 +28,19 @@
                             {% endif %}
                         {% endfor %}
                     </select>
-                        <label>建议修读学年 </label><select id="year" class="form-control select2" style="width: 15%;">
+                        <label>建议修读学年：</label><select id="year" class="form-control select2" style="width: 15%;">
                         <option value="ALL">全部</option>
                         {% for item in all_year %}
                             <option value="{{ item.year }}">{{ item.year }}</option>
                         {% endfor %}
                     </select>
-                        <label>建议修读学期 </label><select id="semester" class="form-control select2" style="width: 15%;">
+                        <label>建议修读学期：</label><select id="semester" class="form-control select2" style="width: 15%;">
                         <option value="ALL">全部</option>
                         <option value="1">1</option>
                         <option value="2">2</option>
                         <option value="3">3</option>
                     </select>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                        <label>课程性质 </label><select id="course_type" class="form-control select2" style="width: 15%;">
+                        <label>课程性质：</label><select id="course_type" class="form-control select2" style="width: 15%;">
                         <option value="ALL">全部</option>
                         {% for item in all_course %}
                             <option value="{{ item.course_type }}">{{ item.course_type }}</option>
@@ -200,7 +200,7 @@
                 table.draw();
             });
 
-            $('.select2').select();
+            $('.select2').select2();
         });
     </script>
 {% endblock %}
