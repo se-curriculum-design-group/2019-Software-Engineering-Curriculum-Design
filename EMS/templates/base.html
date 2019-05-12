@@ -15,9 +15,9 @@
         <link rel="stylesheet" href="{% static 'AdminLTE/plugins/select2/select2.css' %}">
         <!-- Font Awesome -->
         <link rel="stylesheet"
-              href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.5.0/css/font-awesome.min.css">
+              href="{% static 'AdminLTE/plugins/font-awesome.min.css' %}">
         <!-- Ionicons -->
-        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/ionicons/2.0.1/css/ionicons.min.css">
+        <link rel="stylesheet" href="{% static 'AdminLTE/plugins/ionicons.min.css' %}">
         <!-- Theme style -->
         <link rel="stylesheet" href="{% static 'AdminLTE/dist/css/AdminLTE.min.css' %}">
         <!-- AdminLTE Skins. Choose a skin from the css/skins
@@ -39,13 +39,15 @@
         <link rel="stylesheet" href="{% static 'AdminLTE/plugins/datatables/dataTables.bootstrap.css' %}">
         <link rel="stylesheet" href="{% static 'AdminLTE/plugins/datatables/jquery.dataTables.min.css' %}">
         <link rel="stylesheet" href="{% static 'AdminLTE/plugins/datatables/jquery.dataTables_themeroller.css' %}">
+        <!-- Select2 下拉框工具 -->
+        <link rel="stylesheet" href="{% static 'AdminLTE/plugins/select2/select2.min.css' %}">
     {% endblock %}
 
     <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
     <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
     <!--[if lt IE 9]>
-  <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
-  <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+  <script src="{% static 'AdminLTE/plugins/html5shiv.min.js' %}"></script>
+  <script src="{% static 'AdminLTE/plugins/respond.min.js' %}"></script>
   <![endif]-->
 
 </head>
@@ -60,7 +62,7 @@
         <!-- Header Navbar: style can be found in header.less -->
         <nav class="navbar navbar-static-top">
             <!-- Sidebar toggle button-->
-            <a href="#" class="sidebar-toggle" data-toggle="offcanvas" role="button">
+            <a class="sidebar-toggle" data-toggle="offcanvas" role="button">
                 <span class="sr-only">Toggle navigation</span>
             </a>
             <!-- Collect the nav links, forms, and other content for toggling -->
@@ -183,6 +185,8 @@
 <script src="{% static 'AdminLTE/dist/js/app.min.js' %}"></script>
 <!-- AdminLTE for demo purposes -->
 <script src="{% static 'AdminLTE/dist/js/demo.js' %}"></script>
+<!-- Select2-->
+<script src="{% static 'AdminLTE/plugins/select2/select2.full.min.js' %}"></script>
 <!-- page script -->
 
 {% block script %}

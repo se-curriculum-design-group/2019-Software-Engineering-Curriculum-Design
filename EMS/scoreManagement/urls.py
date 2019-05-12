@@ -18,5 +18,4 @@ urlpatterns = [
     path('assess_teacher', views.assess_teacher, name="assess_teacher"),
     path('submit_result', views.submit_result, name="submit_result"),
     path('submit_all', views.submit_all, name="submit_all"),
-
 ]

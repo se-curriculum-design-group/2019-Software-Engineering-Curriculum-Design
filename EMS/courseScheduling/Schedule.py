@@ -153,6 +153,7 @@ class Buffer:
             for j in range(5):
                 self.examSchedule[i].append('')
 
+
 Students_id = dict()
 Teachers_id = dict()
 Classrooms_id = dict()
@@ -210,7 +211,6 @@ def mergeTable(table1, table2):
 
 
 course_2_96 = [(1, 2), (3, 4), (6, 7), (7, 8)]
-course_3 = [(1, 3), (3, 5), (6, 8), (8, 10), (11, 13)]
 course_2 = [(1, 2), (3, 4), (6, 7), (9, 10), (11, 12)]
 
 
@@ -293,6 +293,7 @@ def init():
         else:
             Students_id[elements.sno.username].courseSchedule = mergeTable(
                 Students_id[elements.sno.username].courseSchedule, Table)
+
 
 
 def check_hazard(weekday, daytime, schedule, week_start, week_end):

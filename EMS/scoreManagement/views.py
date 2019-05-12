@@ -339,7 +339,7 @@ def submit_result(request):
 @csrf_exempt
 def submit_all(request):
     if request.session['user_type'] != '学生':
-        redirect("scoreManagement:welcome")
+        return redirect("scoreManagement:welcome")
     if request.GET:
         item_sno = request.session['username']
         # 学生对象
@@ -347,3 +347,12 @@ def submit_all(request):
         # 更改评价表的is_finish字段
         EvaluationForm.objects.filter(student=student).update(is_finish=True)
         return redirect('scoreManagement:assess_teacher')
+
+
+def teacher_up_load_score(request):
+    if request.session['user_type'] != '教师':
+        return render(request, 'errors/page404.html')
+    tno = request.session['username']
+    teacher = Teacher.objects.get(tno=tno)
+    my_courses = Teaching.objects.filter(tno=teacher)
+
