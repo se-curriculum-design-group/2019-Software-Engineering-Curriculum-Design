@@ -1,106 +1,29 @@
 {% extends "student_base.html" %}
 {% block title %}欢迎登录教务管理系统{% endblock %}
 
-{#{% block custom_nav %}#}
-{#    <li class="dropdown">#}
-{#        <a href="#" class="dropdown-toggle" data-toggle="dropdown">信息查询 <span#}
-{#                class="caret"></span></a>#}
-{#        <ul class="dropdown-menu" role="menu">#}
-{#            <li><a href="#">查看个人信息</a></li>#}
-{#            <li><a href="#">查看个人课表</a></li>#}
-{#            <li><a href="#">查看全校课表</a></li>#}
-{#            <li><a href="#">查询空闲教室</a></li>#}
-{#            <li class="divider"></li>#}
-{#            <li><a href="#">查看专业培养计划</a></li>#}
-{#            <li><a href="#">查看专业课程计划</a></li>#}
-{#            <li class="divider"></li>#}
-{#            <li><a href="#">查看考试成绩</a></li>#}
-{#            <li><a href="#">查看个人学业情况</a></li>#}
-{#        </ul>#}
-{#    </li>#}
-{##}
-{#    <li class="dropdown">#}
-{#        <a href="#" class="dropdown-toggle" data-toggle="dropdown">选课 <span#}
-{#                class="caret"></span></a>#}
-{#        <ul class="dropdown-menu" role="menu">#}
-{#            <li><a href="{% url 'courseSelection:stu_tongshi' %}">通识课</a></li>#}
-{#            <li><a href="{% url 'courseSelection:stu_major' %}">专业选修</a></li>#}
-{#            <li><a href="#">查看全校课表</a></li>#}
-{#        </ul>#}
-{#    </li>#}
-{##}
-{#    <li class="dropdown">#}
-{#        <a href="#" class="dropdown-toggle" data-toggle="dropdown">毕业设计 <span#}
-{#                class="caret"></span></a>#}
-{#        <ul class="dropdown-menu" role="menu">#}
-{#            <li><a href="#">题目浏览</a></li>#}
-{#            <li><a href="#">题目提交</a></li>#}
-{#        </ul>#}
-{#    </li>#}
-{##}
-{#    <li><a href="#">教学评价</a></li>#}
-{#{% endblock %}#}
-{##}
-{##}
-{#{% block left_side_block %}#}
-{#    <!-- 不同用户自定义的左侧的侧边栏 -->#}
-{#    <li class="treeview">#}
-{#        <a href="{% url 'scoreManagement:score_home_page' %}">#}
-{#            <i class="fa fa-dashboard"></i> <span>信息查询</span>#}
-{#            <span class="pull-right-container">#}
-{#              <i class="fa fa-angle-left pull-right"></i>#}
-{#            </span>#}
-{#        </a>#}
-{#        <ul class="treeview-menu">#}
-{#            <li><a href="#"><i class="fa fa-circle-o"></i>查看个人信息</a></li>#}
-{#            <li><a href="#"><i class="fa fa-circle-o"></i>查看个人课表</a></li>#}
-{#            <li><a href="#"><i class="fa fa-circle-o"></i>查看全校课表</a></li>#}
-{#            <li><a href="#"><i class="fa fa-circle-o"></i>查看专业培养计划</a></li>#}
-{#            <li><a href="#"><i class="fa fa-circle-o"></i>查看专业课程计划</a></li>#}
-{#            <li><a href="#"><i class="fa fa-circle-o"></i>查询空闲教室</a></li>#}
-{#            <li><a href="#"><i class="fa fa-circle-o"></i>查看考试成绩</a></li>#}
-{#            <li><a href="#"><i class="fa fa-circle-o"></i>查看个人学业情况</a></li>#}
-{#        </ul>#}
-{#    </li>#}
-{##}
-{#    <li class="treeview">#}
-{#        <a href="#">#}
-{#            <i class="fa fa-table"></i> <span>选课</span>#}
-{#            <span class="pull-right-container">#}
-{#              <i class="fa fa-angle-left pull-right"></i>#}
-{#            </span>#}
-{#        </a>#}
-{#    </li>#}
-{##}
-{#    <li class="treeview">#}
-{#        <a href="#">#}
-{#            <i class="fa fa-folder"></i> <span>毕业设计</span>#}
-{#            <span class="pull-right-container">#}
-{#              <i class="fa fa-angle-left pull-right"></i>#}
-{#            </span>#}
-{#        </a>#}
-{#        <ul class="treeview-menu">#}
-{#            <li><a href="#"><i class="fa fa-circle-o"></i>题目浏览</a></li>#}
-{#            <li><a href="#"><i class="fa fa-circle-o"></i>题目提交</a></li>#}
-{#        </ul>#}
-{#    </li>#}
-{#    <li class="treeview">#}
-{#        <a href="#">#}
-{#            <i class="fa fa-share"></i> <span>教学评价</span>#}
-{#            <span class="pull-right-container">#}
-{#              <i class="fa fa-angle-left pull-right"></i>#}
-{#            </span>#}
-{#        </a>#}
-{#    </li>#}
-{#{% endblock %}#}
+
  {% block content %}
 
+    <div class="modal" id="eidtModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                        aria-hidden="true">×</span></button>
+                <h4 class="modal-title" id="myModalLabel">已选课程</h4>
+            </div>
+            <div class="modal-body">
 
-
-
+            </div>
+            <div class="modal-footer">
+                <span id="errorMsg" style="color: red;"></span>
+                <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
+                <button type="button" class="btn btn-primary" id="btnEditSave">保存</button>
+            </div>
+        </div>
+    </div>
+</div>
         <section class="content-header">
-
-
         <h1>选课子系统
             <small>Info</small>
         </h1>
@@ -109,7 +32,6 @@
             <li class="active">选课</li>
         </ol>
     </section>
-
         <section class="content">
         <div class="box">
             <div class="box-header">
@@ -126,29 +48,52 @@
 {#                </div>#}
             </div>
             <div class="col-md-6">
-              <div class="form-group">
-                <label>题目方向</label>
-                <select class="form-control select select-hidden-accessible" multiple="" style="width: 100%;" tabindex="-1" aria-hidden="true">
-                  <option selected="selected">技术应用</option>
-                  <option>科学研究</option>
-
+               <div class="form-group">
+                <label>学院</label>
+                <select class="form-control select2 select2-hidden-accessible" multiple="" style="width: 100%;" tabindex="-1" aria-hidden="true">
+                  <option >文法学院</option>
+                    <option>化学工程学院</option>
+                    <option>机电工程学院</option>
+                    <option>经济管理学院</option>
+                    <option>国际教育学院</option>
+                    <option>理学院</option>
+                    <option>材料科学与工程学院</option>
+                    <option>马克思主义学院</option>
+                    <option>信息科学与技术学院</option>
+                    <option>生命科学与技术学院</option>
+                    <option>巴黎居里工程师学院</option>
+                    <option>侯德榜工程师学院</option>
+                    <option>能源学院</option>
                 </select>
-{#                               <select class="form-control select select-hidden-accessible" style="width:90px;height: 42px" id="select1" name="grant" data-live-search="true">#}
-{#                    <option>司机</option>#}
-{#                  <option>管理员</option>#}
-{#            </select>#}
               </div>
               <!-- /.form-group -->
-              <div class="form-group">
-                <label>题目难度</label>
-                <select class="form-control select select-hidden-accessible" style="width: 100%;" tabindex="-1" aria-hidden="true">
-                  <option selected="selected">简单</option>
-                  <option>中等</option>
-                  <option>较难</option>
+               <div class="form-group">
+                <label></label>
+                <select class="form-control select2 select2-hidden-accessible" multiple="" style="width: 100%;" tabindex="-1" aria-hidden="true">
+                  <option >文法学院</option>
+                    <option>化学工程学院</option>
+                    <option>机电工程学院</option>
+                    <option>经济管理学院</option>
+                    <option>国际教育学院</option>
+                    <option>理学院</option>
+                    <option>材料科学与工程学院</option>
+                    <option>马克思主义学院</option>
+                    <option>信息科学与技术学院</option>
+                    <option>生命科学与技术学院</option>
+                    <option>巴黎居里工程师学院</option>
+                    <option>侯德榜工程师学院</option>
+                    <option>能源学院</option>
                 </select>
               </div>
               <!-- /.form-group -->
             </div>
+<input type="button" onclick="showcourse(this)" class="btn btn-primary" id='change' value="显示已选课">
+            <div>
+
+
+
+            </div>
+
             <div class="box-body">
                 <table id="majorCourse" class="table table-bordered table-striped">
                     <thead>
@@ -189,6 +134,7 @@
 
  {% endblock %}
 {% block script %}
+
     <script>
 
 
@@ -200,8 +146,12 @@
     majorCourse = document.getElementById("majorCourse");
     courseSelected = document.getElementById("courseSelected");
 
+	  $(function () {
+	    $(".select2").select2();
+	  });
     {#----------------------候选课程---------------------------#}
     var class_week = new Array(data.length);
+    var selected = document.getElementById("k");
     for(var i=0;i<data.length;i++) {
         class_week[i] = new Array();
         times = data[i]["上课时间"].split(",");
@@ -364,29 +314,16 @@
                             tr = obj.parentNode.parentNode;
                             tr.parentNode.removeChild(tr);
 
-
-
-
-
-                       /* if (arg["flag"] == 1) {
-                            changeColor = document.getElementById(obj.id);
-                            changeColor.className = "btn btn-success";
-                            changeColor.value = "已选";
-                            changeColor.onclick = null;
-
-                            var rows = majorCourses.getElementsByTagName("tr");
-                            var first = rows[1];
-
-                            courseSelected.innerHTML += '<tr name=' + i + '><td>' + obj.parentNode.parentNode.cells[0].innerHTML + '</td><td>' + obj.parentNode.parentNode.cells[1].innerHTML + '</td><td>' + obj.parentNode.parentNode.cells[2].innerHTML + '</td><td>' + arg["tot"] + '</td><td>' + obj.parentNode.parentNode.cells[4].innerHTML + '</td><td>' + obj.parentNode.parentNode.cells[5].innerHTML + '</td><td>' + obj.parentNode.parentNode.cells[6].innerHTML + '</td><td>' + obj.parentNode.parentNode.cells[7].innerHTML + '</td><td>' + '<input type="button" onclick="dele(this)" class="btn btn-danger" id=' + i + ' name=' + i + ' value="退课">' + '</td></tr>';
-                            obj.parentNode.parentNode.cells[3].innerHTML = arg["tot"];
-
-                        }*/
-                       // else {
-                         //   alert("时间冲突，请选择其他课程！！");
-                        //}
                     }
                 });
         }
+   {#----------------------查看已选课---------------------------#}
+    function showcourse(obj) {
+                    $('#change').on('click',function() {
+                //显示框
+                $('#eidtModal').modal('show');
 
+            });
+    }
     </script>
 {% endblock %}
