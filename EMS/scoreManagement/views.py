@@ -362,3 +362,8 @@ def teacher_up_load_score(request):
     teacher = Teacher.objects.get(tno=tno)
     my_courses = Teaching.objects.filter(tno=teacher)
 
+# 授课老师录入成绩
+def input_score(request):
+    if request.session['user_type'] != '教师':
+        redirect("scoreManagement:welcome")
+    return render(request, 'scoreManage/input_score.html')
