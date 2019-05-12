@@ -49,7 +49,13 @@ def student_score(request):
     sno = request.session['username']
     student = Student.objects.get(username=sno)
     course_score = CourseScore.objects.filter(sno=student)
-    context = {"my_course_score": course_score}
+    years = [c['teaching__mcno__year'] for c in course_score.values("teaching__mcno__year").distinct()]
+    semesters = [s['teaching__mcno__semester'] for s in course_score.values("teaching__mcno__semester").distinct()]
+    context = {
+        "my_course_score": course_score,
+        "years": years,
+        "semesters": semesters
+    }
     return render(request, "scoreManage/my_course_score.html", context)
 
 
@@ -108,11 +114,11 @@ def student_own_study(request):
             b = year_semester_course_item.score
             if b >= 90:
                 semester_GPA = semester_GPA + a / semester_sum * 4
-            elif b >= 80 and b < 90:
+            elif 80 <= b < 90:
                 semester_GPA = semester_GPA + a / semester_sum * 3
-            elif b >= 70 and b < 80:
+            elif 70 <= b < 80:
                 semester_GPA = semester_GPA + a / semester_sum * 2
-            elif b >= 60 and b < 70:
+            elif 60 <= b < 70:
                 semester_GPA = semester_GPA + a / semester_sum * 1
             else:
                 semester_GPA = semester_GPA
