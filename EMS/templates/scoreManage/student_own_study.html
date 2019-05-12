@@ -29,8 +29,8 @@
 
 {% endblock %}
 {% block script %}
-    <script src="https://cdn.bootcss.com/echarts/4.2.1-rc1/echarts-en.common.js"></script>
-    <script src="https://cdn.bootcss.com/echarts/4.2.1-rc1/echarts.js"></script>
+    <script src="{% static 'AdminLTE/plugins/echarts.js' %}"></script>
+    <script src="{% static 'AdminLTE/plugins/echarts-en.common.js' %}"></script>
     <script>
        function student_stu_sit0() {
            var piechart = echarts.init(document.getElementById('stusit0'));
