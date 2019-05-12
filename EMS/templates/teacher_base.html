@@ -68,7 +68,11 @@
             </span>
         </a>
         <ul class="treeview-menu">
-            <li><a href="#"><i class="fa fa-circle-o"></i>成绩录入</a></li>
+            <li>
+                <a href="{% url 'scoreManagement:input_score' %}">
+                    <i class="fa fa-circle-o"></i>成绩录入
+                </a>
+            </li>
             <li><a href="#"><i class="fa fa-circle-o"></i>查看成绩统计</a></li>
             <li><a href="#"><i class="fa fa-circle-o"></i>导出成绩</a></li>
         </ul>
