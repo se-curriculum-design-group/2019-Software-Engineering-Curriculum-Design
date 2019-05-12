@@ -1,0 +1,371 @@
+{% extends 'student_base.html' %}
+{% load staticfiles %}
+{% block content %}
+    <section class="content-header">
+        <h4>请对当前学期您所教授的班级录入考生成绩</h4>
+        <ol class="breadcrumb">
+            <li><a href="{% url 'scoreManagement:welcome' %}"><i class="fa fa-dashboard"></i> 主页</a></li>
+            <li class="active">成绩录入</li>
+        </ol>
+    </section>
+    <section class="content">
+        <div class="nav-tabs-custom" style="cursor: move;">
+            <!-- Tabs within a box -->
+            <ul class="nav nav-tabs pull-left">
+                <li class="active"><a href="#revenue-chart" data-toggle="tab">技术经济学-计科</a></li>
+                <li><a href="#sales-chart" data-toggle="tab">技术经济学—高材</a></li>
+            </ul>
+            <div class="tab-content no-padding">
+                <!-- Morris chart - Sales -->
+                <div class="chart tab-pane active" id="revenue-chart" style="position: relative; height: 400px;">
+                    <div class="box" style="width: 70%; float: left;">
+                        <div class="box-body">
+                            <table id="example2" class="table table-bordered table-hover">
+                                <thead>
+                                    <tr>
+                                        <th>学号</th>
+                                        <th>姓名</th>
+                                        <th>班级</th>
+                                        <th>平时成绩(50%)</th>
+                                        <th>考试成绩(50%)</th>
+                                        <th></th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+    {#                                {% for i in range(10) %}#}
+                                        <tr>
+                                            <form>
+                                                <td>2016014409</td>
+                                                <td>宋文宇</td>
+                                                <td>计科1605</td>
+                                                <td><input class="form-control input-lg" type="text" style="width: 100px; height: 25px"></td>
+                                                <td><input class="form-control input-lg" type="text" style="width: 100px; height: 25px"></td>
+                                                <td>
+                                                    <button type="submit" class="btn btn-primary" style="width: 80px; height: 25px;">保存</button>
+                                                </td>
+                                            </form>
+                                        </tr>
+                                        <tr>
+                                            <form>
+                                                <td>2016014410</td>
+                                                <td>小A</td>
+                                                <td>计科1605</td>
+                                                <td><input class="form-control input-lg" type="text" style="width: 100px; height: 25px"></td>
+                                                <td><input class="form-control input-lg" type="text" style="width: 100px; height: 25px"></td>
+                                                <td>
+                                                    <button type="submit" class="btn btn-primary" style="width: 80px; height: 25px;">保存</button>
+                                                </td>
+                                            </form>
+                                        </tr>
+                                        <tr>
+                                            <form>
+                                                <td>2016014411</td>
+                                                <td>小B</td>
+                                                <td>计科1605</td>
+                                                <td><input class="form-control input-lg" type="text" style="width: 100px; height: 25px"></td>
+                                                <td><input class="form-control input-lg" type="text" style="width: 100px; height: 25px"></td>
+                                                <td>
+                                                    <button type="submit" class="btn btn-primary" style="width: 80px; height: 25px;">保存</button>
+                                                </td>
+                                            </form>
+                                        </tr>
+    {#                                {% endfor %}#}
+                                </tbody>
+                            </table>
+                        </div>
+                        <div class="box-footer clearfix">
+                            <ul class="pagination pagination-sm no-margin pull-right">
+                                <li><a href="#">&laquo;</a></li>
+                                <li><a href="#">1</a></li>
+                                <li><a href="#">2</a></li>
+                                <li><a href="#">3</a></li>
+                                <li><a href="#">&raquo;</a></li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="col-md-3" style="width: 30%;">
+                        <div class="box box-default collapsed-box">
+                            <div class="box-header with-border">
+                                <h3 class="box-title">成绩划分：</h3>
+                                <div class="box-tools pull-right">
+                                    <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-plus"></i>
+                                    </button>
+                                </div>
+                                <!-- /.box-tools -->
+                            </div>
+                            <!-- /.box-header -->
+                            <div class="box-body">
+                                <form role="form">
+                                    <div class="box-body">
+                                        <div class="form-group">
+                                            <label for="exampleInputEmail1">平时成绩占比：</label>
+                                            <input type="email" class="form-control" id="exampleInputEmail1">
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="exampleInputPassword1">考试成绩占比：</label>
+                                            <input type="password" class="form-control" id="exampleInputPassword1">
+                                        </div>
+                                    </div>
+                                    <!-- /.box-body -->
+                                    <div class="box-footer">
+                                        <button type="submit" class="btn btn-primary">提交</button>
+                                    </div>
+                                </form>
+                            </div>
+                            <!-- /.box-body -->
+                        </div>
+                        <!-- /.box -->
+                    </div>
+                </div>
+                <div class="chart tab-pane" id="sales-chart" style="position: relative; height: 300px;"></div>
+            </div>
+        </div>
+    </section>
+{% endblock %}
+
+{% block script %}
+
+
+    <!-- jQuery 2.2.3 -->
+    <script src="{% static 'AdminLTE/plugins/jQuery/jquery-2.2.3.min.js' %}"></script>
+    <!-- Bootstrap 3.3.6 -->
+    <script src="{% static 'AdminLTE/bootstrap/js/bootstrap.min.js' %}"></script>
+    <!-- DataTables -->
+    <script src="{% static 'AdminLTE/plugins/datatables/jquery.dataTables.min.js' %}"></script>
+    <script src="{% static 'AdminLTE/plugins/datatables/dataTables.bootstrap.min.js' %}"></script>
+    <!-- SlimScroll -->
+    <script src="{% static 'AdminLTE/plugins/slimScroll/jquery.slimscroll.min.js' %}"></script>
+    <!-- FastClick -->
+    <script src="{% static 'AdminLTE/plugins/fastclick/fastclick.js' %}"></script>
+    <!-- AdminLTE App -->
+    <script src="{% static 'AdminLTE/dist/js/app.min.js' %}"></script>
+    <!-- AdminLTE for demo purposes -->
+    <script src="{% static 'AdminLTE/dist/js/demo.js' %}"></script>
+    <!-- page script -->
+    <script>
+        //Red color scheme for iCheck
+
+
+        $(function () {
+            $('input[type="checkbox"].minimal-red, input[type="radio"].minimal-red').iCheck({
+                checkboxClass: 'icheckbox_minimal-red',
+                radioClass: 'iradio_minimal-red'
+            });
+
+            var table = $('#stu_table').DataTable({
+                "paging": true,       <!-- 允许分页 -->
+                "lengthChange": true, <!-- 允许改变每页显示的行数 -->
+                "searching": true,    <!-- 允许内容搜索 -->
+                "ordering": true,     <!-- 允许排序 -->
+                "info": true,         <!-- 显示信息 -->
+                "autoWidth": false,    <!-- 固定宽度 -->
+                "language": {
+                    "sProcessing": "处理中...",
+                    "sLengthMenu": "显示 _MENU_ 项结果",
+                    "sZeroRecords": "没有匹配结果",
+                    "sInfo": "显示第 _START_ 至 _END_ 项结果，共 _TOTAL_ 项",
+                    "sInfoEmpty": "显示第 0 至 0 项结果，共 0 项",
+                    "sInfoFiltered": "(由 _MAX_ 项结果过滤)",
+                    "sInfoPostFix": "",
+                    "sSearch": "搜索:",
+                    "sUrl": "",
+                    "sEmptyTable": "表中数据为空",
+                    "sLoadingRecords": "载入中...",
+                    "sInfoThousands": ",",
+                    "oPaginate": {
+                        "sFirst": "首页",
+                        "sPrevious": "上页",
+                        "sNext": "下页",
+                        "sLast": "末页"
+                    },
+                    "oAria": {
+                        "sSortAscending": ": 以升序排列此列",
+                        "sSortDescending": ": 以降序排列此列"
+                    }
+                },
+                "columnDefs": [{
+                    "searchable": false,
+                    "orderable": true,
+                    "targets": 0
+                }],
+                "order": [[0, 'asc']]
+            });
+
+            var table2 = $('#teacher_table').DataTable({
+                "paging": true,       <!-- 允许分页 -->
+                "lengthChange": true, <!-- 允许改变每页显示的行数 -->
+                "searching": true,    <!-- 允许内容搜索 -->
+                "ordering": true,     <!-- 允许排序 -->
+                "info": true,         <!-- 显示信息 -->
+                "autoWidth": false,    <!-- 固定宽度 -->
+                "language": {
+                    "sProcessing": "处理中...",
+                    "sLengthMenu": "显示 _MENU_ 项结果",
+                    "sZeroRecords": "没有匹配结果",
+                    "sInfo": "显示第 _START_ 至 _END_ 项结果，共 _TOTAL_ 项",
+                    "sInfoEmpty": "显示第 0 至 0 项结果，共 0 项",
+                    "sInfoFiltered": "(由 _MAX_ 项结果过滤)",
+                    "sInfoPostFix": "",
+                    "sSearch": "搜索:",
+                    "sUrl": "",
+                    "sEmptyTable": "表中数据为空",
+                    "sLoadingRecords": "载入中...",
+                    "sInfoThousands": ",",
+                    "oPaginate": {
+                        "sFirst": "首页",
+                        "sPrevious": "上页",
+                        "sNext": "下页",
+                        "sLast": "末页"
+                    },
+                    "oAria": {
+                        "sSortAscending": ": 以升序排列此列",
+                        "sSortDescending": ": 以降序排列此列"
+                    }
+                },
+                "columnDefs": [{
+                    "searchable": false,
+                    "orderable": true,
+                    "targets": 0
+                }],
+                "order": [[0, 'asc']]
+            });
+
+            $('#stu_table tbody').on('click', 'tr', function (e) {
+                if ($(this).hasClass('selected')) {
+                    $(this).removeClass('selected');
+                } else {
+                    table.$('tr.selected').removeClass('selected');
+                    $(this).addClass('selected');
+                }
+            });
+
+            $('#teacher_table').on('click', 'tr', function (e) {
+                if ($(this).hasClass('selected')) {
+                    $(this).removeClass('selected');
+                } else {
+                    table.$('tr.selected').removeClass('selected');
+                    $(this).addClass('selected');
+                }
+            });
+
+            $('#add').click(function () {
+                console.log("new car.");
+                $('#addCar').modal();
+            });
+
+            $('#change').click(function () {
+                console.log("change car");
+                if (table.rows('.selected').data().length) {
+                    $("#changeCar").modal();
+                    var rowData = table.rows('.selected').data()[0];
+                    var inputs = $('#changeCar').find('input');
+                    for (let i = 0; i < inputs.length; i++) {
+                        $(inputs[i]).val(rowData[i]);
+                    }
+                } else {
+                    alert("请选择一个项目！");
+                }
+            });
+
+            $('#delete').click(function () {
+                console.log("delete car");
+                if (table.rows('.selected').data().length) {
+                    $("#deleteCar").modal();
+                    $('#sureToDelete').click(function () {
+                        var rowData = table.rows('.selected').data()[0];
+                        const cno = rowData[1];
+                        const data = {'cno': cno};
+                        $.get('#',
+                            data,
+                            function (rec, status) {
+                                if (status === 'success') {
+                                    alert('删除成功');
+                                    table.row('.selected').remove().draw(false);
+                                } else {
+                                    alert('删除失败！');
+                                }
+                            }
+                        );
+                    });
+                } else {
+                    alert("请选择一个要删除的项目。");
+                }
+
+            });
+
+            $('#sureToChange').click(function () {
+                var rowData = table.rows('.selected').data()[0];
+                const cnoOld = rowData[1];
+                const cno = $('#changeCarCNo').val();
+                const ctype = $("#changeCarType").val();
+                const coil = $("#changeCarOild").val();
+                const isava = $('#changeCarAva').val();
+                var isgood;
+                if (isava === '正常') {
+                    isgood = true;
+                } else {
+                    isgood = false;
+                }
+                const data = {
+                    'cnoOld': cnoOld,
+                    'cno': cno,
+                    'ctype': ctype,
+                    'coil': coil,
+                    'isgood': isgood
+                };
+                $.get(
+                    '#',
+                    data,
+                    function (rec) {
+                        if (!rec) {
+                            alert('修改失败，车牌号重复');
+                        } else {
+                            var tds = Array.prototype.slice.call($('.selected td'));
+                            const newcno = rec['newcno'];
+                            const newctype = rec['newctype'];
+                            const newoil = rec['newoil'];
+                            var avg;
+                            console.log(rec['ava']);
+                            console.log(typeof (rec['ava']));
+                            if (rec['ava']) {
+                                avg = '正常';
+                            } else {
+                                avg = '故障'
+                            }
+                            tds[1].innerHTML = newcno;
+                            tds[2].innerHTML = newctype;
+                            tds[3].innerHTML = newoil;
+                            tds[4].innerHTML = avg;
+                            alert("修改成功");
+                        }
+                    }
+                );
+            });
+        });
+
+    </script>
+    <script>
+        function show1(num) {
+            var divs = document.getElementsByName("dv1");
+            for (var i = 0; i < divs.length; i++) {
+                if (divs[i].id === "d" + num) {
+                    divs[i].style.display = "block";
+                } else {
+                    divs[i].style.display = "none";
+                }
+            }
+        }
+
+        function show2(num) {
+            var divs = document.getElementsByName("dv2");
+            for (var i = 0; i < divs.length; i++) {
+                if (divs[i].id === "v" + num) {
+                    divs[i].style.display = "block";
+                } else {
+                    divs[i].style.display = "none";
+                }
+            }
+        }
+
+    </script>
+{% endblock %}

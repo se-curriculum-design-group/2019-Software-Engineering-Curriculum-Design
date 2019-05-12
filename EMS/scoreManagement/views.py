@@ -349,3 +349,10 @@ def submit_all(request):
         # 更改评价表的is_finish字段
         EvaluationForm.objects.filter(student=student).update(is_finish=True)
         return redirect('scoreManagement:assess_teacher')
+
+
+# 授课老师录入成绩
+def input_score(request):
+    if request.session['user_type'] != '教师':
+        redirect("scoreManagement:welcome")
+    return render(request, 'scoreManage/input_score.html')
