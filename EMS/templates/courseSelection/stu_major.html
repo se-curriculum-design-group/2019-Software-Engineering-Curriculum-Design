@@ -96,24 +96,24 @@
  {% block content %}
 
 
-        <section class="content-header">
 
+
+        <section class="content-header">
 
 
         <h1>选课子系统
             <small>Info</small>
         </h1>
-
         <ol class="breadcrumb">
             <li><a href="{% url 'scoreManagement:welcome' %}"><i class="fa fa-dashboard"></i> 主页</a></li>
-            <li class="active">通识课</li>
+            <li class="active">选课</li>
         </ol>
     </section>
 
         <section class="content">
         <div class="box">
             <div class="box-header">
-                <h3 class="box-title">专业选修课</h3>
+{#                <h3 class="box-title">专业选修课</h3>#}
 
 
 {#                <div class="btn-group pull-right ">#}
@@ -124,6 +124,30 @@
 {#                        <span class="glyphicon glyphicon-pencil"></span>专业#}
 {#                    </button>#}
 {#                </div>#}
+            </div>
+            <div class="col-md-6">
+              <div class="form-group">
+                <label>题目方向</label>
+                <select class="form-control select select-hidden-accessible" multiple="" style="width: 100%;" tabindex="-1" aria-hidden="true">
+                  <option selected="selected">技术应用</option>
+                  <option>科学研究</option>
+
+                </select>
+{#                               <select class="form-control select select-hidden-accessible" style="width:90px;height: 42px" id="select1" name="grant" data-live-search="true">#}
+{#                    <option>司机</option>#}
+{#                  <option>管理员</option>#}
+{#            </select>#}
+              </div>
+              <!-- /.form-group -->
+              <div class="form-group">
+                <label>题目难度</label>
+                <select class="form-control select select-hidden-accessible" style="width: 100%;" tabindex="-1" aria-hidden="true">
+                  <option selected="selected">简单</option>
+                  <option>中等</option>
+                  <option>较难</option>
+                </select>
+              </div>
+              <!-- /.form-group -->
             </div>
             <div class="box-body">
                 <table id="majorCourse" class="table table-bordered table-striped">
@@ -162,6 +186,7 @@
             </div>
         </div>
     </section>
+
  {% endblock %}
 {% block script %}
     <script>
