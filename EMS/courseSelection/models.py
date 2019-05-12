@@ -8,17 +8,13 @@ from backstage.models import Teacher, Student,\
 from scoreManagement.models import Course,MajorCourses,Teaching
 
 
-class courseSelected(models.Model):
-    sno = models.ForeignKey(to=Student,on_delete=models.CASCADE)
-    cno = models.ForeignKey(to=Teacher_Schedule_result,on_delete=models.CASCADE)
+class CourseSelected(models.Model):
+    sno = models.ForeignKey(to=Student, on_delete=models.CASCADE)
+    cno = models.ForeignKey(to=Teacher_Schedule_result, on_delete=models.CASCADE)
     score = models.FloatField()
+    common_score = models.FloatField(null=True)
+    final_score = models.FloatField(null=True)
 
     class Meta:
-        db_table = "courseSelected"
-
-
-
-
-
-
+        db_table = "course_selected"
 

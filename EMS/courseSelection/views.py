@@ -5,7 +5,7 @@ from django.http import JsonResponse
 from backstage.models import Student, Teacher, College, Major, MajorPlan, ClassRoom, AdmClass
 from scoreManagement.models import Course, MajorPlan, MajorCourses, CourseScore,Teaching
 from courseScheduling.models import Teacher_Schedule_result
-from courseSelection.models import courseSelected
+from courseSelection.models import CourseSelected
 import json
 import numpy as np
 
@@ -16,7 +16,7 @@ def welcome(request):
 #     for i in teaching:
 #         new_cord = Teacher_Schedule_result()
 #         new_cord.tno = i
-#         # new_cord.contain_num = 190
+#         # new_cord.contain_num = 19
 #         new_cord.current_number = 0
 #         new_cord.MAX_number = 190
 #         new_cord.time = "1-2-4-5,2-6-7-8"
@@ -65,7 +65,7 @@ def stu_major(request):
     #     # crtype = models.CharField(null=False, max_length=10)
     #     # contain_num = models.IntegerField()
     sno = request.session["username"]
-    courseChosen = courseSelected.objects.filter(sno__username=sno)
+    courseChosen = CourseSelected.objects.filter(sno__username=sno)
     for c in courseChosen:
         tmp = {}
         haveChosen[c.cno.id]=1
@@ -101,11 +101,12 @@ def stu_major(request):
 def select_course(request):
     if request.is_ajax():
         if request.method == 'GET':
+            print("asdasd")
             flag = 1
             ID = request.GET.get("id")
             sno = request.session["username"]
             X = np.zeros((25,8,14),dtype=np.int)
-            confilict_candidate = courseSelected.objects.filter(sno__username=sno)#选的不同的课
+            confilict_candidate = CourseSelected.objects.filter(sno__username=sno)#选的不同的课
             tot = 0
             course_time=[]#收集这些课程的上课时间
             for i in confilict_candidate:
@@ -190,7 +191,7 @@ def select_course(request):
                         cstart = 13
                     if cend == 0:
                         cend = 13
-                    print("sickfuck",np.sum(X[int(week[0]):int(week[1])+1,Day,cstart:cend+1]))
+                    
                     if np.sum(X[int(week[0]):int(week[1])+1,Day,cstart:cend+1]) != 0:
                         flag = 0
                         print(flag)
@@ -198,8 +199,7 @@ def select_course(request):
 
 
                 if(flag):
-                    print("sick")
-                    new_cord = courseSelected()
+                    new_cord = CourseSelected()
                     new_cord.sno = stu_new
                     new_cord.cno = teach
                     new_cord.score=0
@@ -221,7 +221,7 @@ def delete(request):
             tot -= 1
             print(ID)
             Teacher_Schedule_result.objects.filter(id=ID).update(current_number=tot)
-            X = courseSelected.objects.filter(sno__username=sno , cno_id=ID)
+            X = CourseSelected.objects.filter(sno__username=sno , cno_id=ID)
             X.delete()
 
             return JsonResponse({"flag":1,"tot":tot,"ID":ID})

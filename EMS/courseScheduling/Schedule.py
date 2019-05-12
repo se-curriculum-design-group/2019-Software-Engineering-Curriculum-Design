@@ -4,11 +4,11 @@ import heapq
 from scoreManagement.models import MajorCourses as MajorCourses
 from scoreManagement.models import Teaching as original_Teaching
 from backstage.models import ClassRoom, Student, AdmClass, MajorPlan
-# 输出
-from courseScheduling.models import Schedule_result, Teacher_Schedule_result
-
-
-class Student:
+#输出
+from courseScheduling.models import Schedule_result, Teacher_Schedule_result, Classroom_other_schedule
+year = 2019
+semester = 2
+class Students :
     def __init__(self, id, name, major, year, admclass):
         self.id = id
         self.name = name
@@ -56,8 +56,9 @@ class Classroom:
         cnt = 0
         for i in range(1, 8):
             for j in range(0, 13):
+                time_block = self.courseSchedule[i][j]
                 if time_block != '':
-                    time_block = self.courseSchedule[i][j].split(',')
+                    time_block = time_block.split(',')
                     for block in time_block:
                         l = int(block.split('-')[0])
                         r = int(block.split('-')[1])
@@ -92,10 +93,11 @@ class Teacher(object):
 
     def update_empty_count(self):
         cnt = 0
-        for i in range(1, 8):
-            for j in range(0, 13):
-                if time_block != '':
-                    time_block = self.courseSchedule[i][j].split(',')
+        for i in range(1,8):
+            for j in range(0,13):
+                time_block = self.courseSchedule[i][j]
+                if time_block !='':
+                    time_block = time_block.split(',')
                     for block in time_block:
                         l = int(block.split('-')[0])
                         r = int(block.split('-')[1])
@@ -134,7 +136,8 @@ def merge_str(str1: str, str2: str):
         return str2
     if str2_split[0].__len__() == 0:
         return str1
-    week_block = np.zeros(14)
+    week_block = np.zeros(20)
+    print(str1_split, str2_split)
     for e in str1_split + str2_split:
         l = int(e.split('-')[0])
         r = int(e.split('-')[1])
@@ -151,7 +154,9 @@ def merge_str(str1: str, str2: str):
             flag = 1
         if flag == 1 and e == 1:
             r += 1
-        if (flag == 1 and e == 0) or (index == len(week_block) - 1 and flag == 1):
+        if (flag == 1 and e == 0) or (index == len(week_block)-1 and flag == 1):
+            if r > l:
+                r -= 1
             flag = 0
             block = str(l) + '-' + str(r)
             if len(res) == 0:
@@ -161,25 +166,9 @@ def merge_str(str1: str, str2: str):
     return res
 
 
-def mergeTable(table1, table2):
-    global Classrooms_id, Teachers_id, Students_id, Courses_id
-    res = []
-    for i in range(8):
-        res.append([])
-        for j in range(14):
-            res[i].append('')
-    for i in range(8):
-        for j in range(14):
-            res[i][j] = merge_str(table1[i][j], table2[i][j])
-    return res
-
-
 course_2_96 = [(1, 2), (3, 4), (6, 7), (7, 8)]
-course_3 = [(1, 3), (3, 5), (6, 8), (8, 10), (11, 13)]
 course_2 = [(1, 2), (3, 4), (6, 7), (9, 10), (11, 12)]
-
-
-def String_to_table(string1: str):
+def String_to_table(string1:str):
     res = []
     for i in range(8):
         res.append([])
@@ -201,10 +190,9 @@ def String_to_table(string1: str):
 
 
 def init():
-    year = 2019
-    semester = 2
+
     "目前只有自动排课"
-    set1 = Teacher_Schedule_result.objects.filter(cno__year=year, cno__semester=semester)
+    set1 = Teacher_Schedule_result.objects.filter(tno__mcno__year=year, tno__mcno__semester=semester)
     for elements in set1:
         Table = String_to_table(elements.time)
         if Classrooms_id.get(elements.where.crno) == None:
@@ -226,13 +214,15 @@ def init():
             tcher = Teachers_id.get(elements.tno.tno.username)
             tcher.courseSchedule = mergeTable(tcher.courseSchedule, Table)
             tcher.update_empty_count()
-        if Courses_id.get(elements.cno.cno.cno + elements.cno.mno.major.mno + str(elements.cno.mno.year)) == None:
-            Courses_id[elements.cno.cno.cno + elements.cno.mno.major.mno + str(elements.cno.mno.year)] = True
-    set2 = Schedule_result.objects.filter(cno__year=year, cno__semester=semester)
+        if Courses_id.get(elements.tno.mcno.cno.cno+elements.tno.mcno.mno.major.mname
+                          +elements.tno.tno.username) == None:
+            Courses_id[elements.tno.mcno.cno.cno+elements.tno.mcno.mno.major.mname
+                          +elements.tno.tno.username] = True
+    set2 = Schedule_result.objects.filter(tno__mcno__year=year, tno__mcno__semester=semester)
     for elements in set2:
         Table = String_to_table(elements.time)
         if Students_id.get(elements.sno.username) == None:
-            stu = Student(elements.sno.username, elements.sno.name,
+            stu = Students(elements.sno.username, elements.sno.name,
                           elements.sno.in_cls.major.major.mno, elements.sno.in_year, elements.sno.in_cls.name)
             Students_id[elements.sno.username] = stu
             stu.courseSchedule = Table
@@ -244,7 +234,9 @@ def check_hazard(weekday, daytime, schedule, week_start, week_end):
     st = daytime[0]
     ed = daytime[1] + 1
     for time in range(st, ed):
-        string = str(schedule[weekday][time + weekday * 13])
+        string = str(schedule[weekday][time])
+        if len(string) == 0:
+            continue
         for subtime in string.split(','):
             if (int(subtime.split('-')[0]) <= week_start and week_start <= int(subtime.split('-')[1])) or \
                     (int(subtime.split('-')[0]) <= week_end and week_end <= int(subtime.split('-')[1])):
@@ -267,9 +259,9 @@ def coures_time_generate(schedule, time):
             for i, e in enumerate(course_2_96):
                 if check_hazard(cnt * 2, e, schedule, 1, weektime_cur):
                     if len(res) == 0:
-                        res += str(e[0]) + '-' + str(e[1]) + '1' + '-' + str(weektime_cur)
-                    else:
-                        res += ',' + str(e[0]) + '-' + str(e[1]) + '1' + '-' + str(weektime_cur)
+                        res += str(e[0]+cnt*2*13)+'-'+str(e[1]+cnt*2*13) + '-' + '1' + '-' + str(weektime_cur)
+                    else :
+                        res += ',' + str(e[0]+cnt*2*13)+'-'+str(e[1]+cnt*2*13) + '-' + '1' + '-' + str(weektime_cur)
                     break
                 elif i == len(course_2_96) - 1:
                     way1 = 0
@@ -287,9 +279,9 @@ def coures_time_generate(schedule, time):
                 for i, e in enumerate(course_3):
                     if check_hazard(cnt * 2, e, schedule, 1, weektime_cur):
                         if len(res) == 0:
-                            res += str(e[0]) + '-' + str(e[1]) + '1' + '-' + str(weektime_cur)
+                            res += str(e[0]+cnt*2*13) + '-' + str(e[1]+cnt*2*13) + '-' + '1' + '-' + str(weektime_cur)
                         else:
-                            res += ',' + str(e[0]) + '-' + str(e[1]) + '1' + '-' + str(weektime_cur)
+                            res += ',' + str(e[0]+cnt*2*13) + '-' + str(e[1]+cnt*2*13) + '-' + '1' + '-' + str(weektime_cur)
                         break
                     elif i == len(course_3) - 1:
                         return None
@@ -307,9 +299,9 @@ def coures_time_generate(schedule, time):
             for i, e in enumerate(course_2_96):
                 if check_hazard(weekday, e, schedule, 1, weektime_cur):
                     if len(res) == 0:
-                        res += str(e[0]) + '-' + str(e[1]) + '1' + '-' + str(weektime_cur)
-                    else:
-                        res += ',' + str(e[0]) + '-' + str(e[1]) + '1' + '-' + str(weektime_cur)
+                        res += str(e[0]+weekday*13)+'-'+str(e[1]+weekday*13) + '-' + '1' + '-' + str(weektime_cur)
+                    else :
+                        res += ',' + str(e[0]+weekday*13)+'-'+str(e[1]+weekday*13) + '-' + '1' + '-' + str(weektime_cur)
                     weekday += 1
                     cnt += 1
                     break
@@ -326,23 +318,23 @@ def coures_time_generate(schedule, time):
                 for weekday in range(5):
                     weektime_cur = weektime_base
                     if rest > 0:
-                        rest -= 2
-                        weektime_cur += 1
-                    if weektime_cur + bias > 17 and cnt < 2:
+                       rest -= 2
+                       weektime_cur += 1
+                    if weektime_cur + bias >17 and cnt < 2:
                         return None
                 for i, e in enumerate(course_3):
                     if check_hazard(weekday, e, schedule, 1 + bias, weektime_cur + bias):
                         if len(res) == 0:
-                            res += str(e[0]) + '-' + str(e[1]) + '1' + '-' + str(weektime_cur)
+                            res += str(e[0]+weekday*13) + '-' + str(e[1]+weekday*13) + '-' + '1'+ '-' + str(weektime_cur)
                         else:
-                            res += ',' + str(e[0]) + '-' + str(e[1]) + '1' + '-' + str(weektime_cur)
+                            res += ',' + str(e[0]+weekday*13) + '-' + str(e[1]+weekday*13) + '-' + '1' + '-' + str(weektime_cur)
                         weekday += 1
                         cnt += 1
                         break
                 if cnt == 2:
                     return res
     if time < 56:
-        weektime_base = int(time / 3)
+        weektime_base = int(time/3)
         for bias in range(8):
             cnt = 0
             rest = time % 3
@@ -356,9 +348,9 @@ def coures_time_generate(schedule, time):
             for i, e in enumerate(course_3):
                 if check_hazard(weekday, e, schedule, 1 + bias, weektime_cur + bias):
                     if len(res) == 0:
-                        res += str(e[0]) + '-' + str(e[1]) + '1' + '-' + str(weektime_cur)
+                        res += str(e[0]+weekday*13) + '-' + str(e[1]+weekday*13) + '-' + '1' + '-' + str(weektime_cur)
                     else:
-                        res += ',' + str(e[0]) + '-' + str(e[1]) + '1' + '-' + str(weektime_cur)
+                        res += ',' + str(e[0]+weekday*13) + '-' + str(e[1]+weekday*13) + '-' + '1' + '-' + str(weektime_cur)
                     weekday += 1
                     cnt += 1
                     break
@@ -371,7 +363,7 @@ def write_to_database(res: str, bf: Buffer):
     tno_mno = original_Teaching.objects.get(mcno=bf.course, tno__username=bf.teachers[0])
     cur_num = 0
     ctype = tno_mno.mcno.cno.course_type
-    if ctype == '必修':
+    if '必修' in ctype:
         cur_num = len(bf.students)
     TSr = Teacher_Schedule_result.objects.create(
         tno=tno_mno,
@@ -382,21 +374,21 @@ def write_to_database(res: str, bf: Buffer):
         state=tno_mno.mcno.cno.course_type,
     )
     table = String_to_table(res)
-    bf.teachers[0].courseSchedule = mergeTable(bf.teachers[0].courseSchedule, table)
-    bf.classrooms[0].courseSchedule = mergeTable(bf.classrooms[0].courseSchedule, table)
-    bf.teachers[0].time_count += tno_mno.mcno.hour_total
-    bf.classrooms[0].courseSchedule += tno_mno.mcno.hour_total
+    Teachers_id.get(bf.teachers[0]).courseSchedule = mergeTable(Teachers_id.get(bf.teachers[0]).courseSchedule, table)
+    Classrooms_id.get(bf.classrooms[0]).courseSchedule = mergeTable(Classrooms_id.get(bf.classrooms[0]).courseSchedule, table)
+    Teachers_id.get(bf.teachers[0]).time_count += tno_mno.mcno.hour_total
+    Classrooms_id.get(bf.classrooms[0]).time_count += tno_mno.mcno.hour_total
     TSr.save()
-    if ctype == '必修':
+    if '必修' in ctype:
         for sno in bf.students:
             Sr = Schedule_result.objects.create(
                 sno=Student.objects.get(username=sno),
-                tno=tno_mno.tno,
+                tno=tno_mno,
                 where=ClassRoom.objects.get(crno=bf.classrooms[0]),
                 time=res,
             )
             Sr.save()
-            sno.courseSchedule = mergeTable(sno.courseSchedule, table)
+            Students_id.get(sno).courseSchedule = mergeTable(Students_id.get(sno).courseSchedule, table)
 
 
 def distribute_single(bf: Buffer, room: Classroom, tch: Teacher, course):
@@ -416,22 +408,29 @@ def autoSchedule():
     heap_bigroom = []
     heap_midroom = []
     heap_smallroom = []
-    for key in Classrooms_id:
-        elements = Classrooms_id[key]
-        if elements.type == '大':
-            heapq.heappush(heap_bigroom, elements)
-        if elements.type == '中':
-            heapq.heappush(heap_midroom, elements)
-        if elements.type == '小':
-            heapq.heappush(heap_smallroom, elements)
+    room_set = ClassRoom.objects.all()
+    for elements in room_set:
+        if Classrooms_id.get(elements.crno) == None :
+            Classrooms_id[elements.crno] = Classroom(elements.crno, elements.crtype, elements.contain_num)
+        if Classrooms_id[elements.crno].type == '大':
+            heapq.heappush(heap_bigroom, Classrooms_id[elements.crno])
+        if Classrooms_id[elements.crno].type == '中':
+            heapq.heappush(heap_midroom, Classrooms_id[elements.crno])
+        if Classrooms_id[elements.crno].type == '小':
+            heapq.heappush(heap_smallroom, Classrooms_id[elements.crno])
     coures_set = MajorCourses.objects.filter(year=year, semester=semester)
     for course in coures_set:
         teacher_set = original_Teaching.objects.filter(mcno__cno__cno=course.cno.cno)
         heap_teacher = []
         # 教师建堆
         for elements in teacher_set:
+            if Courses_id.get(elements.mcno.cno.cno + elements.mcno.mno.major.mname
+                              + elements.tno.username):
+                continue
+            Courses_id[elements.mcno.cno.cno + elements.mcno.mno.major.mname
+                      + elements.tno.username] = True
             if Teachers_id.get(elements.tno.username) == None:
-                tcher = Teacher(elements.tno.usernam, elements.tno.name)
+                tcher = Teacher(elements.tno.username, elements.tno.name)
                 tcher.update_empty_count()
                 Teachers_id[elements.tno.username] = tcher
                 heapq.heappush(heap_teacher, tcher)
@@ -445,14 +444,14 @@ def autoSchedule():
             stu_cnt = 0
             for elements in students_set:
                 stu = None
-                if Students_id.get(elements.sno.username) == None:
-                    stu = Student(elements.sno.username, elements.sno.name,
-                                  elements.sno.in_cls.major.major.mno, elements.sno.in_year, elements.sno.in_cls.name)
+                if Students_id.get(elements.username) == None:
+                    stu = Students(elements.username, elements.name,
+                                  elements.in_cls.major.major.mname, elements.sno.in_year, elements.sno.in_cls.name)
                     Students_id[elements.sno.username] = stu
                 else:
-                    stu = Students_id.get(elements.sno.username)
-                # 人数达上限分配教师、地点、重置Buffer
-                # class_dic班级字典
+                    stu = Students_id.get(elements.username)
+                #人数达上限分配教师、地点、重置Buffer
+                #class_dic班级字典
                 if (class_dic.get(stu.in_cls) == None and len(class_dic) == 6) or stu_cnt >= 195:
                     teacher = heap_teacher[0]
                     bf.courseSchedule = mergeTable(teacher.courseSchedule, bf.courseSchedule)
@@ -491,25 +490,27 @@ def autoSchedule():
             # 重置 bf
         elif len(students_set) <= 200 and len(students_set) > 120:
             for elements in students_set:
-                if Students_id.get(elements.sno.username) == None:
-                    stu = Student(elements.sno.username, elements.sno.name,
-                                  elements.sno.in_cls.major.major.mno, elements.sno.in_year, elements.sno.in_cls.name)
-                    Students_id[elements.sno.username] = stu
+                if Students_id.get(elements.username) == None:
+                    stu = Students(elements.username, elements.username,
+                                  elements.in_cls.major.major.mno, elements.in_year, elements.in_cls.name)
+                    Students_id[elements.username] = stu
                 else:
-                    stu = Students_id.get(elements.sno.username)
+                    stu = Students_id.get(elements.username)
+                print(bf.courseSchedule)
                 bf.courseSchedule = mergeTable(stu.courseSchedule, bf.courseSchedule)
                 bf.students.append(stu.id)
+            #print(heap_bigroom, '----', heap_teacher)
             distribute_single(bf, heap_bigroom[0], heap_teacher[0], course)
             heapq.heapify(heap_teacher)
             heapq.heapify(heap_bigroom)
         elif len(students_set) <= 120 and len(students_set) > 50:
             for elements in students_set:
-                if Students_id.get(elements.sno.username) == None:
-                    stu = Student(elements.sno.username, elements.sno.name,
-                                  elements.sno.in_cls.major.major.mno, elements.sno.in_year, elements.sno.in_cls.name)
+                if Students_id.get(elements.username) == None:
+                    stu = Students(elements.username, elements.username,
+                                   elements.in_cls.major.major.mno, elements.in_year, elements.in_cls.name)
                     Students_id[elements.sno.username] = stu
                 else:
-                    stu = Students_id.get(elements.sno.username)
+                    stu = Students_id.get(elements.username)
                 bf.courseSchedule = mergeTable(stu.courseSchedule, bf.courseSchedule)
                 bf.students.append(stu.id)
             distribute_single(bf, heap_midroom[0], heap_teacher[0], course)
@@ -517,18 +518,39 @@ def autoSchedule():
             heapq.heapify(heap_midroom)
         elif len(bf.students) <= 50:
             for elements in students_set:
-                if Students_id.get(elements.sno.username) == None:
-                    stu = Student(elements.sno.username, elements.sno.name,
-                                  elements.sno.in_cls.major.major.mno, elements.sno.in_year, elements.sno.in_cls.name)
+                if Students_id.get(elements.username) == None:
+                    stu = Students(elements.username, elements.username,
+                                   elements.in_cls.major.major.mno, elements.in_year, elements.in_cls.name)
                     Students_id[elements.sno.username] = stu
                 else:
-                    stu = Students_id.get(elements.sno.username)
+                    stu = Students_id.get(elements.username)
                 bf.courseSchedule = mergeTable(stu.courseSchedule, bf.courseSchedule)
                 bf.students.append(stu.id)
             distribute_single(bf, heap_smallroom[0], heap_teacher[0], course)
             heapq.heapify(heap_teacher)
             heapq.heapify(heap_smallroom)
+#---------------------
+#自动排考试时间
+
+#----------------------------
+#按地点查空闲:
+def Search_spare_room(name:str):
+   cls = ClassRoom.objects.get(crno=name)
+   classroom = Classroom(cls.crno, cls.crtype, cls.contain_num)
+   time_occupy_in_Teaching = Teacher_Schedule_result.objects.filter(where__crno=name)
+   for element in time_occupy_in_Teaching:
+       classroom.courseSchedule = mergeTable(classroom.courseSchedule, String_to_table(element.time))
+   time_occupy_in_other = Classroom_other_schedule.objects.filter(crno__crno=name)
+   for element in time_occupy_in_other:
+       classroom.courseSchedule = mergeTable(classroom.courseSchedule, String_to_table(element.time))
+   Classrooms_id[name] = classroom
+   return classroom
+
+def get_students_teacher_schdule(nameset):
+    pass
+
+
 
 
 if __name__ == '__main__':
-    print("ss")
+    autoSchedule()
