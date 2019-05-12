@@ -44,22 +44,17 @@ class Classroom_other_schedule (models.Model):
     #外键教室
     crno = models.ForeignKey(to=ClassRoom, on_delete=models.CASCADE)
     #时间定义同上
-    time = models.CharField(max_length=128, default='')
-    statement = models.CharField(max_length=128, default='')
+    time = models.CharField(max_length=128, null=False, default='')
     def __str__(self):
-        return "-".join([self.crno, self.time, self.statement])
+        return "-".join([self.crno, self.time])
     class Meta:
         db_table = 'Classroom_other_schedule'
 
 class Exam_Schedule(models.Model):
-    sno = models.ForeignKey(to=Student, on_delete=models.CASCADE)
     tno_mno_course = models.ForeignKey(to=Teacher_Schedule_result, on_delete=models.CASCADE)
     time = models.CharField(max_length=128, null=False)
     where = models.ForeignKey(to=ClassRoom, on_delete=models.CASCADE)
     def __str__(self):
-        return "-".join([self.sno, self.tno_mno, self.time, self.where])
+        return "-".join([self.tno_mno, self.time, self.where])
     class Meta:
         db_table = 'Exam_Schedule'
-        unique_together = (
-            'sno', 'tno_mno_course',
-        )
