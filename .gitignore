@@ -3,6 +3,8 @@
 *.pdf
 *.py[cod]
 __init__.cpython-36.pyc
+*cpython-36.pyc
+**/__init__.cpython-36.pyc
 **cpython-36**
 *$py.class
 *..pyc~Stashed changes
@@ -12,3 +14,4 @@ __pycache__/
 !**migrations/__init__.py
 0001_initial.py
 0002_auto*.py
+*.pyc
