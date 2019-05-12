@@ -14,3 +14,4 @@ __pycache__/
 !**migrations/__init__.py
 0001_initial.py
 0002_auto*.py
+*.pyc
