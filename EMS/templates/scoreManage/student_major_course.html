@@ -128,7 +128,6 @@
                 } else {
                     return false
                 }
-
             }
         );
         $(document).ready(function () {
@@ -187,12 +186,21 @@
                     "order": [[0, 'asc']]
                 }
             );
+            $('#major_course_table tbody').on('click', 'tr', function (e) {
+                if ($(this).hasClass('selected')) {
+                    $(this).removeClass('selected');
+                } else {
+                    table.$('tr.selected').removeClass('selected');
+                    $(this).addClass('selected');
+                }
+            });
+
             // Event listener to the two range filtering inputs to redraw on input
             $(' #course_type, #major, #year, #semester').change(function () {
                 table.draw();
             });
+
+            $('.select2').select();
         });
-
-
     </script>
 {% endblock %}
