@@ -227,5 +227,23 @@ def delete(request):
             return JsonResponse({"flag":1,"tot":tot,"ID":ID})
 
 def teacher(request):#教师查看授课选课情况
-    return render(request,"courseSelection/teacher.html")
+    return render(request,"courseSelection/index.html")
+def find_course(request):
+    if request.is_ajax():
+        if request.method == 'GET':
+            sno = request.session["username"]
+            theCourse = CourseSelected.objects.filter(sno__username=sno)
 
+            course_time=[]#收集这些课程的上课时间
+            dic = {}
+            tmp = {}
+            for i in theCourse:
+                tmp = i.cno.time.split(",")#同一门课程在一周内不同的时间上
+                dic[i.cno.tno.mcno.cno.cname]=[]
+                for j in tmp:#一周内不同的天
+                    tmp = {}
+                    district = j.split("-")
+                    tmp["周数"] = district[2]+"-"+district[3]
+                    tmp["节次"] = district[0]+"-"+district[1]
+                    dic[i.cno.tno.mcno.cno.cname].append(tmp)
+            return JsonResponse({"dic":dic})
