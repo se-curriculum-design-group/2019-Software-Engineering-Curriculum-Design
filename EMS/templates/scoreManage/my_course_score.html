@@ -78,7 +78,6 @@
     <script>
 
         $(function () {
-
             var table = $('#my_course_score_table').DataTable({
                 "paging": true,       <!-- 允许分页 -->
                 "lengthChange": true, <!-- 允许改变每页显示的行数 -->
@@ -119,32 +118,12 @@
             });
 
 
-            $('#stu_table tbody').on('click', 'tr', function (e) {
+            $('#my_course_score_table tbody').on('click', 'tr', function (e) {
                 if ($(this).hasClass('selected')) {
                     $(this).removeClass('selected');
                 } else {
                     table.$('tr.selected').removeClass('selected');
                     $(this).addClass('selected');
-                }
-            });
-
-
-            $('#add').click(function () {
-                console.log("new car.");
-                $('#addCar').modal();
-            });
-
-            $('#change').click(function () {
-                console.log("change car");
-                if (table.rows('.selected').data().length) {
-                    $("#changeCar").modal();
-                    var rowData = table.rows('.selected').data()[0];
-                    var inputs = $('#changeCar').find('input');
-                    for (let i = 0; i < inputs.length; i++) {
-                        $(inputs[i]).val(rowData[i]);
-                    }
-                } else {
-                    alert("请选择一个项目！");
                 }
             });
         })

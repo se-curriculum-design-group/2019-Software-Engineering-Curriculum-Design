@@ -6,7 +6,7 @@
         <a href="#" class="dropdown-toggle" data-toggle="dropdown">信息查询 <span
                 class="caret"></span></a>
         <ul class="dropdown-menu" role="menu">
-            <li><a href="#">查看个人信息</a></li>
+            <li><a href="{% url 'backstage:my_personal_details' %}">查看个人信息</a></li>
             <li><a href="#">查看个人课表</a></li>
             <li><a href="#">查看全校课表</a></li>
             <li><a href="#">查询空闲教室</a></li>
@@ -91,12 +91,16 @@
             </span>
         </a>
         <ul class="treeview-menu">
-            <li><a href="#"><i class="fa fa-circle-o"></i>发布课题</a></li>
+            <li><a href="{% url 'graduationManagement:teacher_edit_project' %}"><i class="fa fa-circle-o"></i>发布课题</a></li>
             <li><a href="#"><i class="fa fa-circle-o"></i>查看选题情况</a></li>
             <li><a href="#"><i class="fa fa-circle-o"></i>查看提交文档</a></li>
             <li><a href="#"><i class="fa fa-circle-o"></i>成绩打分</a></li>
         </ul>
     </li>
+
+{% endblock %}
+{% block content %}
+
 
 
 {% endblock %}
