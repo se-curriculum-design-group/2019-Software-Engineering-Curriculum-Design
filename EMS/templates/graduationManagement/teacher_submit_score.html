@@ -1,18 +1,8 @@
-{% extends 'student_base.html' %}
+{% extends 'teacher_base.html' %}
 {% load staticfiles %}
 
 {% block content %}
-  <div class="row">
-    <div class="col-md-12">
-      <div class="alert alert-danger alert-dismissible" style="height: 200px;margin-top: 50px;margin-left: 20px;margin-right: 20px;">
-                <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
-                <h3><i class="icon fa fa-ban"></i> 警告</h3>
-                <h4>您目前未到达选课年级</h4>
-                <h4>当前不是选课时间，请耐心等待</h4>
-                <h4>选课时间已过，老师处于审核阶段，点此查看审核状态</h4>
-              </div>
-    </div>
-  </div>
+ 
 	<div class="box box-default">
         <div class="box-header with-border">
           <h3 class="box-title">选项</h3>
@@ -23,53 +13,20 @@
           </div>
         </div>
         <!-- /.box-header -->
-        <div class="box-body">
-          <div class="row">
-            <div class="col-md-6">
-              <div class="form-group">
-                <label>题目状态</label>
-                <select class="form-control select2 select2-hidden-accessible" style="width: 100%;" tabindex="-1" multiple="" aria-hidden="true">
-                  <option selected="selected">未选</option>
-                  <option>已选</option>
-                  <option>全部</option>
-               
-                </select>
-              </div>
-              <!-- /.form-group -->
-              <div class="form-group">
-                <label>专业</label>
-                <select class="form-control select2 select2-hidden-accessible" disabled="" style="width: 100%;" tabindex="-1" aria-hidden="true">
-                  <option selected="selected">计算机科学与技术</option>
-
-                </select>
-
-              </div>
-              <!-- /.form-group -->
-            </div>
-            <!-- /.col -->
-            <div class="col-md-6">
-              <div class="form-group">
-                <label>题目方向</label>
-                <select class="form-control select2 select2-hidden-accessible" multiple="" style="width: 100%;" tabindex="-1" aria-hidden="true">
-                  <option selected="selected">技术应用</option>
-                  <option>科学研究</option>
-                
-                </select>
-              </div>
-              <!-- /.form-group -->
-              <div class="form-group">
-                <label>题目难度</label>
-                <select class="form-control select2 select2-hidden-accessible" style="width: 100%;" tabindex="-1" aria-hidden="true">
-                  <option selected="selected">简单</option>
-                  <option>中等</option>
-                  <option>较难</option>
-                </select>
-              </div>
-              <!-- /.form-group -->
-            </div>
-            <!-- /.col -->
-          </div>
-          <!-- /.row -->
+           <div class="box-body">
+	          <div class="row">
+	            <div class="col-md-12">
+	               <div class="form-group">
+	                <label>毕设题目</label>
+	                <select class="form-control select2 select2-hidden-accessible" multiple="" style="width: 100%;" tabindex="-1" aria-hidden="true">
+	                  <option selected="selected">基于Django的毕业设计管理系统</option>
+	                  <option>基于Django的毕业设计管理系统</option>
+	                </select>
+	              </div>
+	            </div>
+	            <!-- /.col -->
+	          </div>
+	          <!-- /.row -->
         </div>
         <!-- /.box-body -->
         
@@ -92,37 +49,30 @@
               </div>
             </div>
             <!-- /.box-header -->
-            <div class="box-body table-responsive no-padding">
+           <div class="box-body table-responsive no-padding">
               <table class="table table-hover">
                 <tbody><tr>
-                  <th>教师</th>
+                 
                   <th>题目名称</th>
-                  <th>题目难度</th>
-                  <th>题目状态</th>
-                  <th>题目关键词</th>
+                   <th>选题学生</th>
+                   <th>阶段</th>
+                   <th>提交时间</th>
                 </tr>
                 <tr class="jump">
-                  <td>万静</td>
+                 
                   <td>基于Django的毕业设计管理系统</td>
-                  <td>中等</td>
-                  <td><span class="label label-success">未选</span></td>
-                  <td>管理系统 Django 数据库</td>
+                  <td>zdd</td>
+                  <td>中期报告</td>
+                  <td>2019-4-12 14:20</td>
                 </tr>
                 <tr class="jump">
-                  <td>万静</td>
                   <td>基于Django的毕业设计管理系统</td>
-                  <td>中等</td>
-                  <td><span class="label label-success">未选</span></td>
-                  <td>管理系统 Django 数据库</td>
+                  <td>zdd</td>
+                  <td>开题报告</td>
+                  <td>2019-4-12 14:20</td>
                 </tr>
             
-                <tr class="jump">
-                  <td>万静</td>
-                  <td>基于Django的毕业设计管理系统</td>
-                  <td>中等</td>
-                  <td><span class="label label-danger">已选</span></td>
-                  <td>管理系统 Django 数据库</td>
-                </tr>
+                
               </tbody></table>
             </div>
             <!-- /.box-body -->
@@ -174,7 +124,7 @@
 	    $(".select2").select2();
 	  });
      $(".jump").click(function () {
-             location.href = "{% url 'graduationManagement:student_view_project_detail' %}";
+             location.href = "{% url 'graduationManagement:teacher_submit_score_detail' %}";
          });
 	</script>
 
