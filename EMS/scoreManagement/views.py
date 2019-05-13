@@ -370,7 +370,35 @@ def teacher_view_teaching(request):
         'years': years,
         'semesters': semesters
     }
+    if request.method == 'GET':
+        try:
+            other_tno = request.GET['seacher_tno']
+            other_teacher = Teacher.objects.get(username=other_tno)
+            other_teaching_list = Teaching.objects.filter(tno=other_teacher)
+            other_years = [y['mcno__year'] for y in other_teaching_list.values('mcno__year').distinct()]
+            other_semesters = [s['mcno__semester'] for s in other_teaching_list.values('mcno__semester').distinct()]
+            result = {
+                "is_find": True,
+                "other_tno": other_tno,
+                "other_years": other_years,
+                "other_semesters": other_semesters,
+                "other_teaching_list": other_teaching_list,
+                'teaching_list': teaching_list,
+                'years': years,
+                'semesters': semesters
+            }
+            return render(request, "scoreManage/teacher_view_teaching.html", result)
+        except:
+            pass
     return render(request, "scoreManage/teacher_view_teaching.html", context)
+
+
+def teacher_view_others_teaching(request):
+    if request.session['user_type'] != '教师':
+        return render(request, 'errors/403page.html')
+    if request.is_ajax():
+        return JsonResponse()
+    return redirect("scoreManagement:teacher_view_teaching")
 
 
 # 授课老师录入成绩
