@@ -33,27 +33,37 @@ def adm_all_course_score(request):
         all_colleges = College.objects.all()
         all_majors = Major.objects.all()
         all_course_score = CourseScore.objects.all()
-        all_years = [y['teaching__mcno__year'] for y in all_course_score.values("teaching__mcno__year").distinct()]
+        all_years = [y['teaching__mcno__year'] for y in CourseScore.objects.values("teaching__mcno__year").distinct()]
         all_semester = [y['teaching__mcno__semester'] for y in
-                        all_course_score.values("teaching__mcno__semester").distinct()]
+                        CourseScore.objects.values("teaching__mcno__semester").distinct()]
         try:
             sear_year = request.GET['sear_year']
             sear_semester = request.GET['sear_semester']
-            all_course_score = CourseScore.objects.filter(teaching__mcno__year=sear_year, teaching__mcno__semester=sear_semester)
 
-            print(sear_year)
-            print(sear_semester)
-            print(all_course_score)
-        except:
-            pass
-        context = {
-            "all_course_score": all_course_score[:10],
-            "all_years": all_years,
-            "all_semester": all_semester,
-            "all_colleges": all_colleges,
-            "all_majors": all_majors,
-        }
-        return render(request, 'scoreManage/adm_score_manage.html', context)
+            all_course_score = CourseScore.objects.filter(
+                teaching__mcno__year=sear_year,
+                teaching__mcno__semester=sear_semester,
+            )[:20]
+            context = {
+                "all_course_score": all_course_score,
+                "all_years": all_years,
+                "all_semester": all_semester,
+                "all_colleges": all_colleges,
+                "all_majors": all_majors,
+                "sear_year": sear_year,
+                "sear_semester": sear_semester,
+            }
+            return render(request, 'scoreManage/adm_score_manage.html', context)
+        except Exception:
+            print(Exception)
+            context = {
+                "all_course_score": all_course_score[:10],
+                "all_years": all_years,
+                "all_semester": all_semester,
+                "all_colleges": all_colleges,
+                "all_majors": all_majors,
+            }
+            return render(request, 'scoreManage/adm_score_manage.html', context)
 
 
 def score_home_page(request):
@@ -423,16 +433,6 @@ def teacher_upload_score(request):
     teacher = Teacher.objects.get(username=tno)
     my_courses = Teaching.objects.filter(tno=teacher)
     return render(request, 'scoreManage/teacher_upload_score.html')
-
-
-def dt_test(request):
-    if request.is_ajax():
-        data = [
-            {"name": "DataTables中文网", "age": 2},
-            {"name": "DataTables中文网2", "age": 3}
-        ]
-        return JsonResponse(data, safe=False)
-    return render(request, 'scoreManage/test_dt.html')
 
 
 def ajax_send_dt(request):

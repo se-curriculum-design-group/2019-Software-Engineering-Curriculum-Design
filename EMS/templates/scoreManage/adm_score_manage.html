@@ -22,14 +22,22 @@
                         <select name="sear_year" id="course_year" class="form-control select2">
                             <option value="NULL" selected="selected">无</option>
                             {% for year in all_years %}
-                                <option value={{ year }}>{{ year }}</option>
+                                {% if sear_year == year %}
+                                    <option selected="selected" value={{ year }}>{{ year }}</option>
+                                    {% else %}
+                                    <option value={{ year }}>{{ year }}</option>
+                                {% endif %}
                             {% endfor %}
                         </select>
                         <label for="course_semester" style="color: red;">学期：</label>
                         <select name="sear_semester" id="course_semester" class="form-control select2">
                             <option value="NULL" selected="selected">无</option>
                             {% for semester in all_semester %}
-                                <option value={{ semester }}>{{ semester }}</option>
+                                {% if sear_semester == semester %}
+                                    <option selected="selected" value={{ semester }}>{{ semester }}</option>
+                                    {% else %}
+                                    <option value={{ semester }}>{{ semester }}</option>
+                                {% endif %}
                             {% endfor %}
                         </select>
                     </div>
@@ -105,22 +113,12 @@
     <script>
         $.fn.dataTable.ext.search.push(
             function (setting, data, dataIndex) {
-                let sl_year = $("#course_year").val();
-                let sl_semester = $("#course_semester").val();
                 let sl_college = $("#course_college").val();
                 let sl_major = $("#course_major").val();
-                if (sl_year === 'NULL' || sl_semester === 'NULL') {
-                    return false;
-                }
-                if (sl_year === data[1] && sl_semester === data[2] && sl_college === data[3] && sl_major === data[4]){
+                if ((sl_college === data[3] && sl_major === data[4]) || (sl_major === 'ALL') || (sl_college === 'ALL')){
                     return true;
                 }
-                if (sl_year === data[1] && sl_semester === data[2] && sl_college === 'ALL'){
-                    return true;
-                }
-                if (sl_year === data[1] && sl_semester === data[2] && sl_major === 'ALL'){
-                    return true;
-                }
+                return false;
             }
         );
         $(function () {
