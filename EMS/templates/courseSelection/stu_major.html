@@ -112,7 +112,7 @@
             </div>
             <div class="modal-body">
                 <div id="coursesTable"></div>
-                <button onclick="Texport()" style="background-color: #00a2ae; color: #fff; padding: 5px 10px; border-radius: 4px;border: none">
+                <button onclick="Texport(this)" style="background-color: #00a2ae; color: #fff; padding: 5px 10px; border-radius: 4px;border: none">
     课表导出
     </button>
 <script>
@@ -530,7 +530,7 @@
     }
 
        {#----------------------导出课表到本地---------------------------#}
-    {% comment %}
+    var ctables = document.getElementById("coursesTable");
       function Texport(obj) {
           html2canvas(document.body, {
               onrendered:function(canvas) {
@@ -549,32 +549,5 @@
               }
           });
       }
-
-{% endcomment %}
-    html2canvas($("#coursesTable"), {
-  onrendered: function(canvas) {
-    var imgData = canvas.toDataURL('image/jpeg');
-    var img = new Image();
-    img.src = imgData;
-    //根据图片的尺寸设置pdf的规格，要在图片加载成功时执行，之所以要*0.225是因为比例问题
-    img.onload = function() {
-      //此处需要注意，pdf横置和竖置两个属性，需要根据宽高的比例来调整，不然会出现显示不完全的问题
-      if (this.width > this.height) {
-        var doc = new jsPDF('l', 'mm', [this.width * 0.225, this.height * 0.225]);
-      } else {
-        var doc = new jsPDF('p', 'mm', [this.width * 0.225, this.height * 0.225]);
-      }
-      doc.addImage(imgData, 'jpeg', 0, 0, this.width * 0.225, this.height * 0.225);
-      //根据下载保存成不同的文件名
-      doc.save('report_pdf_' + new Date().getTime() + '.pdf');
-    }
-  },
-  background: "#fff",
-  //这里给生成的图片默认背景，不然的话，如果你的html根节点没设置背景的话，会用黑色填充。
-  allowTaint: true //避免一些不识别的图片干扰，默认为false，遇到不识别的图片干扰则会停止处理html2canvas
-});
-
-
-
     </script>
 {% endblock %}
