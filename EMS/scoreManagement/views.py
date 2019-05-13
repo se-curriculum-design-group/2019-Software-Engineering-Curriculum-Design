@@ -56,7 +56,7 @@ def student_score(request):
         "years": years,
         "semesters": semesters
     }
-    return render(request, "scoreManage/my_course_score.html", context)
+    return render(request, "scoreManage/student_view_score.html", context)
 
 
 def student_own_study(request):
@@ -182,6 +182,7 @@ def std_view_major_plan(request):
 def assess_teacher(request):
     if request.session['user_type'] != '学生':
         redirect("scoreManagement:welcome")
+
     # 判断该学生是否已经全部提交过
     def judge(s):
         items = EvaluationForm.objects.filter(student_id=s)
@@ -274,6 +275,7 @@ def submit_result(request):
     if request.session['user_type'] != '学生':
         redirect("scoreManagement:welcome")
     print("!!!")
+
     # 得到各个等级对应的分数
     def getScore(s):
         if s == 'A':
@@ -355,15 +357,27 @@ def submit_all(request):
         return redirect('scoreManagement:assess_teacher')
 
 
-def teacher_up_load_score(request):
+def teacher_view_teaching(request):
     if request.session['user_type'] != '教师':
-        return render(request, 'errors/page404.html')
+        return render(request, 'errors/403page.html')
     tno = request.session['username']
-    teacher = Teacher.objects.get(tno=tno)
-    my_courses = Teaching.objects.filter(tno=teacher)
+    teacher = Teacher.objects.get(username=tno)
+    teaching_list = Teaching.objects.filter(tno=teacher)
+    years = [y['mcno__year'] for y in teaching_list.values('mcno__year').distinct()]
+    semesters = [s['mcno__semester'] for s in teaching_list.values('mcno__semester').distinct()]
+    context = {
+        'teaching_list': teaching_list,
+        'years': years,
+        'semesters': semesters
+    }
+    return render(request, "scoreManage/teacher_view_teaching.html", context)
+
 
 # 授课老师录入成绩
-def input_score(request):
+def teacher_upload_score(request):
     if request.session['user_type'] != '教师':
-        redirect("scoreManagement:welcome")
-    return render(request, 'scoreManage/input_score.html')
+        return render(request, 'errors/403page.html')
+    tno = request.session['username']
+    teacher = Teacher.objects.get(username=tno)
+    my_courses = Teaching.objects.filter(tno=teacher)
+    return render(request, 'scoreManage/teacher_upload_score.html')

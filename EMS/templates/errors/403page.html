@@ -1,0 +1,25 @@
+{% extends 'base.html' %}
+{% load staticfiles %}
+{% block content %}
+    <section class="content">
+        <div class="error-page ">
+            <h4 class="headline text-yellow"> 403</h4>
+                <div class="error-content text-center">
+                    <h3><i class="fa fa-warning text-yellow"></i><b>抱歉！您请求的东西没有权限(+_+)? </b></h3>
+                    <h4>Error...PAGE NOT FOUND :( </h4>
+                    <p>
+                        We could not find the page you were looking for.
+                        Meanwhile, you may
+                        {% if request.session.user_type == '学生'  %}
+                            <a href="{% url 'backstage:student_view' %}">
+                        {% elif  request.session.user_type == '教师' %}
+                            <a href="{% url 'backstage:teacher_view' %}">
+                        {% elif  request.session.user_type == '管理员' %}
+                            <a href="{% url 'backstage:admin_view' %}">
+                        {% endif %}
+                        return to dashboard</a> or try using the search form.
+                    </p>
+                </div>
+        </div>
+    </section>
+{% endblock %}

@@ -18,5 +18,6 @@ urlpatterns = [
     path('assess_teacher', views.assess_teacher, name="assess_teacher"),
     path('submit_result', views.submit_result, name="submit_result"),
     path('submit_all', views.submit_all, name="submit_all"),
-    path('input_score',views.input_score,name="input_score"),
+    path('teacher_view_teaching', views.teacher_view_teaching, name="teacher_view_teaching"),
+    path('teacher_upload_score', views.teacher_upload_score, name="teacher_upload_score"),
 ]

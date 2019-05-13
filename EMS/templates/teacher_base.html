@@ -20,7 +20,8 @@
         <a href="#" class="dropdown-toggle" data-toggle="dropdown">成绩管理<span
                 class="caret"></span></a>
         <ul class="dropdown-menu" role="menu">
-            <li><a href="#">成绩录入</a></li>
+            <li><a href="{% url 'scoreManagement:teacher_upload_score' %}">成绩录入</a></li>
+            <li><a href="{% url 'scoreManagement:teacher_view_teaching' %}">查看所教的课</a></li>
             <li><a href="#">导出成绩</a></li>
             <li class="divider"></li>
             <li><a href="#">查看成绩统计</a></li>
@@ -69,10 +70,11 @@
         </a>
         <ul class="treeview-menu">
             <li>
-                <a href="{% url 'scoreManagement:input_score' %}">
+                <a href="{% url 'scoreManagement:teacher_upload_score' %}">
                     <i class="fa fa-circle-o"></i>成绩录入
                 </a>
             </li>
+            <li><a href="{% url 'scoreManagement:teacher_view_teaching' %}"><i class="fa fa-circle-o"></i>查看所教的课</a></li>
             <li><a href="#"><i class="fa fa-circle-o"></i>查看成绩统计</a></li>
             <li><a href="#"><i class="fa fa-circle-o"></i>导出成绩</a></li>
         </ul>
