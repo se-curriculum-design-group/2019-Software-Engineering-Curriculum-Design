@@ -206,7 +206,3 @@ def send_emails(request):
     if request.method == "GET":
         new_email = SendEmails()
         return render(request, "backstage/send_emails.html", locals())
-
-
-def read_announcement(request):
-    pass
