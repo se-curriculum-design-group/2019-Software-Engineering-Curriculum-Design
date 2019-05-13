@@ -19,14 +19,23 @@
         </ul>
     </li>
 
-    <li><a href="#">选课</a></li>
+    <li class="dropdown">
+        <a href="{% url 'courseSelection:select_course' %}" class="dropdown-toggle" data-toggle="dropdown">选课 <span
+                class="caret"></span></a>
+        <ul class="dropdown-menu" role="menu">
+            <li><a href="{% url 'courseSelection:stu_tongshi' %}">通识课</a></li>
+            <li><a href="{% url 'courseSelection:stu_major' %}">专业选修</a></li>
+            <li><a href="#">查看全校课表</a></li>
+        </ul>
+    </li>
 
     <li class="dropdown">
         <a href="#" class="dropdown-toggle" data-toggle="dropdown">毕业设计 <span
                 class="caret"></span></a>
         <ul class="dropdown-menu" role="menu">
-            <li><a href="#">题目浏览</a></li>
-            <li><a href="#">题目提交</a></li>
+            <li><a href="{% url 'graduationManagement:student_choose_project' %}">题目浏览</a></li>
+            <li><a href="{% url 'graduationManagement:student_submit_project' %}">题目提交</a></li>
+            <li><a href="{% url 'graduationManagement:student_view_score' %}">查看成绩</a></li>
         </ul>
     </li>
 
@@ -47,8 +56,10 @@
             <li><a href="{% url 'backstage:my_personal_details' %}"><i class="fa fa-circle-o"></i>查看个人信息</a></li>
             <li><a href="#"><i class="fa fa-circle-o"></i>查看个人课表</a></li>
             <li><a href="#"><i class="fa fa-circle-o"></i>查看全校课表</a></li>
-            <li><a href="{% url 'scoreManagement:std_view_major_plan' %}"><i class="fa fa-circle-o"></i>查看专业培养计划</a></li>
-            <li><a href="{% url 'scoreManagement:std_view_major_course' %}"><i class="fa fa-circle-o"></i>查看专业课程计划</a></li>
+            <li><a href="{% url 'scoreManagement:std_view_major_plan' %}"><i class="fa fa-circle-o"></i>查看专业培养计划</a>
+            </li>
+            <li><a href="{% url 'scoreManagement:std_view_major_course' %}"><i class="fa fa-circle-o"></i>查看专业课程计划</a>
+            </li>
             <li><a href="#"><i class="fa fa-circle-o"></i>查询空闲教室</a></li>
             <li><a href="{% url 'scoreManagement:student_score' %}"><i class="fa fa-circle-o"></i>查看考试成绩</a></li>
             <li><a href="{% url 'scoreManagement:student_own_study' %}"><i class="fa fa-circle-o"></i>查看个人学业情况</a></li>
@@ -56,12 +67,17 @@
     </li>
 
     <li class="treeview">
-        <a href="#">
-            <i class="fa fa-table"></i> <span>选课</span>
+        <a href="{% url 'courseSelection:select_course' %}" class="dropdown-toggle" data-toggle="dropdown">
+            <i class="fa fa-folder"></i> <span>选课</span>
             <span class="pull-right-container">
               <i class="fa fa-angle-left pull-right"></i>
-            </span>
-        </a>
+            </span></a>
+        <ul class="treeview-menu">
+            <li><a href="{% url 'courseSelection:stu_tongshi' %}">通识课</a></li>
+            <li><a href="{% url 'courseSelection:stu_major' %}">专业选修</a></li>
+            <li><a href="#">查看全校课表</a></li>
+        </ul>
+
     </li>
 
     <li class="treeview">
@@ -72,8 +88,12 @@
             </span>
         </a>
         <ul class="treeview-menu">
-            <li><a href="#"><i class="fa fa-circle-o"></i>题目浏览</a></li>
-            <li><a href="#"><i class="fa fa-circle-o"></i>题目提交</a></li>
+            <li><a href="{% url 'graduationManagement:student_choose_project' %}"><i class="fa fa-circle-o"></i>题目浏览</a>
+            </li>
+            <li><a href="{% url 'graduationManagement:student_submit_project' %}"><i class="fa fa-circle-o"></i>题目提交</a>
+            </li>
+            <li><a href="{% url 'graduationManagement:student_view_score' %}"><i class="fa fa-circle-o"></i>查看成绩</a>
+            </li>
         </ul>
     </li>
     <li class="treeview">
@@ -86,5 +106,4 @@
     </li>
 {% endblock %}
 {% block content %}
-    <h1>通知信息</h1>
 {% endblock %}

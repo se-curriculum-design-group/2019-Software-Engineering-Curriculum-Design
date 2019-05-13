@@ -8,7 +8,6 @@ from backstage.models import Student, Teacher, College, Major, MajorPlan, ClassR
 from scoreManagement.models import Teaching, Course, MajorPlan, MajorCourses, CourseScore, EvaluationForm
 
 
-
 def welcome(request):
     students = Student.objects.all()
     teachers = Teacher.objects.all()
@@ -27,14 +26,22 @@ def welcome(request):
 
 
 def adm_all_course_score(request):
-    if (request.session['user_type'] != '管理员'):
-        all_course_score = CourseScore.objects.all()[:20]
-
-        print(len(all_course_score))
-        context = {"all_course_score": all_course_score}
-        return render(request, 'scoreManage/adm_score_manage.html', context)
+    if request.session['user_type'] != '管理员':
+        return render(request, "errors/403page.html")
     else:
-        return Http404()
+        all_course_score = CourseScore.objects.all()
+        all_years = [y['teaching__mcno__year'] for y in all_course_score.values("teaching__mcno__year").distinct()]
+        all_semester = [y['teaching__mcno__semester'] for y in all_course_score.values("teaching__mcno__semester").distinct()]
+        try:
+            sear_year = request.GET['sear_year']
+            sear_semester = request.GET['sear_semester']
+            sear_sno = request.GET['sear_sno']
+            student = Student.objects.filter(username=sear_sno)
+            courses = CourseScore.objects.filter(sno=student)
+        except:
+            pass
+        context = {"all_course_score": all_course_score[:10]}
+        return render(request, 'scoreManage/adm_score_manage.html', context)
 
 
 def score_home_page(request):
@@ -47,90 +54,102 @@ def score_home_page(request):
 
 
 def student_score(request):
-    sno = request.session['username'];
+    if request.session['user_type'] != '学生':
+        redirect("scoreManagement:welcome")
+    sno = request.session['username']
     student = Student.objects.get(username=sno)
     course_score = CourseScore.objects.filter(sno=student)
-    context = {"my_course_score": course_score}
-    return render(request, "scoreManage/my_course_score.html", context)
+    years = [c['teaching__mcno__year'] for c in course_score.values("teaching__mcno__year").distinct()]
+    semesters = [s['teaching__mcno__semester'] for s in course_score.values("teaching__mcno__semester").distinct()]
+    context = {
+        "my_course_score": course_score,
+        "years": years,
+        "semesters": semesters
+    }
+    return render(request, "scoreManage/student_view_score.html", context)
+
 
 def student_own_study(request):
+    if request.session['user_type'] != '学生':
+        redirect("scoreManagement:welcome")
     sno = request.session['username']
     student = Student.objects.get(username=sno)
     course_list = \
-        CourseScore.objects.filter(sno=student).\
-        order_by("teaching__mcno__year","teaching__mcno__semester")
-    year_semester=\
-        course_list.values_list("teaching__mcno__year","teaching__mcno__semester").\
+        CourseScore.objects.filter(sno=student). \
+            order_by("teaching__mcno__year", "teaching__mcno__semester")
+    year_semester = \
+        course_list.values_list("teaching__mcno__year", "teaching__mcno__semester"). \
             distinct()
-    #总学分
-    sum=Student.objects.get(username=sno).score_got
+    # 总学分
+    sum = Student.objects.get(username=sno).score_got
     # 毕业所需学分
-    sum_req=student.in_cls.major.score_grad
-    #总绩点
-    gpa=0
+    sum_req = student.in_cls.major.score_grad
+    # 总绩点
+    gpa = 0
     for course_list_item in course_list:
-       a=course_list_item.teaching.mcno.cno.score
-       b=course_list_item.score
-       if b>=90:
-           gpa=gpa+a/sum*4
-       elif b>=80 and b<90:
-           gpa=gpa+a/sum *3
-       elif b>=70 and b<80:
-           gpa=gpa+a/sum*2
-       elif b>=60 and b<70:
-           gpa=gpa+a/sum*1
-       else:
-           gpa=gpa
-    
-     #每个学期的平均绩点
-    semester_GPA_list=[]
-     #每个学期的总学分
-    semester_sum_list=[]
-    #每个学期选课的数量
-    semester_num_list=[]
-    for  year_semester_item in year_semester:
-        semester_course =\
+        a = course_list_item.teaching.mcno.cno.score
+        b = course_list_item.score
+        if b >= 90:
+            gpa = gpa + a / sum * 4
+        elif 80 <= b < 90:
+            gpa = gpa + a / sum * 3
+        elif 70 <= b < 80:
+            gpa = gpa + a / sum * 2
+        elif 60 <= b < 70:
+            gpa = gpa + a / sum * 1
+        else:
+            gpa = gpa
+
+    # 每个学期的平均绩点
+    semester_GPA_list = []
+    # 每个学期的总学分
+    semester_sum_list = []
+    # 每个学期选课的数量
+    semester_num_list = []
+    for year_semester_item in year_semester:
+        semester_course = \
             course_list.filter(
                 Q(teaching__mcno__year=year_semester_item[0]),
                 Q(teaching__mcno__semester=year_semester_item[1])
             )
         semester_num_list.append(semester_course.count())
-        semester_sum=0
-        semester_GPA=0
-        for year_semester_course_item in  semester_course:
-            a=year_semester_course_item.teaching.mcno.cno.score
-            semester_sum=semester_sum+a
+        semester_sum = 0
+        semester_GPA = 0
+        for year_semester_course_item in semester_course:
+            a = year_semester_course_item.teaching.mcno.cno.score
+            semester_sum = semester_sum + a
         semester_sum_list.append(semester_sum)
-        for year_semester_course_item in  semester_course:
+        for year_semester_course_item in semester_course:
             a = year_semester_course_item.teaching.mcno.cno.score
             b = year_semester_course_item.score
             if b >= 90:
-                 semester_GPA= semester_GPA + a /semester_sum * 4
-            elif b >= 80 and b < 90:
-                semester_GPA= semester_GPA + a / semester_sum * 3
-            elif b >= 70 and b < 80:
+                semester_GPA = semester_GPA + a / semester_sum * 4
+            elif 80 <= b < 90:
+                semester_GPA = semester_GPA + a / semester_sum * 3
+            elif 70 <= b < 80:
                 semester_GPA = semester_GPA + a / semester_sum * 2
-            elif b >= 60 and b < 70:
+            elif 60 <= b < 70:
                 semester_GPA = semester_GPA + a / semester_sum * 1
             else:
-                 semester_GPA = semester_GPA
+                semester_GPA = semester_GPA
         semester_GPA_list.append(semester_GPA)
     context = {
-        "student_name":student.name,
-        "my_scoresum":sum,
-        "my_gpa":round(gpa,2),
-        "my_year_semester":year_semester,
-        "semester_GPA":semester_GPA_list,
-        "semester_scoresum":semester_sum_list,
-        "my_score_gg":sum_req,
-        "my_score_g":round(sum/sum_req,2),
-        "semester_num":semester_num_list,
+        "student_name": student.name,
+        "my_scoresum": sum,
+        "my_gpa": round(gpa, 2),
+        "my_year_semester": year_semester,
+        "semester_GPA": semester_GPA_list,
+        "semester_scoresum": semester_sum_list,
+        "my_score_gg": sum_req,
+        "my_score_g": round(sum / sum_req, 2),
+        "semester_num": semester_num_list,
     }
-    return render(request, "scoreManage/student_own_study.html",context)
-
+    return render(request, "scoreManage/student_own_study.html", context)
 
 
 def std_view_major_course(request):
+    if request.session['user_type'] != '学生':
+        redirect("scoreManagement:welcome")
     sno = request.session['username']
     student = Student.objects.get(username=sno)
     # my_major_plan = student.in_cls.major
@@ -150,6 +169,8 @@ def std_view_major_course(request):
 
 
 def std_view_major_plan(request):
+    if request.session['user_type'] != '学生':
+        redirect("scoreManagement:welcome")
     sno = request.session['username']
     student = Student.objects.get(username=sno)
     all_major_plan = MajorPlan.objects.all()
@@ -167,14 +188,11 @@ def std_view_major_plan(request):
     return render(request, "scoreManage/student_major_plan.html", context)
 
 
-def _ajax(request):
-    print(request.GET['year'])
-    data = {"yes": True}
-    return JsonResponse(data)
-
-
 # 学生评教
 def assess_teacher(request):
+    if request.session['user_type'] != '学生':
+        redirect("scoreManagement:welcome")
+
     # 判断该学生是否已经全部提交过
     def judge(s):
         items = EvaluationForm.objects.filter(student_id=s)
@@ -183,7 +201,7 @@ def assess_teacher(request):
                 if item.is_finish == False:
                     return False  # 该学生还未提交
                 else:
-                    return True   # 该学生已经提交
+                    return True  # 该学生已经提交
         else:
             return False
 
@@ -255,7 +273,7 @@ def assess_teacher(request):
                 sum += 1
                 log.append(temp)
     # print(log)
-    num2 = sum-num1
+    num2 = sum - num1
     flag = judge(sno_id)
     context = {'log': log, 'num1': num1, 'num2': num2, 'flag': flag}
 
@@ -264,9 +282,11 @@ def assess_teacher(request):
 
 # 学生提交评价信息
 def submit_result(request):
+    if request.session['user_type'] != '学生':
+        redirect("scoreManagement:welcome")
     print("!!!")
-    # 得到各个等级对应的分数
 
+    # 得到各个等级对应的分数
     def getScore(s):
         if s == 'A':
             return 100
@@ -278,6 +298,7 @@ def submit_result(request):
             return 60
         elif s == 'E':
             return 50
+
     # if 'submit_result' in request.POST:
     if request.GET:
         r1 = request.GET.get('r1')
@@ -305,7 +326,7 @@ def submit_result(request):
         r8 = getScore(r8)
         print(r1, r2, r3, r4, r5, r6, r7, r8, text)
         sum = r1 + r2 + r3 + r4 + r5 + r6 + r7 + r8
-        ave = sum*1.0 / 8
+        ave = sum * 1.0 / 8
         # print(ave)
         # print(type(item_sno), type(item_tno), type(item_cno))
         # 学生对象
@@ -323,15 +344,20 @@ def submit_result(request):
             EvaluationForm.objects.get(
                 student=student, course=course, teacher=teacher)
             EvaluationForm.objects.filter(student=student, course=course, teacher=teacher).update(
-                item1=r1, item2=r2, item3=r3, item4=r4, item5=r5, item6=r6, item7=r7, item8=r8, description=text, sum=ave, is_finish=False)
+                item1=r1, item2=r2, item3=r3, item4=r4, item5=r5, item6=r6, item7=r7, item8=r8, description=text,
+                sum=ave, is_finish=False)
         except:
             EvaluationForm.objects.create(student=student, course=course, teacher=teacher, item1=r1, item2=r2,
-                                          item3=r3, item4=r4, item5=r5, item6=r6, item7=r7, item8=r8, description=text, sum=ave, is_finish=False)
-        return redirect('./assess_teacher')
+                                          item3=r3, item4=r4, item5=r5, item6=r6, item7=r7, item8=r8, description=text,
+                                          sum=ave, is_finish=False)
+        return redirect('scoreManagement:assess_teacher')
+
 
 # # 最终的提交，提交后不可更改
 @csrf_exempt
 def submit_all(request):
+    if request.session['user_type'] != '学生':
+        return redirect("scoreManagement:welcome")
     if request.GET:
         item_sno = request.session['username']
         # 学生对象
@@ -339,3 +365,49 @@ def submit_all(request):
         # 更改评价表的is_finish字段
         EvaluationForm.objects.filter(student=student).update(is_finish=True)
         return redirect('scoreManagement:assess_teacher')
+
+
+def teacher_view_teaching(request):
+    if request.session['user_type'] != '教师':
+        return render(request, 'errors/403page.html')
+    tno = request.session['username']
+    teacher = Teacher.objects.get(username=tno)
+    teaching_list = Teaching.objects.filter(tno=teacher)
+    years = [y['mcno__year'] for y in teaching_list.values('mcno__year').distinct()]
+    semesters = [s['mcno__semester'] for s in teaching_list.values('mcno__semester').distinct()]
+    context = {
+        'teaching_list': teaching_list,
+        'years': years,
+        'semesters': semesters
+    }
+    if request.method == 'GET':
+        try:
+            other_tno = request.GET['seacher_tno']
+            other_teacher = Teacher.objects.get(username=other_tno)
+            other_teaching_list = Teaching.objects.filter(tno=other_teacher)
+            other_years = [y['mcno__year'] for y in other_teaching_list.values('mcno__year').distinct()]
+            other_semesters = [s['mcno__semester'] for s in other_teaching_list.values('mcno__semester').distinct()]
+            result = {
+                "is_find": True,
+                "other_tno": other_tno,
+                "other_years": other_years,
+                "other_semesters": other_semesters,
+                "other_teaching_list": other_teaching_list,
+                'teaching_list': teaching_list,
+                'years': years,
+                'semesters': semesters
+            }
+            return render(request, "scoreManage/teacher_view_teaching.html", result)
+        except:
+            pass
+    return render(request, "scoreManage/teacher_view_teaching.html", context)
+
+
+# 授课老师录入成绩
+def teacher_upload_score(request):
+    if request.session['user_type'] != '教师':
+        return render(request, 'errors/403page.html')
+    tno = request.session['username']
+    teacher = Teacher.objects.get(username=tno)
+    my_courses = Teaching.objects.filter(tno=teacher)
+    return render(request, 'scoreManage/teacher_upload_score.html')

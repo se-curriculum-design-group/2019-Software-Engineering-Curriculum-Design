@@ -13,38 +13,39 @@
         </ol>
     </section>
     <section class="content">
-        <div class="box">
+        <div class="box box-default">
             <div class="box-header">
                 <h3 class="box-title">查询专业课程</h3>
-                <div></div>
                 <div class="box-header ">
-                  <span>专业 </span><select id="major" class="select2-container" style="width: 10%">
-                    {% for item in all_major%}
-                        {% if item == student.in_cls.major.major%}
-                        <option value="{{ item}}" selected="selected">{{ item}}</option>
-                        {% else %}
-                         <option value="{{ item}}">{{ item}}
-                        {% endif %}
-                    {% endfor %}
-                   </select>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                  <span>建议修读学年 </span><select id="year" style="width: 10%">
-                     <option value="ALL">全部</option>
-                       {% for item in all_year %}
-                           <option value="{{ item.year }}">{{ item.year }}</option>
-                       {% endfor %}
-                   </select>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                    <span>建议修读学期 </span><select id="semester" style="width: 10%">
-                    <option value="ALL">全部</option>
-                    <option value="1">1</option>
-                     <option value="2">2</option>
-                    <option value="3">3</option>
-                </select>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                  <span>课程性质 </span><select id="course_type" style="width: 10%">
-                    <option value="ALL">全部</option>
-                    {% for item in all_course %}
-                        <option value="{{ item.course_type}}">{{ item.course_type}}</option>
-                    {% endfor %}
-                   </select>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                    <div class="form-group">
+                        <label style="color: red">专业：</label><select id="major" class="form-control select2" style="width: 20%;">
+                        {% for item in all_major %}
+                            {% if item == student.in_cls.major.major %}
+                                <option value="{{ item }}" selected="selected">{{ item }}</option>
+                            {% else %}
+                                <option value="{{ item }}">{{ item }}
+                            {% endif %}
+                        {% endfor %}
+                    </select>
+                        <label>建议修读学年：</label><select id="year" class="form-control select2" style="width: 15%;">
+                        <option value="ALL">全部</option>
+                        {% for item in all_year %}
+                            <option value="{{ item.year }}">{{ item.year }}</option>
+                        {% endfor %}
+                    </select>
+                        <label>建议修读学期：</label><select id="semester" class="form-control select2" style="width: 15%;">
+                        <option value="ALL">全部</option>
+                        <option value="1">1</option>
+                        <option value="2">2</option>
+                        <option value="3">3</option>
+                    </select>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                        <label>课程性质：</label><select id="course_type" class="form-control select2" style="width: 15%;">
+                        <option value="ALL">全部</option>
+                        {% for item in all_course %}
+                            <option value="{{ item.course_type }}">{{ item.course_type }}</option>
+                        {% endfor %}
+                    </select>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                    </div>
                 </div>
             </div>
 
@@ -70,8 +71,8 @@
                     <tbody>
                     {% for item in all_major_course %}
                         <tr>
-                             <td>{{ forloop.counter }}</td>
-                            <td>{{ item.mno.major}}</td>
+                            <td>{{ forloop.counter }}</td>
+                            <td>{{ item.mno.major }}</td>
                             <td>{{ item.year }}</td>
                             <td>{{ item.semester }}</td>
                             <td>{{ item.cno.cno }}</td>
@@ -82,7 +83,7 @@
                             <td>{{ item.hour_total }}</td>
                             <td>{{ item.hour_class }}</td>
                             <td>{{ item.hour_other }}</td>
-                             {% if item.exam_method == 1 %}
+                            {% if item.exam_method == 1 %}
                                 <td>考试</td>
                             {% else %}
                                 <td>考察</td>
@@ -98,41 +99,37 @@
 
 {% block script %}
     <script>
-      $.fn.dataTable.ext.search.push(
-             function( settings, data, dataIndex ) {
-                var  major = $('#major').val()
-                var  year  = $('#year').val()
+        $.fn.dataTable.ext.search.push(
+            function (settings, data, dataIndex) {
+                var major = $('#major').val()
+                var year = $('#year').val()
                 var semester = $('#semester').val()
                 var course_type = $('#course_type').val()
                 var type = data[7]
-                  if ((major==data[1]&&year=="ALL"&&semester=="ALL"&&course_type=="ALL")||
+                if ((major == data[1] && year == "ALL" && semester == "ALL" && course_type == "ALL") ||
 
-                      (major==data[1]&&year=="ALL"&&semester=="ALL"&&course_type==data[7])||
+                    (major == data[1] && year == "ALL" && semester == "ALL" && course_type == data[7]) ||
 
-                      (major==data[1]&&year=="ALL"&&semester==data[3]&&course_type=="ALL")||
+                    (major == data[1] && year == "ALL" && semester == data[3] && course_type == "ALL") ||
 
-                      (major==data[1]&&year==data[2]&&semester=="ALL"&&course_type=="ALL")||
+                    (major == data[1] && year == data[2] && semester == "ALL" && course_type == "ALL") ||
 
-                      (major==data[1]&&year==data[2]&&semester==data[3]&&course_type=="ALL")||
+                    (major == data[1] && year == data[2] && semester == data[3] && course_type == "ALL") ||
 
-                      (major==data[1]&&year==data[2]&&semester=="ALL"&&course_type==data[7])||
+                    (major == data[1] && year == data[2] && semester == "ALL" && course_type == data[7]) ||
 
-                      (major==data[1]&&year=="ALL"&&semester==data[3]&&course_type==data[7])||
+                    (major == data[1] && year == "ALL" && semester == data[3] && course_type == data[7]) ||
 
 
-                      (major==data[1]&&year==data[2]&&semester==data[3]&&course_type==data[7])
-                      )
-                  {
-                      return true
-                  }
-
-                  else {
-                       return false
-                  }
-
-    }
-);
-        $(document).ready(function() {
+                    (major == data[1] && year == data[2] && semester == data[3] && course_type == data[7])
+                ) {
+                    return true
+                } else {
+                    return false
+                }
+            }
+        );
+        $(document).ready(function () {
             var year = $('#major').val();
             const myData = {"year": year};
             {% comment %} $.get(
@@ -147,55 +144,62 @@
                 }
             ); {% endcomment %}
 
-         var table = $('#major_course_table').DataTable(
-        {
+            var table = $('#major_course_table').DataTable(
+                {
 
-                "paging": true,       <!-- 允许分页 -->
-                "lengthChange": true, <!-- 允许改变每页显示的行数 -->
-                "searching": true,    <!-- 允许内容搜索 -->
-                "ordering": true,     <!-- 允许排序 -->
-                "info": true,         <!-- 显示信息 -->
-                "autoWidth": false,    <!-- 固定宽度 -->
-                "language": {
-                    "sProcessing": "处理中...",
-                    "sLengthMenu": "显示 _MENU_ 项结果",
-                    "sZeroRecords": "没有匹配结果",
-                    "sInfo": "显示第 _START_ 至 _END_ 项结果，共 _TOTAL_ 项",
-                    "sInfoEmpty": "显示第 0 至 0 项结果，共 0 项",
-                    "sInfoFiltered": "(由 _MAX_ 项结果过滤)",
-                    "sInfoPostFix": "",
-                    "sSearch": "搜索:",
-                    "sUrl": "",
-                    "sEmptyTable": "表中数据为空",
-                    "sLoadingRecords": "载入中...",
-                    "sInfoThousands": ",",
-                    "oPaginate": {
-                        "sFirst": "首页",
-                        "sPrevious": "上页",
-                        "sNext": "下页",
-                        "sLast": "末页"
+                    "paging": true,       <!-- 允许分页 -->
+                    "lengthChange": true, <!-- 允许改变每页显示的行数 -->
+                    "searching": true,    <!-- 允许内容搜索 -->
+                    "ordering": true,     <!-- 允许排序 -->
+                    "info": true,         <!-- 显示信息 -->
+                    "autoWidth": false,    <!-- 固定宽度 -->
+                    "language": {
+                        "sProcessing": "处理中...",
+                        "sLengthMenu": "显示 _MENU_ 项结果",
+                        "sZeroRecords": "没有匹配结果",
+                        "sInfo": "显示第 _START_ 至 _END_ 项结果，共 _TOTAL_ 项",
+                        "sInfoEmpty": "显示第 0 至 0 项结果，共 0 项",
+                        "sInfoFiltered": "(由 _MAX_ 项结果过滤)",
+                        "sInfoPostFix": "",
+                        "sSearch": "搜索:",
+                        "sUrl": "",
+                        "sEmptyTable": "表中数据为空",
+                        "sLoadingRecords": "载入中...",
+                        "sInfoThousands": ",",
+                        "oPaginate": {
+                            "sFirst": "首页",
+                            "sPrevious": "上页",
+                            "sNext": "下页",
+                            "sLast": "末页"
+                        },
+                        "oAria": {
+                            "sSortAscending": ": 以升序排列此列",
+                            "sSortDescending": ": 以降序排列此列"
+                        }
                     },
-                    "oAria": {
-                        "sSortAscending": ": 以升序排列此列",
-                        "sSortDescending": ": 以降序排列此列"
-                    }
-                },
-                "columnDefs": [{
-                    "searchable": false,
-                    "orderable": true,
-                    "targets": 0
-                }],
-                "order": [[0, 'asc']]
-            }
+                    "columnDefs": [{
+                        "searchable": false,
+                        "orderable": true,
+                        "targets": 0
+                    }],
+                    "order": [[0, 'asc']]
+                }
+            );
+            $('#major_course_table tbody').on('click', 'tr', function (e) {
+                if ($(this).hasClass('selected')) {
+                    $(this).removeClass('selected');
+                } else {
+                    table.$('tr.selected').removeClass('selected');
+                    $(this).addClass('selected');
+                }
+            });
 
-    );
-    // Event listener to the two range filtering inputs to redraw on input
-    $(' #course_type, #major, #year, #semester').change(function() {
-        table.draw();
-    } );
-        } );
+            // Event listener to the two range filtering inputs to redraw on input
+            $(' #course_type, #major, #year, #semester').change(function () {
+                table.draw();
+            });
 
-
-
+            $('.select2').select2();
+        });
     </script>
 {% endblock %}
