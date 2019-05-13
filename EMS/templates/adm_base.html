@@ -33,9 +33,7 @@
                 class="caret"></span></a>
         <ul class="dropdown-menu" role="menu">
 
-            <li><a href="#">成绩信息管理</a></li>
-
-            <li><a href="#">审核复议申请</a></li>
+            <li><a href="{% url 'scoreManagement:adm_all_course_score' %}">成绩信息管理</a></li>
             <li class="divider"></li>
             <li><a href="#">查看统计报表</a></li>
         </ul>
@@ -82,8 +80,7 @@
             </span>
         </a>
         <ul class="treeview-menu">
-            <li><a href="#"><i class="fa fa-circle-o"></i>成绩信息管理</a></li>
-            <li><a href="#"><i class="fa fa-circle-o"></i>审核复议申请</a></li>
+            <li><a href="{% url 'scoreManagement:adm_all_course_score' %}"><i class="fa fa-circle-o"></i>成绩信息管理</a></li>
             <li><a href="#"><i class="fa fa-circle-o"></i>查看统计报表</a></li>
         </ul>
     </li>

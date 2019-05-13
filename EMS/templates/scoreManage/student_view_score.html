@@ -11,11 +11,27 @@
             <li class="active">查看个人成绩</li>
         </ol>
     </section>
-
     <section class="content">
         <div class="box">
             <div class="box-header">
                 <h3 class="box-title">查看个人成绩</h3>
+                <div class="box-header">
+                    <label style="color: red">学年：</label>
+                    <select name="year" id="course_year" class="select2" style="width: 25%">
+                        <option value="All" selected="selected">全部</option>
+                        {% for year in years %}
+                            <option value="{{ year }}">{{ year }}</option>
+                        {% endfor %}
+                    </select>
+                    <label style="color: red">学期：</label>
+                    <select name="semester" id="course_semester" class="select2" style="width: 25%">
+                        <option value="All" selected="selected">全部</option>
+                        {% for semester in semesters %}
+                            <option value="{{ semester }}">{{ semester }}</option>
+                        {% endfor %}
+
+                    </select>
+                </div>
             </div>
             <div class="box-body">
                 <table id="my_course_score_table" class="table table-bordered table-striped">
@@ -41,11 +57,11 @@
                             <td>{{ course_score.teaching.mcno.semester }}</td>
                             <td>{{ course_score.teaching.mcno.cno.cno }}</td>
                             <td>{{ course_score.teaching.mcno.cno.cname }}</td>
-                            <td>{{ course_score.score}}</td>
-                            <td>{{ course_score.commen_score}}</td>
-                            <td>{{ course_score.final_score}}</td>
-                            <td>{{ course_score.teaching.mcno.cno.score}}</td>
-                            <td>{{ course_score.teaching.tno.name}}</td>
+                            <td>{{ course_score.score }}</td>
+                            <td>{{ course_score.commen_score }}</td>
+                            <td>{{ course_score.final_score }}</td>
+                            <td>{{ course_score.teaching.mcno.cno.score }}</td>
+                            <td>{{ course_score.teaching.tno.name }}</td>
                         </tr>
                     {% endfor %}
                     </tbody>
@@ -57,28 +73,18 @@
 {% endblock %}
 
 {% block script %}
-
-
-    <!-- jQuery 2.2.3 -->
-    <script src="{% static 'AdminLTE/plugins/jQuery/jquery-2.2.3.min.js' %}"></script>
-    <!-- Bootstrap 3.3.6 -->
-    <script src="{% static 'AdminLTE/bootstrap/js/bootstrap.min.js' %}"></script>
-    <!-- DataTables -->
-    <script src="{% static 'AdminLTE/plugins/datatables/jquery.dataTables.min.js' %}"></script>
-    <script src="{% static 'AdminLTE/plugins/datatables/dataTables.bootstrap.min.js' %}"></script>
-    <!-- SlimScroll -->
-    <script src="{% static 'AdminLTE/plugins/slimScroll/jquery.slimscroll.min.js' %}"></script>
-    <!-- FastClick -->
-    <script src="{% static 'AdminLTE/plugins/fastclick/fastclick.js' %}"></script>
-    <!-- AdminLTE App -->
-    <script src="{% static 'AdminLTE/dist/js/app.min.js' %}"></script>
-    <!-- AdminLTE for demo purposes -->
-    <script src="{% static 'AdminLTE/dist/js/demo.js' %}"></script>
-    <!-- page script -->
     <script>
+        $.fn.dataTable.ext.search.push(
+            function (setting, data, dataIndex) {
+                let sl_year = $("#course_year").val();
+                let sl_semester = $("#course_semester").val();
+                return (sl_year == data[1] && sl_semester == data[2]) ||
+                    (sl_year == "All" && sl_semester == "All") || (sl_year == "All" && sl_semester == data[2]) |
+                    (sl_year == data[1] && sl_semester == "All");
+            }
+        );
 
         $(function () {
-
             var table = $('#my_course_score_table').DataTable({
                 "paging": true,       <!-- 允许分页 -->
                 "lengthChange": true, <!-- 允许改变每页显示的行数 -->
@@ -118,8 +124,7 @@
                 "order": [[0, 'asc']]
             });
 
-
-            $('#stu_table tbody').on('click', 'tr', function (e) {
+            $('#my_course_score_table tbody').on('click', 'tr', function (e) {
                 if ($(this).hasClass('selected')) {
                     $(this).removeClass('selected');
                 } else {
@@ -128,26 +133,11 @@
                 }
             });
 
-
-            $('#add').click(function () {
-                console.log("new car.");
-                $('#addCar').modal();
+            $('#course_year, #course_semester').change(function () {
+                table.draw();
             });
 
-            $('#change').click(function () {
-                console.log("change car");
-                if (table.rows('.selected').data().length) {
-                    $("#changeCar").modal();
-                    var rowData = table.rows('.selected').data()[0];
-                    var inputs = $('#changeCar').find('input');
-                    for (let i = 0; i < inputs.length; i++) {
-                        $(inputs[i]).val(rowData[i]);
-                    }
-                } else {
-                    alert("请选择一个项目！");
-                }
-            });
+            $('.select2').select2();
         })
-
     </script>
 {% endblock %}

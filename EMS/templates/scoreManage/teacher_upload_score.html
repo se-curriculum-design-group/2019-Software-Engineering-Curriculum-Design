@@ -1,0 +1,167 @@
+{% extends 'student_base.html' %}
+{% load staticfiles %}
+{% block content %}
+    <section class="content-header">
+        <h4>请对当前学期您所教授的班级录入考生成绩</h4>
+        <ol class="breadcrumb">
+            <li><a href="{% url 'scoreManagement:welcome' %}"><i class="fa fa-dashboard"></i> 主页</a></li>
+            <li class="active">成绩录入</li>
+        </ol>
+    </section>
+    <section class="content">
+        <div class="nav-tabs-custom" style="cursor: move;">
+            <!-- Tabs within a box -->
+            <ul class="nav nav-tabs pull-left">
+                <li class="active"><a href="#revenue-chart" data-toggle="tab">技术经济学-计科</a></li>
+                <li><a href="#sales-chart" data-toggle="tab">技术经济学—高材</a></li>
+            </ul>
+            <div class="tab-content no-padding">
+                <!-- Morris chart - Sales -->
+                <div class="chart tab-pane active" id="revenue-chart" style="position: relative; height: 400px;">
+                    <!-- 选择手动录入和Excel录入 -->
+                    <div id="choice1" style="margin-left: 100px; margin-top: 50px; display: block;">
+                        <a class="btn btn-app" onclick="show1()">
+                            <i class="fa fa-edit"></i> 手动录入
+                        </a>
+                        <a class="btn btn-app" style="margin-left: 50px;" onclick="show2()">
+                            <i class="fa fa-table"></i> Excel录入
+                        </a>
+                    </div>
+                    <div id="choice2" style="margin-left: 100px; margin-top: 50px; display: none;">
+                        <a class="btn btn-app" onclick="show3()">
+                            <i class="fa fa-download"></i> 下载Excel模板
+                        </a>
+                        <a class="btn btn-app" style="margin-left: 50px;" onclick="show4()">
+                            <i class="fa fa-upload"></i> 上传Excel表格
+                        </a>
+                    </div>
+                    <div id="table1" style="display: none;">
+                        <div class="box" style="width: 70%; float: left;">
+                            <div class="box-body">
+                                <table id="example2" class="table table-bordered table-hover">
+                                    <thead>
+                                        <tr>
+                                            <th>学号</th>
+                                            <th>姓名</th>
+                                            <th>班级</th>
+                                            <th>平时成绩(50%)</th>
+                                            <th>考试成绩(50%)</th>
+                                            <th></th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+    {#                                    {% for i in range(10) %}#}
+                                            <tr>
+                                                <form>
+                                                    <td>2016014409</td>
+                                                    <td>宋文宇</td>
+                                                    <td>计科1605</td>
+                                                    <td><input class="form-control input-lg" type="text" style="width: 100px; height: 25px"></td>
+                                                    <td><input class="form-control input-lg" type="text" style="width: 100px; height: 25px"></td>
+                                                    <td>
+                                                        <button type="submit" class="btn btn-primary" style="width: 80px; height: 25px;">保存</button>
+                                                    </td>
+                                                </form>
+                                            </tr>
+                                            <tr>
+                                                <form>
+                                                    <td>2016014410</td>
+                                                    <td>小A</td>
+                                                    <td>计科1605</td>
+                                                    <td><input class="form-control input-lg" type="text" style="width: 100px; height: 25px"></td>
+                                                    <td><input class="form-control input-lg" type="text" style="width: 100px; height: 25px"></td>
+                                                    <td>
+                                                        <button type="submit" class="btn btn-primary" style="width: 80px; height: 25px;">保存</button>
+                                                    </td>
+                                                </form>
+                                            </tr>
+                                            <tr>
+                                                <form>
+                                                    <td>2016014411</td>
+                                                    <td>小B</td>
+                                                    <td>计科1605</td>
+                                                    <td><input class="form-control input-lg" type="text" style="width: 100px; height: 25px"></td>
+                                                    <td><input class="form-control input-lg" type="text" style="width: 100px; height: 25px"></td>
+                                                    <td>
+                                                        <button type="submit" class="btn btn-primary" style="width: 80px; height: 25px;">保存</button>
+                                                    </td>
+                                                </form>
+                                            </tr>
+        {#                                {% endfor %}#}
+                                    </tbody>
+                                </table>
+                            </div>
+                            <div class="box-footer clearfix">
+                                <ul class="pagination pagination-sm no-margin pull-right">
+                                    <li><a href="#">&laquo;</a></li>
+                                    <li><a href="#">1</a></li>
+                                    <li><a href="#">2</a></li>
+                                    <li><a href="#">3</a></li>
+                                    <li><a href="#">&raquo;</a></li>
+                                </ul>
+                            </div>
+                        </div>
+                        <div class="col-md-3" style="width: 30%;">
+                            <div class="box box-default collapsed-box">
+                                <div class="box-header with-border">
+                                    <h3 class="box-title">成绩划分：</h3>
+                                    <div class="box-tools pull-right">
+                                        <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-plus"></i>#}
+                                        </button>
+                                    </div>
+                                    <!-- /.box-tools -->
+                                </div>
+                                <!-- /.box-header -->
+                                <div class="box-body">
+                                    <form role="form">
+                                        <div class="box-body">
+                                            <div class="form-group">
+                                                <label for="exampleInputEmail1">平时成绩占比：</label>
+                                                <input type="email" class="form-control" id="exampleInputEmail1">
+                                            </div>
+                                            <div class="form-group">
+                                                <label for="exampleInputPassword1">考试成绩占比：</label>
+                                                <input type="password" class="form-control" id="exampleInputPassword1">
+                                            </div>
+                                        </div>
+                                        <!-- /.box-body -->
+                                        <div class="box-footer">
+                                            <button type="submit" class="btn btn-primary">提交</button>
+                                        </div>
+                                    </form>
+                                </div>
+                                <!-- /.box-body -->
+                            </div>
+                            <!-- /.box -->
+                        </div>
+                    </div>
+                </div>
+                <div class="chart tab-pane" id="sales-chart" style="position: relative; height: 300px;"></div>
+            </div>
+        </div>
+    </section>
+{% endblock %}
+
+{% block script %}
+    <script>
+        $(function () {
+        });
+
+    </script>
+    <script>
+        function show1(){
+            var div1 = document.getElementById("choice1");
+            var div2 = document.getElementById("table1");
+            div1.style.display = "none";
+            div2.style.display = "block";
+        }
+
+        function show2() {
+            var div1 = document.getElementById("choice1");
+            var div2 = document.getElementById("choice2");
+            div1.style.display = "none";
+            div2.style.display = "block";
+        }
+
+    </script>
+{% endblock %}
