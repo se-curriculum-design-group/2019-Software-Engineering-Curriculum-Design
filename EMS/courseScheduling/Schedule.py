@@ -4,7 +4,7 @@ import heapq
 from scoreManagement.models import MajorCourses as MajorCourses
 from scoreManagement.models import Teaching as original_Teaching
 from backstage.models import ClassRoom, Student, AdmClass, MajorPlan
-from courseSelection.models import courseSelected as courseSelected
+from courseSelection.models import CourseSelected as courseSelected
 # 输出
 from courseScheduling.models import Schedule_result, Teacher_Schedule_result, Classroom_other_schedule, Exam_Schedule
 
@@ -212,7 +212,7 @@ def mergeTable(table1, table2):
 
 course_2_96 = [(1, 2), (3, 4), (6, 7), (7, 8)]
 course_2 = [(1, 2), (3, 4), (6, 7), (9, 10), (11, 12)]
-
+course_3 = [(1, 3), (3, 5), (6 ,8), (8, 10), (11, 13)]
 
 def String_to_table(string1: str):
     res = []
@@ -273,7 +273,7 @@ def init():
             stu_table = String_to_table(element.cno.time)
             if Students_id.get(element.sno.username) == None:
                 stu = Students(element.sno.username, element.sno.name,
-                               element.sno.in_cls.major.major.mno, element.sno.in_year, element.sno.in_cls.name)
+                               element.sno.in_cls.major.major.mname, element.sno.in_year, element.sno.in_cls.name)
                 Students_id[elements.sno.username] = stu
                 stu.courseSchedule = stu_table
             else:
@@ -287,7 +287,7 @@ def init():
         Table = String_to_table(elements.time)
         if Students_id.get(elements.sno.username) == None:
             stu = Students(elements.sno.username, elements.sno.name,
-                           elements.sno.in_cls.major.major.mno, elements.sno.in_year, elements.sno.in_cls.name)
+                           elements.sno.in_cls.major.major.mname, elements.sno.in_year, elements.sno.in_cls.name)
             Students_id[elements.sno.username] = stu
             stu.courseSchedule = Table
         else:
@@ -566,7 +566,7 @@ def autoSchedule():
             for elements in students_set:
                 if Students_id.get(elements.username) == None:
                     stu = Students(elements.username, elements.username,
-                                   elements.in_cls.major.major.mno, elements.in_year, elements.in_cls.name)
+                                   elements.in_cls.major.major.mname, elements.in_year, elements.in_cls.name)
                     Students_id[elements.username] = stu
                 else:
                     stu = Students_id.get(elements.username)
@@ -581,7 +581,7 @@ def autoSchedule():
             for elements in students_set:
                 if Students_id.get(elements.username) == None:
                     stu = Students(elements.username, elements.username,
-                                   elements.in_cls.major.major.mno, elements.in_year, elements.in_cls.name)
+                                   elements.in_cls.major.major.mname, elements.in_year, elements.in_cls.name)
                     Students_id[elements.sno.username] = stu
                 else:
                     stu = Students_id.get(elements.username)
@@ -594,7 +594,7 @@ def autoSchedule():
             for elements in students_set:
                 if Students_id.get(elements.username) == None:
                     stu = Students(elements.username, elements.username,
-                                   elements.in_cls.major.major.mno, elements.in_year, elements.in_cls.name)
+                                   elements.in_cls.major.major.mname, elements.in_year, elements.in_cls.name)
                     Students_id[elements.sno.username] = stu
                 else:
                     stu = Students_id.get(elements.username)
@@ -715,18 +715,30 @@ def get_students_teacher_courseSchedule(stuset: [], class_set=None, teacher_user
 
 
 # 处理手工排课
-def manual_schedule(place_name, time_string, stuset: [], class_set=None, teacher_username=None):
-    if class_set == None:
+def manual_schedule(time_string, place_name, stuset: [], class_set=[], teacher_username=None):
+    if len(class_set) == 0:
         init()
+        bf = Buffer()
         if Classrooms_id.get(place_name) == None:
             room = ClassRoom.objects.get(crno=place_name)
             Classrooms_id[place_name] = Classroom(place_name, room.crtype, room.contain_num)
+        bf.courseSchedule = mergeTable(Classrooms_id[place_name].courseSchedule, bf.courseSchedule)
+        bf.classrooms.append(place_name)
         for stu_sno in stuset:
+            bf.students.append(stu_sno)
             if Students_id.get(stu_sno) == None:
-                pass
-
-        bf = Buffer()
-
+                stu = Student.objects.get(username=stu_sno)
+                stu_ob = Students(stu.username, stu.name, stu.in_cls.major.major.mname,
+                                  stu.in_year, stu.in_cls.name)
+                Students_id[stu_sno] = stu_ob
+            else:
+                bf.courseSchedule = mergeTable(Students_id[stu_sno].courseSchedule, bf.courseSchedule)
+        bf.teachers.append(teacher_username)
+        if teacher_username != None:
+            bf.courseSchedule = mergeTable(bf.courseSchedule, Teachers_id[teacher_username].courseSchedule)
+        table = String_to_table(time_string)
+        if has_table_hazzard(table, bf.courseSchedule) == False:
+            write_to_database(time_string, bf)
     else:
         pass
 
@@ -926,6 +938,5 @@ def search_exam_time(stu_username: str):
 
 
 if __name__ == '__main__':
-    pass
-    #autoSchedule()
+    autoSchedule()
     #exam_schedule()
