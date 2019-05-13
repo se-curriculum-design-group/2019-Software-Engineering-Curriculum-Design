@@ -541,10 +541,13 @@
             dataType: 'JSON',
             success: function(arg)
             {
-                
+                alert("asd");
+                for (var key in arg["dic"])
+                {
+                    alert(arg["dic"]);
+                }
+
             }
-
-
         });
 
 

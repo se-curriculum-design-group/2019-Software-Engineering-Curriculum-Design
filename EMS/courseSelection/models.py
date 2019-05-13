@@ -14,7 +14,7 @@ class CourseSelected(models.Model):
     score = models.FloatField()
     common_score = models.FloatField(null=True)
     final_score = models.FloatField(null=True)
-
+    is_finished = models.BooleanField(default=False)
     class Meta:
         db_table = "course_selected"
 
