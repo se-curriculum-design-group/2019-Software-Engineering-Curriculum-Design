@@ -30,7 +30,17 @@ def adm_all_course_score(request):
         return render(request, "errors/403page.html")
     else:
         all_course_score = CourseScore.objects.all()
-        context = {"all_course_score": all_course_score}
+        all_years = [y['teaching__mcno__year'] for y in all_course_score.values("teaching__mcno__year").distinct()]
+        all_semester = [y['teaching__mcno__semester'] for y in all_course_score.values("teaching__mcno__semester").distinct()]
+        try:
+            sear_year = request.GET['sear_year']
+            sear_semester = request.GET['sear_semester']
+            sear_sno = request.GET['sear_sno']
+            student = Student.objects.filter(username=sear_sno)
+            courses = CourseScore.objects.filter(sno=student)
+        except:
+            pass
+        context = {"all_course_score": all_course_score[:10]}
         return render(request, 'scoreManage/adm_score_manage.html', context)
 
 
