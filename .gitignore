@@ -17,4 +17,3 @@ __pycache__/
 *.pyc
 EMS/graduationManagement/migrations/__pycache__/__init__.cpython-36.pyc
 EMS/EMS/__pycache__/wsgi.cpython-36.pyc
-EMS/graduationManagement/migrations/__pycache__/__init__.cpython-36.pyc
