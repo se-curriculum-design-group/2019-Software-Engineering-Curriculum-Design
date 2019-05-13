@@ -298,7 +298,7 @@ def find_course(request):
         if request.method == 'GET':
             sno = request.session["username"]
             theCourse = CourseSelected.objects.filter(sno__username=sno)
-
+            print(theCourse)
             course_time=[]#收集这些课程的上课时间
             dic = {}
             tmp = {}
