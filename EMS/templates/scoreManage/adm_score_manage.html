@@ -16,9 +16,53 @@
         <div class="box">
             <div class="box-header">
                 <h3 class="box-title">全校课程成绩表</h3>
-                <div class="form-group">
-                    <form action="{% url 'scoreManagement:adm_all_course_score' %}" method="get"></form>
-                </div>
+                <form action="{% url 'scoreManagement:adm_all_course_score' %}" method="get" class="form-group">
+                    <div class="form-group col-md-4">
+                        <label for="course_year" style="color: red;">学年：</label>
+                        <select name="sear_year" id="course_year" class="form-control select2">
+                            <option value="NULL" selected="selected">无</option>
+                            {% for year in all_years %}
+                                {% if sear_year == year %}
+                                    <option selected="selected" value={{ year }}>{{ year }}</option>
+                                    {% else %}
+                                    <option value={{ year }}>{{ year }}</option>
+                                {% endif %}
+                            {% endfor %}
+                        </select>
+                        <label for="course_semester" style="color: red;">学期：</label>
+                        <select name="sear_semester" id="course_semester" class="form-control select2">
+                            <option value="NULL" selected="selected">无</option>
+                            {% for semester in all_semester %}
+                                {% if sear_semester == semester %}
+                                    <option selected="selected" value={{ semester }}>{{ semester }}</option>
+                                    {% else %}
+                                    <option value={{ semester }}>{{ semester }}</option>
+                                {% endif %}
+                            {% endfor %}
+                        </select>
+                    </div>
+                    <div class="col-md-4 form-group">
+                        <label for="course_college">学院：</label>
+                        <select name="sear_college" id="course_college" class="form-control select2">
+                            <option value="ALL" selected="selected">全部</option>
+                            {% for college in all_colleges %}
+                                <option value={{ college }}>{{ college }}</option>
+                            {% endfor %}
+                        </select>
+                        <label for="course_major">专业：</label>
+                        <select name="sear_major" id="course_major" class="form-control select2">
+                            <option value="ALL" selected="selected">全部</option>
+                            {% for major in all_majors %}
+                                <option value={{ major }}>{{ major }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                    <div class="col-md-4">
+                        <button id='make_search' class="btn btn-primary pull-right" type="submit">
+                            <span class="glyphicon glyphicon-search"></span>查找
+                        </button>
+                    </div>
+                </form>
             </div>
             <div class="box-body">
                 <table id="all_course_table" class="table table-bordered table-striped">
@@ -27,6 +71,8 @@
                         <th>编号</th>
                         <th>学年</th>
                         <th>学期</th>
+                        <th>学院</th>
+                        <th>专业</th>
                         <th>学生学号</th>
                         <th>课程号</th>
                         <th>考核方式</th>
@@ -41,6 +87,8 @@
                             <td>{{ forloop.counter }}</td>
                             <td>{{ course_score.teaching.mcno.year }}</td>
                             <td>{{ course_score.teaching.mcno.semester }}</td>
+                            <td>{{ course_score.teaching.mcno.mno.major.in_college | safe }}</td>
+                            <td>{{ course_score.teaching.mcno.mno.major | safe }}</td>
                             <td>{{ course_score.sno.username }}</td>
                             <td>{{ course_score.teaching.mcno.cno.cno }}</td>
                             {% if course_score.teaching.mcno.exam_method  == True %}
@@ -63,6 +111,16 @@
 
 {% block script %}
     <script>
+        $.fn.dataTable.ext.search.push(
+            function (setting, data, dataIndex) {
+                let sl_college = $("#course_college").val();
+                let sl_major = $("#course_major").val();
+                if ((sl_college === data[3] && sl_major === data[4]) || (sl_major === 'ALL') || (sl_college === 'ALL')){
+                    return true;
+                }
+                return false;
+            }
+        );
         $(function () {
             var table = $('#all_course_table').DataTable({
                 "paging": true,       <!-- 允许分页 -->
@@ -111,6 +169,13 @@
                     $(this).addClass('selected');
                 }
             });
+
+            $('.select2').select2();
+            $('#course_major #course_college #course_semester #course_year').change(
+                function () {
+                    table.draw();
+                }
+            );
         })
     </script>
 {% endblock %}

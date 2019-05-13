@@ -20,4 +20,5 @@ urlpatterns = [
     path('submit_all', views.submit_all, name="submit_all"),
     path('teacher_view_teaching', views.teacher_view_teaching, name="teacher_view_teaching"),
     path('teacher_upload_score', views.teacher_upload_score, name="teacher_upload_score"),
+    path('ajax_send_dt', views.ajax_send_dt, name="ajax_send_dt"),
 ]
