@@ -41,6 +41,7 @@
         <link rel="stylesheet" href="{% static 'AdminLTE/plugins/datatables/jquery.dataTables_themeroller.css' %}">
         <!-- Select2 下拉框工具 -->
         <link rel="stylesheet" href="{% static 'AdminLTE/plugins/select2/select2.min.css' %}">
+
     {% endblock %}
 
     <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
@@ -188,7 +189,20 @@
 <!-- Select2-->
 <script src="{% static 'AdminLTE/plugins/select2/select2.full.min.js' %}"></script>
 <!-- page script -->
-
+<!-- CK Editor -->
+<script src="https://cdn.ckeditor.com/4.5.7/standard/ckeditor.js"></script>
+<!-- Bootstrap WYSIHTML5 -->
+<script src="../static/AdminLTE/plugins/bootstrap-wysihtml5/bootstrap3-wysihtml5.all.min.js"></script>
+<script src="../static/AdminLTE/plugins/iCheck/icheck.min.js"></script>
+<script>
+    $(function () {
+        // Replace the <textarea id="editor1"> with a CKEditor
+        // instance, using default configuration.
+        CKEDITOR.replace('editor1', { height: '380px', width: '100%' });
+        //bootstrap WYSIHTML5 - text editor
+        $(".textarea").wysihtml5();
+    });
+</script>
 {% block script %}
 {% endblock %}
 

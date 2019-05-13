@@ -1,0 +1,88 @@
+{% extends "adm_base.html" %}
+{% block title %}发送邮件{% endblock %}
+
+
+{% block content %}
+    <form role="form" method="post" action="{% url 'backstage:send_announcements' %}">
+        {% csrf_token %}
+
+        <!-- Content Header (Page header) -->
+        <section class="content-header">
+            <h1>
+                Mailbox
+            </h1>
+            <ol class="breadcrumb">
+                <li><a href="#"><i class="fa fa-dashboard"></i> Home</a></li>
+                <li class="active">Mailbox</li>
+            </ol>
+        </section>
+
+        <!-- Main content -->
+        <section class="content">
+            <div class="row">
+                <div class="col-md-3">
+                    <a href="{% url 'backstage:admin_view' %}" class="btn btn-primary btn-block margin-bottom">返回主页</a>
+
+                    <div class="box box-solid">
+                        <div class="box-header with-border">
+                            <h3 class="box-title">折叠控制板</h3>
+
+                            <div class="box-tools">
+                                <button type="button" class="btn btn-box-tool" data-widget="collapse"><i
+                                        class="fa fa-minus"></i>
+                                </button>
+                            </div>
+                        </div>
+                        <div class="box-body no-padding">
+                            <ul class="nav nav-pills nav-stacked">
+                                <li><a href="#"><i class="fa fa-envelope-o"></i> 发送至： {{ new_email.receiver }}</a></li>
+                                <li><a href="#"><i class="fa fa-filter"></i> 对象年级： {{ new_email.year }}</a>
+                                </li>
+                            </ul>
+                        </div>
+                        <!-- /.box-body -->
+                    </div>
+                </div>
+                <!-- /.col -->
+                <div class="col-md-9">
+                    <div class="box box-primary">
+                        <div class="box-header with-border">
+                            <h3 class="box-title">新邮件</h3>
+                        </div>
+                        <!-- /.box-header -->
+                        <div class="box-body">
+                            <div class="form-group">
+                                {{ new_email.title.label }}:{{ new_email.title }}
+                            </div>
+                            <div class="form-group">
+                                正文：
+                                <textarea id="editor1" name="editor"></textarea>
+                            </div>
+                            <div class="form-group">
+
+                                <div class="btn btn-default">
+                                    {{ new_email.attach }}
+                                </div>
+                                <p class="help-block">Max. 32MB</p>
+                            </div>
+                        </div>
+                        <!-- /.box-body -->
+                        <div class="box-footer">
+                            <div class="pull-right">
+                                <button type="submit" class="btn btn-primary"><i class="fa fa-envelope-o"></i> 发送
+                                </button>
+                            </div>
+                            <button type="reset" class="btn btn-default"><i class="fa fa-times"></i> 重置
+                            </button>
+                        </div>
+                        <!-- /.box-footer -->
+                    </div>
+                    <!-- /. box -->
+                </div>
+                <!-- /.col -->
+            </div>
+            <!-- /.row -->
+        </section>
+        <!-- /.content -->
+    </form>
+{% endblock %}

@@ -2,12 +2,7 @@ from django.db import models
 from backstage.models import Teacher, Student,\
     College, MajorPlan, AdmClass, ClassRoom
 
-#题目方向表:理论研究，设计应用
-class ProjectDirection(models.Model):
-	pdiname=models.CharField(max_length=10)
-#题目难度表
-class ProjectDifficulty(models.Model):
-    pdname=models.CharField(max_length=10)
+
 
 #毕设题目表
 class GraduationProject(models.Model):
@@ -15,12 +10,11 @@ class GraduationProject(models.Model):
     pname=models.CharField(max_length=30)
     #教师id
     tno=models.ForeignKey(to=Teacher,on_delete=models.CASCADE)
-    # #题目类型
-    # ptype=models.ForeignKey(to=ProjectType,on_delete=models.CASCADE)
-    #题目方向
-    pdirection=models.ForeignKey(to=ProjectDirection,on_delete=models.CASCADE)
+   
+    #题目类型
+    pdirection=models.CharField(max_length=10)
     #题目难度
-    pdifficulty=models.ForeignKey(to=ProjectDifficulty,on_delete=models.CASCADE)
+    pdifficulty=models.CharField(max_length=10)
     #题目关键词
     pkeywords=models.TextField()
     #题目详细描述
@@ -51,7 +45,9 @@ class StuChoice(models.Model):
         )
 
 class ProjectDocument(models.Model):
-	schoic=models.ForeignKey(to=StuChoice,on_delete=models.CASCADE)
+    schoic=models.ForeignKey(to=StuChoice,on_delete=models.CASCADE)
+    class Meta:
+        db_table = 'ProjectDocument'
     # paper=
 
 class ProjectScore(models.Model):
@@ -60,4 +56,6 @@ class ProjectScore(models.Model):
     grade=models.CharField(max_length=2)
     #答辩评语
     comments=models.TextField()
+    class Meta:
+        db_table = 'ProjectScore'
 
