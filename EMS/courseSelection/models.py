@@ -12,9 +12,9 @@ class CourseSelected(models.Model):
     sno = models.ForeignKey(to=Student, on_delete=models.CASCADE)
     cno = models.ForeignKey(to=Teacher_Schedule_result, on_delete=models.CASCADE)
     score = models.FloatField()
-    common_score = models.FloatField(null=True)
-    final_score = models.FloatField(null=True)
-
+    common_score = models.FloatField(default = 0)
+    final_score = models.FloatField(default=0)
+    is_finish = models.BooleanField(default = False)
     class Meta:
         db_table = "course_selected"
 

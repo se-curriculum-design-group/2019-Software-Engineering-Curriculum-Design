@@ -1,70 +1,79 @@
-{% extends 'adm_base.html' %}
+{% extends 'teacher_base.html' %}
 {% load staticfiles %}
 
 {% block content %}
     <section class="content-header">
         <h1>成绩管理子系统
-            <small>管理员</small>
+            <small>教师</small>
         </h1>
         <ol class="breadcrumb">
-            <li><a href="{% url 'scoreManagement:welcome' %}"><i class="fa fa-dashboard"></i> 主页</a></li>
-            <li class="active">全校成绩查询</li>
+            <li><a href="{% url 'scoreManagement:teacher_view_teaching' %}"><i class="fa fa-dashboard"></i> 主页</a></li>
+            <li class="active">查看其他教师教的课</li>
         </ol>
     </section>
 
     <section class="content">
         <div class="box">
             <div class="box-header">
-                <h3 class="box-title">全校课程成绩表</h3>
-                <div class="form-group">
-                    <form action="{% url 'scoreManagement:adm_all_course_score' %}" method="get"></form>
+                <h3 class="box-title">查看其他教师上的课</h3>
+                <div class="box-header">
+                    <label for="others_year">学年：</label>
+                    <select name="others_course_year" id="others_course_year" class="select2" style="width: 25%">
+                        <option value="All" selected="selected">全部</option>
+                        {% for year in years %}
+                            <option value="{{ year }}">{{ year }}</option>
+                        {% endfor %}
+                    </select>
+                    <label for="others_course_semester">学期：</label>
+                    <select name="others_semester" id="others_course_semester" class="select2" style="width: 25%">
+                        <option value="All" selected="selected">全部</option>
+                        {% for semester in semesters %}
+                            <option value="{{ semester }}">{{ semester }}</option>
+                        {% endfor %}
+                    </select>
+                    <label for="seacher_teacher" style="color: red">要查询的教师的工号</label>
+                    <input id="seacher_teacher" type="text" placeholder="198500038">
+                    <button id='make_search' class="btn btn-primary" type="button" onclick="search_click()">
+                        <span class="glyphicon glyphicon-search"></span>查找
+                    </button>
                 </div>
             </div>
+
             <div class="box-body">
-                <table id="all_course_table" class="table table-bordered table-striped">
+                <table id="others_teaching_table" class="table table-bordered table-striped">
                     <thead>
                     <tr>
                         <th>编号</th>
                         <th>学年</th>
                         <th>学期</th>
-                        <th>学生学号</th>
                         <th>课程号</th>
-                        <th>考核方式</th>
-                        <th>平时成绩</th>
-                        <th>考试成绩</th>
-                        <th>总分</th>
+                        <th>课程名</th>
+                        <th>学时</th>
+                        <th>教学学时</th>
+                        <th>实验学时</th>
+                        <th>学分</th>
                     </tr>
                     </thead>
-                    <tbody>
-                    {% for course_score in all_course_score %}
-                        <tr>
-                            <td>{{ forloop.counter }}</td>
-                            <td>{{ course_score.teaching.mcno.year }}</td>
-                            <td>{{ course_score.teaching.mcno.semester }}</td>
-                            <td>{{ course_score.sno.username }}</td>
-                            <td>{{ course_score.teaching.mcno.cno.cno }}</td>
-                            {% if course_score.teaching.mcno.exam_method  == True %}
-                                <td>考核</td>
-                            {% else %}
-                                <td>考察</td>
-                            {% endif %}
-                            <td>{{ course_score.commen_score }}</td>
-                            <td>{{ course_score.final_score }}</td>
-                            <td>{{ course_score.score }}</td>
-                        </tr>
-                    {% endfor %}
-                    </tbody>
                 </table>
             </div>
+
         </div>
     </section>
-
 {% endblock %}
 
 {% block script %}
-    <script>
+<script>
+        $.fn.dataTable.ext.search.push(
+            function (setting, data, dataIndex) {
+                let sl_year = $("#course_year").val();
+                let sl_semester = $("#course_semester").val();
+                return (sl_year == data[1] && sl_semester == data[2]) ||
+                    (sl_year == "All" && sl_semester == "All") || (sl_year == "All" && sl_semester == data[2]) |
+                    (sl_year == data[1] && sl_semester == "All");
+            }
+        );
         $(function () {
-            var table = $('#all_course_table').DataTable({
+            var table = $('#my_teaching_table').DataTable({
                 "paging": true,       <!-- 允许分页 -->
                 "lengthChange": true, <!-- 允许改变每页显示的行数 -->
                 "searching": true,    <!-- 允许内容搜索 -->
@@ -103,7 +112,7 @@
                 "order": [[0, 'asc']]
             });
 
-            $('#all_course_table tbody').on('click', 'tr', function (e) {
+            $('#my_teaching_table tbody').on('click', 'tr', function (e) {
                 if ($(this).hasClass('selected')) {
                     $(this).removeClass('selected');
                 } else {
@@ -111,6 +120,12 @@
                     $(this).addClass('selected');
                 }
             });
+
+            $('#course_year, #course_semester').change(function () {
+                table.draw();
+            });
+
+            $('.select2').select2();
         })
     </script>
 {% endblock %}

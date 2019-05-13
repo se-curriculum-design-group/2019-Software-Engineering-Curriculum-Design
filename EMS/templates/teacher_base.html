@@ -20,7 +20,8 @@
         <a href="#" class="dropdown-toggle" data-toggle="dropdown">成绩管理<span
                 class="caret"></span></a>
         <ul class="dropdown-menu" role="menu">
-            <li><a href="#">成绩录入</a></li>
+            <li><a href="{% url 'scoreManagement:teacher_upload_score' %}">成绩录入</a></li>
+            <li><a href="{% url 'scoreManagement:teacher_view_teaching' %}">查看所教的课</a></li>
             <li><a href="#">导出成绩</a></li>
             <li class="divider"></li>
             <li><a href="#">查看成绩统计</a></li>
@@ -33,11 +34,11 @@
         <a href="#" class="dropdown-toggle" data-toggle="dropdown">毕业设计 <span
                 class="caret"></span></a>
         <ul class="dropdown-menu" role="menu">
-            <li><a href="#">发布课题</a></li>
-            <li><a href="#">查看选题情况</a></li>
-            <li><a href="#">查看提交文档</a></li>
+            <li><a href="{% url 'graduationManagement:teacher_submit_project' %}">查看发布课题</a></li>
+            <li><a href="{% url 'graduationManagement:teacher_choose_student' %}">查看选题情况</a></li>
+            <li><a href="{% url 'graduationManagement:teacher_view_projectfiles' %}">查看提交文档</a></li>
             <li class="divider"></li>
-            <li><a href="#">成绩打分</a></li>
+            <li><a href="{% url 'graduationManagement:teacher_submit_score' %}">成绩打分</a></li>
         </ul>
     </li>
 {% endblock %}
@@ -68,7 +69,12 @@
             </span>
         </a>
         <ul class="treeview-menu">
-            <li><a href="#"><i class="fa fa-circle-o"></i>成绩录入</a></li>
+            <li>
+                <a href="{% url 'scoreManagement:teacher_upload_score' %}">
+                    <i class="fa fa-circle-o"></i>成绩录入
+                </a>
+            </li>
+            <li><a href="{% url 'scoreManagement:teacher_view_teaching' %}"><i class="fa fa-circle-o"></i>查看所教的课</a></li>
             <li><a href="#"><i class="fa fa-circle-o"></i>查看成绩统计</a></li>
             <li><a href="#"><i class="fa fa-circle-o"></i>导出成绩</a></li>
         </ul>
@@ -91,10 +97,10 @@
             </span>
         </a>
         <ul class="treeview-menu">
-            <li><a href="{% url 'graduationManagement:teacher_edit_project' %}"><i class="fa fa-circle-o"></i>发布课题</a></li>
-            <li><a href="#"><i class="fa fa-circle-o"></i>查看选题情况</a></li>
-            <li><a href="#"><i class="fa fa-circle-o"></i>查看提交文档</a></li>
-            <li><a href="#"><i class="fa fa-circle-o"></i>成绩打分</a></li>
+            <li><a href="{% url 'graduationManagement:teacher_submit_project' %}"><i class="fa fa-circle-o"></i>查看发布课题</a></li>
+            <li><a href="{% url 'graduationManagement:teacher_choose_student' %}"><i class="fa fa-circle-o"></i>查看选题情况</a></li>
+            <li><a href="{% url 'graduationManagement:teacher_view_projectfiles' %}"><i class="fa fa-circle-o"></i>查看提交文档</a></li>
+            <li><a href="{% url 'graduationManagement:teacher_submit_score' %}"><i class="fa fa-circle-o"></i>成绩打分</a></li>
         </ul>
     </li>
 

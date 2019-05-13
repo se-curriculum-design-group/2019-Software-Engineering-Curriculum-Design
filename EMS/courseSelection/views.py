@@ -237,13 +237,17 @@ def find_course(request):
             course_time=[]#收集这些课程的上课时间
             dic = {}
             tmp = {}
-            for i in theCourse:
+            t_info = {}
+            t_place = {}
+            for i in theCourse:#每门课
                 tmp = i.cno.time.split(",")#同一门课程在一周内不同的时间上
+                t_info[i.cno.tno.mcno.cno.cname] = i.cno.tno.tno.name
+                t_place[i.cno.tno.mcno.cno.cname] = i.cno.where.crno
                 dic[i.cno.tno.mcno.cno.cname]=[]
                 for j in tmp:#一周内不同的天
-                    tmp = {}
+                    tp = {}
                     district = j.split("-")
-                    tmp["周数"] = district[2]+"-"+district[3]
-                    tmp["节次"] = district[0]+"-"+district[1]
-                    dic[i.cno.tno.mcno.cno.cname].append(tmp)
-            return JsonResponse({"dic":dic})
+                    tp["周数"] = district[2]+"-"+district[3]
+                    tp["节次"] = district[0]+"-"+district[1]
+                    dic[i.cno.tno.mcno.cno.cname].append(tp)
+            return JsonResponse({"dic":dic,"t_info":t_info, "t_place":t_place})
