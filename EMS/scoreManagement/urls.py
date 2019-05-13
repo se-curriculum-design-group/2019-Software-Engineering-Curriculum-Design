@@ -19,6 +19,5 @@ urlpatterns = [
     path('submit_result', views.submit_result, name="submit_result"),
     path('submit_all', views.submit_all, name="submit_all"),
     path('teacher_view_teaching', views.teacher_view_teaching, name="teacher_view_teaching"),
-    path('teacher_view_others_teaching', views.teacher_view_others_teaching, name="teacher_view_others_teaching"),
     path('teacher_upload_score', views.teacher_upload_score, name="teacher_upload_score"),
 ]

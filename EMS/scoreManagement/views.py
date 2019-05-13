@@ -26,12 +26,12 @@ def welcome(request):
 
 
 def adm_all_course_score(request):
-    if request.session['user_type'] == '管理员':
+    if request.session['user_type'] != '管理员':
+        return render(request, "errors/403page.html")
+    else:
         all_course_score = CourseScore.objects.all()
         context = {"all_course_score": all_course_score}
         return render(request, 'scoreManage/adm_score_manage.html', context)
-    else:
-        return Http404()
 
 
 def score_home_page(request):
@@ -391,14 +391,6 @@ def teacher_view_teaching(request):
         except:
             pass
     return render(request, "scoreManage/teacher_view_teaching.html", context)
-
-
-def teacher_view_others_teaching(request):
-    if request.session['user_type'] != '教师':
-        return render(request, 'errors/403page.html')
-    if request.is_ajax():
-        return JsonResponse()
-    return redirect("scoreManagement:teacher_view_teaching")
 
 
 # 授课老师录入成绩
