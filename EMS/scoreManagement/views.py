@@ -2,6 +2,7 @@ from django.shortcuts import render, redirect, Http404
 from django.views.decorators.csrf import csrf_exempt
 from django.http import JsonResponse, HttpResponseRedirect
 from django.db.models import Q
+from django.core import serializers
 import json
 
 from backstage.models import Student, Teacher, College, Major, MajorPlan, ClassRoom, AdmClass, User
@@ -29,18 +30,29 @@ def adm_all_course_score(request):
     if request.session['user_type'] != '管理员':
         return render(request, "errors/403page.html")
     else:
+        all_colleges = College.objects.all()
+        all_majors = Major.objects.all()
         all_course_score = CourseScore.objects.all()
         all_years = [y['teaching__mcno__year'] for y in all_course_score.values("teaching__mcno__year").distinct()]
-        all_semester = [y['teaching__mcno__semester'] for y in all_course_score.values("teaching__mcno__semester").distinct()]
+        all_semester = [y['teaching__mcno__semester'] for y in
+                        all_course_score.values("teaching__mcno__semester").distinct()]
         try:
             sear_year = request.GET['sear_year']
             sear_semester = request.GET['sear_semester']
-            sear_sno = request.GET['sear_sno']
-            student = Student.objects.filter(username=sear_sno)
-            courses = CourseScore.objects.filter(sno=student)
+            all_course_score = CourseScore.objects.filter(teaching__mcno__year=sear_year, teaching__mcno__semester=sear_semester)
+
+            print(sear_year)
+            print(sear_semester)
+            print(all_course_score)
         except:
             pass
-        context = {"all_course_score": all_course_score[:10]}
+        context = {
+            "all_course_score": all_course_score[:10],
+            "all_years": all_years,
+            "all_semester": all_semester,
+            "all_colleges": all_colleges,
+            "all_majors": all_majors,
+        }
         return render(request, 'scoreManage/adm_score_manage.html', context)
 
 
@@ -411,3 +423,19 @@ def teacher_upload_score(request):
     teacher = Teacher.objects.get(username=tno)
     my_courses = Teaching.objects.filter(tno=teacher)
     return render(request, 'scoreManage/teacher_upload_score.html')
+
+
+def dt_test(request):
+    if request.is_ajax():
+        data = [
+            {"name": "DataTables中文网", "age": 2},
+            {"name": "DataTables中文网2", "age": 3}
+        ]
+        return JsonResponse(data, safe=False)
+    return render(request, 'scoreManage/test_dt.html')
+
+
+def ajax_send_dt(request):
+    data = [{"name": "DataTables中文网", "age": 2}],
+
+    return JsonResponse(data, safe=False)
