@@ -16,5 +16,7 @@ urlpatterns = [
                   path('hello_admin', views.admin_view, name='admin_view'),
                   path('backstage_manage', views.backstage_manage, name='backstage_manage'),
                   path('my_personal_details', views.my_personal_details, name='my_personal_details'),
-
+                  path('check_announcements', views.check_announcement, name='check_announcements'),
+                  path('send_announcements', views.send_announcement, name='send_announcements'),
+                  path('send_emails', views.send_emails, name='send_emails'),
               ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
