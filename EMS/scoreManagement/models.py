@@ -1,6 +1,8 @@
 from django.db import models
 from backstage.models import Teacher, Student,\
     College, MajorPlan, AdmClass, ClassRoom
+from courseScheduling.models import Teacher_Schedule_result
+from courseSelection.models import CourseSelected
 
 
 # 课程信息
