@@ -76,9 +76,9 @@ def score_home_page(request):
         return render(request, 'scoreManage/adm_score_manage.html')
 
 
-def student_score(request):
+def student_view_score(request):
     if request.session['user_type'] != '学生':
-        redirect("scoreManagement:welcome")
+        return render(request, 'errors/403page.html')
     sno = request.session['username']
     student = Student.objects.get(username=sno)
     course_score = CourseScore.objects.filter(sno=student)

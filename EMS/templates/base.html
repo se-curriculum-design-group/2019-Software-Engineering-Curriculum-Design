@@ -190,11 +190,14 @@
 <script src="{% static 'AdminLTE/plugins/select2/select2.full.min.js' %}"></script>
 <!-- page script -->
 <!-- CK Editor -->
+{% comment %}
 <script src="{% static 'ckeditor.js' %}"></script>
+{% endcomment %}
 <!-- Bootstrap WYSIHTML5 -->
 <script src="{% static 'AdminLTE/plugins/bootstrap-wysihtml5/bootstrap3-wysihtml5.all.min.js' %}"></script>
 <script src="{% static 'AdminLTE/plugins/iCheck/icheck.min.js' %}"></script>
 <script>
+    {% comment %}
     $(function () {
         // Replace the <textarea id="editor1"> with a CKEditor
         // instance, using default configuration.
@@ -202,6 +205,7 @@
         //bootstrap WYSIHTML5 - text editor
         $(".textarea").wysihtml5();
     });
+    {% endcomment %}
 </script>
 {% block script %}
 {% endblock %}
