@@ -8,7 +8,7 @@ from courseScheduling.models import Teacher_Schedule_result
 from courseSelection.models import CourseSelected
 import json
 import numpy as np
-
+import datetime
 def welcome(request):
     return render(request, 'courseSelection/welcome.html')
 # def resultAdd(request):
@@ -54,9 +54,74 @@ def selection_home_page(request):
         return render(request, 'courseSelection/adm_selection_manage.html')
 def stu_tongshi(request):
     return render(request,"courseSelection/stu_tongshi.html")
+# def stu_
 
 def stu_major(request):
-    majorC = Teacher_Schedule_result.objects.all()[:3]
+    # majorC = Teacher_Schedule_result.objects.all()[:3]
+    sno = request.session["username"]
+    #学号》incls》name
+    #学号》inyear》当前时间减去inyear求出学期》
+    # TSR》Teaching》Majorcourse》得出学期
+    #TSR》Teaching》Majorcourse》Majorplan》Major》mname
+
+    current_year = datetime.datetime.now().year
+    current_month = datetime.datetime.now().month
+    current_semester = 0
+    p = Student.objects.get(username=sno)
+
+    majorName = p.in_cls.name[0:2]
+
+    inyear = p.in_year
+
+    if (current_year - inyear) == 0:
+        current_semester = 1
+    elif (current_year - inyear) == 1:
+        if(current_month>=1 and current_month<=2):
+            current_semester = 1
+        elif(current_month>2 and current_month<=7):
+            current_semester = 2
+        elif (current_month>7 and current_month<9):
+            current_semester=3
+        elif(current_month>=9 and current_month<=12):
+            current_semester = 1
+    elif (current_year - inyear) == 2:
+        if(current_month>=1 and current_month<=2):
+            current_semester = 1
+        elif(current_month>2 and current_month<=7):
+            current_semester = 2
+        elif (current_month>7 and current_month<9):
+            current_semester=3
+        elif(current_month>=9 and current_month<=12):
+            current_semester = 1
+    elif (current_year - inyear) == 3:
+        if(current_month>=1 and current_month<=2):
+            current_semester = 1
+        elif(current_month>2 and current_month<=7):
+            current_semester = 2
+        elif (current_month>7 and current_month<9):
+            current_semester=3
+        elif(current_month>=9 and current_month<=12):
+            current_semester = 1
+    elif (current_year - inyear) == 4:
+        if (current_month >= 1 and current_month <= 2):
+            current_semester = 1
+        elif (current_month > 2 and current_month <= 7):
+            current_semester = 2
+        elif (current_month > 7 and current_month < 9):
+            current_semester = 3
+        elif (current_month >= 9 and current_month <= 12):
+            current_semester = 1
+
+    mC = Teacher_Schedule_result.objects.filter(
+        tno__mcno__year = current_year,
+        tno__mcno__semester=current_semester
+        )
+    majorC = []
+    for m in mC:
+        if m.tno.mcno.mno.major.mname == majorName:
+            majorC.append(m)
+
+    # print(type(current_month))
     data=[]
     dat = []
     haveChosen={}
@@ -64,8 +129,8 @@ def stu_major(request):
     #     # crno = models.CharField(max_length=128)
     #     # crtype = models.CharField(null=False, max_length=10)
     #     # contain_num = models.IntegerField()
-    sno = request.session["username"]
     courseChosen = CourseSelected.objects.filter(sno__username=sno)
+
     for c in courseChosen:
         tmp = {}
         haveChosen[c.cno.id]=1
@@ -233,7 +298,7 @@ def find_course(request):
         if request.method == 'GET':
             sno = request.session["username"]
             theCourse = CourseSelected.objects.filter(sno__username=sno)
-
+            print(theCourse)
             course_time=[]#收集这些课程的上课时间
             dic = {}
             tmp = {}
