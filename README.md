@@ -34,9 +34,6 @@ Code with <span style="color:red">❤︎</span> by <a href="https://github.com/R
 
 ## 查看运行效果
 
-### 登录
-![login_form](EMS/static/img/readme_img/login.png)
-
 ### 初始界面
 ![first_login](EMS/static/img/readme2/first_login.gif)
 
