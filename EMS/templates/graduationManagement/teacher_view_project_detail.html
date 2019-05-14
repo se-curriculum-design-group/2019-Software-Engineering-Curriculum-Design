@@ -17,9 +17,6 @@
                 
 
                 <h3 class="timeline-header"><a href="#">题目名称 </a>&nbsp;{{ item.pname }} </h3>
-
-                
-                
               </div>
             </li>
             <!-- END timeline item -->
@@ -110,14 +107,15 @@
             <!-- END timeline item -->
             <!-- timeline item -->
             <li>
-             {% endfor %}
+             
           </ul>
         </div>
         <!-- /.col -->
       </div>
       <div class="row" style="margin-left: 40px;">
-      <button type="button" class="btn btn-info">修改</button>
-      <button type="button" class="btn btn-danger btn-info delete">删除</button>
+      <button type="button" class="btn btn-info change" onclick="javascript:window.location.href='/graduationManagement/teacher_change_project?id={{ item.id }}'">修改</button>
+      <button type="button" class="btn btn-danger btn-info delete" onclick="javascript:window.location.href='/graduationManagement/teacher_delete_project?id={{ item.id }}'">删除</button>
+      {% endfor %}
     </div>
 </section>
 {% endblock %}
@@ -164,14 +162,8 @@
 	    //Initialize Select2 Elements
 	    $(".select2").select2();
 	  });
-    $(".jump").click(function () {
-             location.href = "{% url 'graduationManagement:student_view_project_detail' %}";
-         });
-
-    $(".delete").click(function () {
-             a=$('.jump')[0].id;
-             location.href = "/graduationManagement/teacher_view_project_detail?id="+a;
-         });
+   
+     
 	</script>
 
 
