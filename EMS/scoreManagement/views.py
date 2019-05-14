@@ -6,7 +6,8 @@ from django.core import serializers
 import json
 
 from backstage.models import Student, Teacher, College, Major, MajorPlan, ClassRoom, AdmClass, User
-from scoreManagement.models import Teaching, Course, MajorPlan, MajorCourses, CourseScore, EvaluationForm
+from courseScheduling.models import Teaching, Course, MajorPlan, MajorCourses, Teacher, Teacher_Schedule_result
+from scoreManagement.models import CourseScore, EvaluationForm
 
 
 def welcome(request):
