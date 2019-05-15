@@ -7,6 +7,7 @@ import json
 
 from backstage.models import Student, Teacher, College, Major, MajorPlan, ClassRoom, AdmClass, User
 from courseScheduling.models import Teaching, Course, MajorPlan, MajorCourses, Teacher, Teacher_Schedule_result
+from courseSelection.models import CourseSelected
 from scoreManagement.models import CourseScore, EvaluationForm
 
 

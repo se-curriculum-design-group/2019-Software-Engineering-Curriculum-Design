@@ -35,7 +35,7 @@ script:
   - cd EMS
   - python manage.py makemigrations
   - python manage.py migrate
-  - python manage.py test
+  - coverage run manage.py test
 after_success:
   - codecov
 
