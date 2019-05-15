@@ -6,7 +6,6 @@ from mixer.backend.django import mixer
 from .models import Student, Teacher
 import django.http.request
 
-
 app_name = 'scoreManagement'
 
 
@@ -25,51 +24,105 @@ class TestStudent(TestCase):
             'password': '2016000474'
         }
 
-    def test_student_login(self):
         url = ""
         response = self.client.get(url)
         self.assertEqual(response.status_code, 200)
         self.assertTemplateUsed(response, 'login.html')
+
+        response = self.client.post('/mylogin', self.login_data)
+        self.assertIn(response.status_code, [200, 301, 302])
+
+    def test_student_view_score(self):
+        response = self.client.get('/scoreManagement/student_view_score')
+        self.assertIn(response.status_code, [200, 301, 302])
+
+    def test_student_view_own_study(self):
+        response = self.client.get('/scoreManagement/student_own_study')
+        self.assertIn(response.status_code, [200, 301, 302])
+
+    def test_student_view_major_course(self):
+        response = self.client.get('/scoreManagement/std_view_major_course')
+        self.assertIn(response.status_code, [200, 301, 302])
+
+    def test_student_view_major_plan(self):
+        response = self.client.get('/scoreManagement/std_view_major_plan')
+        self.assertIn(response.status_code, [200, 301, 302])
 
 
 class TestAdm(TestCase):
     def setUp(self) -> None:
         adm = mixer.blend(User)
         adm.is_superuser = True
-        adm.password = make_encode(adm.password)
+        adm.username = 'LuoD'
+        adm.password = make_encode('19980818')
         adm.save()
         self.log_data = {
             'username': adm.username,
-            'password': adm.password
+            'password': '19980818'
         }
         data = {
             'username': 'LuoD',
             'password': '19980818'
         }
 
-    def test_adm_login(self):
         url = ""
-        response = self.client.post(url, data=self.log_data)
+        response = self.client.get(url)
         self.assertEqual(response.status_code, 200)
         self.assertTemplateUsed(response, 'login.html')
+
+        url = '/mylogin'
+        response = self.client.post(url, data=self.log_data)
+        self.assertIn(response.status_code, [200, 301, 302])
+
+    def test_adm_view_major_course(self):
+        response = self.client.get('/scoreManagement/adm_view_major_course')
+        self.assertIn(response.status_code, [200, 301, 302])
+
+    def test_adm_view_major_plan(self):
+        response = self.client.get('/scoreManagement/adm_view_major_plan')
+        self.assertIn(response.status_code, [200, 301, 302])
+
+    def test_adm_all_course_score(self):
+        response = self.client.get('/scoreManagement/adm_all_course_score')
+        self.assertIn(response.status_code, [200, 301, 302])
 
 
 class TestTeacher(TestCase):
     def setUp(self) -> None:
         teacher = mixer.blend(Teacher)
-        teacher.password = make_encode(teacher.password)
+        teacher.username = '198500038'
+        teacher.password = make_encode('198500038')
         teacher.save()
         self.log_data = {
             'username': teacher.username,
-            'password': teacher.password
+            'password': teacher.username
         }
         data = {
             'username': '198500038',
             'password': '198500038'
         }
 
-    def test_teacher_login(self):
         url = ""
-        response = self.client.post(url, data=self.log_data)
+        response = self.client.get(url)
         self.assertEqual(response.status_code, 200)
         self.assertTemplateUsed(response, 'login.html')
+
+        url = '/mylogin'
+        response = self.client.post(url, data=self.log_data)
+        self.assertIn(response.status_code, [200, 301, 302])
+
+    def test_teacher_view_major_course(self):
+        response = self.client.get('/scoreManagement/teacher_view_major_course')
+        self.assertIn(response.status_code, [200, 301, 302])
+
+    def test_teacher_view_major_plan(self):
+        response = self.client.get('/scoreManagement/teacher_view_major_plan')
+        self.assertIn(response.status_code, [200, 301, 302])
+
+    def test_teacher_view_teaching(self):
+        response = self.client.get('/scoreManagement/teacher_view_teaching')
+        self.assertIn(response.status_code, [200, 301, 302])
+
+    def test_teacher_upload_score(self):
+        response = self.client.get('/scoreManagement/teacher_upload_score')
+        self.assertIn(response.status_code, [200, 301, 302])
