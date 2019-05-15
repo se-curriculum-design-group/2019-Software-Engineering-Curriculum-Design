@@ -13,11 +13,12 @@ app_name = 'scoreManagement'
 class TestStudent(TestCase):
     def setUp(self) -> None:
         student1 = mixer.blend(Student)
-        student1.password = make_encode(student1.password)
+        student1.username = '2016000474'
+        student1.password = make_encode('2016000474')
         student1.save()
         self.login_data = {
             'username': student1.username,
-            'password': student1.password
+            'password': student1.username
         }
         data = {
             'username': '2016000474',
@@ -26,10 +27,13 @@ class TestStudent(TestCase):
 
     def test_student_login(self):
         url = ""
-        response = self.client.post(url, data=self.login_data)
-        self.client.session['user_type'] = '学生'
+        response = self.client.get(url)
         self.assertEqual(response.status_code, 200)
         self.assertTemplateUsed(response, 'login.html')
+
+        url = 'backstage:mylogin'
+        response = self.client.post(url, data=self.login_data)
+        self.assertEqual(response.status_code, 200)
 
 
 class TestAdm(TestCase):
