@@ -2,8 +2,6 @@ language: python
 sudo: true
 os:
   - linux
-  - osx
-  - windows
 python:
   - "3.5"
   - "3.6"
