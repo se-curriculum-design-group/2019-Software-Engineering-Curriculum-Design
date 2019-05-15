@@ -31,10 +31,6 @@ class TestStudent(TestCase):
         self.assertEqual(response.status_code, 200)
         self.assertTemplateUsed(response, 'login.html')
 
-        url = 'backstage:mylogin'
-        response = self.client.post(url, data=self.login_data)
-        self.assertEqual(response.status_code, 200)
-
 
 class TestAdm(TestCase):
     def setUp(self) -> None:
