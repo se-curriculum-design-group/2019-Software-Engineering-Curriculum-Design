@@ -1,4 +1,5 @@
 [![Build Status](https://travis-ci.com/se-curriculum-design-group/2019-Software-Engineering-Curriculum-Design.svg?branch=master)](https://travis-ci.com/se-curriculum-design-group/2019-Software-Engineering-Curriculum-Design)
+[![codecov](https://codecov.io/gh/se-curriculum-design-group/2019-Software-Engineering-Curriculum-Design/branch/master/graph/badge.svg)](https://codecov.io/gh/se-curriculum-design-group/2019-Software-Engineering-Curriculum-Design)
 <a href="">
     <img src="https://img.shields.io/badge/platform-linux%20%7C%20osx%20%7C%20win-blue.svg" alt="platform">
 </a>
