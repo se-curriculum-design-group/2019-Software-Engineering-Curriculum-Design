@@ -3,9 +3,7 @@ sudo: true
 os:
   - linux
 python:
-  - "3.5"
   - "3.6"
-  - "3.7"
 # 使用的服务，必要的数据库服务
 services:
   - mysql
