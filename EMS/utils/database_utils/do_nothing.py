@@ -1,4 +1,8 @@
 import os
+import django
+os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'EMS.settings')
+django.setup()
+
 import re
 import pandas as pd
 from random import choice, randint, choices

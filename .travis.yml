@@ -1,7 +1,13 @@
 language: python
 sudo: true
+os:
+  - linux
+  - osx
+  - windows
 python:
+  - "3.5"
   - "3.6"
+  - "3.7"
 # 使用的服务，必要的数据库服务
 services:
   - mysql
@@ -11,16 +17,6 @@ env:
     - DJANGO=2.1.7
 # command to install dependencies
 before_install:
-  # - wget -c https://dev.mysql.com/get/mysql-apt-config_0.8.10-1_all.deb 
-  # - sudo dpkg -i mysql-apt-config_0.8.10-1_all.deb 
-  # - sudo apt update
-  # - sudo apt-get install mysql-server
-  # - sudo systemctl restart mysql
-  # - sudo mysql_upgrade
-  - mysql --version 
-  - mysql -e 'CREATE DATABASE IF NOT EXISTS ems;'
-  - mysql -e 'create user "EMS"@"localhost" identified by "password";'
-  - mysql -e 'grant all ON *.* to "EMS"@"localhost";'
   - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then
       brew update;
       brew install python3 redis memcached;
@@ -32,7 +28,11 @@ install:
   - pip install -r requirements.txt
 #  - pip install boxx/
 # command to run tests
-script: 
+script:
+  - mysql --version 
+  - mysql -e 'CREATE DATABASE IF NOT EXISTS ems;'
+  - mysql -e 'create user "EMS"@"localhost" identified by "password";'
+  - mysql -e 'grant all ON *.* to "EMS"@"localhost";'
   - cd EMS
   - python manage.py makemigrations
   - python manage.py migrate

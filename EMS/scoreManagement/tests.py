@@ -1,38 +1,63 @@
-from django.test import TestCase, Client, RequestFactory
+from django.test import TestCase, Client
+from django.test.utils import setup_test_environment
 from backstage.models import User
+from backstage.views import make_encode
+from mixer.backend.django import mixer
 from .models import Student, Teacher
 import django.http.request
 
 
+app_name = 'scoreManagement'
+
+
 class TestStudent(TestCase):
-    def test1(self):
-        student1 = User.objects.get(username='2016000001')
-        student2 = User.objects.get(username='2016000002')
-        self.assertEqual(student1.name, '孙章衡')
-        self.assertEqual(student2.name, '韩带庐')
-
-
-class HomePageTest(TestCase):
-    def test_home_view_status_code(self):
-        url = ""
-        data = {
-            'username': '2016000001',
-            'password': '2016000001'
-        }
-        respone = self.client.post(url, data=data)
-        print(respone)
-        self.assertEqual(respone.status_code, 200)
-
-
-class DemoTest(TestCase):
     def setUp(self) -> None:
-        print("setUp")
+        student1 = mixer.blend(Student)
+        student1.password = make_encode(student1.password)
+        student1.save()
+        self.login_data = {
+            'username': student1.username,
+            'password': student1.password
+        }
 
-    def tearDown(self) -> None:
-        print("tearDown")
+    def test_student_login(self):
+        url = ""
+        response = self.client.post(url, data=self.login_data)
+        self.client.session['user_type'] = '学生'
+        self.assertEqual(response.status_code, 200)
+        self.assertTemplateUsed(response, 'login.html')
 
-    def test_demo1(self):
-        print("test_demo_1")
 
-    def test_demo2(self):
-        print("test_demo2")
+class TestAdm(TestCase):
+    def setUp(self) -> None:
+        adm = mixer.blend(User)
+        adm.is_superuser = True
+        adm.password = make_encode(adm.password)
+        adm.save()
+        self.log_data = {
+            'username': adm.username,
+            'password': adm.password
+        }
+
+    def test_adm_login(self):
+        url = ""
+        response = self.client.post(url, data=self.log_data)
+        self.assertEqual(response.status_code, 200)
+        self.assertTemplateUsed(response, 'login.html')
+
+
+class TestTeacher(TestCase):
+    def setUp(self) -> None:
+        teacher = mixer.blend(Teacher)
+        teacher.password = make_encode(teacher.password)
+        teacher.save()
+        self.log_data = {
+            'username': teacher.username,
+            'password': teacher.password
+        }
+
+    def test_teacher_login(self):
+        url = ""
+        response = self.client.post(url, data=self.log_data)
+        self.assertEqual(response.status_code, 200)
+        self.assertTemplateUsed(response, 'login.html')
