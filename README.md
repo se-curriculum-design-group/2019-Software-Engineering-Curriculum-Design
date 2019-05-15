@@ -82,11 +82,11 @@ Code with <span style="color:red">❤︎</span> by <a href="https://github.com/R
 
 ![teacher_upload_score](EMS/static/img/readme3/teacher_upload_score.gif)
 
-### 毕业设计-学生浏览选题+查看状态
+### 毕业设计-学生选题+查看选题状态+上传文档+查看成绩
 
 ![grad_view_project](EMS/static/img/readme3/stu_view_gradu.gif)
 
-### 毕业设计-教师发布选题
+### 毕业设计-教师发布选题+选择学生+查看学生文档+成绩录入
 
 ![teacher_publish](EMS/static/img/readme3/teacher_publish.gif)
 
