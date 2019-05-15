@@ -1,10 +1,10 @@
-{% extends 'student_base.html' %}
+{% extends 'adm_base.html' %}
 {% load staticfiles %}
 
 {% block content %}
     <section class="content-header">
         <h1>查询专业课程
-            <small>Info</small>
+            <small>管理员</small>
         </h1>
         <ol class="breadcrumb">
             <li><a href="{% url 'scoreManagement:welcome' %}"><i class="fa fa-dashboard"></i> 主页</a></li>
@@ -18,13 +18,12 @@
                 <h3 class="box-title">查询专业课程</h3>
                 <div class="box-header ">
                     <div class="form-group">
-                        <label style="color: red">专业：</label><select id="major" class="form-control select2" style="width: 20%;">
+                        <label style="color: red">专业：</label><select id="major" class="form-control select2"
+                                                                     style="width: 20%;">
+                        <option value="ALL">全部</option>
+
                         {% for item in all_major %}
-                            {% if item == student.in_cls.major.major %}
-                                <option value="{{ item }}" selected="selected">{{ item }}</option>
-                            {% else %}
-                                <option value="{{ item }}">{{ item }}
-                            {% endif %}
+                            <option value="{{ item }}">{{ item }}
                         {% endfor %}
                     </select>
                         <label>建议修读学年：</label><select id="year" class="form-control select2" style="width: 15%;">
@@ -101,29 +100,15 @@
     <script>
         $.fn.dataTable.ext.search.push(
             function (settings, data, dataIndex) {
-                var major = $('#major').val()
-                var year = $('#year').val()
-                var semester = $('#semester').val()
-                var course_type = $('#course_type').val()
-                var type = data[7]
-                if ((major == data[1] && year == "ALL" && semester == "ALL" && course_type == "ALL") ||
-
-                    (major == data[1] && year == "ALL" && semester == "ALL" && course_type == data[7]) ||
-
-                    (major == data[1] && year == "ALL" && semester == data[3] && course_type == "ALL") ||
-
-                    (major == data[1] && year == data[2] && semester == "ALL" && course_type == "ALL") ||
-
-                    (major == data[1] && year == data[2] && semester == data[3] && course_type == "ALL") ||
-
-                    (major == data[1] && year == data[2] && semester == "ALL" && course_type == data[7]) ||
-
-                    (major == data[1] && year == "ALL" && semester == data[3] && course_type == data[7]) ||
-
-
-                    (major == data[1] && year == data[2] && semester == data[3] && course_type == data[7])
-                ) {
-                    return true
+                let  major = $('#major').val();
+                let  year = $('#year').val();
+                let  semester = $('#semester').val();
+                let  course_type = $('#course_type').val();
+                if (
+                    (major === "ALL" || major === data[1]) && (year === "ALL" || year === data[2])
+                    && (semester === "ALL" || semester === data[2]) && (course_type === "ALL" || course_type === data[7])
+                ){
+                    return true;
                 } else {
                     return false
                 }

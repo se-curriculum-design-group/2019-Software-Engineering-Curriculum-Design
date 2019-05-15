@@ -11,6 +11,9 @@
             <li class="divider"></li>
             <li><a href="#">课程信息管理</a></li>
             <li><a href="#">教室信息管理</a></li>
+            <li class="divider"></li>
+            <li><a href="{% url 'scoreManagement:adm_view_major_plan' %}">专业培养计划管理</a></li>
+            <li><a href="{% url 'scoreManagement:adm_view_major_course' %}">专业课程计划管理</a></li>
         </ul>
     </li>
 
@@ -47,7 +50,6 @@
             <li class="divider"></li>
             <li><a href="{% url 'backstage:send_emails' %}">发送邮件</a></li>
             <li><a href="#">查看邮件</a></li>
-
         </ul>
     </li>
 
@@ -68,7 +70,8 @@
             <li><a href="#"><i class="fa fa-circle-o"></i>教师信息管理</a></li>
             <li><a href="#"><i class="fa fa-circle-o"></i>课程信息管理</a></li>
             <li><a href="#"><i class="fa fa-circle-o"></i>教室信息管理</a></li>
-
+            <li><a href="{% url 'scoreManagement:adm_view_major_plan' %}"><i class="fa fa-circle-o"></i>专业培养计划管理</a></li>
+            <li><a href="{% url 'scoreManagement:adm_view_major_course' %}"><i class="fa fa-circle-o"></i>专业课程计划管理</a></li>
         </ul>
     </li>
 

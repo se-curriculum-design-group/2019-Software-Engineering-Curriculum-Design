@@ -172,7 +172,7 @@ def student_own_study(request):
 
 def std_view_major_course(request):
     if request.session['user_type'] != '学生':
-        redirect("scoreManagement:welcome")
+        return render(request, 'errors/403page.html')
     sno = request.session['username']
     student = Student.objects.get(username=sno)
     # my_major_plan = student.in_cls.major
@@ -193,7 +193,7 @@ def std_view_major_course(request):
 
 def std_view_major_plan(request):
     if request.session['user_type'] != '学生':
-        redirect("scoreManagement:welcome")
+        return render(request, 'errors/403page.html')
     sno = request.session['username']
     student = Student.objects.get(username=sno)
     all_major_plan = MajorPlan.objects.all()
@@ -209,6 +209,72 @@ def std_view_major_plan(request):
         "all_major": all_major
     }
     return render(request, "scoreManage/student_major_plan.html", context)
+
+
+def teacher_view_major_course(request):
+    if request.session['user_type'] != '教师':
+        return render(request, 'errors/403page.html')
+    all_major_course = MajorCourses.objects.all()
+    all_college = College.objects.all()
+    all_course_type = Course.objects.values("course_type").distinct()
+    all_year = MajorCourses.objects.values("year").order_by("year").distinct()
+    all_major = Major.objects.all()
+    context = {"all_major_course": all_major_course,
+               "all_college": all_college,
+               "all_course": all_course_type,
+               "all_year": all_year,
+               "all_major": all_major
+               }
+    return render(request, "scoreManage/teacher_major_course.html", context)
+
+
+def teacher_view_major_plan(request):
+    if request.session['user_type'] != '教师':
+        return render(request, 'errors/403page.html')
+    all_major_plan = MajorPlan.objects.all()
+    all_college = College.objects.all()
+    all_year = MajorPlan.objects.values("year").order_by("year").distinct()
+    all_major = Major.objects.all()
+    context = {
+        "all_major_plan": all_major_plan,
+        "all_college": all_college,
+        "all_year": all_year,
+        "all_major": all_major
+    }
+    return render(request, "scoreManage/teacher_major_plan.html", context)
+
+
+def adm_view_major_course(request):
+    if request.session['user_type'] != '管理员':
+        return render(request, 'errors/403page.html')
+    all_major_course = MajorCourses.objects.all()
+    all_college = College.objects.all()
+    all_course_type = Course.objects.values("course_type").distinct()
+    all_year = MajorCourses.objects.values("year").order_by("year").distinct()
+    all_major = Major.objects.all()
+    context = {"all_major_course": all_major_course,
+               "all_college": all_college,
+               "all_course": all_course_type,
+               "all_year": all_year,
+               "all_major": all_major
+               }
+    return render(request, "scoreManage/adm_major_course.html", context)
+
+
+def adm_view_major_plan(request):
+    if request.session['user_type'] != '管理员':
+        return render(request, 'errors/403page.html')
+    all_major_plan = MajorPlan.objects.all()
+    all_college = College.objects.all()
+    all_year = MajorPlan.objects.values("year").order_by("year").distinct()
+    all_major = Major.objects.all()
+    context = {
+        "all_major_plan": all_major_plan,
+        "all_college": all_college,
+        "all_year": all_year,
+        "all_major": all_major
+    }
+    return render(request, "scoreManage/adm_major_plan.html", context)
 
 
 # 学生评教
