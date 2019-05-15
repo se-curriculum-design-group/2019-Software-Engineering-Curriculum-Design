@@ -13,8 +13,9 @@ services:
   - mysql
 env:
   global:
-    -TRAVIS=true
+    - TRAVIS=true
     - DJANGO=2.1.7
+    - CODECOV_TOKEN="54368210-ad7d-4e89-82ba-e535fea06ff7"
 # command to install dependencies
 before_install:
   - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then
@@ -23,6 +24,8 @@ before_install:
       virtualenv -p python3 ~/py-env;
       . ~/py-env/bin/activate;
     fi
+  - pip install codecov
+  - pip install coverage
 
 install:
   - pip install -r requirements.txt
