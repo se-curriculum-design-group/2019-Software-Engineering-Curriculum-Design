@@ -19,6 +19,10 @@ class TestStudent(TestCase):
             'username': student1.username,
             'password': student1.password
         }
+        data = {
+            'username': '2016000474',
+            'password': '2016000474'
+        }
 
     def test_student_login(self):
         url = ""
@@ -38,6 +42,10 @@ class TestAdm(TestCase):
             'username': adm.username,
             'password': adm.password
         }
+        data = {
+            'username': 'LuoD',
+            'password': '19980818'
+        }
 
     def test_adm_login(self):
         url = ""
@@ -54,6 +62,10 @@ class TestTeacher(TestCase):
         self.log_data = {
             'username': teacher.username,
             'password': teacher.password
+        }
+        data = {
+            'username': '198500038',
+            'password': '198500038'
         }
 
     def test_teacher_login(self):
