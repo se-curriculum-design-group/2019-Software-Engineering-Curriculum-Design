@@ -19,7 +19,7 @@
 </div>
 <div align="center">
 
- ### [运行效果](#查看运行效果) | [安装运行](#如何安装运行本项目) | [如何开发](#如何开发) | [项目进度](#项目进度)
+ ### [运行效果](#查看运行效果) | [安装运行](#如何安装运行本项目) | [如何开发](#如何开发) | [软件测试](#软件测试) | [项目进度](#项目进度)
 </div>
 
 
@@ -208,6 +208,103 @@ git checkout xxxx
 其他三个文件分别继承于`base.html`，并且自定义了自己的Slider Bar和顶部导航栏。其于各个模块中的`html`文件均继承于上述三个文件，确保了不同的角色登录看到的功能均不相同。
 
 其于子模块子需要在`{% block content %} {% endblock %}`内部书写`<section></section>`内容即可。
+
+## 软件测试
+
+> 不会写测试的软件工程师不是一个好的软件工程师。
+
+### 对Django进行单元测试
+
+单元测试(Unittest)对于开发出好的软件来说（提前找到Bug，性能优化，提高开发效率）的重要性毋庸置疑，Python常用
+的单元测试工具有unittest和mock、pytest等第三方包。但是对于Django而言，有很好的选择。
+
+在每个APP下都有一个`tests.py`文件，这个文件用来做单元测试，其中导入了`TestCase`类，我们就是用它来做测试。Django封装了unittes类（继承）为`TestCase`，一般来说我们编写自己的测试类要继承`TestCase`。在其中定义自己的测试方法，每个方法都以`test_`开头，简单的命名方式为：`test_`+测试方法名，_i_e_.: `test_student_view_score`。
+
+但编写好测试类和测试方法时，执行：
+```
+python manage.py test
+```
+便会自动执行测试，并且可以看到测试的执行耗费时间。启动可能会有点慢，因为默认会创建一个数据库（名为：`test_`+项目数据库名），并且会执行迁移`migrate`。但是实际测试时很快的，很适合与CI工具集成测试。
+
+关于`TestCase`用法的几点说明：
+
+1. `TestCase`默认有`setUp()`和`tearDown()`方法，用来做执行测试前的一些初始化工作，比如创建数据库，登录用户等。其执行顺序为
+```
+setUp()
+test_method1()
+tearDown()
+setUp()
+test_method2()
+tearDown()
+...
+```
+即会单独的为每个测试方法前后执行一次。我一般用来登录用户保存session。
+
+2. `self.client`是默认的一个客户端对象，**非常重要**，可以用来模拟用户提供http请求，如`POST/GET`等，以及提供数据。需要掌握使用，用Client类来测试自己项目APP下面的每一个URL和view是否正确工作，可以有助于发现Bug。避免提交了再补锅救火。
+
+常用方法：
+```python
+url = ""
+response = self.client.get(url)
+self.assertEqual(response.status_code, 200)
+self.assertTemplateUsed(response, 'login.html')
+
+url = '/mylogin'
+response = self.client.post(url, data=self.log_data)
+self.assertIn(response.status_code, [200, 301, 302])
+```
+
+**注意**：千万注意，这里的`url`测试的是你在浏览器中访问时`127.0.0.1`后面的东西，**但是不能有最后那个`/`**，否则会404 Not Found。
+
+用`assertEqual`判断状态码是否是200,如果是404、500、403等，必然是错误，不能上线。
+
+这里的状态码可能是302或者301表示重定向，是正常的，可以用`assertIn`判断。`assertTemplateUsed`用来判断是否使用了正确的模板页面，避免错误。同时可以使用`assertIn`判断关心的内容是否在页面中。一般常用的断言方法也就这几个，更多可以自己查看。
+
+`response`是一个Response对象，有很多方法，比如查看状态码，返回内容等。
+
+3. `python manage.py test`会执行项目所有的测试，为了避免打印太多或者其他项目干扰，可以只执行自己项目中的测试，或者只执行一个测试类、一个测试方法：
+
+```
+python manage.py test # 执行所有测试，一般用于集成测试
+python manage.py test scoreManagement # 只执行成绩管理测试
+python manage.py test scoreManagement.tests.AdmTest # 只执行成绩管理下面的对管理员行为的测试
+python manage.py test scoreManegement.tests.AdmTest.test_login # 只执行登录测试
+```
+
+4. 关注测试的代码覆盖率，不能水测试，一定要对URL和views.py下面的每个用到的函数都做测试！
+5. 具体的测试可以查看scoreMangement下的测试文件:[test.py](https://github.com/se-curriculum-design-group/2019-Software-Engineering-Curriculum-Design/blob/master/EMS/scoreManagement/tests.py)
+
+### 使用Travis CI和Codecov
+
+> 始于颜值，陷于才华。为了徽章我也要做集成测试！
+
+Travis CI和Codecov能够对项目进行集成测试和测试覆盖率分析，开源免费，而且对github支持很好。每次提交的代码都会在Travis CI上自动测试，写好配置文件后不需要关心。而且可以自己配置测试矩阵、对不同版本和操作系统进行测试。
+
+1. 注册账号
+
+在[Travis CI官网](https://travis-ci.com/)上注册账号，用github账号关联，选择需要测试的项目。
+
+在[Codecov](https://codecov.io/)上注册账号，用github账号关联，选择项目。
+
+2. 编写`.travis.yml`配置文件
+
+Travis CI是通过配置文件进行测试的，语法比较简单，了解一下`yml`语法就可以，而且可以参考其他的项目配置。本项目的集成测试配置如下：[.travis.yml](https://github.com/se-curriculum-design-group/2019-Software-Engineering-Curriculum-Design/blob/master/.travis.yml)
+
+注意每次提交Push/PR都会被自动拉取测试，如果失败了项目首页Build Status: [![Build Status](https://travis-ci.com/se-curriculum-design-group/2019-Software-Engineering-Curriculum-Design.svg?branch=master)](https://travis-ci.com/se-curriculum-design-group/2019-Software-Engineering-Curriculum-Design)就会显示`failing`，因此**不能乱提交**。
+
+3. 关联Codecov后，简单修改`.travis.yaml`就可以在Codecov上看到代码覆盖率分析了。
+
+**需要注意的是**：原来运行Django项目测试用
+```
+python manage.py test
+```
+如果要添加分析功能，使用命令行
+```
+coverage run manage.py test
+```
+
+4. 要尽量提高代码覆盖率，对每一个URL做测试。
+
 
 ## 项目进度
 
