@@ -254,7 +254,21 @@ response = self.client.post(url, data=self.log_data)
 self.assertIn(response.status_code, [200, 301, 302])
 ```
 
-**注意**：千万注意，这里的`url`测试的是你在浏览器中访问时`127.0.0.1`后面的东西，**但是不能有最后那个`/`**，否则会404 Not Found。
+**注意**：千万注意，这里的`url`测试的是你在浏览器中访问时`127.0.0.1`后面的东西，**但是要有开始的那个`/`，而不能有最后那个`/`**，否则会404 Not Found。
+_i_e_:
+`/scoreManagement/stu_view_score`: 正确✔
+
+`/scoreManagement/stu_view_score/`: 错误
+
+`scoreManagement/stu_view_score/`: 错误
+
+`/scoreManagement//stu_view_score/`: 错误
+
+`/mylogin`: 正确✔
+
+`/mylogin/`: 错误
+
+`mylogin`: 错误
 
 用`assertEqual`判断状态码是否是200,如果是404、500、403等，必然是错误，不能上线。
 
@@ -272,7 +286,57 @@ python manage.py test scoreManegement.tests.AdmTest.test_login # 只执行登录
 ```
 
 4. 关注测试的代码覆盖率，不能水测试，一定要对URL和views.py下面的每个用到的函数都做测试！
-5. 具体的测试可以查看scoreMangement下的测试文件:[test.py](https://github.com/se-curriculum-design-group/2019-Software-Engineering-Curriculum-Design/blob/master/EMS/scoreManagement/tests.py)
+5. 一个比较完整的测试样例如下：
+
+```python
+class TestStudent(TestCase):
+    # 测试初始化函数，每次执行下面的函数之前都会执行这个函数
+    # 这里用来创建用户和登录用户，保存session信息
+    def setUp(self) -> None:
+        # 用mixer这个库用来创建随机的数据
+        # 可以递归地创建多层次的外键
+        student1 = mixer.blend(Student)
+        student1.username = '2016000474'
+        # 对密码进行加密
+        student1.password = make_encode('2016000474')
+        student1.save()
+        self.login_data = {
+            'username': student1.username,
+            'password': student1.username
+        }
+        data = {
+            'username': '2016000474',
+            'password': '2016000474'
+        }
+
+        url = ""
+        response = self.client.get(url)
+        self.assertEqual(response.status_code, 200)
+        self.assertTemplateUsed(response, 'login.html')
+
+        # 发出一个post请求，并且发送登录的数据
+        response = self.client.post('/mylogin', self.login_data)
+        self.assertIn(response.status_code, [200, 301, 302])
+
+    def test_student_view_score(self):
+        # 发出一个get请求，测试这个url是否正确
+        response = self.client.get('/scoreManagement/student_view_score')
+        self.assertIn(response.status_code, [200, 301, 302])
+
+    def test_student_view_own_study(self):
+        response = self.client.get('/scoreManagement/student_own_study')
+        self.assertIn(response.status_code, [200, 301, 302])
+
+    def test_student_view_major_course(self):
+        response = self.client.get('/scoreManagement/std_view_major_course')
+        self.assertIn(response.status_code, [200, 301, 302])
+
+    def test_student_view_major_plan(self):
+        response = self.client.get('/scoreManagement/std_view_major_plan')
+        self.assertIn(response.status_code, [200, 301, 302])
+```
+
+具体的测试可以查看scoreMangement下的测试文件:[test.py](https://github.com/se-curriculum-design-group/2019-Software-Engineering-Curriculum-Design/blob/master/EMS/scoreManagement/tests.py)
 
 ### 使用Travis CI和Codecov
 
