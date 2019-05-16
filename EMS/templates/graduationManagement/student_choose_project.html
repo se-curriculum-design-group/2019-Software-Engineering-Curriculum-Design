@@ -2,6 +2,17 @@
 {% load staticfiles %}
 
 {% block content %}
+  <div class="row">
+    <div class="col-md-12">
+      <div class="alert alert-danger alert-dismissible" style="height: 200px;margin-top: 50px;margin-left: 20px;margin-right: 20px;">
+                <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+                <h3><i class="icon fa fa-ban"></i> 警告</h3>
+                <h4>您目前未到达选课年级</h4>
+                <h4>当前不是选课时间，请耐心等待</h4>
+                <h4>选课时间已过，老师处于审核阶段，点此查看审核状态</h4>
+              </div>
+    </div>
+  </div>
 	<div class="box box-default">
         <div class="box-header with-border">
           <h3 class="box-title">选项</h3>
@@ -90,14 +101,14 @@
                   <th>题目状态</th>
                   <th>题目关键词</th>
                 </tr>
-                <tr>
+                <tr class="jump">
                   <td>万静</td>
                   <td>基于Django的毕业设计管理系统</td>
                   <td>中等</td>
                   <td><span class="label label-success">未选</span></td>
                   <td>管理系统 Django 数据库</td>
                 </tr>
-                <tr>
+                <tr class="jump">
                   <td>万静</td>
                   <td>基于Django的毕业设计管理系统</td>
                   <td>中等</td>
@@ -105,7 +116,7 @@
                   <td>管理系统 Django 数据库</td>
                 </tr>
             
-                <tr>
+                <tr class="jump">
                   <td>万静</td>
                   <td>基于Django的毕业设计管理系统</td>
                   <td>中等</td>
@@ -162,6 +173,9 @@
 	    //Initialize Select2 Elements
 	    $(".select2").select2();
 	  });
+     $(".jump").click(function () {
+             location.href = "{% url 'graduationManagement:student_view_project_detail' %}";
+         });
 	</script>
 
 

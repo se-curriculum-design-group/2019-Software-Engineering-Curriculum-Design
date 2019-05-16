@@ -1,0 +1,112 @@
+{% extends 'teacher_base.html' %}
+{% load staticfiles %}
+
+{% block content %}
+  
+
+      <div class="row">
+        <div class="col-xs-12">
+          <div class="box">
+            <div class="box-header">
+              <h3 class="box-title">毕设题目列表</h3>
+
+              <div class="box-tools">
+                <div class="input-group input-group-sm" style="width: 150px;">
+                  <input type="text" name="table_search" class="form-control pull-right" placeholder="Search">
+
+                  <div class="input-group-btn">
+                    <button type="submit" class="btn btn-default"><i class="fa fa-search"></i></button>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <!-- /.box-header -->
+            <div class="box-body table-responsive no-padding">
+              <table class="table table-hover">
+                <tbody><tr>
+                  <th>教师</th>
+                  <th>题目名称</th>
+                  <th>题目难度</th>
+                  <th>题目类型</th>
+                  <!-- <th>题目关键词</th> -->
+                </tr>
+                {% for item in info %}
+                <tr class="jump" id={{ item.id }} onclick="javascript:window.location.href='/graduationManagement/teacher_view_project_detail?id={{ item.id }}'">
+                  <td>{{ item.tno.name }}</td>
+                  <td>{{ item.pname }}</td>
+                  <td>{{ item.pdifficulty }}</td>
+                  <td>{{ item.pdirection }}</td>
+                  <!-- <td>
+                    {% if item.pstatus == 0 %}
+                    <span class="label label-success">未选</span></td>
+                    }
+                    {% elif item.pstatus == 1 %}
+                    <a href="#">
+                    <span class="label label-info">已选</span></td>
+                  </a>
+                    {% else %}
+                      <a href="#">
+                    <span class="label label-danger">已被选</span></a>
+                    {% endif %}</td> -->
+                  <!-- <td>管理系统 Django 数据库</td> -->
+                </tr>
+                {% endfor %}
+              </tbody></table>
+              <button type="button" class="btn btn-block btn-info jump1">发布新题目</button>
+            </div>
+            <!-- /.box-body -->
+          </div>
+          <!-- /.box -->
+        </div>
+      </div>
+{% endblock %}
+
+{% block script %}
+
+
+    <!-- jQuery 2.2.3 -->
+    <script src="{% static 'AdminLTE/plugins/jQuery/jquery-2.2.3.min.js' %}"></script>
+    
+
+    <script src="{% static 'AdminLTE/plugins/jQuery/jquery-2.2.3.min.js' %}"></script>
+	<!-- Bootstrap 3.3.6 -->
+	<script src="{% static 'AdminLTE/bootstrap/js/bootstrap.min.js' %}"></script>
+	<!-- Select2 -->
+	<script src="{% static 'AdminLTE/plugins/select2/select2.full.min.js' %}"></script>
+	<!-- InputMask -->
+	<script src="{% static 'AdminLTE/plugins/input-mask/jquery.inputmask.js' %}"></script>
+	<script src="{% static 'AdminLTE/plugins/input-mask/jquery.inputmask.date.extensions.js' %}"></script>
+	<script src="{% static 'AdminLTE/plugins/input-mask/jquery.inputmask.extensions.js' %}"></script>
+	<!-- date-range-picker -->
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.11.2/moment.min.js' %}"></script>
+	<script src="{% static 'AdminLTE/plugins/daterangepicker/daterangepicker.js' %}"></script>
+	<!-- bootstrap datepicker -->
+	<script src="{% static 'AdminLTE/plugins/datepicker/bootstrap-datepicker.js' %}"></script>
+	<!-- bootstrap color picker -->
+	<script src="{% static 'AdminLTE/plugins/colorpicker/bootstrap-colorpicker.min.js' %}"></script>
+	<!-- bootstrap time picker -->
+	<script src="{% static 'AdminLTE/plugins/timepicker/bootstrap-timepicker.min.js' %}"></script>
+	<!-- SlimScroll 1.3.0 -->
+	<script src="{% static 'AdminLTE/plugins/slimScroll/jquery.slimscroll.min.js' %}"></script>
+	<!-- iCheck 1.0.1 -->
+	<script src="{% static 'AdminLTE/plugins/iCheck/icheck.min.js' %}"></script>
+	<!-- FastClick -->
+	<script src="{% static 'AdminLTE/plugins/fastclick/fastclick.js' %}"></script>
+	<!-- AdminLTE App -->
+	<script src="{% static 'AdminLTE/dist/js/app.min.js' %}"></script>
+	<!-- AdminLTE for demo purposes -->
+	<script src="{% static 'AdminLTE/dist/js/demo.js' %}"></script>
+	<!-- Page script -->
+	<script>
+	  $(function () {
+	    //Initialize Select2 Elements
+	    $(".select2").select2();
+	  });
+
+      $(".jump1").click(function () {
+             location.href = "/graduationManagement/teacher_edit_project";
+         });
+	</script>
+
+
+{% endblock %}

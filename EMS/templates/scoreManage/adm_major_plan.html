@@ -1,0 +1,151 @@
+{% extends 'adm_base.html' %}
+{% load staticfiles %}
+
+{% block content %}
+    <section class="content-header">
+        <h1>查询专业培养计划
+            <small>管理员</small>
+        </h1>
+        <ol class="breadcrumb">
+            <li><a href="{% url 'scoreManagement:welcome' %}"><i class="fa fa-dashboard"></i> 主页</a></li>
+            <li class="active">成绩管理</li>
+            <li class="active">查询专业培养计划</li>
+        </ol>
+    </section>
+    <div class="box">
+        <div class="box-header">
+            <h3 class="box-title">查询专业培养计划</h3>
+            <div class="box-header ">
+                <label style="color: red">学院：</label><select id="college" class="select2" style="width: 20%">
+                <option value="ALL" selected="selected">全部</option>
+                {% for item in all_college %}
+                    <option value="{{ item }}">{{ item }}
+                {% endfor %}
+            </select>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                <label style="color: red">专业：</label><select id="major" class="select2" style="width: 15%">
+                <option value="ALL" selected="selected">全部</option>
+                {% for item in all_major %}
+                    <option value="{{ item }}">{{ item }}</option>
+                {% endfor %}
+            </select>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                <label>年级：</label><select id="year" class="select2" style="width: 15%">
+                <option value="ALL" selected="selected">全部</option>
+                {% for item in all_year %}
+                    <option value="{{ item.year }}">{{ item.year }}</option>
+                {% endfor %}
+            </select>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+            </div>
+
+            <div class="box-body">
+                <table id="major_plan_table" class="table table-bordered table-striped">
+                    <thead>
+                    <tr>
+                        <th>序号</th>
+                        <th>学院</th>
+                        <th>专业</th>
+                        <th>专业代码</th>
+                        <th>年级</th>
+                        <th>计划人数</th>
+                        <th>最低毕业学分</th>
+                        <th>学制</th>
+                        <th>计划课程总数</th>
+                        <th>班级个数</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    {% for item in all_major_plan %}
+                        <tr>
+                            <td>{{ forloop.counter }}</td>
+                            <td>{{ item.major.in_college }}</td>
+                            <td>{{ item.major }}</td>
+                            <td>{{ item.major.mno }}</td>
+                            <td>{{ item.year }}</td>
+                            <td>{{ item.people_num }}</td>
+                            <td>{{ item.score_grad }}</td>
+                            <td>{{ item.stu_years }}</td>
+                            <td>{{ item.course_num }}</td>
+                            <td>{{ item.cls_num }}</td>
+                        </tr>
+                    {% endfor %}
+                    </tbody>
+                </table>
+
+            </div>
+        </div>
+    </div>
+{% endblock %}
+
+{% block script %}
+    <script>
+
+        $.fn.dataTable.ext.search.push(
+            function (settings, data, dataIndex) {
+                var college = $('#college').val();
+                var major = $('#major').val();
+                var year = $('#year').val();
+                if ((college === data[1] || college === "ALL") && (((major === data[2] || major === "ALL") && (year === data[4] || year === "ALL")))) {
+                    return true
+                } else {
+                    return false
+                }
+            }
+        );
+        $(document).ready(function () {
+            var table = $('#major_plan_table').DataTable(
+                {
+
+                    "paging": true,       <!-- 允许分页 -->
+                    "lengthChange": true, <!-- 允许改变每页显示的行数 -->
+                    "searching": true,    <!-- 允许内容搜索 -->
+                    "ordering": true,     <!-- 允许排序 -->
+                    "info": true,         <!-- 显示信息 -->
+                    "autoWidth": false,    <!-- 固定宽度 -->
+                    "language": {
+                        "sProcessing": "处理中...",
+                        "sLengthMenu": "显示 _MENU_ 项结果",
+                        "sZeroRecords": "没有匹配结果",
+                        "sInfo": "显示第 _START_ 至 _END_ 项结果，共 _TOTAL_ 项",
+                        "sInfoEmpty": "显示第 0 至 0 项结果，共 0 项",
+                        "sInfoFiltered": "(由 _MAX_ 项结果过滤)",
+                        "sInfoPostFix": "",
+                        "sSearch": "搜索:",
+                        "sUrl": "",
+                        "sEmptyTable": "表中数据为空",
+                        "sLoadingRecords": "载入中...",
+                        "sInfoThousands": ",",
+                        "oPaginate": {
+                            "sFirst": "首页",
+                            "sPrevious": "上页",
+                            "sNext": "下页",
+                            "sLast": "末页"
+                        },
+                        "oAria": {
+                            "sSortAscending": ": 以升序排列此列",
+                            "sSortDescending": ": 以降序排列此列"
+                        }
+                    },
+                    "columnDefs": [{
+                        "searchable": false,
+                        "orderable": true,
+                        "targets": 0
+                    }],
+                    "order": [[0, 'asc']]
+                }
+            );
+
+            $('#major_plan_table tbody').on('click', 'tr', function (e) {
+                if ($(this).hasClass('selected')) {
+                    $(this).removeClass('selected');
+                } else {
+                    table.$('tr.selected').removeClass('selected');
+                    $(this).addClass('selected');
+                }
+            });
+            // Event listener to the two range filtering inputs to redraw on input
+            $('#major, #year, #college').change(function () {
+                table.draw();
+            });
+            $('.select2').select2();
+        });
+    </script>
+{% endblock %}
