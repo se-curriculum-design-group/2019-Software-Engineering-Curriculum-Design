@@ -31,8 +31,8 @@ class Teacher_Schedule_result(models.Model):
     MAX_number = models.IntegerField()
     state = models.CharField(max_length=128)
     def __str__(self):
-        return "-".join([str(self.tno),str(self.where),str(self.crtype),str(self.contain_num),str(self.time),
-                         str(self.current_number),str(self.MAX_number),str(self.state)])
+        return "-".join([str(self.tno), str(self.where), str(self.time),
+                         str(self.current_number), str(self.MAX_number), str(self.state)])
     class Meta:
         db_table = 'Teacher_Schedule_result'
         unique_together = (

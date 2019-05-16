@@ -5,6 +5,7 @@ from scoreManagement.models import MajorCourses as MajorCourses
 from scoreManagement.models import Teaching as original_Teaching
 from backstage.models import ClassRoom, Student, AdmClass, MajorPlan
 from courseSelection.models import CourseSelected as courseSelected
+#from courseScheduling.Synchronize import Sychronize_with_courseSelected as swc
 # 输出
 from courseScheduling.models import Schedule_result, Teacher_Schedule_result, Classroom_other_schedule, Exam_Schedule
 
@@ -168,7 +169,6 @@ def merge_str(str1: str, str2: str):
     if str2_split[0].__len__() == 0:
         return str1
     week_block = np.zeros(21)
-    print(str1_split, str2_split)
     for e in str1_split + str2_split:
         l = int(e.split('-')[0])
         r = int(e.split('-')[1])
@@ -212,7 +212,7 @@ def mergeTable(table1, table2):
 
 course_2_96 = [(1, 2), (3, 4), (6, 7), (7, 8)]
 course_2 = [(1, 2), (3, 4), (6, 7), (9, 10), (11, 12)]
-course_3 = [(1, 3), (3, 5), (6 ,8), (8, 10), (11, 13)]
+course_3 = [(1, 3), (3, 5), (6, 8), (8, 10), (11, 13)]
 
 def String_to_table(string1: str):
     res = []
@@ -227,8 +227,6 @@ def String_to_table(string1: str):
         weekday_start = int(block_split[0]) % 13
         weekday_end = int(block_split[1]) % 13
         if weekday_end == 0:
-            if weekday != 0:
-                weekday -= 1
             weekday_end = 13
         for day in range(weekday_start, weekday_end + 1):
             res[weekday][day] = week_time
@@ -244,12 +242,11 @@ def init():
             room = Classroom(elements.where.crno, elements.where.crtype, elements.where.contain_num)
             room.courseSchedule = Table
             time_occupy_in_other = Classroom_other_schedule.objects.filter(crno=elements.where)
-            print(time_occupy_in_other)
             if len(time_occupy_in_other) > 0:
                 for time_block in time_occupy_in_other:
                     room.courseSchedule = mergeTable(room.courseSchedule, String_to_table(time_block.time))
                 room.update_empty_count()
-                Classrooms_id[elements.where.crno] = room
+            Classrooms_id[elements.where.crno] = room
         else:
             room = Classrooms_id.get(elements.where.crno)
             # 这一步可优化
@@ -274,7 +271,7 @@ def init():
             if Students_id.get(element.sno.username) == None:
                 stu = Students(element.sno.username, element.sno.name,
                                element.sno.in_cls.major.major.mname, element.sno.in_year, element.sno.in_cls.name)
-                Students_id[elements.sno.username] = stu
+                Students_id[element.sno.username] = stu
                 stu.courseSchedule = stu_table
             else:
                 Students_id[element.sno.username].courseSchedule = mergeTable(
@@ -338,7 +335,7 @@ def coures_time_generate(schedule, time):
             return res
         else:
             res = ''
-            for cnt in range(2):
+            for cnt in range(1, 3):
                 weektime_cur = weektime_base
                 if cnt == 0:
                     if rest > 0:
@@ -394,44 +391,48 @@ def coures_time_generate(schedule, time):
                         weektime_cur += 1
                     if weektime_cur + bias > 17 and cnt < 2:
                         return None
-                for i, e in enumerate(course_3):
-                    if check_hazard(weekday, e, schedule, 1 + bias, weektime_cur + bias):
-                        if len(res) == 0:
-                            res += str(e[0] + weekday * 13) + '-' + str(e[1] + weekday * 13) + '-' + '1' + '-' + str(
-                                weektime_cur)
-                        else:
-                            res += ',' + str(e[0] + weekday * 13) + '-' + str(
-                                e[1] + weekday * 13) + '-' + '1' + '-' + str(weektime_cur)
-                        weekday += 1
-                        cnt += 1
-                        break
-                if cnt == 2:
-                    return res
+                    for i, e in enumerate(course_3):
+                        if check_hazard(weekday, e, schedule, 1 + bias, weektime_cur + bias):
+                            if len(res) == 0:
+                                res += str(e[0] + weekday * 13) + '-' + str(e[1] + weekday * 13) + '-' + str(1 + bias) + '-' + str(
+                                    weektime_cur + bias)
+                            else:
+                                res += ',' + str(e[0] + weekday * 13) + '-' + str(
+                                    e[1] + weekday * 13) + '-' + str(1 + bias) + '-' + str(weektime_cur + bias)
+                            weekday += 1
+                            cnt += 1
+                            break
+                    if cnt == 2:
+                        return res
     if time < 56:
         weektime_base = int(time / 3)
         for bias in range(8):
-            cnt = 0
             rest = time % 3
+            cnt = 0
             for weekday in range(5):
                 weektime_cur = weektime_base
                 if rest > 0:
                     rest -= 3
                     weektime_cur += 1
-                if weektime_cur + bias > 17 and cnt < 2:
+                if weektime_cur + bias > 17:
                     return None
-            for i, e in enumerate(course_3):
-                if check_hazard(weekday, e, schedule, 1 + bias, weektime_cur + bias):
-                    if len(res) == 0:
-                        res += str(e[0] + weekday * 13) + '-' + str(e[1] + weekday * 13) + '-' + '1' + '-' + str(
-                            weektime_cur)
-                    else:
-                        res += ',' + str(e[0] + weekday * 13) + '-' + str(e[1] + weekday * 13) + '-' + '1' + '-' + str(
-                            weektime_cur)
-                    weekday += 1
-                    cnt += 1
-                    break
-            if cnt == 2:
-                return res
+                for i, e in enumerate(course_3):
+                    if check_hazard(weekday, e, schedule, 1 + bias, weektime_cur + bias):
+                        print(schedule)
+                        print(1 + bias, weektime_cur + bias, '||||||', weekday, e)
+
+                        if len(res) == 0:
+                            res += str(e[0] + weekday * 13) + '-' + str(e[1] + weekday * 13) + '-' + str(1 + bias) + '-' + str(
+                                weektime_cur+bias)
+                        else:
+                            res += ',' + str(e[0] + weekday * 13) + '-' + str(e[1] + weekday * 13) + '-' + str(1 + bias) + '-' + str(
+                                weektime_cur+bias)
+                        print(String_to_table(res))
+                        weekday += 1
+                        cnt += 1
+                        break
+                if cnt == 1:
+                    return res
 
 
 def write_to_database(res: str, bf: Buffer):
@@ -441,13 +442,14 @@ def write_to_database(res: str, bf: Buffer):
     ctype = tno_mno.mcno.cno.course_type
     if '必修' in ctype:
         cur_num = len(bf.students)
+    print(res)
     TSr = Teacher_Schedule_result.objects.create(
         tno=tno_mno,
         where=ClassRoom.objects.get(crno=bf.classrooms[0]),
         time=res,
         current_number=cur_num,
         MAX_number=len(bf.students),
-        state=tno_mno.mcno.cno.course_type,
+        state=ctype,
     )
     table = String_to_table(res)
     Teachers_id.get(bf.teachers[0]).courseSchedule = mergeTable(Teachers_id.get(bf.teachers[0]).courseSchedule, table)
@@ -456,6 +458,11 @@ def write_to_database(res: str, bf: Buffer):
     Teachers_id.get(bf.teachers[0]).time_count += tno_mno.mcno.hour_total
     Classrooms_id.get(bf.classrooms[0]).time_count += tno_mno.mcno.hour_total
     TSr.save()
+    if "选修" in ctype:
+        for sno in bf.students:
+            Students_id.get(sno).courseSchedule = mergeTable(Students_id.get(sno).courseSchedule, table)
+        print('--------------------------------------')
+        print(table)
     if '必修' in ctype:
         for sno in bf.students:
             Sr = Schedule_result.objects.create(
@@ -474,6 +481,7 @@ def distribute_single(bf: Buffer, room: Classroom, tch: Teacher, course):
     bf.teachers.append(tch.id)
     bf.classrooms.append(room.id)
     res = coures_time_generate(bf.courseSchedule, course.hour_total)
+    print(course.hour_total)
     write_to_database(res, bf)
 
 
@@ -570,7 +578,6 @@ def autoSchedule():
                     Students_id[elements.username] = stu
                 else:
                     stu = Students_id.get(elements.username)
-                print(bf.courseSchedule)
                 bf.courseSchedule = mergeTable(stu.courseSchedule, bf.courseSchedule)
                 bf.students.append(stu.id)
             # print(heap_bigroom, '----', heap_teacher)
@@ -642,6 +649,31 @@ def Search_spare_room(name: str) -> Classroom:
 
 
 # 搜索时间空闲的房间:
+def init_room():
+    "初始化房间"
+    set1 = Teacher_Schedule_result.objects.filter(tno__mcno__year=year, tno__mcno__semester=semester)
+    for elements in set1:
+        Table = String_to_table(elements.time)
+        if Classrooms_id.get(elements.where.crno) == None:
+            room = Classroom(elements.where.crno, elements.where.crtype, elements.where.contain_num)
+            room.courseSchedule = Table
+            time_occupy_in_other = Classroom_other_schedule.objects.filter(crno=elements.where)
+            if len(time_occupy_in_other) > 0:
+                for time_block in time_occupy_in_other:
+                    room.courseSchedule = mergeTable(room.courseSchedule, String_to_table(time_block.time))
+                room.update_empty_count()
+            Classrooms_id[elements.where.crno] = room
+        else:
+            room = Classrooms_id.get(elements.where.crno)
+            # 这一步可优化
+            room.courseSchedule = mergeTable(room.courseSchedule, Table)
+            room.update_empty_count()
+    set1 = ClassRoom.objects.all()
+    for elements in set1:
+        if Classrooms_id.get(elements.crno) == None:
+            room = Classroom(elements.crno, elements.crtype, elements.contain_num)
+            Classrooms_id[room.id] = room
+
 def week_has_hazzard(week1: str, week2: str):
     if len(week1) == 0 or len(week2) == 0:
         return False
@@ -656,26 +688,26 @@ def week_has_hazzard(week1: str, week2: str):
 
 
 def has_table_hazzard(table1, table2):
-    for i in 8:
+    for i in range(8):
         if i == 0: continue
-        for j in 14:
+        for j in range(14):
             if j == 0: continue
         if week_has_hazzard(table1[i][j], table2[i][j]):
             return True
     return False
 
-
 def Search_time_room(time: str):
-    init()
+    init_room()
     res = []
-    table = mergeTable(time)
+    table = String_to_table(time)
     for element in Classrooms_id:
+        print(Classrooms_id[element].id)
         room = Classrooms_id[element]
         if has_table_hazzard(room.courseSchedule, table):
             continue
         else:
             res.append(room)
-    return room
+    return res
 
 
 def get_students_teacher_courseSchedule(stuset: [], class_set=None, teacher_username=None) -> Buffer:
@@ -774,7 +806,7 @@ def exam_time_generate(bf: Buffer):
         for j in range(5):
             if bf.examSchedule[i][j] != '':
                 if j + 2 <= 4:
-                    j += 2
+                    j += 1
                 elif j + 2 >= 5:
                     break
             else:
@@ -938,5 +970,10 @@ def search_exam_time(stu_username: str):
 
 
 if __name__ == '__main__':
-    autoSchedule()
+    #autoSchedule()
     #exam_schedule()
+    #bf = get_students_teacher_courseSchedule(['2016000474', '2016000475', '2016000476', '2016000477'], teacher_username='198500038')
+    #print('-----------------')
+    #print(bf.courseSchedule)
+    #fff = Search_time_room("14-16-1-1,27-29-8-8")
+    a = 1
