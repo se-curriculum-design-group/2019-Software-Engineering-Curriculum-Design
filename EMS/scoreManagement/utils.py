@@ -1,8 +1,12 @@
 from django.db.models import Avg, Sum, Max, Min
 import numpy as np
 
-from backstage.models import Student, Major, MajorPlan, Teacher
+from backstage.models import Student, Major, MajorPlan, Teacher, User
 from .models import CourseScore, MajorCourses, Teacher, Teaching
+
+student = Student.objects.get(username='2016000474')
+teacher = Teacher.objects.get(username='198500038')
+adm = User.objects.get(username='LuoD')
 
 
 def stu_search_course(student, year, semester):
