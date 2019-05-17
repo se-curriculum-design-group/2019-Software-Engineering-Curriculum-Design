@@ -160,6 +160,10 @@
 
         $(function () {
             var table = $('#my_teaching_table').DataTable({
+                dom: 'Bfrtip',
+                buttons: [
+                    'copy', 'csv', 'excel', 'pdf', 'print'
+                ],
                 "paging": true,       <!-- 允许分页 -->
                 "lengthChange": true, <!-- 允许改变每页显示的行数 -->
                 "searching": true,    <!-- 允许内容搜索 -->
@@ -198,6 +202,10 @@
                 "order": [[0, 'asc']]
             });
             var table2 = $('#others_teaching_table').DataTable({
+                dom: 'Bfrtip',
+                buttons: [
+                    'copy', 'csv', 'excel', 'pdf', 'print'
+                ],
                 "paging": true,       <!-- 允许分页 -->
                 "lengthChange": true, <!-- 允许改变每页显示的行数 -->
                 "searching": true,    <!-- 允许内容搜索 -->

@@ -80,26 +80,23 @@
 
         $.fn.dataTable.ext.search.push(
             function (settings, data, dataIndex) {
-                var college = $('#college').val()
-                var major = $('#major').val()
-                var year = $('#year').val()
-                if (college === "ALL") return true;
-                if (college === data[1] && ((major === data[2] && year === data[4]) ||
-                    (major === "ALL" && year === "ALL") ||
-                    (major === "ALL" && year === data[4]) ||
-                    (major === data[2] && isNaN(year)))
-
-                ) {
-                    return true
-                } else {
-                    return false
-                }
+                var college = $('#college').val();
+                var major = $('#major').val();
+                var year = $('#year').val();
+                return (
+                    (college === "ALL" || college === data[1])
+                    &&(major === "ALL" || major === data[2])
+                    &&(major === "ALL" || year === data[4])
+                );
             }
         );
         $(document).ready(function () {
             var table = $('#major_plan_table').DataTable(
                 {
-
+                    dom: 'Bfrtip',
+                    buttons: [
+                        'copy', 'csv', 'excel', 'pdf', 'print'
+                    ],
                     "paging": true,       <!-- 允许分页 -->
                     "lengthChange": true, <!-- 允许改变每页显示的行数 -->
                     "searching": true,    <!-- 允许内容搜索 -->

@@ -41,6 +41,8 @@
         <link rel="stylesheet" href="{% static 'AdminLTE/plugins/datatables/jquery.dataTables_themeroller.css' %}">
         <!-- Select2 下拉框工具 -->
         <link rel="stylesheet" href="{% static 'AdminLTE/plugins/select2/select2.min.css' %}">
+        <!-- DataTable Buttons 导出数据工具 -->
+        <link rel="stylesheet" href="{% static 'AdminLTE/plugins/datatables/extensions/Buttons/buttons.dataTables.min.css' %}">
 
     {% endblock %}
 
@@ -196,6 +198,16 @@
 <!-- Bootstrap WYSIHTML5 -->
 <script src="{% static 'AdminLTE/plugins/bootstrap-wysihtml5/bootstrap3-wysihtml5.all.min.js' %}"></script>
 <script src="{% static 'AdminLTE/plugins/iCheck/icheck.min.js' %}"></script>
+
+<!-- Datatable Export Data Buttons -->
+<script src="{% static 'AdminLTE/plugins/datatables/extensions/Buttons/dataTables.buttons.min.js' %}"></script>
+<script src="{% static 'AdminLTE/plugins/datatables/extensions/Buttons/jszip.min.js' %}"></script>
+<script src="{% static 'AdminLTE/plugins/datatables/extensions/Buttons/pdfmake.min.js' %}"></script>
+<script src="{% static 'AdminLTE/plugins/datatables/extensions/Buttons/vfs_fonts.js' %}"></script>
+<script src="{% static 'AdminLTE/plugins/datatables/extensions/Buttons/buttons.flash.min.js' %}"></script>
+<script src="{% static 'AdminLTE/plugins/datatables/extensions/Buttons/buttons.html5.min.js' %}"></script>
+<script src="{% static 'AdminLTE/plugins/datatables/extensions/Buttons/buttons.print.min.js' %}"></script>
+
 <script>
     {% comment %}
     $(function () {

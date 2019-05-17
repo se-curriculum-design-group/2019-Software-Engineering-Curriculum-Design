@@ -110,6 +110,14 @@ class TestAdm(TestCase):
         response = self.client.get('/scoreManagement/adm_all_course_score')
         self.assertIn(response.status_code, [200, 301, 302])
 
+    def test_send_announcements(self):
+        response = self.client.get('/send_announcements')
+        self.assertIn(response.status_code, [200, 301, 302])
+
+    def test_send_emails(self):
+        response = self.client.get('/send_emails')
+        self.assertIn(response.status_code, [200, 301, 302])
+
 
 class TestTeacher(TestCase):
     def setUp(self) -> None:

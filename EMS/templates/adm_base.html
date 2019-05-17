@@ -28,9 +28,9 @@
             <li class="divider"></li>
             <li><a href="#">查看选课情况</a></li>
             <li><a href="#">查看毕设选题情况</a></li>
-            <li><a href="#">查看教学评价</a></li>
         </ul>
     </li>
+    <li><a href="{% url 'scoreManagement:adm_view_teacher_evaluation' %}">查看教学评价</a></li>
     <li class="dropdown">
         <a href="#" class="dropdown-toggle" data-toggle="dropdown">成绩管理<span
                 class="caret"></span></a>
@@ -70,8 +70,10 @@
             <li><a href="#"><i class="fa fa-circle-o"></i>教师信息管理</a></li>
             <li><a href="#"><i class="fa fa-circle-o"></i>课程信息管理</a></li>
             <li><a href="#"><i class="fa fa-circle-o"></i>教室信息管理</a></li>
-            <li><a href="{% url 'scoreManagement:adm_view_major_plan' %}"><i class="fa fa-circle-o"></i>专业培养计划管理</a></li>
-            <li><a href="{% url 'scoreManagement:adm_view_major_course' %}"><i class="fa fa-circle-o"></i>专业课程计划管理</a></li>
+            <li><a href="{% url 'scoreManagement:adm_view_major_plan' %}"><i class="fa fa-circle-o"></i>专业培养计划管理</a>
+            </li>
+            <li><a href="{% url 'scoreManagement:adm_view_major_course' %}"><i class="fa fa-circle-o"></i>专业课程计划管理</a>
+            </li>
         </ul>
     </li>
 
@@ -99,25 +101,35 @@
             <li><a href="#"><i class="fa fa-circle-o"></i>全校课表管理</a></li>
             <li><a href="#"><i class="fa fa-circle-o"></i>空闲教室管理</a></li>
             <li><a href="#"><i class="fa fa-circle-o"></i>手动排课</a></li>
-            <li class="divider"></li>
             <li><a href="#"><i class="fa fa-circle-o"></i>查看选课情况</a></li>
             <li><a href="#"><i class="fa fa-circle-o"></i>查看毕设选题情况</a></li>
-            <li><a href="#"><i class="fa fa-circle-o"></i>查看教学评价</a></li>
         </ul>
     </li>
     <li class="treeview">
-        <a href="#">
+        <a href="{% url 'scoreManagement:adm_view_teacher_evaluation' %}">
             <i class="fa fa-share"></i> <span>教学评价</span>
+            <span class="pull-right-container">
+              <i class="fa fa-angle-left pull-right"></i>
+    </span>
+        </a>
+    </li>
+
+      <li class="treeview">
+        <a href="#">
+            <i class="fa fa-mail-reply-all"></i> <span>通知邮件管理</span>
             <span class="pull-right-container">
               <i class="fa fa-angle-left pull-right"></i>
             </span>
         </a>
-    <li><a href="{% url 'backstage:send_announcements' %}"><i class="fa fa-circle-o"></i>发送通知</a></li>
-    <li><a href="{% url 'backstage:check_announcements' %}"><i class="fa fa-circle-o"></i>查看通知</a></li>
-    <li class="divider"></li>
-    <li><a href="{% url 'backstage:send_emails' %}"><i class="fa fa-circle-o"></i>发送邮件</a></li>
-    <li><a href="#"><i class="fa fa-circle-o"></i>查看邮件</a></li>
+        <ul class="treeview-menu">
+            <li><a href="{% url 'backstage:send_announcements' %}"><i class="fa fa-circle-o"></i>发送通知</a></li>
+            <li><a href="{% url 'backstage:check_announcements' %}"><i class="fa fa-circle-o"></i>查看通知</a></li>
+            <li><a href="{% url 'backstage:send_emails' %}"><i class="fa fa-circle-o"></i>发送邮件</a></li>
+            <li><a href="#"><i class="fa fa-circle-o"></i>查看邮件</a></li>
+        </ul>
     </li>
+
+
 {% endblock %}
 
 {% block content %}
