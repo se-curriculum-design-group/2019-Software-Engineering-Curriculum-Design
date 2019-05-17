@@ -1,8 +1,8 @@
 import numpy as np
 import heapq
 # 输入
-from scoreManagement.models import MajorCourses as MajorCourses
-from scoreManagement.models import Teaching as original_Teaching
+from courseScheduling.models import MajorCourses as MajorCourses
+from courseScheduling.models import Teaching as original_Teaching
 from backstage.models import ClassRoom, Student, AdmClass, MajorPlan
 from courseSelection.models import CourseSelected as courseSelected
 #from courseScheduling.Synchronize import Sychronize_with_courseSelected as swc
