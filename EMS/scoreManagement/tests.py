@@ -48,6 +48,30 @@ class TestStudent(TestCase):
         response = self.client.get('/scoreManagement/std_view_major_plan')
         self.assertIn(response.status_code, [200, 301, 302])
 
+    def test_my_personal_details(self):
+        response = self.client.get('/my_personal_details')
+        self.assertIn(response.status_code, [200, 301, 302])
+
+    def test_stu_tongshi(self):
+        response = self.client.get('/courseSelection/stu_tongshi')
+        self.assertIn(response.status_code, [200, 301, 302])
+
+    def test_stu_major(self):
+        response = self.client.get('/courseSelection/stu_major')
+        self.assertIn(response.status_code, [200, 301, 302])
+
+    def test_student_choose_project(self):
+        response = self.client.get('/graduationManagement/student_choose_project')
+        self.assertIn(response.status_code, [200, 301, 302])
+
+    def test_student_view_project(self):
+        response = self.client.get('/graduationManagement/student_view_project')
+        self.assertIn(response.status_code, [200, 301, 302])
+
+    def test_student_view_score(self):
+        response = self.client.get('/graduationManagement/student_view_score')
+        self.assertIn(response.status_code, [200, 301, 302])
+
 
 class TestAdm(TestCase):
     def setUp(self) -> None:
@@ -125,4 +149,20 @@ class TestTeacher(TestCase):
 
     def test_teacher_upload_score(self):
         response = self.client.get('/scoreManagement/teacher_upload_score')
+        self.assertIn(response.status_code, [200, 301, 302])
+
+    def test_my_personal_details(self):
+        response = self.client.get('/my_personal_details')
+        self.assertIn(response.status_code, [200, 301, 302])
+
+    def test_teacher_submit_project(self):
+        response = self.client.get('/graduationManagement/teacher_submit_project')
+        self.assertIn(response.status_code, [200, 301, 302])
+
+    def test_teacher_choose_student(self):
+        response = self.client.get('/graduationManagement/teacher_choose_student')
+        self.assertIn(response.status_code, [200, 301, 302])
+
+    def test_teacher_submit_score(self):
+        response = self.client.get('/graduationManagement/teacher_submit_score')
         self.assertIn(response.status_code, [200, 301, 302])
