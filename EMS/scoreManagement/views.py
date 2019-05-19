@@ -2,10 +2,13 @@ from django.shortcuts import render, redirect, Http404
 from django.views.decorators.csrf import csrf_exempt
 from django.http import JsonResponse, HttpResponseRedirect
 from django.db.models import Q
+from django.core import serializers
 import json
 
 from backstage.models import Student, Teacher, College, Major, MajorPlan, ClassRoom, AdmClass, User
-from scoreManagement.models import Teaching, Course, MajorPlan, MajorCourses, CourseScore, EvaluationForm
+from courseScheduling.models import Teaching, Course, MajorPlan, MajorCourses, Teacher, Teacher_Schedule_result
+from courseSelection.models import CourseSelected
+from scoreManagement.models import CourseScore, EvaluationForm
 
 
 def welcome(request):
@@ -26,14 +29,43 @@ def welcome(request):
 
 
 def adm_all_course_score(request):
-    if (request.session['user_type'] != '管理员'):
-        all_course_score = CourseScore.objects.all()[:20]
-
-        print(len(all_course_score))
-        context = {"all_course_score": all_course_score}
-        return render(request, 'scoreManage/adm_score_manage.html', context)
+    if request.session['user_type'] != '管理员':
+        return render(request, "errors/403page.html")
     else:
-        return Http404()
+        all_colleges = College.objects.all()
+        all_majors = Major.objects.all()
+        all_course_score = CourseScore.objects.all()
+        all_years = [y['teaching__mcno__year'] for y in CourseScore.objects.values("teaching__mcno__year").distinct()]
+        all_semester = [y['teaching__mcno__semester'] for y in
+                        CourseScore.objects.values("teaching__mcno__semester").distinct()]
+        try:
+            sear_year = request.GET['sear_year']
+            sear_semester = request.GET['sear_semester']
+
+            all_course_score = CourseScore.objects.filter(
+                teaching__mcno__year=sear_year,
+                teaching__mcno__semester=sear_semester,
+            )[:20]
+            context = {
+                "all_course_score": all_course_score,
+                "all_years": all_years,
+                "all_semester": all_semester,
+                "all_colleges": all_colleges,
+                "all_majors": all_majors,
+                "sear_year": sear_year,
+                "sear_semester": sear_semester,
+            }
+            return render(request, 'scoreManage/adm_score_manage.html', context)
+        except Exception:
+            print(Exception)
+            context = {
+                "all_course_score": all_course_score[:10],
+                "all_years": all_years,
+                "all_semester": all_semester,
+                "all_colleges": all_colleges,
+                "all_majors": all_majors,
+            }
+            return render(request, 'scoreManage/adm_score_manage.html', context)
 
 
 def score_home_page(request):
@@ -45,14 +77,20 @@ def score_home_page(request):
         return render(request, 'scoreManage/adm_score_manage.html')
 
 
-def student_score(request):
+def student_view_score(request):
     if request.session['user_type'] != '学生':
-        redirect("scoreManagement:welcome")
-    sno = request.session['username'];
+        return render(request, 'errors/403page.html')
+    sno = request.session['username']
     student = Student.objects.get(username=sno)
     course_score = CourseScore.objects.filter(sno=student)
-    context = {"my_course_score": course_score}
-    return render(request, "scoreManage/my_course_score.html", context)
+    years = [c['teaching__mcno__year'] for c in course_score.values("teaching__mcno__year").distinct()]
+    semesters = [s['teaching__mcno__semester'] for s in course_score.values("teaching__mcno__semester").distinct()]
+    context = {
+        "my_course_score": course_score,
+        "years": years,
+        "semesters": semesters
+    }
+    return render(request, "scoreManage/student_view_score.html", context)
 
 
 def student_own_study(request):
@@ -110,11 +148,11 @@ def student_own_study(request):
             b = year_semester_course_item.score
             if b >= 90:
                 semester_GPA = semester_GPA + a / semester_sum * 4
-            elif b >= 80 and b < 90:
+            elif 80 <= b < 90:
                 semester_GPA = semester_GPA + a / semester_sum * 3
-            elif b >= 70 and b < 80:
+            elif 70 <= b < 80:
                 semester_GPA = semester_GPA + a / semester_sum * 2
-            elif b >= 60 and b < 70:
+            elif 60 <= b < 70:
                 semester_GPA = semester_GPA + a / semester_sum * 1
             else:
                 semester_GPA = semester_GPA
@@ -135,7 +173,7 @@ def student_own_study(request):
 
 def std_view_major_course(request):
     if request.session['user_type'] != '学生':
-        redirect("scoreManagement:welcome")
+        return render(request, 'errors/403page.html')
     sno = request.session['username']
     student = Student.objects.get(username=sno)
     # my_major_plan = student.in_cls.major
@@ -156,7 +194,7 @@ def std_view_major_course(request):
 
 def std_view_major_plan(request):
     if request.session['user_type'] != '学生':
-        redirect("scoreManagement:welcome")
+        return render(request, 'errors/403page.html')
     sno = request.session['username']
     student = Student.objects.get(username=sno)
     all_major_plan = MajorPlan.objects.all()
@@ -174,10 +212,77 @@ def std_view_major_plan(request):
     return render(request, "scoreManage/student_major_plan.html", context)
 
 
+def teacher_view_major_course(request):
+    if request.session['user_type'] != '教师':
+        return render(request, 'errors/403page.html')
+    all_major_course = MajorCourses.objects.all()
+    all_college = College.objects.all()
+    all_course_type = Course.objects.values("course_type").distinct()
+    all_year = MajorCourses.objects.values("year").order_by("year").distinct()
+    all_major = Major.objects.all()
+    context = {"all_major_course": all_major_course,
+               "all_college": all_college,
+               "all_course": all_course_type,
+               "all_year": all_year,
+               "all_major": all_major
+               }
+    return render(request, "scoreManage/teacher_major_course.html", context)
+
+
+def teacher_view_major_plan(request):
+    if request.session['user_type'] != '教师':
+        return render(request, 'errors/403page.html')
+    all_major_plan = MajorPlan.objects.all()
+    all_college = College.objects.all()
+    all_year = MajorPlan.objects.values("year").order_by("year").distinct()
+    all_major = Major.objects.all()
+    context = {
+        "all_major_plan": all_major_plan,
+        "all_college": all_college,
+        "all_year": all_year,
+        "all_major": all_major
+    }
+    return render(request, "scoreManage/teacher_major_plan.html", context)
+
+
+def adm_view_major_course(request):
+    if request.session['user_type'] != '管理员':
+        return render(request, 'errors/403page.html')
+    all_major_course = MajorCourses.objects.all()
+    all_college = College.objects.all()
+    all_course_type = Course.objects.values("course_type").distinct()
+    all_year = MajorCourses.objects.values("year").order_by("year").distinct()
+    all_major = Major.objects.all()
+    context = {"all_major_course": all_major_course,
+               "all_college": all_college,
+               "all_course": all_course_type,
+               "all_year": all_year,
+               "all_major": all_major
+               }
+    return render(request, "scoreManage/adm_major_course.html", context)
+
+
+def adm_view_major_plan(request):
+    if request.session['user_type'] != '管理员':
+        return render(request, 'errors/403page.html')
+    all_major_plan = MajorPlan.objects.all()
+    all_college = College.objects.all()
+    all_year = MajorPlan.objects.values("year").order_by("year").distinct()
+    all_major = Major.objects.all()
+    context = {
+        "all_major_plan": all_major_plan,
+        "all_college": all_college,
+        "all_year": all_year,
+        "all_major": all_major
+    }
+    return render(request, "scoreManage/adm_major_plan.html", context)
+
+
 # 学生评教
 def assess_teacher(request):
     if request.session['user_type'] != '学生':
         redirect("scoreManagement:welcome")
+
     # 判断该学生是否已经全部提交过
     def judge(s):
         items = EvaluationForm.objects.filter(student_id=s)
@@ -270,6 +375,7 @@ def submit_result(request):
     if request.session['user_type'] != '学生':
         redirect("scoreManagement:welcome")
     print("!!!")
+
     # 得到各个等级对应的分数
     def getScore(s):
         if s == 'A':
@@ -341,7 +447,7 @@ def submit_result(request):
 @csrf_exempt
 def submit_all(request):
     if request.session['user_type'] != '学生':
-        redirect("scoreManagement:welcome")
+        return redirect("scoreManagement:welcome")
     if request.GET:
         item_sno = request.session['username']
         # 学生对象
@@ -351,8 +457,53 @@ def submit_all(request):
         return redirect('scoreManagement:assess_teacher')
 
 
-# 授课老师录入成绩
-def input_score(request):
+def teacher_view_teaching(request):
     if request.session['user_type'] != '教师':
-        redirect("scoreManagement:welcome")
-    return render(request, 'scoreManage/input_score.html')
+        return render(request, 'errors/403page.html')
+    tno = request.session['username']
+    teacher = Teacher.objects.get(username=tno)
+    teaching_list = Teaching.objects.filter(tno=teacher)
+    years = [y['mcno__year'] for y in teaching_list.values('mcno__year').distinct()]
+    semesters = [s['mcno__semester'] for s in teaching_list.values('mcno__semester').distinct()]
+    context = {
+        'teaching_list': teaching_list,
+        'years': years,
+        'semesters': semesters
+    }
+    if request.method == 'GET':
+        try:
+            other_tno = request.GET['seacher_tno']
+            other_teacher = Teacher.objects.get(username=other_tno)
+            other_teaching_list = Teaching.objects.filter(tno=other_teacher)
+            other_years = [y['mcno__year'] for y in other_teaching_list.values('mcno__year').distinct()]
+            other_semesters = [s['mcno__semester'] for s in other_teaching_list.values('mcno__semester').distinct()]
+            result = {
+                "is_find": True,
+                "other_tno": other_tno,
+                "other_years": other_years,
+                "other_semesters": other_semesters,
+                "other_teaching_list": other_teaching_list,
+                'teaching_list': teaching_list,
+                'years': years,
+                'semesters': semesters
+            }
+            return render(request, "scoreManage/teacher_view_teaching.html", result)
+        except:
+            pass
+    return render(request, "scoreManage/teacher_view_teaching.html", context)
+
+
+# 授课老师录入成绩
+def teacher_upload_score(request):
+    if request.session['user_type'] != '教师':
+        return render(request, 'errors/403page.html')
+    tno = request.session['username']
+    teacher = Teacher.objects.get(username=tno)
+    my_courses = Teaching.objects.filter(tno=teacher)
+    return render(request, 'scoreManage/teacher_upload_score.html')
+
+
+def ajax_send_dt(request):
+    data = [{"name": "DataTables中文网", "age": 2}],
+
+    return JsonResponse(data, safe=False)
