@@ -78,14 +78,16 @@
             function (setting, data, dataIndex) {
                 let sl_year = $("#course_year").val();
                 let sl_semester = $("#course_semester").val();
-                return (sl_year == data[1] && sl_semester == data[2]) ||
-                    (sl_year == "All" && sl_semester == "All") || (sl_year == "All" && sl_semester == data[2]) |
-                    (sl_year == data[1] && sl_semester == "All");
+                return ((sl_year === data[1] || sl_year === 'All') && (sl_semester === 'All' || sl_semester === data[2]));
             }
         );
 
         $(function () {
             var table = $('#my_course_score_table').DataTable({
+                dom: 'Bfrtip',
+                buttons: [
+                    'copy', 'csv', 'excel', 'pdf', 'print'
+                ],
                 "paging": true,       <!-- 允许分页 -->
                 "lengthChange": true, <!-- 允许改变每页显示的行数 -->
                 "searching": true,    <!-- 允许内容搜索 -->

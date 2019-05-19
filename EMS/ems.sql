@@ -767,19 +767,15 @@ DROP TABLE IF EXISTS `graduationproject`;
 CREATE TABLE `graduationproject` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `pname` varchar(30) NOT NULL,
+  `pdirection` varchar(10) NOT NULL,
+  `pdifficulty` varchar(10) NOT NULL,
   `pkeywords` longtext NOT NULL,
   `pdescription` longtext NOT NULL,
   `pstu` longtext NOT NULL,
   `pstatus` int(11) NOT NULL,
-  `pdifficulty_id` int(11) NOT NULL,
-  `pdirection_id` int(11) NOT NULL,
   `tno_id` int(11) NOT NULL,
   PRIMARY KEY (`id`),
-  KEY `GraduationProject_pdifficulty_id_34c43d84_fk_graduatio` (`pdifficulty_id`),
-  KEY `GraduationProject_pdirection_id_6bfd4be3_fk_graduatio` (`pdirection_id`),
   KEY `GraduationProject_tno_id_4bb133f1_fk_teacher_user_ptr_id` (`tno_id`),
-  CONSTRAINT `GraduationProject_pdifficulty_id_34c43d84_fk_graduatio` FOREIGN KEY (`pdifficulty_id`) REFERENCES `graduationmanagement_projectdifficulty` (`id`),
-  CONSTRAINT `GraduationProject_pdirection_id_6bfd4be3_fk_graduatio` FOREIGN KEY (`pdirection_id`) REFERENCES `graduationmanagement_projectdirection` (`id`),
   CONSTRAINT `GraduationProject_tno_id_4bb133f1_fk_teacher_user_ptr_id` FOREIGN KEY (`tno_id`) REFERENCES `teacher` (`user_ptr_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
@@ -891,6 +887,61 @@ LOCK TABLES `major_plan` WRITE;
 INSERT INTO `major_plan` VALUES (1,2016,3,73,192,4,83,1),(2,2016,3,84,192,4,83,2),(3,2016,5,0,192,4,85,3),(4,2016,1,30,192,4,80,4),(5,2016,6,164,192,4,85,5),(6,2016,3,91,193,4,82,6),(7,2016,1,31,173,4,82,7),(8,2016,5,176,192,4,85,8);
 /*!40000 ALTER TABLE `major_plan` ENABLE KEYS */;
 UNLOCK TABLES;
+
+
+--
+-- Table structure for table `projectdocument`
+--
+
+DROP TABLE IF EXISTS `projectdocument`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+ SET character_set_client = utf8mb4 ;
+CREATE TABLE `projectdocument` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `schoic_id` int(11) NOT NULL,
+  PRIMARY KEY (`id`),
+  KEY `ProjectDocument_schoic_id_d715e807_fk_StuChoice_id` (`schoic_id`),
+  CONSTRAINT `ProjectDocument_schoic_id_d715e807_fk_StuChoice_id` FOREIGN KEY (`schoic_id`) REFERENCES `stuchoice` (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `projectdocument`
+--
+
+LOCK TABLES `projectdocument` WRITE;
+/*!40000 ALTER TABLE `projectdocument` DISABLE KEYS */;
+/*!40000 ALTER TABLE `projectdocument` ENABLE KEYS */;
+UNLOCK TABLES;
+
+
+--
+-- Table structure for table `projectscore`
+--
+
+DROP TABLE IF EXISTS `projectscore`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+ SET character_set_client = utf8mb4 ;
+CREATE TABLE `projectscore` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `grade` varchar(2) NOT NULL,
+  `comments` longtext NOT NULL,
+  `schoic_id` int(11) NOT NULL,
+  PRIMARY KEY (`id`),
+  KEY `ProjectScore_schoic_id_aa70fab1_fk_StuChoice_id` (`schoic_id`),
+  CONSTRAINT `ProjectScore_schoic_id_aa70fab1_fk_StuChoice_id` FOREIGN KEY (`schoic_id`) REFERENCES `stuchoice` (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `projectscore`
+--
+
+LOCK TABLES `projectscore` WRITE;
+/*!40000 ALTER TABLE `projectscore` DISABLE KEYS */;
+/*!40000 ALTER TABLE `projectscore` ENABLE KEYS */;
+UNLOCK TABLES;
+
 
 --
 -- Table structure for table `schedule_result`

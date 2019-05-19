@@ -2,7 +2,7 @@ from hashlib import sha3_256
 from random import choice, randint, choices
 from backstage.models import College, Major, AdmClass, Student, \
     Teacher, ClassRoom, MajorPlan, User
-from scoreManagement.models import Course, Teaching
+from courseScheduling.models import Course, Teaching
 from django.db.utils import IntegrityError
 
 

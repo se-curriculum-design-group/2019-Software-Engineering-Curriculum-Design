@@ -1,5 +1,5 @@
 from django import forms
-from captcha.fields import CaptchaField
+# from captcha.fields import CaptchaField
 from django.contrib.auth.models import User
 import re
 
@@ -9,7 +9,7 @@ class UserForm(forms.Form):
                                widget=forms.TextInput(attrs={'class': 'form-control'}))
     password = forms.CharField(label="密码", max_length=256,
                                widget=forms.PasswordInput(attrs={'class': 'form-control'}))
-    captcha = CaptchaField(label='验证码')
+    # captcha = CaptchaField(label='验证码')
 
 
 class SendEmails(forms.Form):
@@ -133,7 +133,7 @@ class DetailForm1(forms.Form):
 
     building = forms.ChoiceField(label='学院', choices=dep)
     grant = forms.ChoiceField(label='授权', choices=gra)
-    captcha = CaptchaField(label='验证码')
+    # captcha = CaptchaField(label='验证码')
 
 
 class DetailForm(forms.Form):
@@ -166,7 +166,7 @@ class DetailForm(forms.Form):
                                 widget=forms.PasswordInput(attrs={'class': 'form-control'}))
     email = forms.EmailField(label="邮箱地址", widget=forms.EmailInput(attrs={'class': 'form-control'}))
     sex = forms.ChoiceField(label='性别', choices=gender)
-    captcha = CaptchaField(label='验证码')
+    # captcha = CaptchaField(label='验证码')
 
 
 def email_check(email):

@@ -6,7 +6,9 @@ from django.core import serializers
 import json
 
 from backstage.models import Student, Teacher, College, Major, MajorPlan, ClassRoom, AdmClass, User
-from scoreManagement.models import Teaching, Course, MajorPlan, MajorCourses, CourseScore, EvaluationForm
+from courseScheduling.models import Teaching, Course, MajorPlan, MajorCourses, Teacher, Teacher_Schedule_result
+from courseSelection.models import CourseSelected
+from scoreManagement.models import CourseScore, EvaluationForm
 
 
 def welcome(request):
@@ -75,9 +77,9 @@ def score_home_page(request):
         return render(request, 'scoreManage/adm_score_manage.html')
 
 
-def student_score(request):
+def student_view_score(request):
     if request.session['user_type'] != '学生':
-        redirect("scoreManagement:welcome")
+        return render(request, 'errors/403page.html')
     sno = request.session['username']
     student = Student.objects.get(username=sno)
     course_score = CourseScore.objects.filter(sno=student)
@@ -171,7 +173,7 @@ def student_own_study(request):
 
 def std_view_major_course(request):
     if request.session['user_type'] != '学生':
-        redirect("scoreManagement:welcome")
+        return render(request, 'errors/403page.html')
     sno = request.session['username']
     student = Student.objects.get(username=sno)
     # my_major_plan = student.in_cls.major
@@ -192,7 +194,7 @@ def std_view_major_course(request):
 
 def std_view_major_plan(request):
     if request.session['user_type'] != '学生':
-        redirect("scoreManagement:welcome")
+        return render(request, 'errors/403page.html')
     sno = request.session['username']
     student = Student.objects.get(username=sno)
     all_major_plan = MajorPlan.objects.all()
@@ -208,6 +210,72 @@ def std_view_major_plan(request):
         "all_major": all_major
     }
     return render(request, "scoreManage/student_major_plan.html", context)
+
+
+def teacher_view_major_course(request):
+    if request.session['user_type'] != '教师':
+        return render(request, 'errors/403page.html')
+    all_major_course = MajorCourses.objects.all()
+    all_college = College.objects.all()
+    all_course_type = Course.objects.values("course_type").distinct()
+    all_year = MajorCourses.objects.values("year").order_by("year").distinct()
+    all_major = Major.objects.all()
+    context = {"all_major_course": all_major_course,
+               "all_college": all_college,
+               "all_course": all_course_type,
+               "all_year": all_year,
+               "all_major": all_major
+               }
+    return render(request, "scoreManage/teacher_major_course.html", context)
+
+
+def teacher_view_major_plan(request):
+    if request.session['user_type'] != '教师':
+        return render(request, 'errors/403page.html')
+    all_major_plan = MajorPlan.objects.all()
+    all_college = College.objects.all()
+    all_year = MajorPlan.objects.values("year").order_by("year").distinct()
+    all_major = Major.objects.all()
+    context = {
+        "all_major_plan": all_major_plan,
+        "all_college": all_college,
+        "all_year": all_year,
+        "all_major": all_major
+    }
+    return render(request, "scoreManage/teacher_major_plan.html", context)
+
+
+def adm_view_major_course(request):
+    if request.session['user_type'] != '管理员':
+        return render(request, 'errors/403page.html')
+    all_major_course = MajorCourses.objects.all()
+    all_college = College.objects.all()
+    all_course_type = Course.objects.values("course_type").distinct()
+    all_year = MajorCourses.objects.values("year").order_by("year").distinct()
+    all_major = Major.objects.all()
+    context = {"all_major_course": all_major_course,
+               "all_college": all_college,
+               "all_course": all_course_type,
+               "all_year": all_year,
+               "all_major": all_major
+               }
+    return render(request, "scoreManage/adm_major_course.html", context)
+
+
+def adm_view_major_plan(request):
+    if request.session['user_type'] != '管理员':
+        return render(request, 'errors/403page.html')
+    all_major_plan = MajorPlan.objects.all()
+    all_college = College.objects.all()
+    all_year = MajorPlan.objects.values("year").order_by("year").distinct()
+    all_major = Major.objects.all()
+    context = {
+        "all_major_plan": all_major_plan,
+        "all_college": all_college,
+        "all_year": all_year,
+        "all_major": all_major
+    }
+    return render(request, "scoreManage/adm_major_plan.html", context)
 
 
 # 学生评教
@@ -433,6 +501,20 @@ def teacher_upload_score(request):
     teacher = Teacher.objects.get(username=tno)
     my_courses = Teaching.objects.filter(tno=teacher)
     return render(request, 'scoreManage/teacher_upload_score.html')
+
+
+# 管理员查看教学评价情况
+def adm_view_teacher_evaluation(request):
+    username = request.session['username']
+    adm = User.objects.get(username=username)
+    if not adm.is_superuser:
+        return render(request, 'errors/403page.html')
+    evaluation_sets = EvaluationForm.objects.all()
+    context = {
+        'evaluation_sets': evaluation_sets
+    }
+    return render(request, 'scoreManage/adm_view_teacher_evaluation.html', context)
+
 
 
 def ajax_send_dt(request):
