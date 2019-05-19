@@ -11,40 +11,7 @@ import numpy as np
 import datetime
 def welcome(request):
     return render(request, 'courseSelection/welcome.html')
-# def resultAdd(request):
-#     teaching = Teaching.objects.all()
-#     for i in teaching:
-#         new_cord = Teacher_Schedule_result()
-#         new_cord.tno = i
-#         # new_cord.contain_num = 19
-#         new_cord.current_number = 0
-#         new_cord.MAX_number = 190
-#         new_cord.time = "1-2-4-5,2-6-7-8"
-#         # new_cord.crtype ="阶教"
-#         # new_cord.crno="A阶-104"
-#
-#         new_cord.state="无"
-#         new_cord.save()
-#
-#     # new_cord = Teacher_Schedule_result()
-#     # new_cord.tno = teaching
-#     # new_cord.time = "1-2-4-5, 2-6-7-8"
-#     # new_cord.crtype = "阶教"
-#     # new_cord.crno = "A阶-104"
-#     # new_cord.contain_num = 190
-#     # new_cord.current_number = 0
-#     # new_cord.MAX_number = 190
-#     # new_cord.state = "无"
-#     # new_cord.save()
-#
-#     student = Student.objects.all()
-#     plan = MajorPlan.objects.all()
-#     for j in plan:
-#         print(j)
-#     print("asdasd")
-#     for i in student:
-#         print(i.in_cls)
-#     return HttpResponse("asd")
+
 def selection_home_page(request):
     if request.session['user_type'] == '学生':
         return render(request, 'courseSelection/student_selection_manage.html')
@@ -57,20 +24,15 @@ def stu_tongshi(request):
 # def stu_
 
 def stu_major(request):
-    # majorC = Teacher_Schedule_result.objects.all()[:3]
     sno = request.session["username"]
-    #学号》incls》name
-    #学号》inyear》当前时间减去inyear求出学期》
-    # TSR》Teaching》Majorcourse》得出学期
-    #TSR》Teaching》Majorcourse》Majorplan》Major》mname
 
     current_year = datetime.datetime.now().year
     current_month = datetime.datetime.now().month
     current_semester = 0
     p = Student.objects.get(username=sno)
 
-    majorName = p.in_cls.name[0:2]
-
+    majorName = p.in_cls.major.major.mname
+    print(majorName)
     inyear = p.in_year
 
     if (current_year - inyear) == 0:
@@ -118,32 +80,30 @@ def stu_major(request):
         )
     majorC = []
     for m in mC:
-        if m.tno.mcno.mno.major.mname == majorName:
+        print(m.tno.mcno.mno.major.mname)
+        if m.tno.mcno.mno.major.mname == majorName and m.state == "专业选修":
             majorC.append(m)
-
-    # print(type(current_month))
     data=[]
     dat = []
     haveChosen={}
 
-    #     # crno = models.CharField(max_length=128)
-    #     # crtype = models.CharField(null=False, max_length=10)
-    #     # contain_num = models.IntegerField()
     courseChosen = CourseSelected.objects.filter(sno__username=sno)
 
     for c in courseChosen:
-        tmp = {}
-        haveChosen[c.cno.id]=1
-        tmp["id"] = c.cno.id
-        tmp["课程号"] = c.cno.tno.mcno.cno.cno
-        tmp["课程名"] = c.cno.tno.mcno.cno.cname
-        tmp["学时"] = c.cno.tno.mcno.hour_total
-        tmp["选课人数"] = c.cno.current_number
-        tmp["课程容量"] = c.cno.MAX_number
-        tmp["授课教师"] = c.cno.tno.tno.name
-        tmp["上课教室"] = c.cno.where.crno
-        tmp["上课时间"] = c.cno.time
-        dat.append(tmp)
+        if(c.cno.state != "专业必修" and c.cno.state != "公共基础必修" ):
+            tmp = {}
+            haveChosen[c.cno.id]=1
+            tmp["id"] = c.cno.id
+            tmp["课程号"] = c.cno.tno.mcno.cno.cno
+            tmp["课程名"] = c.cno.tno.mcno.cno.cname
+            tmp["学时"] = c.cno.tno.mcno.hour_total
+            tmp["选课人数"] = c.cno.current_number
+            tmp["课程容量"] = c.cno.MAX_number
+            tmp["授课教师"] = c.cno.tno.tno.name
+            tmp["上课教室"] = c.cno.where.crno
+            tmp["上课时间"] = c.cno.time
+
+            dat.append(tmp)
     for major in majorC:
         tmp = {}
         try:
@@ -290,6 +250,10 @@ def delete(request):
             X.delete()
 
             return JsonResponse({"flag":1,"tot":tot,"ID":ID})
+# def search(request):
+    # if request.method == 'GET':
+        # request.GET.get[]
+
 
 def teacher(request):#教师查看授课选课情况
     return render(request,"courseSelection/index.html")
