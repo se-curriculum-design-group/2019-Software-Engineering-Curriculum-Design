@@ -46,7 +46,6 @@ def mylogin(request):
         password = make_encode(password)
         try:
             user = User.objects.get(username=username, password=password)
-            print("nonoonofin199000064")
             login(request, user)
             if user.is_superuser:
                 save_session('管理员')
@@ -58,7 +57,6 @@ def mylogin(request):
             elif len(user.username) == 9:
                 user = Teacher.objects.get(username=username)
                 save_session('教师')
-                print(89899)
                 return redirect('backstage:teacher_view')
             else:
                 return redirect("backstage:goto_login")
