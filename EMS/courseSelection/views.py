@@ -14,8 +14,10 @@ import pymysql
 import matplotlib.pyplot as plt
 import matplotlib
 
+
 def welcome(request):
     return render(request, 'courseSelection/welcome.html')
+
 
 def selection_home_page(request):
     if request.session['user_type'] == '学生':
@@ -87,21 +89,29 @@ def stu_major(request):
         tno__mcno__year=current_year,
         tno__mcno__semester=current_semester
     )
+    college = [c['tno__mcno__cno__college__name'] for c in mC.values("tno__mcno__cno__college__name").distinct()]
+    majors = [s['tno__mcno__mno__major__mname'] for s in mC.values("tno__mcno__mno__major__mname").distinct()]
+
+    context = {
+        "mC": mC,
+        "college": college,
+        "majors": majors
+    }
     majorC = []
     for m in mC:
         print(m.tno.mcno.mno.major.mname)
         if m.tno.mcno.mno.major.mname == majorName and m.state == "专业选修":
             majorC.append(m)
-    data=[]
+    data = []
     dat = []
     haveChosen = {}
 
     courseChosen = CourseSelected.objects.filter(sno__username=sno)
 
     for c in courseChosen:
-        if(c.cno.state != "专业必修" and c.cno.state != "公共基础必修" ):
+        if (c.cno.state != "专业必修" and c.cno.state != "公共基础必修"):
             tmp = {}
-            haveChosen[c.cno.id]=1
+            haveChosen[c.cno.id] = 1
             tmp["id"] = c.cno.id
             tmp["课程号"] = c.cno.tno.mcno.cno.cno
             tmp["课程名"] = c.cno.tno.mcno.cno.cname
@@ -131,7 +141,8 @@ def stu_major(request):
         tmp["上课时间"] = major.time
         if tmp["选课人数"] < tmp["课程容量"]:
             data.append(tmp)
-    return render(request, "courseSelection/stu_major.html", {'data': json.dumps(data), 'dat': json.dumps(dat)})
+    return render(request, "courseSelection/stu_major.html", {'data': json.dumps(data), 'dat': json.dumps(dat),'mC':mC,'college':college,'majors':majors})
+
 
 def select_course(request):
     if request.is_ajax():
@@ -259,10 +270,12 @@ def delete(request):
             X = CourseSelected.objects.filter(sno__username=sno, cno_id=ID)
             X.delete()
 
-            return JsonResponse({"flag":1,"tot":tot,"ID":ID})
+            return JsonResponse({"flag": 1, "tot": tot, "ID": ID})
+
+
 # def search(request):
-    # if request.method == 'GET':
-        # request.GET.get[]
+# if request.method == 'GET':
+# request.GET.get[]
 
 
 def find_course(request):
@@ -288,6 +301,8 @@ def find_course(request):
                     tp["节次"] = district[0] + "-" + district[1]
                     dic[i.cno.tno.mcno.cno.cname].append(tp)
             return JsonResponse({"dic": dic, "t_info": t_info, "t_place": t_place})
+
+
 def adm_selection_manage(request):
     return render(request, "courseSelection/adm_selection_manage.html")
 
@@ -433,3 +448,72 @@ def time_set(request):
     end = request.POST.get('end_time')
     settings.END = end
     return render(request, "courseSelection/adm_selection_manage.html")
+
+
+def student_view_other_course(request):
+    sno = request.session["username"]
+
+    current_year = datetime.datetime.now().year
+    current_month = datetime.datetime.now().month
+    current_semester = 0
+    p = Student.objects.get(username=sno)
+
+    majorName = p.in_cls.major.major.mname
+    print(majorName)
+    inyear = p.in_year
+
+    if (current_year - inyear) == 0:
+        current_semester = 1
+    elif (current_year - inyear) == 1:
+        if (current_month >= 1 and current_month <= 2):
+            current_semester = 1
+        elif (current_month > 2 and current_month <= 7):
+            current_semester = 2
+        elif (current_month > 7 and current_month < 9):
+            current_semester = 3
+        elif (current_month >= 9 and current_month <= 12):
+            current_semester = 1
+    elif (current_year - inyear) == 2:
+        if (current_month >= 1 and current_month <= 2):
+            current_semester = 1
+        elif (current_month > 2 and current_month <= 7):
+            current_semester = 2
+        elif (current_month > 7 and current_month < 9):
+            current_semester = 3
+        elif (current_month >= 9 and current_month <= 12):
+            current_semester = 1
+    elif (current_year - inyear) == 3:
+        if (current_month >= 1 and current_month <= 2):
+            current_semester = 1
+        elif (current_month > 2 and current_month <= 7):
+            current_semester = 2
+        elif (current_month > 7 and current_month < 9):
+            current_semester = 3
+        elif (current_month >= 9 and current_month <= 12):
+            current_semester = 1
+    elif (current_year - inyear) == 4:
+        if (1 <= current_month <= 2):
+            current_semester = 1
+        elif (current_month > 2 and current_month <= 7):
+            current_semester = 2
+        elif (current_month > 7 and current_month < 9):
+            current_semester = 3
+        elif (current_month >= 9 and current_month <= 12):
+            current_semester = 1
+
+    mC = Teacher_Schedule_result.objects.filter(
+        tno__mcno__year=current_year,
+        tno__mcno__semester=current_semester
+    )
+    # mC[0].tno.mcno.cno.college
+    # mC[0].tno.mcno.mno.major.mname
+
+    college = [c['tno__mcno__cno__college'] for c in mC.values("tno__mcno__cno__college").distinct()]
+    majors = [s['tno.mcno.mno.major.mname'] for s in mC.values("tno.mcno.mno.major.mname").distinct()]
+
+    context = {
+        "mC": mC,
+        "college": college,
+        "majors": majors
+    }
+    return render(request, "courseSelection/stu_major.html", context)

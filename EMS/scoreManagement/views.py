@@ -216,6 +216,10 @@ def teacher_view_major_course(request):
     if request.session['user_type'] != '教师':
         return render(request, 'errors/403page.html')
     all_major_course = MajorCourses.objects.all()
+
+    student = Student.objects.get()
+    CourseSelected.objects.filter(sno=student)
+
     all_college = College.objects.all()
     all_course_type = Course.objects.values("course_type").distinct()
     all_year = MajorCourses.objects.values("year").order_by("year").distinct()

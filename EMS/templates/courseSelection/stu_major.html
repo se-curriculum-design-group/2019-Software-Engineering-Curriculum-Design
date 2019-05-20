@@ -141,27 +141,25 @@
         <div class="box">
             <div class="box-header">
             </div>
-
             {#-----------------------------------------选课学生自由查询课程------------------------------------------------------#}
             <section class="content">
                 <div class="box">
                     <div class="box-header">
-                        <h3 class="box-title">查看个人成绩</h3>
+                        <h3 class="box-title">查看其他课程</h3>
                         <div class="box-header">
                             <label style="color: red">学院：</label>
                             <select name="year" id="course_year" class="select2" style="width: 25%">
                                 <option value="All" selected="selected">全部</option>
-                                {% for year in years %}
-                                    <option value="{{ year }}">{{ year }}</option>
+                                {% for c in college %}
+                                    <option value="{{ c }}">{{ c }}</option>
                                 {% endfor %}
                             </select>
                             <label style="color: red">专业：</label>
                             <select name="semester" id="course_semester" class="select2" style="width: 25%">
                                 <option value="All" selected="selected">全部</option>
-                                {% for semester in semesters %}
-                                    <option value="{{ semester }}">{{ semester }}</option>
+                                {% for major in majors %}
+                                    <option value="{{ major }}">{{ major }}</option>
                                 {% endfor %}
-
                             </select>
                         </div>
                     </div>
@@ -170,30 +168,28 @@
                             <thead>
                             <tr>
                                 <th>编号</th>
-                                <th>学年</th>
-                                <th>学期</th>
                                 <th>课程号</th>
                                 <th>课程名</th>
-                                <th>分数</th>
-                                <th>平时分</th>
-                                <th>期末成绩</th>
-                                <th>学分</th>
-                                <th>老师</th>
+                                <th>学时</th>
+                                <th>选课人数</th>
+                                <th>课程容量</th>
+                                <th>授课教师</th>
+                                <th>上课教室</th>
+                                <th>上课时间</th>
                             </tr>
                             </thead>
                             <tbody>
-                            {% for course_score in my_course_score %}
+                            {% for info in mC %}
                                 <tr>
                                     <td>{{ forloop.counter }}</td>
-                                    <td>{{ course_score.teaching.mcno.year }}</td>
-                                    <td>{{ course_score.teaching.mcno.semester }}</td>
-                                    <td>{{ course_score.teaching.mcno.cno.cno }}</td>
-                                    <td>{{ course_score.teaching.mcno.cno.cname }}</td>
-                                    <td>{{ course_score.score }}</td>
-                                    <td>{{ course_score.commen_score }}</td>
-                                    <td>{{ course_score.final_score }}</td>
-                                    <td>{{ course_score.teaching.mcno.cno.score }}</td>
-                                    <td>{{ course_score.teaching.tno.name }}</td>
+                                    <td>{{ info.tno.mcno.cno.cno }}</td>
+                                    <td>{{ info.tno.mcno.cno.cname }}</td>
+                                    <td>{{ info.tno.mcno.hour_total }}</td>
+                                    <td>{{ info.current_number}}</td>
+                                    <td>{{ info.MAX_number }}</td>
+                                    <td>{{ info.tno.tno.name }}</td>
+                                    <td>{{ info.where.crno }}</td>
+                                    <td>{{ info.time }}</td>
                                 </tr>
                             {% endfor %}
                             </tbody>
