@@ -8,46 +8,15 @@ from courseSelection.models import CourseSelected
 import json
 import numpy as np
 import datetime
-
+from django.conf import settings
+from .models import Picture
+import pymysql
+import matplotlib.pyplot as plt
+import matplotlib
 
 def welcome(request):
     return render(request, 'courseSelection/welcome.html')
 
-
-# def resultAdd(request):
-#     teaching = Teaching.objects.all()
-#     for i in teaching:
-#         new_cord = Teacher_Schedule_result()
-#         new_cord.tno = i
-#         # new_cord.contain_num = 19
-#         new_cord.current_number = 0
-#         new_cord.MAX_number = 190
-#         new_cord.time = "1-2-4-5,2-6-7-8"
-#         # new_cord.crtype ="阶教"
-#         # new_cord.crno="A阶-104"
-#
-#         new_cord.state="无"
-#         new_cord.save()
-#
-#     # new_cord = Teacher_Schedule_result()
-#     # new_cord.tno = teaching
-#     # new_cord.time = "1-2-4-5, 2-6-7-8"
-#     # new_cord.crtype = "阶教"
-#     # new_cord.crno = "A阶-104"
-#     # new_cord.contain_num = 190
-#     # new_cord.current_number = 0
-#     # new_cord.MAX_number = 190
-#     # new_cord.state = "无"
-#     # new_cord.save()
-#
-#     student = Student.objects.all()
-#     plan = MajorPlan.objects.all()
-#     for j in plan:
-#         print(j)
-#     print("asdasd")
-#     for i in student:
-#         print(i.in_cls)
-#     return HttpResponse("asd")
 def selection_home_page(request):
     if request.session['user_type'] == '学生':
         return render(request, 'courseSelection/student_selection_manage.html')
@@ -64,20 +33,15 @@ def stu_tongshi(request):
 # def stu_
 
 def stu_major(request):
-    # majorC = Teacher_Schedule_result.objects.all()[:3]
     sno = request.session["username"]
-    # 学号》incls》name
-    # 学号》inyear》当前时间减去inyear求出学期》
-    # TSR》Teaching》Majorcourse》得出学期
-    # TSR》Teaching》Majorcourse》Majorplan》Major》mname
 
     current_year = datetime.datetime.now().year
     current_month = datetime.datetime.now().month
     current_semester = 0
     p = Student.objects.get(username=sno)
 
-    majorName = p.in_cls.name[0:2]
-
+    majorName = p.in_cls.major.major.mname
+    print(majorName)
     inyear = p.in_year
 
     if (current_year - inyear) == 0:
@@ -125,32 +89,30 @@ def stu_major(request):
     )
     majorC = []
     for m in mC:
-        if m.tno.mcno.mno.major.mname == majorName:
+        print(m.tno.mcno.mno.major.mname)
+        if m.tno.mcno.mno.major.mname == majorName and m.state == "专业选修":
             majorC.append(m)
-
-    # print(type(current_month))
-    data = []
+    data=[]
     dat = []
     haveChosen = {}
 
-    #     # crno = models.CharField(max_length=128)
-    #     # crtype = models.CharField(null=False, max_length=10)
-    #     # contain_num = models.IntegerField()
     courseChosen = CourseSelected.objects.filter(sno__username=sno)
 
     for c in courseChosen:
-        tmp = {}
-        haveChosen[c.cno.id] = 1
-        tmp["id"] = c.cno.id
-        tmp["课程号"] = c.cno.tno.mcno.cno.cno
-        tmp["课程名"] = c.cno.tno.mcno.cno.cname
-        tmp["学时"] = c.cno.tno.mcno.hour_total
-        tmp["选课人数"] = c.cno.current_number
-        tmp["课程容量"] = c.cno.MAX_number
-        tmp["授课教师"] = c.cno.tno.tno.name
-        tmp["上课教室"] = c.cno.where.crno
-        tmp["上课时间"] = c.cno.time
-        dat.append(tmp)
+        if(c.cno.state != "专业必修" and c.cno.state != "公共基础必修" ):
+            tmp = {}
+            haveChosen[c.cno.id]=1
+            tmp["id"] = c.cno.id
+            tmp["课程号"] = c.cno.tno.mcno.cno.cno
+            tmp["课程名"] = c.cno.tno.mcno.cno.cname
+            tmp["学时"] = c.cno.tno.mcno.hour_total
+            tmp["选课人数"] = c.cno.current_number
+            tmp["课程容量"] = c.cno.MAX_number
+            tmp["授课教师"] = c.cno.tno.tno.name
+            tmp["上课教室"] = c.cno.where.crno
+            tmp["上课时间"] = c.cno.time
+
+            dat.append(tmp)
     for major in majorC:
         tmp = {}
         try:
@@ -170,7 +132,6 @@ def stu_major(request):
         if tmp["选课人数"] < tmp["课程容量"]:
             data.append(tmp)
     return render(request, "courseSelection/stu_major.html", {'data': json.dumps(data), 'dat': json.dumps(dat)})
-
 
 def select_course(request):
     if request.is_ajax():
@@ -298,11 +259,10 @@ def delete(request):
             X = CourseSelected.objects.filter(sno__username=sno, cno_id=ID)
             X.delete()
 
-            return JsonResponse({"flag": 1, "tot": tot, "ID": ID})
-
-
-def teacher(request):  # 教师查看授课选课情况
-    return render(request, "courseSelection/index.html")
+            return JsonResponse({"flag":1,"tot":tot,"ID":ID})
+# def search(request):
+    # if request.method == 'GET':
+        # request.GET.get[]
 
 
 def find_course(request):
@@ -328,3 +288,148 @@ def find_course(request):
                     tp["节次"] = district[0] + "-" + district[1]
                     dic[i.cno.tno.mcno.cno.cname].append(tp)
             return JsonResponse({"dic": dic, "t_info": t_info, "t_place": t_place})
+def adm_selection_manage(request):
+    return render(request, "courseSelection/adm_selection_manage.html")
+
+
+def adm_class(request):
+    return render(request, "courseSelection/adm_class.html")
+
+
+def adm_school(request):
+    return render(request, "courseSelection/adm_school.html")
+
+
+def text(request):
+    return render(request, "courseSelection/text.html")
+
+
+def show_pic(request):
+    pic_obj = Picture.objects.get(id=1)
+    return
+
+
+def school_query(request):
+    print(132420198479292475)
+
+    print("12312fdskjgcasuidgfwui")
+    time = request.POST.get("time")
+    grade = request.POST.get("grade")
+    college = request.POST.get("college")
+    subject = request.POST.get("subject")
+
+    print(time, grade, college, subject)
+    db = pymysql.connect("localhost", "EMS", "password", "ems", charset='utf8')
+    cursor = db.cursor()
+
+    # 使用execute方法执行SQL语句
+    cursor.execute("SELECT * FROM course")
+
+    # 使用 fetchone() 方法获取一条数据
+
+    results = cursor.fetchall()
+    n = 0
+    # print(results)
+    final_id = 0
+    final_cno = 0
+    final_cname = ""
+    final_ctype = ""
+    final_cscore = 0
+    final_college = 0
+    target = "CSE32500C"
+    for row in results:
+        id1 = row[0]
+        cno = row[1]
+        cname = row[2]
+        typ = row[3]
+        score = row[4]
+        college = row[5]
+        n += 1
+        if cno == target:
+            final_id = id1
+            final_cno = cno
+            final_cname = cname
+            final_college = college
+            final_cscore = score
+            final_ctype = typ
+            break
+
+    cursor.execute("SELECT * FROM college")
+    print(final_college)
+
+    # cursor.execute("SELECT name,short_name FROM college WHERE id > %s",final_college)
+
+    results = cursor.fetchall()
+    # print(results)
+    for row in results:
+        id1 = row[0]
+        if id1 == final_college:
+            print(row[1], row[2])
+            break
+    # print(n)
+    # print(final_cname)
+
+    # 关闭数据库连接
+    db.close()
+
+    matplotlib.rcParams['font.sans-serif'] = ['SimHei']
+    matplotlib.rcParams['axes.unicode_minus'] = False
+    # plt.subplot(1, 3, 1)
+    label_list = ["计科", "自动化", "电子信息"]  # 各部分标签
+    size = [75, 35, 10]  # 各部分大小
+
+    color = ["red", "green", "blue"]  # 各部分颜色
+    explode = [0.05, 0, 0]  # 各部分突出值
+
+    patches, l_text, p_text = plt.pie(size, explode=explode, colors=color, labels=label_list, labeldistance=1.1,
+                                      autopct="%1.1f%%", shadow=False, startangle=90, pctdistance=0.6)
+    plt.axis("equal")  # 设置横轴和纵轴大小相等，这样饼才是圆的
+    plt.legend()
+    # plt.show()
+    # plt.savefig( 'C:/Users/Lenovo/Desktop/test/2019-Software-Engineering-Curriculum-Design-master/2019-Software-Engineering-Curriculum-Design-master/EMS/static/img/adm_query/test2.jpg')
+    plt.figure()
+    x = ["2016-2017", "2017-2018", "2018-2019"]
+    y = [135, 166, 189]
+    # plt.subplot(1, 3, 2)
+    plt.plot(x, y)
+    # plt.savefig('C:/Users/Lenovo/Desktop/test/2019-Software-Engineering-Curriculum-Design-master/2019-Software-Engineering-Curriculum-Design-master/EMS/static/img/adm_query/test1.jpg')
+    plt.figure()
+    # plt.subplot(1, 3, 3)
+    plt.bar(label_list, size)
+    # plt.savefig('C:/Users/Lenovo/Desktop/test/2019-Software-Engineering-Curriculum-Design-master/2019-Software-Engineering-Curriculum-Design-master/EMS/static/img/adm_query/test3.jpg')
+    # plt.show()
+    print(123245432456432)
+    return render(request, "courseSelection/adm_showimg.html")
+
+
+def class_query(request):
+    time = request.POST.get("time")
+    grade = request.POST.get("grade")
+    college = request.POST.get("college")
+    subject = request.POST.get("subject")
+    print(time, grade, college, subject)
+    return render(request, "courseSelection/adm_classshow.html")
+
+
+def time_set(request):
+    '''
+    print(12334)
+    if request.method == 'POST':
+        print('sdas')
+    if request.is_ajax():
+        print(12324)
+        if request.method == 'POST':
+            print(323)
+    print(request)
+    '''
+    print('test1')
+    print(settings.BEGIN)
+    begin = request.POST.get('begin_time')
+    settings.BEGIN = begin
+    print('test2')
+    print(settings.BEGIN)
+    # BEGIN = begin
+    # global END
+    end = request.POST.get('end_time')
+    settings.END = end
+    return render(request, "courseSelection/adm_selection_manage.html")
