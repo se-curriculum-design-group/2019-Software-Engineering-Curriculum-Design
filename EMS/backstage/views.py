@@ -191,7 +191,7 @@ def my_personal_details(request):
                 except:
                     return JsonResponse({})
         else:
-            print("输入修改值为空，返回主页")
+            # print("输入修改值为空，返回主页")
             if len(username) == 10:
                 return render(request, 'student_base.html')
             else:
