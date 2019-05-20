@@ -207,8 +207,8 @@
 <script src="{% static 'AdminLTE/plugins/datatables/extensions/Buttons/buttons.print.min.js' %}"></script>
 
 {% block script %}
-    <script src="https://cdn.ckeditor.com/4.5.7/standard/ckeditor.js"></script>
-{#    <script src="{% static 'ckeditor.js' %}"></script>#}
+{#    <script src="https://cdn.ckeditor.com/4.5.7/standard/ckeditor.js"></script>#}
+    <script src="{% static 'ckeditor.js' %}"></script>
     <script>
         $(function () {
             // Replace the <textarea id="editor1"> with a CKEditor
@@ -218,7 +218,6 @@
             $(".textarea").wysihtml5();
         });
     </script>
-
 {% endblock %}
 
 </body>
