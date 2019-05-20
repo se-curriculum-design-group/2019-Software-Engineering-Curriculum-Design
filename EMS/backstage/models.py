@@ -46,7 +46,7 @@ class MajorPlan(models.Model):
     # 专业名称，对应了需要的专业
     major = models.ForeignKey(to=Major, on_delete=models.CASCADE)
     # 专业计划班级数
-    cls_num = models.IntegerField()
+    cls_num = models.IntegerField()  # 行政班
     # 专业计划人数
     people_num = models.IntegerField()
     # 毕业最低学分
@@ -181,3 +181,13 @@ class Announcement(models.Model):
 
     class Meta:
         db_table = 'announcement'
+
+
+class UploadFiles(models.Model):
+    file = models.FileField(upload_to='files', default='../backstage/media/image/default.png', blank=True, null=True)
+    author = models.CharField(max_length=128)
+    visible = models.BooleanField(default=True)
+    time = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        db_table = 'upload_files'

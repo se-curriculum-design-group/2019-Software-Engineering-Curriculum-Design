@@ -41,6 +41,8 @@
         <link rel="stylesheet" href="{% static 'AdminLTE/plugins/datatables/jquery.dataTables_themeroller.css' %}">
         <!-- Select2 下拉框工具 -->
         <link rel="stylesheet" href="{% static 'AdminLTE/plugins/select2/select2.min.css' %}">
+        <!-- DataTable Buttons 导出数据工具 -->
+        <link rel="stylesheet" href="{% static 'AdminLTE/plugins/datatables/extensions/Buttons/buttons.dataTables.min.css' %}">
 
     {% endblock %}
 
@@ -183,18 +185,32 @@
 <!-- FastClick -->
 <script src="{% static 'AdminLTE/plugins/fastclick/fastclick.js' %}"></script>
 <!-- AdminLTE App -->
-<script src="{% static 'AdminLTE/dist/js/app.min.js' %}"></script>
-<!-- AdminLTE for demo purposes -->
-<script src="{% static 'AdminLTE/dist/js/demo.js' %}"></script>
 <!-- Select2-->
 <script src="{% static 'AdminLTE/plugins/select2/select2.full.min.js' %}"></script>
 <!-- page script -->
+<script src="{% static 'AdminLTE/dist/js/app.min.js' %}"></script>
+<!-- AdminLTE for demo purposes -->
+<script src="{% static 'AdminLTE/dist/js/demo.js' %}"></script>
+
 <!-- CK Editor -->
-<script src="https://cdn.ckeditor.com/4.5.7/standard/ckeditor.js"></script>
+{% comment %}
+<script src="{% static 'ckeditor.js' %}"></script>
+{% endcomment %}
 <!-- Bootstrap WYSIHTML5 -->
-<script src="../static/AdminLTE/plugins/bootstrap-wysihtml5/bootstrap3-wysihtml5.all.min.js"></script>
-<script src="../static/AdminLTE/plugins/iCheck/icheck.min.js"></script>
+<script src="{% static 'AdminLTE/plugins/bootstrap-wysihtml5/bootstrap3-wysihtml5.all.min.js' %}"></script>
+<script src="{% static 'AdminLTE/plugins/iCheck/icheck.min.js' %}"></script>
+
+<!-- Datatable Export Data Buttons -->
+<script src="{% static 'AdminLTE/plugins/datatables/extensions/Buttons/dataTables.buttons.min.js' %}"></script>
+<script src="{% static 'AdminLTE/plugins/datatables/extensions/Buttons/jszip.min.js' %}"></script>
+<script src="{% static 'AdminLTE/plugins/datatables/extensions/Buttons/pdfmake.min.js' %}"></script>
+<script src="{% static 'AdminLTE/plugins/datatables/extensions/Buttons/vfs_fonts.js' %}"></script>
+<script src="{% static 'AdminLTE/plugins/datatables/extensions/Buttons/buttons.flash.min.js' %}"></script>
+<script src="{% static 'AdminLTE/plugins/datatables/extensions/Buttons/buttons.html5.min.js' %}"></script>
+<script src="{% static 'AdminLTE/plugins/datatables/extensions/Buttons/buttons.print.min.js' %}"></script>
+
 <script>
+    {% comment %}
     $(function () {
         // Replace the <textarea id="editor1"> with a CKEditor
         // instance, using default configuration.
@@ -202,6 +218,7 @@
         //bootstrap WYSIHTML5 - text editor
         $(".textarea").wysihtml5();
     });
+    {% endcomment %}
 </script>
 {% block script %}
 {% endblock %}

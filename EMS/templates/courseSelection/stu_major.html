@@ -113,10 +113,11 @@
             <div class="modal-body">
                 <div id="coursesTable"></div>
                 <button onclick="Texport(this)" style="background-color: #00a2ae; color: #fff; padding: 5px 10px; border-radius: 4px;border: none">
-    课表导出
-    </button>
-<script>
-</script>
+                    课表导出
+                </button>
+                <script>
+
+                </script>
             </div>
             <div class="modal-footer">
                 <span id="errorMsg" style="color: red;"></span>
@@ -138,23 +139,12 @@
         <section class="content">
         <div class="box">
             <div class="box-header">
-{#                <h3 class="box-title">专业选修课</h3>#}
-
-
-{#                <div class="btn-group pull-right ">#}
-{#                    <button id='college' class="btn btn-primary" type="button">#}
-{#                        <span class="glyphicon glyphicon-plus"></span>学院#}
-{#                    </button>#}
-{#                    <button id='major' class="btn btn-info" type="button">#}
-{#                        <span class="glyphicon glyphicon-pencil"></span>专业#}
-{#                    </button>#}
-{#                </div>#}
             </div>
             <div class="col-md-6">
                <div class="form-group">
                 <label>学院</label>
                 <select class="form-control select2 select2-hidden-accessible" multiple="" style="width: 100%;" tabindex="-1" aria-hidden="true">
-                  <option >文法学院</option>
+                   <option >文法学院</option>
                     <option>化学工程学院</option>
                     <option>机电工程学院</option>
                     <option>经济管理学院</option>
@@ -190,13 +180,19 @@
               </div>
               <!-- /.form-group -->
             </div>
-<input type="button" onclick="showcourse(this)" class="btn btn-primary" id='k' value="显示已选课">
-            <div>
-
-
-
-            </div>
-
+            <input type="button" onclick="showcourse(this)" class="btn btn-primary" id='k' value="显示课表">
+            <form class="navbar-form navbar-left" method="get" id="searchform" action="/search/">
+                <div class="form-group" >
+                    {% csrf_token %}
+                    <input type="search" name="q" class="form-control" id="s" placeholder="Search">
+                </div>
+                <button type="submit" class="btn btn-default" id="searching">搜索</button>
+                <select class="selectpicker show-tick form-control" style="width:105px;height: 38px" id="select1" name="grant" data-live-search="true">
+                    <option>课程号</option>
+                    <option>课程名</option>
+                    <option>按车状态</option>
+                </select>
+            </form>
             <div class="box-body">
                 <table id="majorCourse" class="table table-bordered table-striped">
                     <thead>
@@ -228,6 +224,7 @@
                         <th>上课教室</th>
                         <th>上课时间</th>
                         <th>退课</th>
+
                     </tr>
                     </thead>
                 </table>
@@ -252,12 +249,17 @@
 	  $(function () {
 	    $(".select2").select2();
 	  });
+    {#--------------------------------------------筛选------------------------------------------------------#}
+
+
+
+
     {#----------------------候选课程---------------------------#}
     var class_week = new Array(data.length);
     var selected = document.getElementById("k");
     selected.style.position = "absolute";//设置绝对定位（或者相对定位）
-    selected.style.left = "700px";//设置left数值
-    selected.style.top = "44px";//设置top数值
+    selected.style.left = "1000px";//设置left数值
+    selected.style.top = "30px";//设置top数值
     for(var i=0;i<data.length;i++) {
         class_week[i] = new Array();
         times = data[i]["上课时间"].split(",");
