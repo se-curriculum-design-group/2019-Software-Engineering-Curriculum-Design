@@ -85,8 +85,8 @@
                 var year = $('#year').val();
                 return (
                     (college === "ALL" || college === data[1])
-                    &&(major === "ALL" || major === data[2])
-                    &&(major === "ALL" || year === data[4])
+                    && (major === "ALL" || major === data[2])
+                    && (major === "ALL" || year === data[4])
                 );
             }
         );
@@ -95,7 +95,11 @@
                 {
                     dom: 'Bfrtip',
                     buttons: [
-                        'copy', 'excel', 'pdf', 'print'
+                        'copy',
+                        {
+                            extend: 'excel',
+                            filename: "专业计划信息表",
+                        }, 'pdf', 'print'
                     ],
                     "paging": true,       <!-- 允许分页 -->
                     "lengthChange": true, <!-- 允许改变每页显示的行数 -->

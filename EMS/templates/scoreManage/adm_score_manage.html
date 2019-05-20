@@ -24,7 +24,7 @@
                             {% for year in all_years %}
                                 {% if sear_year == year %}
                                     <option selected="selected" value={{ year }}>{{ year }}</option>
-                                    {% else %}
+                                {% else %}
                                     <option value={{ year }}>{{ year }}</option>
                                 {% endif %}
                             {% endfor %}
@@ -35,7 +35,7 @@
                             {% for semester in all_semester %}
                                 {% if sear_semester == semester %}
                                     <option selected="selected" value={{ semester }}>{{ semester }}</option>
-                                    {% else %}
+                                {% else %}
                                     <option value={{ semester }}>{{ semester }}</option>
                                 {% endif %}
                             {% endfor %}
@@ -123,7 +123,11 @@
             var table = $('#all_course_table').DataTable({
                 dom: 'Bfrtip',
                 buttons: [
-                    'copy', 'excel', 'pdf', 'print'
+                    'copy',
+                    {
+                        extend: 'excel',
+                        filename: "学生考试成绩查看",
+                    }, 'pdf', 'print'
                 ],
                 "paging": true,       <!-- 允许分页 -->
                 "lengthChange": true, <!-- 允许改变每页显示的行数 -->

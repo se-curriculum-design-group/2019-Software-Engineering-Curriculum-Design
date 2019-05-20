@@ -133,7 +133,11 @@
                 {
                     dom: 'Bfrtip',
                     buttons: [
-                        'copy', 'excel', 'pdf', 'print'
+                        'copy',
+                        {
+                            extend: 'excel',
+                            filename: "专业课程信息表",
+                        }, 'pdf', 'print'
                     ],
                     "paging": true,       <!-- 允许分页 -->
                     "lengthChange": true, <!-- 允许改变每页显示的行数 -->

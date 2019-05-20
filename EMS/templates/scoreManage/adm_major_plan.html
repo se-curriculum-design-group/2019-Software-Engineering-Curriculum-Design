@@ -83,11 +83,7 @@
                 var college = $('#college').val();
                 var major = $('#major').val();
                 var year = $('#year').val();
-                if ((college === data[1] || college === "ALL") && (((major === data[2] || major === "ALL") && (year === data[4] || year === "ALL")))) {
-                    return true
-                } else {
-                    return false
-                }
+                return ((college === data[1] || college === "ALL") && (((major === data[2] || major === "ALL") && (year === data[4] || year === "ALL"))));
             }
         );
         $(document).ready(function () {
@@ -95,7 +91,11 @@
                 {
                     dom: 'Bfrtip',
                     buttons: [
-                        'copy', 'excel', 'pdf', 'print'
+                        'copy',
+                        {
+                            extend: 'excel',
+                            filename: "专业计划信息表",
+                        }, 'pdf', 'print'
                     ],
                     "paging": true,       <!-- 允许分页 -->
                     "lengthChange": true, <!-- 允许改变每页显示的行数 -->
