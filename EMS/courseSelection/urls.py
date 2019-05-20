@@ -20,6 +20,14 @@ urlpatterns = [
                   path('delete_course', views.delete, name="delete_course"),
                   path('find_course', views.find_course, name="find_course"),
 
+                  path('adm_selection_manage', views.adm_selection_manage, name="adm_selection_manage"),
+                  path('adm_class', views.adm_class, name="adm_class"),
+                  path('adm_school', views.adm_school, name="adm_school"),
+                  path('text', views.text, name="text"),
+                  path('school_query', views.school_query, name="school_query"),
+                  path('class_query', views.class_query, name="class_query"),
+                  path('time_set', views.time_set, name="time_set")
+
               ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
                 
               

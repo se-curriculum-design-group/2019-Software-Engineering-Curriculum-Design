@@ -1,0 +1,97 @@
+{% extends "adm_base.html" %}
+{% block title %}欢迎登录教务管理系统{% endblock %}
+
+{% block content %}
+    <section class="content-header">
+        <h1>系统管理员
+        </h1>
+    </section>
+    <form method="post" action="">
+        {% csrf_token %}
+        <section class="content">
+            <section class="content">
+
+                <p>时间</p>
+                <select name="time">
+                    <option value="2018-2019">2018-2019</option>
+                    <option value="2017-2018">2017-2018</option>
+                    <option value="2016-2017">2016-2017</option>
+                </select>
+                <p>授课年级</p>
+                <select name="grade">
+                    <option value="大四">大四</option>
+                    <option value="大三">大三</option>
+                    <option value="大二">大二</option>
+                    <option value="大一">大一</option>
+                </select>
+                <p>学院</p>
+                <select name="college">
+                    <option>材料学院</option>
+                    <option>信息学院</option>
+                    <option>文法学院</option>
+                    <option>化工学院</option>
+                    <option>材料学院</option>
+                    <option>马克思主义学院</option>
+                    <option>能源学院</option>
+
+                </select>
+                <p>科目</p>
+                <select name="subject">
+                    <option value="软件工程 ">软件工程</option>
+
+                </select>
+                <button id='add' class="btn btn-primary" type="submit" onclick="f()">
+                    <span class="glyphicon glyphicon-plus"></span>搜索
+                </button>
+
+                <style>
+                    .boss {
+                        width: 902px;
+                        margin: 50px;
+                        border: solid 1px red;
+                    }
+                    .boss div {
+                        width: 198px;
+                        border: solid 1px gray;
+                        float: left;
+                    }
+                    .boss div img {
+                        display: block;
+                        width: 100%;
+                    }
+                </style>
+                <div class="box" >
+                    <div class="box-header">
+                        <h3 class="box-title">结果</h3>
+                    </div>
+                    <div class="box-body">
+                        <table id="stu_table" class="table table-bordered table-striped">
+                            <thead>
+                            <tr>
+                                <th>课程号</th>
+                                <th>课程名</th>
+                                <th>授课专业</th>
+                                <th>选课人数</th>
+                                <th>查询课程详情</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>ENG22604T</td>
+                                    <td>软件工程</td>
+                                    <td>计算机科学与技术</td>
+                                    <td>190</td>
+                                    <td> <button>查询</button></td>
+                                </tr>
+                            </tbody>
+                            <tfoot>
+
+                            </tfoot>
+                        </table>
+                    </div>
+                </div>
+            </section>
+        </section>
+    </form>
+
+{% endblock %}
