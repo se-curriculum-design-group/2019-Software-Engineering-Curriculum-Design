@@ -66,4 +66,15 @@
             <!-- right col -->
         </div>
     </form>
+
+    <script>
+        ClassicEditor
+            .create(document.querySelector('#editor1'), {
+                language: 'zh-cn',
+                height: '380px', width: '100%'
+            })
+            .catch(error => {
+                console.error(error);
+            });
+    </script>
 {% endblock %}
