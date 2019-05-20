@@ -44,34 +44,26 @@ def mylogin(request):
         password = request.POST.get('password')
         # 对密码进行加密
         password = make_encode(password)
-        if 10 == len(username):
-            # 学号的长度是10位
-            try:
-                user = Student.objects.get(username=username, password=password)
-                login(request, user)
-                save_session('学生')
-                return redirect('backstage:student_view')
-            except:
-                return redirect('backstage:goto_login')
-                # return JsonResponse({"not_exist": "1"})
-        elif 9 == len(username):
-            try:
-                user = Teacher.objects.get(username=username, password=password)
-                login(request, user)
-                save_session('教师')
-                return redirect('backstage:teacher_view')
-            except:
-                return redirect("backstage:goto_login")
-                # return JsonResponse({"not_exist": "1"})
-        else:
-            try:
-                user = User.objects.get(username=username, password=password)
-                login(request, user)
+        try:
+            user = User.objects.get(username=username, password=password)
+            print("nonoonofin199000064")
+            login(request, user)
+            if user.is_superuser:
                 save_session('管理员')
                 return redirect('backstage:admin_view')
-            except:
+            elif len(username) == 10:
+                user = Student.objects.get(username=username)
+                save_session('学生')
+                return redirect('backstage:student_view')
+            elif len(user.username) == 9:
+                user = Teacher.objects.get(username=username)
+                save_session('教师')
+                print(89899)
+                return redirect('backstage:teacher_view')
+            else:
                 return redirect("backstage:goto_login")
-                # return JsonResponse({"not_exist": "1"})
+        except:
+            return redirect("backstage:goto_login")
 
 
 @login_required
