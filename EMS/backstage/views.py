@@ -6,9 +6,12 @@ from django.http import HttpResponse, JsonResponse
 from django.views.decorators.csrf import csrf_exempt
 from django.shortcuts import render, redirect, get_object_or_404
 
-from backstage.models import Student, Teacher, User, Announcement
+from backstage.models import Student, Teacher, User, Announcement, College, AdmClass, Major, UploadFiles
 from backstage.forms import *
 from utils import make_encode
+# 邮件模块
+from django.conf import settings
+from django.core import mail
 
 
 def welcome(request):
@@ -73,7 +76,20 @@ def mylogin(request):
 
 @login_required
 def student_view(request):
-    return render(request, 'student_base.html')
+    if request.method == "GET":
+        username = request.session.get('username', False)
+        user = Student.objects.get(username=username)
+        x = str(user.in_cls)
+        department = College.objects.get(major__short_name=x[:2])
+        usi = user.in_year
+        announcement = Announcement.objects.filter(receiver=department, year=usi)
+        announcements_to_all = Announcement.objects.filter(receiver="全体成员")
+        announcements = announcement | announcements_to_all
+        return render(request, 'student_base.html', locals())
+    else:
+        anno_id = request.POST.get('details')
+        announcement = Announcement.objects.get(id=anno_id)
+        return render(request, 'backstage/anno_details.html', locals())
 
 
 @login_required
@@ -90,15 +106,36 @@ def admin_view(request):
             announcements = Announcement.objects.filter(receiver=receivers, year=year)
             adm_operator = Adm()
             return render(request, 'adm_base.html', locals())
+        else:
+            return render(request, 'errors/403page.html')
     else:
         anno_id = request.POST.get('details')
         announcement = Announcement.objects.get(id=anno_id)
+        adm_operator = Adm()
         return render(request, 'backstage/adm_base_emails_details.html', locals())
 
 
 @login_required
 def teacher_view(request):
-    return render(request, 'teacher_base.html')
+    if request.method == "GET":
+        announcements = Announcement.objects.all()
+        adm_operator = Adm()
+        return render(request, 'teacher_base.html', locals())
+    elif "search" in request.POST:
+        adm_operator = Adm(request.POST)
+        if adm_operator.is_valid():
+            receivers = adm_operator.cleaned_data['receiver']
+            year = adm_operator.cleaned_data['year']
+            announcements = Announcement.objects.filter(receiver=receivers, year=year)
+            adm_operator = Adm()
+            return render(request, 'teacher_base.html', locals())
+        else:
+            return render(request, 'errors/403page.html')
+    else:
+        anno_id = request.POST.get('details')
+        announcement = Announcement.objects.get(id=anno_id)
+        adm_operator = Adm()
+        return render(request, 'backstage/adm_base_emails_details.html', locals())
 
 
 @login_required
@@ -182,10 +219,10 @@ def send_announcement(request):
             new_announcement_year = new_announcement.cleaned_data['year']
             new_announcement_title = new_announcement.cleaned_data['title']
             new_announcement_text = request.POST.get('editor')
-            print(new_announcement_receiver)
-            print(new_announcement_year)
-            print(new_announcement_title)
-            print(new_announcement_text)
+            # print(new_announcement_receiver)
+            # print(new_announcement_year)
+            # print(new_announcement_title)
+            # print(new_announcement_text)
             new_announcement_objects = Announcement.objects.create()
             new_announcement_objects.title = new_announcement_title
             new_announcement_objects.messages = new_announcement_text
@@ -206,3 +243,41 @@ def send_emails(request):
     if request.method == "GET":
         new_email = SendEmails()
         return render(request, "backstage/send_emails.html", locals())
+    else:
+        Emailform = SendEmails(request.POST, request.FILES)
+        if Emailform.is_valid():
+
+            path = os.getcwd()
+            path_use = path.replace('\\', '/')
+
+            receivers = Emailform.cleaned_data['receiver']
+            title = Emailform.cleaned_data['title']
+            text = request.POST.get('editor')
+            files = request.FILES.getlist('attach')
+            username = request.session.get('username', False)
+            for files in request.FILES.getlist('attach'):
+                record = UploadFiles(file=files, author=username)
+                record.save()
+
+            recipient_list = []
+            if receivers == '0':
+                users = models.User.objects.all()
+                for user in users:
+                    recipient_list.append(user.email)
+            else:
+                users = models.User.objects.filter(department__in=receivers)
+                for user in users:
+                    recipient_list.append(user.email)
+
+            from_mail = settings.EMAIL_HOST_USER
+            msg = mail.EmailMessage(title, text, from_mail, recipient_list)
+            msg.content_subtype = "html"
+            for files in request.FILES.getlist('attach'):
+                src = path_use + '/backstage/media/files/' + files.name
+                msg.attach_file(src)
+            if msg.send():
+                message = "发送成功"
+                return render(request, 'backstage/send_emails.html', locals())
+            else:
+                message = "发送失败"
+                return render(request, 'backstage/send_emails.html', locals())
