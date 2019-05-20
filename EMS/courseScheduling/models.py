@@ -117,7 +117,6 @@ class Teacher_Schedule_result(models.Model):
     def __str__(self):
         return "-".join([str(self.tno), str(self.where), str(self.time),
                          str(self.current_number), str(self.MAX_number), str(self.state)])
-
     class Meta:
         db_table = 'Teacher_Schedule_result'
         unique_together = (
