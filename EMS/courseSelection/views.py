@@ -9,13 +9,12 @@ import json
 import numpy as np
 import datetime
 from django.conf import settings
-from .models import Picture
 import pymysql
-import matplotlib.pyplot as plt
-import matplotlib
+
 
 def welcome(request):
     return render(request, 'courseSelection/welcome.html')
+
 
 def selection_home_page(request):
     if request.session['user_type'] == '学生':
@@ -92,16 +91,16 @@ def stu_major(request):
         print(m.tno.mcno.mno.major.mname)
         if m.tno.mcno.mno.major.mname == majorName and m.state == "专业选修":
             majorC.append(m)
-    data=[]
+    data = []
     dat = []
     haveChosen = {}
 
     courseChosen = CourseSelected.objects.filter(sno__username=sno)
 
     for c in courseChosen:
-        if(c.cno.state != "专业必修" and c.cno.state != "公共基础必修" ):
+        if (c.cno.state != "专业必修" and c.cno.state != "公共基础必修"):
             tmp = {}
-            haveChosen[c.cno.id]=1
+            haveChosen[c.cno.id] = 1
             tmp["id"] = c.cno.id
             tmp["课程号"] = c.cno.tno.mcno.cno.cno
             tmp["课程名"] = c.cno.tno.mcno.cno.cname
@@ -132,6 +131,7 @@ def stu_major(request):
         if tmp["选课人数"] < tmp["课程容量"]:
             data.append(tmp)
     return render(request, "courseSelection/stu_major.html", {'data': json.dumps(data), 'dat': json.dumps(dat)})
+
 
 def select_course(request):
     if request.is_ajax():
@@ -259,10 +259,12 @@ def delete(request):
             X = CourseSelected.objects.filter(sno__username=sno, cno_id=ID)
             X.delete()
 
-            return JsonResponse({"flag":1,"tot":tot,"ID":ID})
+            return JsonResponse({"flag": 1, "tot": tot, "ID": ID})
+
+
 # def search(request):
-    # if request.method == 'GET':
-        # request.GET.get[]
+# if request.method == 'GET':
+# request.GET.get[]
 
 
 def find_course(request):
@@ -288,6 +290,8 @@ def find_course(request):
                     tp["节次"] = district[0] + "-" + district[1]
                     dic[i.cno.tno.mcno.cno.cname].append(tp)
             return JsonResponse({"dic": dic, "t_info": t_info, "t_place": t_place})
+
+
 def adm_selection_manage(request):
     return render(request, "courseSelection/adm_selection_manage.html")
 
@@ -371,34 +375,12 @@ def school_query(request):
 
     # 关闭数据库连接
     db.close()
-
-    matplotlib.rcParams['font.sans-serif'] = ['SimHei']
-    matplotlib.rcParams['axes.unicode_minus'] = False
-    # plt.subplot(1, 3, 1)
     label_list = ["计科", "自动化", "电子信息"]  # 各部分标签
     size = [75, 35, 10]  # 各部分大小
 
     color = ["red", "green", "blue"]  # 各部分颜色
     explode = [0.05, 0, 0]  # 各部分突出值
 
-    patches, l_text, p_text = plt.pie(size, explode=explode, colors=color, labels=label_list, labeldistance=1.1,
-                                      autopct="%1.1f%%", shadow=False, startangle=90, pctdistance=0.6)
-    plt.axis("equal")  # 设置横轴和纵轴大小相等，这样饼才是圆的
-    plt.legend()
-    # plt.show()
-    # plt.savefig( 'C:/Users/Lenovo/Desktop/test/2019-Software-Engineering-Curriculum-Design-master/2019-Software-Engineering-Curriculum-Design-master/EMS/static/img/adm_query/test2.jpg')
-    plt.figure()
-    x = ["2016-2017", "2017-2018", "2018-2019"]
-    y = [135, 166, 189]
-    # plt.subplot(1, 3, 2)
-    plt.plot(x, y)
-    # plt.savefig('C:/Users/Lenovo/Desktop/test/2019-Software-Engineering-Curriculum-Design-master/2019-Software-Engineering-Curriculum-Design-master/EMS/static/img/adm_query/test1.jpg')
-    plt.figure()
-    # plt.subplot(1, 3, 3)
-    plt.bar(label_list, size)
-    # plt.savefig('C:/Users/Lenovo/Desktop/test/2019-Software-Engineering-Curriculum-Design-master/2019-Software-Engineering-Curriculum-Design-master/EMS/static/img/adm_query/test3.jpg')
-    # plt.show()
-    print(123245432456432)
     return render(request, "courseSelection/adm_showimg.html")
 
 
