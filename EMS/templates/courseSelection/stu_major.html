@@ -2,132 +2,133 @@
 {% block title %}欢迎登录教务管理系统{% endblock %}
 
 
- {% block content %}
-<head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=0">
-    <script src="../../static/exampel/Timetables.min.js"></script>
-    <title>jQuery大学课表布局插件Timetables.js</title>
-    <style>
-        #coursesTable {
-            padding: 15px 10px;
-        }
+{% block content %}
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=0">
+        <script src="../../static/exampel/Timetables.min.js"></script>
+        <title>jQuery大学课表布局插件Timetables.js</title>
+        <style>
+            #coursesTable {
+                padding: 15px 10px;
+            }
 
-        .Courses-head {
-            background-color: #edffff;
-        }
+            .Courses-head {
+                background-color: #edffff;
+            }
 
-        .Courses-head > div {
-            text-align: center;
-            font-size: 14px;
-            line-height: 28px;
-        }
+            .Courses-head > div {
+                text-align: center;
+                font-size: 14px;
+                line-height: 28px;
+            }
 
-        .left-hand-TextDom, .Courses-head {
-            background-color: #f2f6f7;
-        }
+            .left-hand-TextDom, .Courses-head {
+                background-color: #f2f6f7;
+            }
 
-        .Courses-leftHand {
-            background-color: #f2f6f7;
-            font-size: 12px;
-        }
+            .Courses-leftHand {
+                background-color: #f2f6f7;
+                font-size: 12px;
+            }
 
-        .Courses-leftHand .left-hand-index {
-            color: #9c9c9c;
-            margin-bottom: 4px !important;
-        }
+            .Courses-leftHand .left-hand-index {
+                color: #9c9c9c;
+                margin-bottom: 4px !important;
+            }
 
-        .Courses-leftHand .left-hand-name {
-            color: #666;
-        }
+            .Courses-leftHand .left-hand-name {
+                color: #666;
+            }
 
-        .Courses-leftHand p {
-            text-align: center;
-            font-weight: 900;
-        }
+            .Courses-leftHand p {
+                text-align: center;
+                font-weight: 900;
+            }
 
-        .Courses-head > div {
-            border-left: none !important;
-        }
+            .Courses-head > div {
+                border-left: none !important;
+            }
 
-        .Courses-leftHand > div {
-            padding-top: 5px;
-            border-bottom: 1px dashed rgb(219, 219, 219);
-        }
+            .Courses-leftHand > div {
+                padding-top: 5px;
+                border-bottom: 1px dashed rgb(219, 219, 219);
+            }
 
-        .Courses-leftHand > div:last-child {
-            border-bottom: none !important;
-        }
+            .Courses-leftHand > div:last-child {
+                border-bottom: none !important;
+            }
 
-        .left-hand-TextDom, .Courses-head {
-            border-bottom: 1px solid rgba(0, 0, 0, 0.1) !important;
-        }
+            .left-hand-TextDom, .Courses-head {
+                border-bottom: 1px solid rgba(0, 0, 0, 0.1) !important;
+            }
 
-        .Courses-content > ul {
-            border-bottom: 1px dashed rgb(219, 219, 219);
-            box-sizing: border-box;
-        }
+            .Courses-content > ul {
+                border-bottom: 1px dashed rgb(219, 219, 219);
+                box-sizing: border-box;
+            }
 
-        .Courses-content > ul:last-child {
-            border-bottom: none !important;
-        }
+            .Courses-content > ul:last-child {
+                border-bottom: none !important;
+            }
 
-        .highlight-week {
-            color: #02a9f5 !important;
-        }
+            .highlight-week {
+                color: #02a9f5 !important;
+            }
 
-        .Courses-content li {
-            text-align: center;
-            color: #666666;
-            font-size: 14px;
-            line-height: 50px;
-        }
+            .Courses-content li {
+                text-align: center;
+                color: #666666;
+                font-size: 14px;
+                line-height: 50px;
+            }
 
-        .Courses-content li span {
-            padding: 6px 2px;
-            box-sizing: border-box;
-            line-height: 18px;
-            border-radius: 4px;
-            white-space: normal;
-            word-break: break-all;
-            cursor: pointer;
-        }
+            .Courses-content li span {
+                padding: 6px 2px;
+                box-sizing: border-box;
+                line-height: 18px;
+                border-radius: 4px;
+                white-space: normal;
+                word-break: break-all;
+                cursor: pointer;
+            }
 
-        .grid-active {
-            z-index: 9999;
-        }
+            .grid-active {
+                z-index: 9999;
+            }
 
-        .grid-active span {
-            box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.2);
-        }
-    </style>
-</head>
+            .grid-active span {
+                box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.2);
+            }
+        </style>
+    </head>
     <div class="modal" id="eidtModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
-    <div class="modal-dialog" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
-                        aria-hidden="true">×</span></button>
-                <h4 class="modal-title" id="myModalLabel">已选课程</h4>
-            </div>
-            <div class="modal-body">
-                <div id="coursesTable"></div>
-                <button onclick="Texport(this)" style="background-color: #00a2ae; color: #fff; padding: 5px 10px; border-radius: 4px;border: none">
-                    课表导出
-                </button>
-                <script>
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                            aria-hidden="true">×</span></button>
+                    <h4 class="modal-title" id="myModalLabel">已选课程</h4>
+                </div>
+                <div class="modal-body">
+                    <div id="coursesTable"></div>
+                    <button onclick="Texport(this)"
+                            style="background-color: #00a2ae; color: #fff; padding: 5px 10px; border-radius: 4px;border: none">
+                        课表导出
+                    </button>
+                    <script>
 
-                </script>
-            </div>
-            <div class="modal-footer">
-                <span id="errorMsg" style="color: red;"></span>
-                <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
-                <button type="button" class="btn btn-primary" id="btnEditSave">保存</button>
+                    </script>
+                </div>
+                <div class="modal-footer">
+                    <span id="errorMsg" style="color: red;"></span>
+                    <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
+                    <button type="button" class="btn btn-primary" id="btnEditSave">保存</button>
+                </div>
             </div>
         </div>
     </div>
-</div>
-        <section class="content-header">
+    <section class="content-header">
         <h1>选课子系统
             <small>Info</small>
         </h1>
@@ -136,63 +137,77 @@
             <li class="active">选课</li>
         </ol>
     </section>
-        <section class="content">
+    <section class="content">
         <div class="box">
             <div class="box-header">
             </div>
-            <div class="col-md-6">
-               <div class="form-group">
-                <label>学院</label>
-                <select class="form-control select2 select2-hidden-accessible" multiple="" style="width: 100%;" tabindex="-1" aria-hidden="true">
-                   <option >文法学院</option>
-                    <option>化学工程学院</option>
-                    <option>机电工程学院</option>
-                    <option>经济管理学院</option>
-                    <option>国际教育学院</option>
-                    <option>理学院</option>
-                    <option>材料科学与工程学院</option>
-                    <option>马克思主义学院</option>
-                    <option>信息科学与技术学院</option>
-                    <option>生命科学与技术学院</option>
-                    <option>巴黎居里工程师学院</option>
-                    <option>侯德榜工程师学院</option>
-                    <option>能源学院</option>
-                </select>
-              </div>
-              <!-- /.form-group -->
-               <div class="form-group">
-                <label></label>
-                <select class="form-control select2 select2-hidden-accessible" multiple="" style="width: 100%;" tabindex="-1" aria-hidden="true">
-                  <option >文法学院</option>
-                    <option>化学工程学院</option>
-                    <option>机电工程学院</option>
-                    <option>经济管理学院</option>
-                    <option>国际教育学院</option>
-                    <option>理学院</option>
-                    <option>材料科学与工程学院</option>
-                    <option>马克思主义学院</option>
-                    <option>信息科学与技术学院</option>
-                    <option>生命科学与技术学院</option>
-                    <option>巴黎居里工程师学院</option>
-                    <option>侯德榜工程师学院</option>
-                    <option>能源学院</option>
-                </select>
-              </div>
-              <!-- /.form-group -->
-            </div>
-            <input type="button" onclick="showcourse(this)" class="btn btn-primary" id='k' value="显示课表">
-            <form class="navbar-form navbar-left" method="get" id="searchform" action="/search/">
-                <div class="form-group" >
-                    {% csrf_token %}
-                    <input type="search" name="q" class="form-control" id="s" placeholder="Search">
+
+            {#-----------------------------------------选课学生自由查询课程------------------------------------------------------#}
+            <section class="content">
+                <div class="box">
+                    <div class="box-header">
+                        <h3 class="box-title">查看个人成绩</h3>
+                        <div class="box-header">
+                            <label style="color: red">学院：</label>
+                            <select name="year" id="course_year" class="select2" style="width: 25%">
+                                <option value="All" selected="selected">全部</option>
+                                {% for year in years %}
+                                    <option value="{{ year }}">{{ year }}</option>
+                                {% endfor %}
+                            </select>
+                            <label style="color: red">专业：</label>
+                            <select name="semester" id="course_semester" class="select2" style="width: 25%">
+                                <option value="All" selected="selected">全部</option>
+                                {% for semester in semesters %}
+                                    <option value="{{ semester }}">{{ semester }}</option>
+                                {% endfor %}
+
+                            </select>
+                        </div>
+                    </div>
+                    <div class="box-body">
+                        <table id="my_course_score_table" class="table table-bordered table-striped">
+                            <thead>
+                            <tr>
+                                <th>编号</th>
+                                <th>学年</th>
+                                <th>学期</th>
+                                <th>课程号</th>
+                                <th>课程名</th>
+                                <th>分数</th>
+                                <th>平时分</th>
+                                <th>期末成绩</th>
+                                <th>学分</th>
+                                <th>老师</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            {% for course_score in my_course_score %}
+                                <tr>
+                                    <td>{{ forloop.counter }}</td>
+                                    <td>{{ course_score.teaching.mcno.year }}</td>
+                                    <td>{{ course_score.teaching.mcno.semester }}</td>
+                                    <td>{{ course_score.teaching.mcno.cno.cno }}</td>
+                                    <td>{{ course_score.teaching.mcno.cno.cname }}</td>
+                                    <td>{{ course_score.score }}</td>
+                                    <td>{{ course_score.commen_score }}</td>
+                                    <td>{{ course_score.final_score }}</td>
+                                    <td>{{ course_score.teaching.mcno.cno.score }}</td>
+                                    <td>{{ course_score.teaching.tno.name }}</td>
+                                </tr>
+                            {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
                 </div>
-                <button type="submit" class="btn btn-default" id="searching">搜索</button>
-                <select class="selectpicker show-tick form-control" style="width:105px;height: 38px" id="select1" name="grant" data-live-search="true">
-                    <option>按课程号</option>
-                    <option>按课程名</option>
-                    <option>按老师姓名</option>
-                </select>
-            </form>
+            </section>
+
+            {#----------------------学生当前学期应选课程---------------------------#}
+            <div class="col-md-6">
+                <h3>可选专业选修课</h3>
+                <input type="button" onclick="showcourse(this)" class="btn btn-primary" id='k' value="显示课表">
+            </div>
+
             <div class="box-body">
                 <table id="majorCourse" class="table table-bordered table-striped">
                     <thead>
@@ -232,364 +247,417 @@
         </div>
     </section>
 
- {% endblock %}
+{% endblock %}
 {% block script %}
 
     <script>
 
 
+        {#+'</td><td>'+'<input type="button" onclick="dele(this)" class="btn btn-danger" name='+i+'  value="退课">'#}
+        var data = eval('{{data|safe}}');
+        var dat = eval('{{dat|safe}}');//已选课数据
+        var trans = 0;
+        majorCourse = document.getElementById("majorCourse");
+        courseSelected = document.getElementById("courseSelected");
 
-    {#+'</td><td>'+'<input type="button" onclick="dele(this)" class="btn btn-danger" name='+i+'  value="退课">'#}
-    var data = eval('{{data|safe}}');
-    var dat = eval('{{dat|safe}}');//已选课数据
-    var trans = 0;
-    majorCourse = document.getElementById("majorCourse");
-    courseSelected = document.getElementById("courseSelected");
+        $(function () {
+            $(".select2").select2();
+        });
+        {#--------------------------------------------筛选------------------------------------------------------#}
+        $.fn.dataTable.ext.search.push(
+            function (setting, data, dataIndex) {
+                let sl_year = $("#course_year").val();
+                let sl_semester = $("#course_semester").val();
+                return ((sl_year === data[1] || sl_year === 'All') && (sl_semester === 'All' || sl_semester === data[2]));
+            }
+        );
 
-	  $(function () {
-	    $(".select2").select2();
-	  });
-    {#--------------------------------------------筛选------------------------------------------------------#}
+        $(function () {
+            var table = $('#my_course_score_table').DataTable({
+                dom: 'Bfrtip',
+                buttons: [
+                    'copy', 'csv', 'excel', 'pdf', 'print'
+                ],
+                "paging": true,       <!-- 允许分页 -->
+                "lengthChange": true, <!-- 允许改变每页显示的行数 -->
+                "searching": true,    <!-- 允许内容搜索 -->
+                "ordering": true,     <!-- 允许排序 -->
+                "info": true,         <!-- 显示信息 -->
+                "autoWidth": false,    <!-- 固定宽度 -->
+                "language": {
+                    "sProcessing": "处理中...",
+                    "sLengthMenu": "显示 _MENU_ 项结果",
+                    "sZeroRecords": "没有匹配结果",
+                    "sInfo": "显示第 _START_ 至 _END_ 项结果，共 _TOTAL_ 项",
+                    "sInfoEmpty": "显示第 0 至 0 项结果，共 0 项",
+                    "sInfoFiltered": "(由 _MAX_ 项结果过滤)",
+                    "sInfoPostFix": "",
+                    "sSearch": "搜索:",
+                    "sUrl": "",
+                    "sEmptyTable": "表中数据为空",
+                    "sLoadingRecords": "载入中...",
+                    "sInfoThousands": ",",
+                    "oPaginate": {
+                        "sFirst": "首页",
+                        "sPrevious": "上页",
+                        "sNext": "下页",
+                        "sLast": "末页"
+                    },
+                    "oAria": {
+                        "sSortAscending": ": 以升序排列此列",
+                        "sSortDescending": ": 以降序排列此列"
+                    }
+                },
+                "columnDefs": [{
+                    "searchable": false,
+                    "orderable": true,
+                    "targets": 0
+                }],
+                "order": [[0, 'asc']]
+            });
+
+            $('#my_course_score_table tbody').on('click', 'tr', function (e) {
+                if ($(this).hasClass('selected')) {
+                    $(this).removeClass('selected');
+                } else {
+                    table.$('tr.selected').removeClass('selected');
+                    $(this).addClass('selected');
+                }
+            });
+
+            $('#course_year, #course_semester').change(function () {
+                table.draw();
+            });
+
+            $('.select2').select2();
+        })
 
 
 
+        {#----------------------候选课程---------------------------#}
+        var class_week = new Array(data.length);
 
-    {#----------------------候选课程---------------------------#}
-    var class_week = new Array(data.length);
-    var selected = document.getElementById("k");
-    selected.style.position = "absolute";//设置绝对定位（或者相对定位）
-    selected.style.left = "1000px";//设置left数值
-    selected.style.top = "30px";//设置top数值
-    for(var i=0;i<data.length;i++) {
-        class_week[i] = new Array();
-        times = data[i]["上课时间"].split(",");
-        for (var j = 0; j < times.length; j++) {
-            class_week[i].push(times[j].split("-"));
-        }
-        {#alert(class_week[i].length);#}
-        tmp = new Array();//classweek每个索引都是不同的周
-        for (var j = 0; j < class_week[i].length; j++) {
-            var di = {
-                "week": class_week[i][j][2] + "-" + class_week[i][j][3] + "周",
-                "course": class_week[i][j][0] + "-" + class_week[i][j][1] + "节"
-            };
-            {#alert(di['week']);#}
-            {#alert(di['course']);#}
-            tmp.push(di);
-        }
-        {#alert(tmp);#}
-        {#times.split()#}
-        var strr = "";
-        for (var k = 0; k < tmp.length; k++) {
-            strr += tmp[k]["course"];
-            strr += "(";
-            strr += tmp[k]["week"];
-            strr += ")";
-            if (k < (tmp.length - 1)) {
-                strr += " ,";
+        for (var i = 0; i < data.length; i++) {
+            class_week[i] = new Array();
+            times = data[i]["上课时间"].split(",");
+            for (var j = 0; j < times.length; j++) {
+                class_week[i].push(times[j].split("-"));
+            }
+            {#alert(class_week[i].length);#}
+            tmp = new Array();//classweek每个索引都是不同的周
+            for (var j = 0; j < class_week[i].length; j++) {
+                var di = {
+                    "week": class_week[i][j][2] + "-" + class_week[i][j][3] + "周",
+                    "course": class_week[i][j][0] + "-" + class_week[i][j][1] + "节"
+                };
+                {#alert(di['week']);#}
+                {#alert(di['course']);#}
+                tmp.push(di);
+            }
+            {#alert(tmp);#}
+            {#times.split()#}
+            var strr = "";
+            for (var k = 0; k < tmp.length; k++) {
+                strr += tmp[k]["course"];
+                strr += "(";
+                strr += tmp[k]["week"];
+                strr += ")";
+                if (k < (tmp.length - 1)) {
+                    strr += " ,";
+                }
+            }
+            if (data[i]["选课人数"] < data[i]["课程容量"]) {
+                if (data[i]["if_chosen"] == 0) {
+                    majorCourse.innerHTML += '<tr ><td>' + data[i]["课程号"] + '</td><td>' + data[i]["课程名"] + '</td><td>' + data[i]["学时"] + '</td><td>' + data[i]["选课人数"] + '</td><td>' + data[i]["课程容量"] + '</td><td>' + data[i]["授课教师"] + '</td><td>' + data[i]["上课教室"] + '</td><td>' + strr + '</td><td>' + '<input type="button" onclick="test(this)" class="btn btn-primary" id=' + i + ' value="选课">' + '</td></tr>';
+                }
+                else {
+                    majorCourse.innerHTML += '<tr ><td>' + data[i]["课程号"] + '</td><td>' + data[i]["课程名"] + '</td><td>' + data[i]["学时"] + '</td><td>' + data[i]["选课人数"] + '</td><td>' + data[i]["课程容量"] + '</td><td>' + data[i]["授课教师"] + '</td><td>' + data[i]["上课教室"] + '</td><td>' + strr + '</td><td>' + '<input type="button"  class="btn btn-success" id=' + i + ' value="已选">' + '</td></tr>';
+                }
             }
         }
-        if (data[i]["选课人数"] < data[i]["课程容量"]) {
-            if (data[i]["if_chosen"] == 0) {
-                majorCourse.innerHTML += '<tr ><td>' + data[i]["课程号"] + '</td><td>' + data[i]["课程名"] + '</td><td>' + data[i]["学时"] + '</td><td>' + data[i]["选课人数"] + '</td><td>' + data[i]["课程容量"] + '</td><td>' + data[i]["授课教师"] + '</td><td>' + data[i]["上课教室"] + '</td><td>' + strr + '</td><td>' + '<input type="button" onclick="test(this)" class="btn btn-primary" id=' + i + ' value="选课">' + '</td></tr>';
+
+
+        {#----------------------已选课程---------------------------#}
+
+        var class_week = new Array(dat.length);
+        for (var i = 0; i < dat.length; i++) {
+            class_week[i] = new Array();
+            times = dat[i]["上课时间"].split(",");
+            for (var j = 0; j < times.length; j++) {
+                class_week[i].push(times[j].split("-"));
             }
-            else {
-                majorCourse.innerHTML += '<tr ><td>' + data[i]["课程号"] + '</td><td>' + data[i]["课程名"] + '</td><td>' + data[i]["学时"] + '</td><td>' + data[i]["选课人数"] + '</td><td>' + data[i]["课程容量"] + '</td><td>' + data[i]["授课教师"] + '</td><td>' + data[i]["上课教室"] + '</td><td>' + strr + '</td><td>' + '<input type="button"  class="btn btn-success" id=' + i + ' value="已选">' + '</td></tr>';
+            {#alert(class_week[i].length);#}
+            tmp = new Array();//classweek每个索引都是不同的周
+            for (var j = 0; j < class_week[i].length; j++) {
+                var di = {
+                    "week": class_week[i][j][2] + "-" + class_week[i][j][3] + "周",
+                    "course": class_week[i][j][0] + "-" + class_week[i][j][1] + "节"
+                };
+                {#alert(di['week']);#}
+                {#alert(di['course']);#}
+                tmp.push(di);
             }
-        }
-    }
-
-
-    {#----------------------已选课程---------------------------#}
-
-    var class_week = new Array(dat.length);
-    for(var i=0;i<dat.length;i++)
-    {
-        class_week[i]=new Array();
-        times=dat[i]["上课时间"].split(",");
-        for(var j=0;j<times.length;j++)
-        {
-            class_week[i].push(times[j].split("-"));
-        }
-        {#alert(class_week[i].length);#}
-        tmp = new Array();//classweek每个索引都是不同的周
-        for(var j=0;j<class_week[i].length;j++)
-        {
-            var di = {"week":class_week[i][j][2]+"-"+class_week[i][j][3]+"周","course":class_week[i][j][0]+"-"+class_week[i][j][1]+"节"};
-            {#alert(di['week']);#}
-            {#alert(di['course']);#}
-            tmp.push(di);
-        }
-        {#alert(tmp);#}
-        {#times.split()#}
-        var strr="";
-        for(var k=0;k<tmp.length;k++)
-        {
-            strr+=tmp[k]["course"];
-            strr+="(";
-            strr+=tmp[k]["week"];
-            strr+=")";
-            if(k<(tmp.length-1))
-            {
-                strr+=" ,";
+            {#alert(tmp);#}
+            {#times.split()#}
+            var strr = "";
+            for (var k = 0; k < tmp.length; k++) {
+                strr += tmp[k]["course"];
+                strr += "(";
+                strr += tmp[k]["week"];
+                strr += ")";
+                if (k < (tmp.length - 1)) {
+                    strr += " ,";
+                }
             }
+            courseSelected.innerHTML += '<tr ><td>' + dat[i]["课程号"] + '</td><td>' + dat[i]["课程名"] + '</td><td>' + dat[i]["学时"] + '</td><td>' + dat[i]["选课人数"] + '</td><td>' + dat[i]["课程容量"] + '</td><td>' + dat[i]["授课教师"] + '</td><td>' + dat[i]["上课教室"] + '</td><td>' + strr + '</td><td>' + '<input type="button" onclick="dele(this)" class="btn btn-danger"  name=' + i + ' value="退课">' + '</td></tr>';
+            trans += 1;
         }
-        courseSelected.innerHTML+='<tr ><td>'+dat[i]["课程号"]+'</td><td>'+dat[i]["课程名"]+'</td><td>'+dat[i]["学时"]+'</td><td>'+dat[i]["选课人数"]+'</td><td>'+dat[i]["课程容量"]+'</td><td>'+dat[i]["授课教师"]+'</td><td>'+dat[i]["上课教室"]+'</td><td>'+ strr+ '</td><td>'+'<input type="button" onclick="dele(this)" class="btn btn-danger"  name='+i+' value="退课">'+'</td></tr>';
-        trans+=1;
-    }
 
 
+        {#----------------------选课---------------------------#}
 
-    {#----------------------选课---------------------------#}
-        function test(obj){
+        function test(obj) {
             {#alert(obj);#}
             {#alert(obj.id);#}
             {#alert(obj.value);#}
             {#alert("sud");#}
-                {#alert(data[obj.id]["id"]);#}
-                $.ajax({
-                    url: '/courseSelection/select_course',
-                    type: 'GET',
-                    data: {id:data[obj.id]["id"]},
-                    traditional:true,
-                    dataType: 'JSON',
-                    success: function(arg) {
-                        if(arg["flag"]==1)
-                        {
-                            changeColor = document.getElementById(obj.id);
-                            changeColor.className = "btn btn-success";
-                            changeColor.value = "已选";
-                            changeColor.onclick=null;
+            {#alert(data[obj.id]["id"]);#}
+            $.ajax({
+                url: '/courseSelection/select_course',
+                type: 'GET',
+                data: {id: data[obj.id]["id"]},
+                traditional: true,
+                dataType: 'JSON',
+                success: function (arg) {
+                    if (arg["flag"] == 1) {
+                        changeColor = document.getElementById(obj.id);
+                        changeColor.className = "btn btn-success";
+                        changeColor.value = "已选";
+                        changeColor.onclick = null;
 
-                            {#var rows = majorCourses.getElementsByTagName("tr");#}
-                            {#var first = rows[1];#}
+                        {#var rows = majorCourses.getElementsByTagName("tr");#}
+                        {#var first = rows[1];#}
 
-                            courseSelected.innerHTML+='<tr ><td>'+obj.parentNode.parentNode.cells[0].innerHTML+'</td><td>'+obj.parentNode.parentNode.cells[1].innerHTML+'</td><td>'+obj.parentNode.parentNode.cells[2].innerHTML+'</td><td>'+arg["tot"]+'</td><td>'+obj.parentNode.parentNode.cells[4].innerHTML+'</td><td>'+obj.parentNode.parentNode.cells[5].innerHTML+'</td><td>'+obj.parentNode.parentNode.cells[6].innerHTML+'</td><td>'+ obj.parentNode.parentNode.cells[7].innerHTML+ '</td><td>'+'<input type="button" onclick="dele(this)" class="btn btn-danger"  name='+trans+' value="退课">'+'</td></tr>';
-                            var tmp={};
-                            obj.parentNode.parentNode.cells[3].innerHTML = arg["tot"];
-                            dat.push(data[obj.id]);
+                        courseSelected.innerHTML += '<tr ><td>' + obj.parentNode.parentNode.cells[0].innerHTML + '</td><td>' + obj.parentNode.parentNode.cells[1].innerHTML + '</td><td>' + obj.parentNode.parentNode.cells[2].innerHTML + '</td><td>' + arg["tot"] + '</td><td>' + obj.parentNode.parentNode.cells[4].innerHTML + '</td><td>' + obj.parentNode.parentNode.cells[5].innerHTML + '</td><td>' + obj.parentNode.parentNode.cells[6].innerHTML + '</td><td>' + obj.parentNode.parentNode.cells[7].innerHTML + '</td><td>' + '<input type="button" onclick="dele(this)" class="btn btn-danger"  name=' + trans + ' value="退课">' + '</td></tr>';
+                        var tmp = {};
+                        obj.parentNode.parentNode.cells[3].innerHTML = arg["tot"];
+                        dat.push(data[obj.id]);
 
-                            trans+=1;
-                        }
-                        else if(arg["flag"]==0)
-                        {
-                            alert("时间冲突，请选择其他课程！！");
-                        }
-                        else if(arg["flag"]==3)
-                        {
-                            alert("容量已满,无法选课!");
-                        }
+                        trans += 1;
                     }
-                });
+                    else if (arg["flag"] == 0) {
+                        alert("时间冲突，请选择其他课程！！");
+                    }
+                    else if (arg["flag"] == 3) {
+                        alert("容量已满,无法选课!");
+                    }
+                }
+            });
         }
 
 
-    {#----------------------退课---------------------------#}
-        function dele(obj){
+        {#----------------------退课---------------------------#}
+
+        function dele(obj) {
             {#alert(obj);#}
-                {#alert(obj.name);#}
-                $.ajax({
-                    url: '/courseSelection/delete_course',
-                    type: 'GET',
-                    data: {id: dat[obj.name]["id"]},
-                    traditional: true,
-                    dataType: 'JSON',
-                    success: function (arg) {
+            {#alert(obj.name);#}
+            $.ajax({
+                url: '/courseSelection/delete_course',
+                type: 'GET',
+                data: {id: dat[obj.name]["id"]},
+                traditional: true,
+                dataType: 'JSON',
+                success: function (arg) {
 
-                        var valueTd;
-                        var tr;
-                       // alert(valueTd.innerHTML);
-                        for(var i = 0;i<data.length;i++)
-                        {
-                            if(data[i]["id"]==arg["ID"])
-                            {
-                                valueTd = majorCourse.rows[i+1].cells[3];
-                                valueTd.innerHTML = arg["tot"];
+                    var valueTd;
+                    var tr;
+                    // alert(valueTd.innerHTML);
+                    for (var i = 0; i < data.length; i++) {
+                        if (data[i]["id"] == arg["ID"]) {
+                            valueTd = majorCourse.rows[i + 1].cells[3];
+                            valueTd.innerHTML = arg["tot"];
 
-                                tr = majorCourse.rows[i+1].cells[8];
-                                tr.innerHTML = '<input type="button" onclick="test(this)" class="btn btn-primary" id=' + i + ' value="选课">'
+                            tr = majorCourse.rows[i + 1].cells[8];
+                            tr.innerHTML = '<input type="button" onclick="test(this)" class="btn btn-primary" id=' + i + ' value="选课">'
 
-                                break;
+                            break;
+                        }
+                    }
+
+                    tr = obj.parentNode.parentNode;
+                    tr.parentNode.removeChild(tr);
+                }
+            });
+        }
+
+
+        {#----------------------查看已选课课表---------------------------#}
+
+        function showcourse(obj) {
+            $('#eidtModal').modal('show');
+            document.getElementById('coursesTable').innerHTML = "";
+            document.getElementById('coursesTable').innerHTML = "";
+            var courseList = [
+                ['', '', '', '', '', '', '', '', '', '', '', '', ''],
+                ['', '', '', '', '', '', '', '', '', '', '', '', ''],
+                ['', '', '', '', '', '', '', '', '', '', '', '', ''],
+                ['', '', '', '', '', '', '', '', '', '', '', '', ''],
+                ['', '', '', '', '', '', '', '', '', '', '', '', ''],
+                ['', '', '', '', '', '', '', '', '', '', '', '', ''],
+                ['', '', '', '', '', '', '', '', '', '', '', '', ''],
+            ];
+            var week = window.innerWidth > 360 ? ['周一', '周二', '周三', '周四', '周五', '周六', '周日'] : ['一', '二', '三', '四', '五', '六', '七'];
+            var day = new Date().getDay();
+            var courseType = [
+                [{index: '1', name: '8:00'}, 1],
+                [{index: '2', name: '8:50'}, 1],
+                [{index: '3', name: '9:50'}, 1],
+                [{index: '4', name: '10:45'}, 1],
+                [{index: '5', name: '11:35'}, 1],
+                [{index: '6', name: '14:00'}, 1],
+                [{index: '7', name: '14:45'}, 1],
+                [{index: '8', name: '15:40'}, 1],
+                [{index: '9', name: '16:25'}, 1],
+                [{index: '10', name: '16:30'}, 1],
+                [{index: '11', name: '18:00'}, 1],
+                [{index: '12', name: '18:50'}, 1],
+                [{index: '13', name: '19:40'}, 1]
+            ];
+            // 实例化(初始化课表)
+            var Timetable = new Timetables({
+                el: '#coursesTable',
+                timetables: courseList,
+                week: week,
+                timetableType: courseType,
+                highlightWeek: day,
+                gridOnClick: function (e) {
+                    alert(e.name + '  ' + e.week + ', 第' + e.index + '节课, 课长' + e.length + '节');
+                    console.log(e);
+                },
+                styles: {
+                    Gheight: 50
+                }
+            });
+
+            $.ajax({
+                url: '/courseSelection/find_course',
+                type: 'GET',
+                traditional: true,
+                dataType: 'JSON',
+                success: function (arg) {
+                    var times = new Array(2);
+                    var Day = 0;
+                    var cstart = 0;
+                    var cend = 0;
+                    var week = new Array();
+                    for (var key in arg["dic"]) {
+                        {#alert("asas");#}
+                        for (var k = 0; k < arg["dic"][key].length; k++) {
+                            times = arg["dic"][key][k]["节次"].split("-");
+                            week = arg["dic"][key][k]["周数"].split("-");
+
+                            if (parseInt(times[1]) >= 1 && parseInt(times[1]) <= 13)
+                                Day = 1;
+                            else if (parseInt(times[1]) >= 14 && parseInt(times[1]) <= 26)
+                                Day = 2;
+                            else if (parseInt(times[1]) >= 27 && parseInt(times[1]) <= 39)
+                                Day = 3;
+                            else if (parseInt(times[1]) >= 40 && parseInt(times[1]) <= 52)
+                                Day = 4;
+                            else if (parseInt(times[1]) >= 53 && parseInt(times[1]) <= 65)
+                                Day = 5;
+                            else if (parseInt(times[1]) >= 66 && parseInt(times[1]) <= 78)
+                                Day = 6;
+                            else if (parseInt(times[1]) >= 79 && parseInt(times[1]) <= 91)
+                                Day = 7;
+                            cstart = parseInt(times[0]) % 13;
+                            cend = parseInt(times[1]) % 13;
+                            if (cstart == 0)
+                                cstart = 13;
+                            if (cend == 0)
+                                cend = 13;
+
+                            for (var g = cstart; g <= cend; g++) {
+                                courseList[Day - 1][g - 1] = key + "\n" + week[0] + "-" + week[1] + "周" + "\n" + arg["t_place"][key] + "\n" + arg["t_info"][key] + "\n";
                             }
                         }
 
-                            tr = obj.parentNode.parentNode;
-                            tr.parentNode.removeChild(tr);
+
                     }
-                });
-        }
-
-
-   {#----------------------查看已选课课表---------------------------#}
-    function showcourse(obj) {
-        $('#eidtModal').modal('show');
-        document.getElementById('coursesTable').innerHTML = "";
-        document.getElementById('coursesTable').innerHTML = "";
-        var courseList = [
-            ['','','','','','','','','','','','',''],
-            ['','','','','','','','','','','','',''],
-            ['','','','','','','','','','','','',''],
-            ['','','','','','','','','','','','',''],
-            ['','','','','','','','','','','','',''],
-            ['','','','','','','','','','','','',''],
-            ['','','','','','','','','','','','',''],
-        ];
-    var week = window.innerWidth > 360 ? ['周一', '周二', '周三', '周四', '周五','周六','周日'] : ['一', '二', '三', '四', '五','六','七'];
-    var day = new Date().getDay();
-    var courseType = [
-        [{index: '1', name: '8:00'}, 1],
-        [{index: '2', name: '8:50'}, 1],
-        [{index: '3', name: '9:50'}, 1],
-        [{index: '4', name: '10:45'}, 1],
-        [{index: '5', name: '11:35'}, 1],
-        [{index: '6', name: '14:00'}, 1],
-        [{index: '7', name: '14:45'}, 1],
-        [{index: '8', name: '15:40'}, 1],
-        [{index: '9', name: '16:25'}, 1],
-        [{index: '10', name: '16:30'}, 1],
-        [{index: '11', name: '18:00'}, 1],
-        [{index: '12', name: '18:50'}, 1],
-        [{index: '13', name: '19:40'}, 1]
-  ];
-  // 实例化(初始化课表)
-    var Timetable = new Timetables({
-        el: '#coursesTable',
-        timetables: courseList,
-        week: week,
-        timetableType: courseType,
-        highlightWeek: day,
-        gridOnClick: function (e) {
-          alert(e.name + '  ' + e.week + ', 第' + e.index + '节课, 课长' + e.length + '节');
-          console.log(e);
-        },
-        styles: {
-          Gheight: 50
-        }
-  });
-
-        $.ajax({
-            url:'/courseSelection/find_course',
-            type: 'GET',
-            traditional: true,
-            dataType: 'JSON',
-            success: function(arg)
-            {
-                var times = new Array(2);
-                var Day = 0;
-                var cstart = 0;
-                var cend = 0;
-                var week = new Array();
-                for (var key in arg["dic"])
-                {
-                    {#alert("asas");#}
-                    for(var k = 0 ; k < arg["dic"][key].length;k++)
-                    {
-                        times = arg["dic"][key][k]["节次"].split("-");
-                        week = arg["dic"][key][k]["周数"].split("-");
-
-                        if (parseInt(times[1])>=1&&parseInt(times[1])<=13)
-                            Day = 1;
-                        else if (parseInt(times[1])>=14&&parseInt(times[1])<=26)
-                            Day = 2;
-                        else if (parseInt(times[1])>=27&&parseInt(times[1])<=39)
-                            Day = 3;
-                        else if (parseInt(times[1])>=40&&parseInt(times[1])<=52)
-                            Day = 4;
-                        else if (parseInt(times[1])>=53&&parseInt(times[1])<=65)
-                            Day = 5;
-                        else if (parseInt(times[1])>=66&&parseInt(times[1])<=78)
-                            Day = 6;
-                        else if (parseInt(times[1])>=79&&parseInt(times[1])<=91)
-                            Day = 7;
-                        cstart = parseInt(times[0]) % 13;
-                        cend = parseInt(times[1]) % 13;
-                        if(cstart ==0)
-                            cstart = 13;
-                        if(cend == 0)
-                            cend = 13;
-
-                        for(var g = cstart;g <= cend ;g++)
-                        {
-                            courseList[Day-1][g-1] = key+"\n"+week[0]+"-"+week[1]+"周"+"\n"+arg["t_place"][key]+"\n"+arg["t_info"][key]+"\n";
+                    Timetable.setOption({
+                        timetables: courseList,
+                        week: ['一', '二', '三', '四', '五', '六', '日'],
+                        styles: {
+                            palette: ['#dedcda', '#ff4081']
+                        },
+                        timetableType: courseType,
+                        gridOnClick: function (e) {
+                            console.log(e);
                         }
-                    }
-
-
+                    });
                 }
-                Timetable.setOption({
-                timetables: courseList,
-                week: ['一', '二', '三', '四', '五', '六', '日'],
-                styles: {
-                palette: ['#dedcda', '#ff4081']
-                },
-                timetableType: courseType,
-                gridOnClick: function (e) {
-                console.log(e);
-                }
+            });
+        }
+
+        {#----------------------导出课表到本地---------------------------#}
+        {% comment %}
+        var ctables = document.getElementById("coursesTable");
+            $(function () {
+            $(".down2").click(function () {
+                html2canvas($(".test")).then(function (canvas) {
+                    var imgUri = canvas.toDataURL("image/png").replace("image/png", "image/octet-stream"); // 获取生成的图片的url
+                    window.location.href = imgUri; // 下载图片
                 });
-            }
-        });
-    }
 
-       {#----------------------导出课表到本地---------------------------#}
-    {% comment %}
-    var ctables = document.getElementById("coursesTable");
-        $(function () {
-        $(".down2").click(function () {
-            html2canvas($(".test")).then(function (canvas) {
-                var imgUri = canvas.toDataURL("image/png").replace("image/png", "image/octet-stream"); // 获取生成的图片的url
-                window.location.href = imgUri; // 下载图片
+
+                //html2canvas($('.tongxingzheng_bg'), {
+                //    onrendered: function (canvas) {
+                //        var data = canvas.toDataURL("image/png");//生成的格式
+                //        //data就是生成的base64码啦
+                //        alert(data);
+                //    }
+                //});
             });
-
-
-            //html2canvas($('.tongxingzheng_bg'), {
-            //    onrendered: function (canvas) {
-            //        var data = canvas.toDataURL("image/png");//生成的格式
-            //        //data就是生成的base64码啦
-            //        alert(data);
-            //    }
-            //});
         });
-    });
-      function Texport(obj) {
-          html2canvas(ctables, {
-              onrendered:function(canvas) {
+          function Texport(obj) {
+              html2canvas(ctables, {
+                  onrendered:function(canvas) {
 
-                  //返回图片dataURL，参数：图片格式和清晰度(0-1)
-                  var pageData = canvas.toDataURL('image/jpeg', 1.0);
+                      //返回图片dataURL，参数：图片格式和清晰度(0-1)
+                      var pageData = canvas.toDataURL('image/jpeg', 1.0);
 
-                  //方向默认竖直，尺寸ponits，格式a4[595.28,841.89]
-                  var pdf = new jsPDF('', 'pt', 'a4');
+                      //方向默认竖直，尺寸ponits，格式a4[595.28,841.89]
+                      var pdf = new jsPDF('', 'pt', 'a4');
 
-                  //addImage后两个参数控制添加图片的尺寸，此处将页面高度按照a4纸宽高比列进行压缩
-                  pdf.addImage(pageData, 'JPEG', 0, 0, 595.28, 592.28/canvas.width * canvas.height );
+                      //addImage后两个参数控制添加图片的尺寸，此处将页面高度按照a4纸宽高比列进行压缩
+                      pdf.addImage(pageData, 'JPEG', 0, 0, 595.28, 592.28/canvas.width * canvas.height );
 
-                  pdf.save('stone.pdf');
+                      pdf.save('stone.pdf');
 
-              }
-          });
-      }
+                  }
+              });
+          }
+        {% endcomment %}
+        {% comment %}
+          function Texport(obj)
+        {
+
+                html2canvas($("coursesTable")).then(function (canvas) {
+                    var imgUri = canvas.toDataURL("image/png").replace("image/png", "image/octet-stream"); // 获取生成的图片的url
+                    window.location.href = imgUri; // 下载图片
+                });
+
+
+                //html2canvas($('.tongxingzheng_bg'), {
+                //    onrendered: function (canvas) {
+                //        var data = canvas.toDataURL("image/png");//生成的格式
+                //        //data就是生成的base64码啦
+                //        alert(data);
+                //    }
+                //});
+
+
+        }
     {% endcomment %}
-    {% comment %}
-      function Texport(obj)
-    {
-
-            html2canvas($("coursesTable")).then(function (canvas) {
-                var imgUri = canvas.toDataURL("image/png").replace("image/png", "image/octet-stream"); // 获取生成的图片的url
-                window.location.href = imgUri; // 下载图片
-            });
-
-
-            //html2canvas($('.tongxingzheng_bg'), {
-            //    onrendered: function (canvas) {
-            //        var data = canvas.toDataURL("image/png");//生成的格式
-            //        //data就是生成的base64码啦
-            //        alert(data);
-            //    }
-            //});
-
-
-    }
-{% endcomment %}
     </script>
 {% endblock %}

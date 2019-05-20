@@ -422,11 +422,14 @@ def time_set(request):
             print(323)
     print(request)
     '''
+    print('test1')
+    print(settings.BEGIN)
     begin = request.POST.get('begin_time')
-    request.session['begin_time'] = begin
+    settings.BEGIN = begin
+    print('test2')
+    print(settings.BEGIN)
+    # BEGIN = begin
+    # global END
     end = request.POST.get('end_time')
-    request.session['end_time'] = end
-    print(request.session['begin_time'])
-    print(1)
-    print(request.session['end_time'])
+    settings.END = end
     return render(request, "courseSelection/adm_selection_manage.html")

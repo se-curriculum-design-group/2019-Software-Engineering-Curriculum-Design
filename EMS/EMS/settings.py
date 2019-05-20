@@ -27,6 +27,8 @@ DEBUG = True
 
 ALLOWED_HOSTS = []
 
+BEGIN = "NULL"
+END = "NULL"
 
 # Application definition
 
