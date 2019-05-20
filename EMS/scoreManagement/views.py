@@ -503,6 +503,20 @@ def teacher_upload_score(request):
     return render(request, 'scoreManage/teacher_upload_score.html')
 
 
+# 管理员查看教学评价情况
+def adm_view_teacher_evaluation(request):
+    username = request.session['username']
+    adm = User.objects.get(username=username)
+    if not adm.is_superuser:
+        return render(request, 'errors/403page.html')
+    evaluation_sets = EvaluationForm.objects.all()
+    context = {
+        'evaluation_sets': evaluation_sets
+    }
+    return render(request, 'scoreManage/adm_view_teacher_evaluation.html', context)
+
+
+
 def ajax_send_dt(request):
     data = [{"name": "DataTables中文网", "age": 2}],
 

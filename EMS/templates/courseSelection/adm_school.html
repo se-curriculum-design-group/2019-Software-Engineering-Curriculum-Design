@@ -1,0 +1,50 @@
+{% extends "adm_base.html" %}
+{% block title %}欢迎登录教务管理系统{% endblock %}
+{% load static %}
+
+
+
+{% block content %}
+    <section class="content-header">
+        <h1>系统管理员
+        </h1>
+    </section>
+    <form method="post" action="{% url 'courseSelection:school_query' %}">
+        {% csrf_token %}
+        <section class="content">
+            <section class="content">
+                <p>时间</p>
+                <select name="time">
+                    <option value="2018-2019">2018-2019</option>
+                    <option value="2017-2018">2017-2018</option>
+                    <option value="2016-2017">2016-2017</option>
+                </select>
+                <p>授课年级</p>
+                <select name="grade">
+                    <option value="大四">大四</option>
+                    <option value="大三">大三</option>
+                    <option value="大二">大二</option>
+                    <option value="大一">大一</option>
+                </select>
+                <p>学院</p>
+                <select name="college">
+                    <option value="材料学院">材料学院</option>
+                    <option value="信息学院">信息学院</option>
+                    <option value="文法学院">文法学院</option>
+                    <option value="化工学院">化工学院</option>
+                    <option value="材料学院">材料学院</option>
+                    <option value="马克思主义学院">马克思主义学院</option>
+                    <option value="能源学院">能源学院</option>
+
+                </select>
+                <p>科目</p>
+                <select name="subject">
+                    <option value="软件工程">软件工程</option>
+
+                </select>
+                <button type="submit" class="btn btn-primary " onclick="show_img()">搜索</button>
+            </section>
+        </section>
+    </form>
+
+{% endblock %}
