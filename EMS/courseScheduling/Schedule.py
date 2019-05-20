@@ -11,6 +11,11 @@ from courseScheduling.models import Schedule_result, Teacher_Schedule_result, Cl
 
 year = 2019
 semester = 2
+Students_id = dict()
+Teachers_id = dict()
+Classrooms_id = dict()
+Courses_id = dict()
+has_already_scheduled = dict()
 
 
 class Students:
@@ -142,6 +147,7 @@ class Buffer:
         self.teachers = []
         self.classrooms = []
         self.course = ''
+        self.is_Sc_result = 0
         # 8行14列
         self.courseSchedule = []
         self.examSchedule = []
@@ -154,12 +160,6 @@ class Buffer:
             for j in range(5):
                 self.examSchedule[i].append('')
 
-
-Students_id = dict()
-Teachers_id = dict()
-Classrooms_id = dict()
-Courses_id = dict()
-has_already_scheduled = dict()
 
 def merge_str(str1: str, str2: str):
     str1_split = str1.split(',')
@@ -440,7 +440,7 @@ def write_to_database(res: str, bf: Buffer):
     tno_mno = original_Teaching.objects.get(mcno=bf.course, tno__username=bf.teachers[0])
     cur_num = 0
     ctype = tno_mno.mcno.cno.course_type
-    if '必修' in ctype:
+    if '必修' in ctype or bf.is_Sc_result == 1:
         cur_num = len(bf.students)
     print(res)
     TSr = Teacher_Schedule_result.objects.create(
@@ -463,7 +463,7 @@ def write_to_database(res: str, bf: Buffer):
             Students_id.get(sno).courseSchedule = mergeTable(Students_id.get(sno).courseSchedule, table)
         print('--------------------------------------')
         print(table)
-    if '必修' in ctype:
+    if '必修' in ctype or bf.is_Sc_result == 1:
         for sno in bf.students:
             Sr = Schedule_result.objects.create(
                 sno=Student.objects.get(username=sno),
@@ -696,7 +696,7 @@ def has_table_hazzard(table1, table2):
             return True
     return False
 
-def Search_time_room(time: str):
+def Search_time_room(time: object) -> object:
     init_room()
     res = []
     table = String_to_table(time)
@@ -747,10 +747,13 @@ def get_students_teacher_courseSchedule(stuset: [], class_set=None, teacher_user
 
 
 # 处理手工排课
-def manual_schedule(time_string, place_name, stuset: [], class_set=[], teacher_username=None):
-    if len(class_set) == 0:
+def manual_schedule(time_string, place_name, stuset: [], class_set=[], teacher_username=None, course=''):
+    if class_set == None or len(class_set) == 0:
         init()
         bf = Buffer()
+        bf.is_Sc_result = 1
+        tmp = original_Teaching.objects.filter(mcno__cno__cno=course, tno__username=teacher_username)[0]
+        bf.course = tmp.mcno
         if Classrooms_id.get(place_name) == None:
             room = ClassRoom.objects.get(crno=place_name)
             Classrooms_id[place_name] = Classroom(place_name, room.crtype, room.contain_num)
@@ -816,6 +819,7 @@ def exam_time_generate(bf: Buffer):
 def exam_schedule():
     init()
     init_exam()
+    return
     for e in Classrooms_id:
         Classrooms_id[e].cmp_type = 1
     heap_bigroom = []
@@ -972,8 +976,10 @@ def search_exam_time(stu_username: str):
 if __name__ == '__main__':
     #autoSchedule()
     #exam_schedule()
-    #bf = get_students_teacher_courseSchedule(['2016000474', '2016000475', '2016000476', '2016000477'], teacher_username='198500038')
+    #bf = get_students_teacher_courseSchedule(['2016000474', '2016000475', '2016000476', '2016000477'], teacher_username='198500038', )
+    #Search_time_room()
     #print('-----------------')
     #print(bf.courseSchedule)
     #fff = Search_time_room("14-16-1-1,27-29-8-8")
+    #manual_schedule('16-18-14-15', 'A-101', ['2016000474', '2016000475', '2016000476', '2016000477'], [], '199000064', 'CSE14302C')
     a = 1
