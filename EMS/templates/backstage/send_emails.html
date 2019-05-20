@@ -1,4 +1,5 @@
 {% extends "adm_base.html" %}
+{% load staticfiles %}
 {% block title %}发送邮件{% endblock %}
 
 
@@ -85,4 +86,21 @@
         </section>
         <!-- /.content -->
     </form>
+{% endblock %}
+
+{% block script %}
+
+    <script src="{% static 'ckeditor.js' %}"></script>
+    <script src="{% static 'AdminLTE/plugins/bootstrap-wysihtml5/bootstrap3-wysihtml5.all.min.js' %}"></script>
+    <script src="{% static 'AdminLTE/plugins/iCheck/icheck.min.js' %}"></script>
+
+    <script>
+        $(function () {
+            // Replace the <textarea id="editor1"> with a CKEditor
+            // instance, using default configuration.
+            CKEDITOR.replace('editor1', {height: '380px', width: '100%'});
+            //bootstrap WYSIHTML5 - text editor
+            $("#editor1").wysihtml5();
+        });
+    </script>
 {% endblock %}
