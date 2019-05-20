@@ -7,12 +7,12 @@
                 class="caret"></span></a>
         <ul class="dropdown-menu" role="menu">
             <li><a href="{% url 'backstage:my_personal_details' %}">查看个人信息</a></li>
-            <li><a href="#">查看个人课表</a></li>
+            <li><a href="{% url 'scoreManagement:teacher_view_teaching' %}">查看个人课表</a></li>
             <li><a href="#">查看全校课表</a></li>
             <li><a href="#">查询空闲教室</a></li>
             <li class="divider"></li>
-            <li><a href="#">查看专业培养计划</a></li>
-            <li><a href="#">查看专业课程计划</a></li>
+            <li><a href="{% url 'scoreManagement:teacher_view_major_plan' %}">查看专业培养计划</a></li>
+            <li><a href="{% url 'scoreManagement:teacher_view_major_course' %}">查看专业课程计划</a></li>
         </ul>
     </li>
 
@@ -22,7 +22,6 @@
         <ul class="dropdown-menu" role="menu">
             <li><a href="{% url 'scoreManagement:teacher_upload_score' %}">成绩录入</a></li>
             <li><a href="{% url 'scoreManagement:teacher_view_teaching' %}">查看所教的课</a></li>
-            <li><a href="#">导出成绩</a></li>
             <li class="divider"></li>
             <li><a href="#">查看成绩统计</a></li>
         </ul>
@@ -52,11 +51,11 @@
             </span>
         </a>
         <ul class="treeview-menu">
-            <li><a href="#"><i class="fa fa-circle-o"></i>查看个人信息</a></li>
-            <li><a href="#"><i class="fa fa-circle-o"></i>查看个人课表</a></li>
+            <li><a href="{% url 'backstage:my_personal_details' %}"><i class="fa fa-circle-o"></i>查看个人信息</a></li>
+            <li><a href="{% url 'scoreManagement:teacher_view_teaching' %}"><i class="fa fa-circle-o"></i>查看个人课表</a></li>
             <li><a href="#"><i class="fa fa-circle-o"></i>查看全校课表</a></li>
-            <li><a href="#"><i class="fa fa-circle-o"></i>查看专业培养计划</a></li>
-            <li><a href="#"><i class="fa fa-circle-o"></i>查看专业课程计划</a></li>
+            <li><a href="{% url 'scoreManagement:teacher_view_major_plan' %}"><i class="fa fa-circle-o"></i>查看专业培养计划</a></li>
+            <li><a href="{% url 'scoreManagement:teacher_view_major_course' %}"><i class="fa fa-circle-o"></i>查看专业课程计划</a></li>
             <li><a href="#"><i class="fa fa-circle-o"></i>查询空闲教室</a></li>
         </ul>
     </li>
@@ -76,7 +75,6 @@
             </li>
             <li><a href="{% url 'scoreManagement:teacher_view_teaching' %}"><i class="fa fa-circle-o"></i>查看所教的课</a></li>
             <li><a href="#"><i class="fa fa-circle-o"></i>查看成绩统计</a></li>
-            <li><a href="#"><i class="fa fa-circle-o"></i>导出成绩</a></li>
         </ul>
     </li>
 
