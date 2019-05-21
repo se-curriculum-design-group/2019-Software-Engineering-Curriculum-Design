@@ -3,7 +3,7 @@
 
 {% block content %}
     <section class="content-header">
-        <h1>查询专业培养计划
+        <h1>全校学生信息管理
             <small>管理员</small>
         </h1>
         <ol class="breadcrumb">
@@ -28,46 +28,47 @@
                     <option value="{{ item }}">{{ item }}</option>
                 {% endfor %}
             </select>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                <label>年级：</label><select id="year" class="select2" style="width: 15%">
+                <label>入学年份：</label><select id="year" class="select2" style="width: 15%">
                 <option value="ALL" selected="selected">全部</option>
-                {% for item in all_year %}
-                    <option value="{{ item.year }}">{{ item.year }}</option>
+                {% for item in all_in_year %}
+                    <option value="{{ item.in_year }}">{{ item.in_year }}</option>
                 {% endfor %}
             </select>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
             </div>
 
             <div class="box-body">
-                <table id="major_plan_table" class="table table-bordered table-striped">
+                <table id="students_table" class="table table-bordered table-striped">
                     <thead>
                     <tr>
                         <th>序号</th>
                         <th>学院</th>
                         <th>专业</th>
-                        <th>年级</th>
-                        <th>计划人数</th>
-                        <th>最低毕业学分</th>
-                        <th>学制</th>
-                        <th>计划课程总数</th>
-                        <th>班级个数</th>
+                        <th>入学年份</th>
+                        <th>班级</th>
+                        <th>学号</th>
+                        <th>姓名</th>
+                        <th>性别</th>
                     </tr>
                     </thead>
                     <tbody>
-                    {% for item in all_major_plan %}
+                    {% for student in all_students %}
                         <tr>
                             <td>{{ forloop.counter }}</td>
-                            <td>{{ item.major.in_college }}</td>
-                            <td>{{ item.major }}</td>
-                            <td>{{ item.year }}</td>
-                            <td>{{ item.people_num }}</td>
-                            <td>{{ item.score_grad }}</td>
-                            <td>{{ item.stu_years }}</td>
-                            <td>{{ item.course_num }}</td>
-                            <td>{{ item.cls_num }}</td>
+                            <td>{{ student.in_cls.major.major.in_college }}</td>
+                            <td>{{ student.in_cls.major.major }}</td>
+                            <td>{{ student.in_year }}</td>
+                            <td>{{ student.in_cls }}</td>
+                            <td>{{ student.username }}</td>
+                            <td>{{ student.name }}</td>
+                            {% if student.sex == True%}
+                                <td>男</td>
+                            {% else %}
+                                <td>女</td>
+                            {% endif %}
                         </tr>
                     {% endfor %}
                     </tbody>
                 </table>
-
             </div>
         </div>
     </div>
@@ -80,18 +81,18 @@
                 var college = $('#college').val();
                 var major = $('#major').val();
                 var year = $('#year').val();
-                return ((college === data[1] || college === "ALL") && (((major === data[2] || major === "ALL") && (year === data[4] || year === "ALL"))));
+                return ((college === data[1] || college === "ALL") && (((major === data[2] || major === "ALL") && (year === data[3] || year === "ALL"))));
             }
         );
         $(document).ready(function () {
-            var table = $('#major_plan_table').DataTable(
+            var table = $('#students_table').DataTable(
                 {
                     dom: 'Bfrtip',
                     buttons: [
                         'copy',
                         {
                             extend: 'excel',
-                            filename: "专业计划信息表",
+                            filename: "全校学生信息表",
                         }, 'pdf', 'print'
                     ],
                     "paging": true,       <!-- 允许分页 -->
@@ -133,7 +134,7 @@
                 }
             );
 
-            $('#major_plan_table tbody').on('click', 'tr', function (e) {
+            $('#students_table tbody').on('click', 'tr', function (e) {
                 if ($(this).hasClass('selected')) {
                     $(this).removeClass('selected');
                 } else {

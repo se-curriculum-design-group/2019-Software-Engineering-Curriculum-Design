@@ -12,6 +12,7 @@ from utils import make_encode
 # 邮件模块
 from django.conf import settings
 from django.core import mail
+from courseScheduling.models import ClassRoom, Course
 
 
 def welcome(request):
@@ -271,3 +272,68 @@ def send_emails(request):
             else:
                 message = "发送失败"
                 return render(request, 'backstage/send_emails.html', locals())
+
+
+def adm_view_all_stu(request):
+    username = request.session['username']
+    adm = User.objects.get(username=username)
+    if not adm.is_superuser:
+        return render(request, 'errors/403page.html')
+    all_college = College.objects.all()
+    all_major = Major.objects.all()
+    all_students = Student.objects.all()
+    all_in_year = all_students.values("in_year").order_by("in_year").distinct()
+
+    context = {
+        'all_college': all_college,
+        'all_major': all_major,
+        'all_in_year': all_in_year,
+        'all_students': all_students
+    }
+    return render(request, "backstage/adm_view_all_stu.html", context)
+
+
+def adm_view_all_teacher(request):
+    username = request.session['username']
+    adm = User.objects.get(username=username)
+    if not adm.is_superuser:
+        return render(request, 'errors/403page.html')
+    all_college = College.objects.all()
+    all_teacher = Teacher.objects.all()
+    all_in_year = all_teacher.values("in_year").order_by("in_year").distinct()
+
+    context = {
+        'all_college': all_college,
+        'all_in_year': all_in_year,
+        'all_teacher': all_teacher
+    }
+    return render(request, "backstage/adm_view_all_teachers.html", context)
+
+
+def adm_view_all_class_room(request):
+    username = request.session['username']
+    adm = User.objects.get(username=username)
+    if not adm.is_superuser:
+        return render(request, 'errors/403page.html')
+    all_class_room = ClassRoom.objects.all()
+    context = {
+        'all_class_room': all_class_room
+    }
+    return render(request, "backstage/adm_view_all_classroom.html", context)
+
+
+def adm_view_all_course(request):
+    username = request.session['username']
+    adm = User.objects.get(username=username)
+    if not adm.is_superuser:
+        return render(request, 'errors/403page.html')
+    all_course = Course.objects.all()
+    all_college = College.objects.all()
+    all_course_type = all_course.values("course_type").distinct()
+    context = {
+        'all_course': all_course,
+        'all_college': all_college,
+        'all_course_type': all_course_type,
+    }
+    return render(request, "backstage/adm_view_all_course.html", context)
+
