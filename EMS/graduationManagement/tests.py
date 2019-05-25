@@ -9,6 +9,7 @@ import django.http.request
 
 app_name = 'graduationManagement'
 
+
 class TestStudent(TestCase):
     def setUp(self):
         student1 = mixer.blend(Student)
@@ -41,7 +42,7 @@ class TestStudent(TestCase):
             self.assertIn(response.status_code, [200, 301, 302])
 
     def test_student_view_project(self):
-            response = self.client.get('/graduationManagement/student_student_view_project')
+            response = self.client.get('/graduationManagement/student_view_project')
             self.assertIn(response.status_code, [200, 301, 302])
 
     def test_student_view_score(self):

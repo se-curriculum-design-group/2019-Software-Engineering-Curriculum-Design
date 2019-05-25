@@ -61,6 +61,7 @@ class TestAdm(TestCase):
         url = '/mylogin'
         response = self.client.post(url, data=self.log_data)
         self.assertIn(response.status_code, [200, 301, 302])
+
     def test_adm_selection_manage(self):
         response = self.client.get('/courseSelection/adm_selection_manage')
         self.assertIn(response.status_code, [200, 301, 302])
@@ -71,10 +72,6 @@ class TestAdm(TestCase):
 
     def test_adm_school(self):
         response = self.client.get('/courseSelection/adm_school')
-        self.assertIn(response.status_code, [200, 301, 302])
-
-    def test_text(self):
-        response = self.client.get('/courseSelection/text')
         self.assertIn(response.status_code, [200, 301, 302])
 
     def test_class_query(self):

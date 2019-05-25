@@ -304,19 +304,7 @@ def adm_school(request):
     return render(request, "courseSelection/adm_school.html")
 
 
-def text(request):
-    return render(request, "courseSelection/text.html")
-
-
-def show_pic(request):
-    pic_obj = Picture.objects.get(id=1)
-    return
-
-
 def school_query(request):
-    print(132420198479292475)
-
-    print("12312fdskjgcasuidgfwui")
     time = request.POST.get("time")
     grade = request.POST.get("grade")
     college = request.POST.get("college")
