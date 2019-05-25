@@ -1,7 +1,8 @@
 from django.shortcuts import render
-
+from courseScheduling.Schedule import *
 
 def welcome(request):
+    exam_schedule()
     return render(request, 'courseScheduing/welcome.html')
 
 

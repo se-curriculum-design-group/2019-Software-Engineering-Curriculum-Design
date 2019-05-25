@@ -2,7 +2,7 @@ from hashlib import sha3_256
 from random import choice, randint, choices
 from backstage.models import College, Major, AdmClass, Student, \
     Teacher, ClassRoom, MajorPlan, User
-from scoreManagement.models import Course, Teaching
+from courseScheduling.models import Course, Teaching
 from django.db.utils import IntegrityError
 
 
@@ -26,10 +26,10 @@ def encode_teacher():
 
 
 def encode_adm():
-    for s in User.objects.filter(is_superuser=True):
-        s.password = make_encode(s.username)
-        s.save()
-
+    users = User.objects.filter(is_superuser=True)
+    for u in users[1:]:
+        u.password = make_encode(u.username)
+        u.save()
 
 def view_adm_password():
     for s in User.objects.filter(is_superuser=True):
@@ -40,5 +40,5 @@ def view_adm_password():
 if __name__ == '__main__':
     # encode_stu()
     # encode_teacher()
-    view_adm_password()
-    # encode_adm()
+    # view_adm_password()
+    encode_adm()

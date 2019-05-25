@@ -1,0 +1,72 @@
+{% extends "teacher_base.html" %}
+{% load static %}
+{% block title %}欢迎登录教务管理系统{% endblock %}
+
+
+{% block content %}
+        <section class="content-header">
+        <h1>选课子系统
+            <small>Info</small>
+        </h1>
+        <ol class="breadcrumb">
+            <li><a href="{% url 'scoreManagement:welcome' %}"><i class="fa fa-dashboard"></i> 主页</a></li>
+            <li class="active">教师选课</li>
+        </ol>
+    </section>
+        <section class="content">
+        <div class="box">
+            <div class="box-header">
+                <h3 class="box-title">选课学生表</h3>
+                <div class="btn-group pull-right ">
+                    <a id="a">
+                        <button id='chart' class="btn btn-success" type="button">
+                            <span class="glyphicon glyphicon-plus"></span>导出表格
+                        </button>
+                    </a>
+                </div>
+            </div>
+            <div class="box-body">
+                <table id="teaching_table" class="table table-bordered table-striped">
+                    <thead>
+                    <tr>
+                        <th>编号</th>
+                        <th>学号</th>
+                        <th>姓名</th>
+                        <th>性别</th>
+                        <th>年级</th>
+                        <th>班级</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    {% for student in students %}
+{#                        {% if teaching.tno == cookie %}#}
+                            <tr>
+                                <td>{{ forloop.counter }}</td>
+                                <td>{{ student.sno }}</td>
+                                <td>{{ student.sno.name }}</td>
+                                {% if student.sno.sex == True %}
+                                    <td>男</td>
+                                {% else %}
+                                    <td>女</td>
+                                {% endif %}
+                                <td>{{ student.sno.in_year }}</td>
+                                <td>{{ student.sno.in_cls.name }}</td>
+                            </tr>
+{#                        {% endif %}#}
+                    {% endfor %}
+                    </tbody>
+                    <tfoot>
+                    <tr>
+                        <th>编号</th>
+                        <th>学号</th>
+                        <th>姓名</th>
+                        <th>性别</th>
+                        <th>年级</th>
+                        <th>班级</th>
+                    </tr>
+                    </tfoot>
+                </table>
+            </div>
+        </div>
+    </section>
+ {% endblock %}

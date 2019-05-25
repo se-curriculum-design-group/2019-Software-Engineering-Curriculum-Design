@@ -24,7 +24,7 @@
                             {% for year in all_years %}
                                 {% if sear_year == year %}
                                     <option selected="selected" value={{ year }}>{{ year }}</option>
-                                    {% else %}
+                                {% else %}
                                     <option value={{ year }}>{{ year }}</option>
                                 {% endif %}
                             {% endfor %}
@@ -35,7 +35,7 @@
                             {% for semester in all_semester %}
                                 {% if sear_semester == semester %}
                                     <option selected="selected" value={{ semester }}>{{ semester }}</option>
-                                    {% else %}
+                                {% else %}
                                     <option value={{ semester }}>{{ semester }}</option>
                                 {% endif %}
                             {% endfor %}
@@ -115,14 +115,24 @@
             function (setting, data, dataIndex) {
                 let sl_college = $("#course_college").val();
                 let sl_major = $("#course_major").val();
-                if ((sl_college === data[3] && sl_major === data[4]) || (sl_major === 'ALL') || (sl_college === 'ALL')){
-                    return true;
-                }
-                return false;
+                return ((sl_college === data[3] || sl_college === 'ALL') && (sl_major === data[4] || sl_major === 'ALL'));
+
             }
         );
         $(function () {
             var table = $('#all_course_table').DataTable({
+                dom: 'Bfrtip',
+                buttons: [
+                        'copy',
+                        {
+                            extend: 'excel',
+                            filename: '全校学生成绩表'
+                        },
+                        {
+                            extend: 'print',
+                            filename: "全校学生成绩表",
+                        }
+                    ],
                 "paging": true,       <!-- 允许分页 -->
                 "lengthChange": true, <!-- 允许改变每页显示的行数 -->
                 "searching": true,    <!-- 允许内容搜索 -->

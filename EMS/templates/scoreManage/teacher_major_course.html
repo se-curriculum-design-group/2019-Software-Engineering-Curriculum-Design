@@ -1,0 +1,196 @@
+{% extends 'teacher_base.html' %}
+{% load staticfiles %}
+
+{% block content %}
+    <section class="content-header">
+        <h1>查询专业课程
+            <small>教师</small>
+        </h1>
+        <ol class="breadcrumb">
+            <li><a href="{% url 'scoreManagement:welcome' %}"><i class="fa fa-dashboard"></i> 主页</a></li>
+            <li class="active">成绩管理</li>
+            <li class="active">查询专业课程</li>
+        </ol>
+    </section>
+    <section class="content">
+        <div class="box box-default">
+            <div class="box-header">
+                <h3 class="box-title">查询专业课程</h3>
+                <div class="box-header ">
+                    <div class="form-group">
+                        <label style="color: red">专业：</label><select id="major" class="form-control select2"
+                                                                     style="width: 20%;">
+                        <option value="ALL" selected="selected">全部</option>
+                        {% for item in all_major %}
+                            <option value="{{ item }}">{{ item }}
+                        {% endfor %}
+                    </select>
+                        <label>建议修读学年：</label><select id="year" class="form-control select2" style="width: 15%;">
+                        <option value="ALL" selected="selected">全部</option>
+                        {% for item in all_year %}
+                            <option value="{{ item.year }}">{{ item.year }}</option>
+                        {% endfor %}
+                    </select>
+                        <label>建议修读学期：</label><select id="semester" class="form-control select2" style="width: 15%;">
+                        <option value="ALL" selected="selected">全部</option>
+                        <option value="1">1</option>
+                        <option value="2">2</option>
+                        <option value="3">3</option>
+                    </select>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                        <label>课程性质：</label><select id="course_type" class="form-control select2" style="width: 15%;">
+                        <option value="ALL" selected="selected">全部</option>
+                        {% for item in all_course %}
+                            <option value="{{ item.course_type }}">{{ item.course_type }}</option>
+                        {% endfor %}
+                    </select>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                    </div>
+                </div>
+            </div>
+
+            <div class="box-body">
+                <table id="major_course_table" class="table table-bordered table-striped">
+                    <thead>
+                    <tr>
+                        <th>序号</th>
+                        <th>专业</th>
+                        <th>学年</th>
+                        <th>学期</th>
+                        <th>课程代码</th>
+                        <th>课程名称</th>
+                        <th>开课学院</th>
+                        <th>课程性质</th>
+                        <th>学分</th>
+                        <th>总学时</th>
+                        <th>授课学时</th>
+                        <th>实验学时</th>
+                        <th>考核方式</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    {% for item in all_major_course %}
+                        <tr>
+                            <td>{{ forloop.counter }}</td>
+                            <td>{{ item.mno.major }}</td>
+                            <td>{{ item.year }}</td>
+                            <td>{{ item.semester }}</td>
+                            <td>{{ item.cno.cno }}</td>
+                            <td>{{ item.cno.cname }}</td>
+                            <td>{{ item.cno.college.name }}</td>
+                            <td>{{ item.cno.course_type }}</td>
+                            <td>{{ item.cno.score }}</td>
+                            <td>{{ item.hour_total }}</td>
+                            <td>{{ item.hour_class }}</td>
+                            <td>{{ item.hour_other }}</td>
+                            {% if item.exam_method == 1 %}
+                                <td>考试</td>
+                            {% else %}
+                                <td>考察</td>
+                            {% endif %}
+                        </tr>
+                    {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </section>
+{% endblock %}
+
+{% block script %}
+    <script>
+        $.fn.dataTable.ext.search.push(
+            function (settings, data, dataIndex) {
+                var major = $('#major').val();
+                var year = $('#year').val();
+                var semester = $('#semester').val();
+                var course_type = $('#course_type').val();
+                return (
+                    (major === data[1] || major === "ALL") && (year === 'ALL' || year === data[2])
+                    && (semester === data[3] || semester === 'ALL') && (course_type === 'ALL' || course_type === data[7])
+                );
+            }
+        );
+        $(document).ready(function () {
+            var year = $('#major').val();
+            const myData = {"year": year};
+            {% comment %} $.get(
+                '{% url "scoreManagement:_ajax" %}',
+                myData,
+                function (ret, status) {
+                    if (ret['yes']) {
+                        alert("YES");
+                    }else{
+                        alert("NO");
+                    }
+                }
+            ); {% endcomment %}
+
+            var table = $('#major_course_table').DataTable(
+                {
+                    dom: 'Bfrtip',
+                   buttons: [
+                        'copy',
+                        {
+                            extend: 'excel',
+                            filename: "专业课程信息表",
+                        },
+                        {
+                            extend: 'print',
+                            filename: "专业课程信息表",
+                        }
+                    ],
+                    "paging": true,       <!-- 允许分页 -->
+                    "lengthChange": true, <!-- 允许改变每页显示的行数 -->
+                    "searching": true,    <!-- 允许内容搜索 -->
+                    "ordering": true,     <!-- 允许排序 -->
+                    "info": true,         <!-- 显示信息 -->
+                    "autoWidth": false,    <!-- 固定宽度 -->
+                    "language": {
+                        "sProcessing": "处理中...",
+                        "sLengthMenu": "显示 _MENU_ 项结果",
+                        "sZeroRecords": "没有匹配结果",
+                        "sInfo": "显示第 _START_ 至 _END_ 项结果，共 _TOTAL_ 项",
+                        "sInfoEmpty": "显示第 0 至 0 项结果，共 0 项",
+                        "sInfoFiltered": "(由 _MAX_ 项结果过滤)",
+                        "sInfoPostFix": "",
+                        "sSearch": "搜索:",
+                        "sUrl": "",
+                        "sEmptyTable": "表中数据为空",
+                        "sLoadingRecords": "载入中...",
+                        "sInfoThousands": ",",
+                        "oPaginate": {
+                            "sFirst": "首页",
+                            "sPrevious": "上页",
+                            "sNext": "下页",
+                            "sLast": "末页"
+                        },
+                        "oAria": {
+                            "sSortAscending": ": 以升序排列此列",
+                            "sSortDescending": ": 以降序排列此列"
+                        }
+                    },
+                    "columnDefs": [{
+                        "searchable": false,
+                        "orderable": true,
+                        "targets": 0
+                    }],
+                    "order": [[0, 'asc']]
+                }
+            );
+            $('#major_course_table tbody').on('click', 'tr', function (e) {
+                if ($(this).hasClass('selected')) {
+                    $(this).removeClass('selected');
+                } else {
+                    table.$('tr.selected').removeClass('selected');
+                    $(this).addClass('selected');
+                }
+            });
+
+            // Event listener to the two range filtering inputs to redraw on input
+            $(' #course_type, #major, #year, #semester').change(function () {
+                table.draw();
+            });
+
+            $('.select2').select2();
+        });
+    </script>
+{% endblock %}
