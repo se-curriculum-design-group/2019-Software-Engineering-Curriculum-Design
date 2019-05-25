@@ -11,6 +11,7 @@
             <li><a href="#">查看个人课表</a></li>
             <li><a href="#">查看全校课表</a></li>
             <li><a href="#">查询空闲教室</a></li>
+{#            <li><a href="{% url 'courseScheduling:time_exam' %}">查询考试时间</a> </li>#}
             <li class="divider"></li>
             <li><a href="{% url 'scoreManagement:std_view_major_plan' %}">查看专业培养计划</a></li>
             <li><a href="{% url 'scoreManagement:std_view_major_course' %}">查看专业课程计划</a></li>
@@ -61,6 +62,7 @@
             <li><a href="{% url 'scoreManagement:std_view_major_course' %}"><i class="fa fa-circle-o"></i>查看专业课程计划</a>
             </li>
             <li><a href="#"><i class="fa fa-circle-o"></i>查询空闲教室</a></li>
+            <li><a href="#"><i class="fa fa-circle-o"></i>查询考试时间</a></li>
             <li><a href="{% url 'scoreManagement:student_view_score' %}"><i class="fa fa-circle-o"></i>查看考试成绩</a></li>
             <li><a href="{% url 'scoreManagement:student_own_study' %}"><i class="fa fa-circle-o"></i>查看个人学业情况</a></li>
         </ul>

@@ -13,3 +13,7 @@ def scheduling_home_page(request):
         return render(request, 'courseScheduing/teacher_scheduling_manage.html')
     else:
         return render(request, 'courseScheduing/adm_scheduling_manage.html')
+
+
+def time_exam(request):
+    return render(request, "courseScheduing/time_exam.html")
