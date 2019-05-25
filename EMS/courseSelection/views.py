@@ -26,12 +26,6 @@ def selection_home_page(request):
         return render(request, 'courseSelection/adm_selection_manage.html')
 
 
-def stu_tongshi(request):
-    return render(request, "courseSelection/stu_tongshi.html")
-
-
-# def stu_
-
 def stu_major(request):
     sno = request.session["username"]
 

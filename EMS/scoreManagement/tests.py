@@ -52,10 +52,6 @@ class TestStudent(TestCase):
         response = self.client.get('/my_personal_details')
         self.assertIn(response.status_code, [200, 301, 302])
 
-    def test_stu_tongshi(self):
-        response = self.client.get('/courseSelection/stu_tongshi')
-        self.assertIn(response.status_code, [200, 301, 302])
-
     def test_stu_major(self):
         response = self.client.get('/courseSelection/stu_major')
         self.assertIn(response.status_code, [200, 301, 302])
