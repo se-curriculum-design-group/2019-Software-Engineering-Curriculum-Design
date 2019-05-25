@@ -100,7 +100,7 @@ class Schedule_result(models.Model):
         return "-".join([self.sno, self.tno, self.where, self.time, ])
 
     class Meta:
-        db_table = 'Schedule_result'
+        db_table = 'schedule_result'
         unique_together = (
             'sno', 'tno', 'where', 'time'
         )
@@ -117,9 +117,8 @@ class Teacher_Schedule_result(models.Model):
     def __str__(self):
         return "-".join([str(self.tno), str(self.where), str(self.time),
                          str(self.current_number), str(self.MAX_number), str(self.state)])
-
     class Meta:
-        db_table = 'Teacher_Schedule_result'
+        db_table = 'teacher_schedule_result'
         unique_together = (
             'tno', 'where', 'time'
         )
@@ -136,7 +135,7 @@ class Classroom_other_schedule(models.Model):
         return "-".join([self.crno, self.time, self.statement])
 
     class Meta:
-        db_table = 'Classroom_other_schedule'
+        db_table = 'classroom_other_schedule'
 
 
 class Exam_Schedule(models.Model):
@@ -146,10 +145,10 @@ class Exam_Schedule(models.Model):
     where = models.ForeignKey(to=ClassRoom, on_delete=models.CASCADE)
 
     def __str__(self):
-        return "-".join([self.sno, self.tno_mno, self.time, self.where])
+        return "-".join([self.sno, self.tno_mno_course, self.time, self.where])
 
     class Meta:
-        db_table = 'Exam_Schedule'
+        db_table = 'exam_schedule'
         unique_together = (
             'sno', 'tno_mno_course',
         )

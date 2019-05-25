@@ -126,6 +126,7 @@ def stu_major(request):
         return render(request, "courseSelection/stu_major.html", {'data': json.dumps(data), 'dat': json.dumps(dat),'mC':mC,'college':college,'majors':majors})
 
 
+
 def select_course(request):
     if request.is_ajax():
         if request.method == 'GET':

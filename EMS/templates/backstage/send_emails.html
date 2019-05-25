@@ -1,6 +1,6 @@
 {% extends "adm_base.html" %}
+{% load staticfiles %}
 {% block title %}发送邮件{% endblock %}
-
 
 {% block content %}
     <form role="form" method="post" action="{% url 'backstage:send_announcements' %}">
@@ -85,4 +85,18 @@
         </section>
         <!-- /.content -->
     </form>
+{% endblock %}
+
+{% block script %}
+
+    <script>
+        ClassicEditor
+            .create(document.querySelector('#editor1'),{
+                language: 'zh-cn',
+                height: '380px', width: '100%'
+            })
+            .catch(error => {
+                console.error(error);
+            });
+    </script>
 {% endblock %}
