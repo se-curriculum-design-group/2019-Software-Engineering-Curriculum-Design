@@ -66,6 +66,7 @@ class TestStudent(TestCase):
 
     def test_student_view_project(self):
         response = self.client.get('/graduationManagement/student_view_project')
+        self.assertTemplateUsed()
         self.assertIn(response.status_code, [200, 301, 302])
 
     def test_student_view_score(self):
@@ -97,6 +98,11 @@ class TestAdm(TestCase):
         url = '/mylogin'
         response = self.client.post(url, data=self.log_data)
         self.assertIn(response.status_code, [200, 301, 302])
+
+    def test_adm_view_all_stu(self):
+        response = self.client.get('/adm_view_all_stu')
+        self.assertIn(response.status_code, [200, 301, 302])
+        self.assertTemplateUsed(response, '')
 
     def test_adm_view_major_course(self):
         response = self.client.get('/scoreManagement/adm_view_major_course')
