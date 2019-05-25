@@ -91,8 +91,12 @@
                         'copy',
                         {
                             extend: 'excel',
-                            filename: "专业计划信息表",
-                        }, 'pdf', 'print'
+                            filename: "专业培养计划表",
+                        },
+                        {
+                            extend: 'print',
+                            filename: "专业培养计划表",
+                        }
                     ],
                     "paging": true,       <!-- 允许分页 -->
                     "lengthChange": true, <!-- 允许改变每页显示的行数 -->
