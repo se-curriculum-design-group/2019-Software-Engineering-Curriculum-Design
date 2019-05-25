@@ -1,0 +1,74 @@
+{% extends "adm_base.html" %}
+{% block title %}欢迎登录教务管理系统{% endblock %}
+
+
+
+{% block content %}
+    <section class="content-header">
+        <h1>系统管理员
+        </h1>
+    </section>
+    <form method="post" action="{% url 'courseSelection:class_query' %}">
+        {% csrf_token %}
+        <section class="content">
+            <section class="content">
+
+                <p>时间</p>
+                <select name="time">
+                    <option value="2018-2019">2018-2019</option>
+                    <option value="2017-2018">2017-2018</option>
+                    <option value="2016-2017">2016-2017</option>
+                </select>
+                <p>授课年级</p>
+                <select name="grade">
+                    <option value="大四">大四</option>
+                    <option value="大三">大三</option>
+                    <option value="大二">大二</option>
+                    <option value="大一">大一</option>
+                </select>
+                <p>学院</p>
+                <select name="college">
+                    <option>材料学院</option>
+                    <option>信息学院</option>
+                    <option>文法学院</option>
+                    <option>化工学院</option>
+                    <option>材料学院</option>
+                    <option>马克思主义学院</option>
+                    <option>能源学院</option>
+
+                </select>
+                <p>科目</p>
+                <select name="subject">
+                    <option value="软件工程 ">软件工程</option>
+
+                </select>
+                <button id='add' class="btn btn-primary" type="submit" onclick="f()">
+                    <span class="glyphicon glyphicon-plus"></span>搜索
+                </button>
+
+                <style>
+                    .boss {
+                        width: 902px;
+                        margin: 50px;
+                        border: solid 1px red;
+                    }
+                    .boss div {
+                        width: 198px;
+                        border: solid 1px gray;
+                        float: left;
+                    }
+                    .boss div img {
+                        display: block;
+                        width: 100%;
+                    }
+                </style>
+
+            </section>
+        </section>
+    </form>
+<script>
+function f() {
+    document.getElementById('box').style.display="block"
+}
+</script>
+{% endblock %}
