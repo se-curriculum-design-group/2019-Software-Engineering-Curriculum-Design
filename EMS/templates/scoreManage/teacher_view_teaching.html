@@ -158,11 +158,17 @@
             }
         );
 
+        let name = {{ request.session.name }};
+
         $(function () {
             var table = $('#my_teaching_table').DataTable({
                 dom: 'Bfrtip',
                 buttons: [
-                    'copy', 'csv', 'excel', 'pdf', 'print'
+                    'copy',
+                    {
+                        extend: 'excel',
+                        filename: name + "所教学课程",
+                    }, 'pdf', 'print'
                 ],
                 "paging": true,       <!-- 允许分页 -->
                 "lengthChange": true, <!-- 允许改变每页显示的行数 -->
@@ -201,10 +207,15 @@
                 }],
                 "order": [[0, 'asc']]
             });
+
             var table2 = $('#others_teaching_table').DataTable({
                 dom: 'Bfrtip',
                 buttons: [
-                    'copy', 'csv', 'excel', 'pdf', 'print'
+                    'copy',
+                    {
+                        extend: 'excel',
+                        filename: {{ other_tno }} +"所教学课程",
+                    }, 'pdf', 'print'
                 ],
                 "paging": true,       <!-- 允许分页 -->
                 "lengthChange": true, <!-- 允许改变每页显示的行数 -->

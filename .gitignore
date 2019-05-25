@@ -1,5 +1,6 @@
 .idea/
 .vscode/
+settings.json
 *.pdf
 *.py[cod]
 __init__.cpython-36.pyc
