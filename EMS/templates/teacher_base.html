@@ -27,7 +27,7 @@
         </ul>
     </li>
 
-    <li><a href="#">查看选课情况</a></li>
+    <li><a href="{% url 'courseSelection:teacher_course' %}">查看选课情况</a></li>
 
     <li class="dropdown">
         <a href="#" class="dropdown-toggle" data-toggle="dropdown">毕业设计 <span
@@ -83,7 +83,7 @@
     </li>
 
     <li class="treeview">
-        <a href="#">
+        <a href="{% url 'courseSelection:teacher_course' %}">
             <i class="fa fa-line-chart"></i> <span>查看选课情况</span>
             <span class="pull-right-container">
               <i class="fa fa-angle-left pull-right"></i>
