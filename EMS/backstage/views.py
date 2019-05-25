@@ -219,10 +219,6 @@ def send_announcement(request):
             new_announcement_year = new_announcement.cleaned_data['year']
             new_announcement_title = new_announcement.cleaned_data['title']
             new_announcement_text = request.POST.get('editor')
-            # print(new_announcement_receiver)
-            # print(new_announcement_year)
-            # print(new_announcement_title)
-            # print(new_announcement_text)
             new_announcement_objects = Announcement.objects.create()
             new_announcement_objects.title = new_announcement_title
             new_announcement_objects.messages = new_announcement_text
