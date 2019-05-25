@@ -54,6 +54,7 @@
     <!--[if lt IE 9]>
   <script src="{% static 'AdminLTE/plugins/html5shiv.min.js' %}"></script>
   <script src="{% static 'AdminLTE/plugins/respond.min.js' %}"></script>
+
   <![endif]-->
 
 </head>
@@ -171,6 +172,8 @@
 <!-- ./wrapper -->
 <!-- 这些是默认加载的js脚本 -->
 <!-- jQuery 2.2.3 -->
+<script src="{% static 'html2canvas.js' %}"></script>
+<script src="{% static 'jsPdf.debug.js' %}"></script>
 <script src="{% static 'AdminLTE/plugins/jQuery/jquery-2.2.3.min.js' %}"></script>
 <!-- jQuery UI 1.11.4 -->
 <script src="{% static 'AdminLTE/plugins/jQueryUI/jquery-ui.min.js' %}"></script>
@@ -202,20 +205,5 @@
 <script src="{% static 'AdminLTE/plugins/datatables/extensions/Buttons/buttons.flash.min.js' %}"></script>
 <script src="{% static 'AdminLTE/plugins/datatables/extensions/Buttons/buttons.html5.min.js' %}"></script>
 <script src="{% static 'AdminLTE/plugins/datatables/extensions/Buttons/buttons.print.min.js' %}"></script>
-
-{% block script %}
-{#    <script src="https://cdn.ckeditor.com/4.5.7/standard/ckeditor.js"></script>#}
-    {% comment %}
-    <script>
-        $(function () {
-            // Replace the <textarea id="editor1"> with a CKEditor
-            // instance, using default configuration.
-            CKEDITOR.replace('editor1', {height: '380px', width: '100%'});
-            //bootstrap WYSIHTML5 - text editor
-        });
-    </script>
-    {% endcomment %}
-{% endblock %}
-
 </body>
 </html>

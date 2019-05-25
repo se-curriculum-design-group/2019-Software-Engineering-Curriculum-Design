@@ -1,0 +1,288 @@
+{% extends "student_base.html" %}
+{% block title %}欢迎登录教务管理系统{% endblock %}
+
+
+{% block content %}
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=0">
+        <script src="../../static/exampel/Timetables.min.js"></script>
+        <title>jQuery大学课表布局插件Timetables.js</title>
+        <style>
+            #coursesTable {
+                padding: 15px 10px;
+            }
+
+            .Courses-head {
+                background-color: #edffff;
+            }
+
+            .Courses-head > div {
+                text-align: center;
+                font-size: 14px;
+                line-height: 28px;
+            }
+
+            .left-hand-TextDom, .Courses-head {
+                background-color: #f2f6f7;
+            }
+
+            .Courses-leftHand {
+                background-color: #f2f6f7;
+                font-size: 12px;
+            }
+
+            .Courses-leftHand .left-hand-index {
+                color: #9c9c9c;
+                margin-bottom: 4px !important;
+            }
+
+            .Courses-leftHand .left-hand-name {
+                color: #666;
+            }
+
+            .Courses-leftHand p {
+                text-align: center;
+                font-weight: 900;
+            }
+
+            .Courses-head > div {
+                border-left: none !important;
+            }
+
+            .Courses-leftHand > div {
+                padding-top: 5px;
+                border-bottom: 1px dashed rgb(219, 219, 219);
+            }
+
+            .Courses-leftHand > div:last-child {
+                border-bottom: none !important;
+            }
+
+            .left-hand-TextDom, .Courses-head {
+                border-bottom: 1px solid rgba(0, 0, 0, 0.1) !important;
+            }
+
+            .Courses-content > ul {
+                border-bottom: 1px dashed rgb(219, 219, 219);
+                box-sizing: border-box;
+            }
+
+            .Courses-content > ul:last-child {
+                border-bottom: none !important;
+            }
+
+            .highlight-week {
+                color: #02a9f5 !important;
+            }
+
+            .Courses-content li {
+                text-align: center;
+                color: #666666;
+                font-size: 14px;
+                line-height: 50px;
+            }
+
+            .Courses-content li span {
+                padding: 6px 2px;
+                box-sizing: border-box;
+                line-height: 18px;
+                border-radius: 4px;
+                white-space: normal;
+                word-break: break-all;
+                cursor: pointer;
+            }
+
+            .grid-active {
+                z-index: 9999;
+            }
+
+            .grid-active span {
+                box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.2);
+            }
+        </style>
+    </head>
+
+    <section class="content-header">
+        <h1>个人课表
+
+            <small>Info</small>
+            <button onclick="Texport(this)"
+                    style="background-color: #00a2ae; color: #fff; padding: 5px 10px; border-radius: 4px;border: none">
+                课表导出
+            </button>
+            <div>
+                <div>
+                    <div>
+                        <div>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                                    aria-hidden="true">×</span></button>
+
+                        </div>
+                        <div>
+                            <div style="background: white" id="coursesTable"></div>
+                            <script>
+
+                            </script>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </h1>
+        <ol class="breadcrumb">
+            <li><a href="{% url 'scoreManagement:welcome' %}"><i class="fa fa-dashboard"></i> 主页</a></li>
+            <li class="active">选课</li>
+        </ol>
+    </section>
+
+
+
+{% endblock %}
+{% block script %}
+    <script>
+        {#+'</td><td>'+'<input type="button" onclick="dele(this)" class="btn btn-danger" name='+i+'  value="退课">'#}
+        var ctables = document.getElementById("coursesTable");
+        var data = eval('{{data|safe}}');
+        var dat = eval('{{dat|safe}}');//已选课数据
+        var trans = 0;
+        majorCourse = document.getElementById("majorCourse");
+        courseSelected = document.getElementById("courseSelected");
+        {#var ctx = ctables.getContext("2d");#}
+        $(function () {
+            $(".select2").select2();
+        });
+        {#----------------------查看已选课课表---------------------------#}
+
+        {#$('#eidtModal').modal('show');#}
+        document.getElementById('coursesTable').innerHTML = "";
+        document.getElementById('coursesTable').innerHTML = "";
+        var courseList = [
+            ['', '', '', '', '', '', '', '', '', '', '', '', ''],
+            ['', '', '', '', '', '', '', '', '', '', '', '', ''],
+            ['', '', '', '', '', '', '', '', '', '', '', '', ''],
+            ['', '', '', '', '', '', '', '', '', '', '', '', ''],
+            ['', '', '', '', '', '', '', '', '', '', '', '', ''],
+            ['', '', '', '', '', '', '', '', '', '', '', '', ''],
+            ['', '', '', '', '', '', '', '', '', '', '', '', ''],
+        ];
+        var week = window.innerWidth > 360 ? ['周一', '周二', '周三', '周四', '周五', '周六', '周日'] : ['一', '二', '三', '四', '五', '六', '七'];
+        var day = new Date().getDay();
+        var courseType = [
+            [{index: '1', name: '8:00'}, 1],
+            [{index: '2', name: '8:50'}, 1],
+            [{index: '3', name: '9:50'}, 1],
+            [{index: '4', name: '10:45'}, 1],
+            [{index: '5', name: '11:35'}, 1],
+            [{index: '6', name: '14:00'}, 1],
+            [{index: '7', name: '14:45'}, 1],
+            [{index: '8', name: '15:40'}, 1],
+            [{index: '9', name: '16:25'}, 1],
+            [{index: '10', name: '16:30'}, 1],
+            [{index: '11', name: '18:00'}, 1],
+            [{index: '12', name: '18:50'}, 1],
+            [{index: '13', name: '19:40'}, 1]
+        ];
+        // 实例化(初始化课表)
+        var Timetable = new Timetables({
+            el: '#coursesTable',
+            timetables: courseList,
+            week: week,
+            timetableType: courseType,
+            highlightWeek: day,
+            gridOnClick: function (e) {
+                alert(e.name + '  ' + e.week + ', 第' + e.index + '节课, 课长' + e.length + '节');
+                console.log(e);
+            },
+            styles: {
+                Gheight: 50
+            }
+        });
+
+        $.ajax({
+            url: '/courseSelection/find_course',
+            type: 'GET',
+            traditional: true,
+            dataType: 'JSON',
+            success: function (arg) {
+                var times = new Array(2);
+                var Day = 0;
+                var cstart = 0;
+                var cend = 0;
+                var week = new Array();
+                for (var key in arg["dic"]) {
+                    {#alert("asas");#}
+                    for (var k = 0; k < arg["dic"][key].length; k++) {
+                        times = arg["dic"][key][k]["节次"].split("-");
+                        week = arg["dic"][key][k]["周数"].split("-");
+
+                        if (parseInt(times[1]) >= 1 && parseInt(times[1]) <= 13)
+                            Day = 1;
+                        else if (parseInt(times[1]) >= 14 && parseInt(times[1]) <= 26)
+                            Day = 2;
+                        else if (parseInt(times[1]) >= 27 && parseInt(times[1]) <= 39)
+                            Day = 3;
+                        else if (parseInt(times[1]) >= 40 && parseInt(times[1]) <= 52)
+                            Day = 4;
+                        else if (parseInt(times[1]) >= 53 && parseInt(times[1]) <= 65)
+                            Day = 5;
+                        else if (parseInt(times[1]) >= 66 && parseInt(times[1]) <= 78)
+                            Day = 6;
+                        else if (parseInt(times[1]) >= 79 && parseInt(times[1]) <= 91)
+                            Day = 7;
+                        cstart = parseInt(times[0]) % 13;
+                        cend = parseInt(times[1]) % 13;
+                        if (cstart == 0)
+                            cstart = 13;
+                        if (cend == 0)
+                            cend = 13;
+
+                        for (var g = cstart; g <= cend; g++) {
+                            courseList[Day - 1][g - 1] = key + "\n" + week[0] + "-" + week[1] + "周" + "\n" + arg["t_place"][key] + "\n" + arg["t_info"][key] + "\n";
+                        }
+                    }
+
+
+                }
+                Timetable.setOption({
+                    timetables: courseList,
+                    week: ['一', '二', '三', '四', '五', '六', '日'],
+                    styles: {
+                        palette: ['#dedcda', '#ff4081']
+                    },
+                    timetableType: courseType,
+                    gridOnClick: function (e) {
+                        console.log(e);
+                    }
+                });
+            }
+        });
+
+            $(function () {
+            $(".down2").click(function () {
+                html2canvas($(".test")).then(function (canvas) {
+                    var imgUri = canvas.toDataURL("image/png").replace("image/png", "image/octet-stream"); // 获取生成的图片的url
+                    window.location.href = imgUri; // 下载图片
+                });
+            });
+        });
+          function Texport(obj) {
+              html2canvas(ctables, {
+                  onrendered:function(canvas) {
+
+                      //返回图片dataURL，参数：图片格式和清晰度(0-1)
+                      var pageData = canvas.toDataURL('image/jpeg', 1.0);
+
+                      //方向默认竖直，尺寸ponits，格式a4[595.28,841.89]
+                      var pdf = new jsPDF('', 'pt', 'a4');
+
+                      //addImage后两个参数控制添加图片的尺寸，此处将页面高度按照a4纸宽高比列进行压缩
+                      pdf.addImage(pageData, 'JPEG', 0, 0, 595.28, 592.28/canvas.width * canvas.height );
+
+                      pdf.save('stone.pdf');
+
+                  }
+              });
+          }
+
+    </script>
+{% endblock %}
