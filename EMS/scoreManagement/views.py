@@ -3,8 +3,7 @@ from django.utils.datastructures import MultiValueDictKeyError
 from django.views.decorators.csrf import csrf_exempt
 from django.http import JsonResponse, HttpResponseRedirect
 from django.db.models import Q
-from django.core import serializers
-import json
+from datetime import datetime
 
 from backstage.models import Student, Teacher, College, Major, MajorPlan, ClassRoom, AdmClass, User
 from courseScheduling.models import Teaching, Course, MajorPlan, MajorCourses, Teacher, Teacher_Schedule_result
@@ -537,24 +536,55 @@ def teacher_view_stu_score(request):
         return render(request, 'errors/403page.html')
     tno = request.session['username']
     teacher = Teacher.objects.get(username=tno)
-    teaching_list = Teaching.objects.filter(tno=teacher)
+    if request.method == 'GET':
+        try:
+            year = request.GET['year']
+            semester = request.GET['semester']
+            print(year)
+            print(semester)
+            print('--------------')
+
+            if year == '无' or semester == '无':
+                return render(request, 'scoreManage/teacher_view_stu_score.html')
+            teaching_list = Teaching.objects.filter(tno=teacher, mcno__year=year, mcno__semester=semester)
+        except MultiValueDictKeyError:
+            year = datetime.now().year
+            month = datetime.now().month
+            if month == 7:
+                semester = 3
+            elif 3 <= month <= 6:
+                semester = 2
+            else:
+                semester = 1
+            teaching_list = Teaching.objects.filter(tno=teacher, mcno__year=year, mcno__semester=semester)
+        else:
+            year = datetime.now().year
+            month = datetime.now().month
+            if month == 7:
+                semester = 3
+            elif 3 <= month <= 6:
+                semester = 2
+            else:
+                semester = 1
+            teaching_list = Teaching.objects.filter(tno=teacher, mcno__year=year, mcno__semester=semester)
+
+    all_teaching_list = Teaching.objects.filter(tno=teacher)
     schedule_result = Teacher_Schedule_result.objects.filter(tno__in=teaching_list)
     course_list = CourseSelected.objects.filter(cno__in=schedule_result)
-
     adm_id_list = course_list.values('sno__in_cls').distinct()
     adm_class_list = []
     for adm_id in adm_id_list:
         adm_class_list.append(AdmClass.objects.get(id=adm_id['sno__in_cls']))
 
-    all_year = [year[0] for year in course_list.values_list('cno__tno__mcno__year').distinct()]
-    all_semester = [semester[0] for semester in course_list.values_list('cno__tno__mcno__semester').distinct()]
+    all_year = [year[0] for year in all_teaching_list.values_list('mcno__year').distinct()]
+    all_semester = [semester[0] for semester in all_teaching_list.values_list('mcno__semester').distinct()]
 
     context = {
         'course_list': course_list,
         'adm_class_list': adm_class_list,
         'all_year': all_year,
         'all_semester': all_semester,
+        'teaching_list': teaching_list,
     }
-
-    pass
+    return render(request, 'scoreManage/teacher_view_stu_score.html', context)
 

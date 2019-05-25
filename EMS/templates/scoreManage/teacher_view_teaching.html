@@ -286,26 +286,5 @@
 
             $('.select2').select2();
         });
-
-        {% comment %}
-        function search_click() {
-            let tno = $('#seacher_teacher').val();
-            if (tno.length != 9) {
-                alert("检查输入9位工号是否正确！");
-            } else {
-                $.ajax({
-                    url: "{% url 'scoreManagement:teacher_view_teaching' %}",
-                    type: 'GET',
-                    data: {"tno": tno},
-                    success: function (res, status) {
-                        console.log(res);
-                    },
-                    error: function () {
-                        console.log("error");
-                    }
-                });
-            }
-        }
-        {% endcomment %}
     </script>
 {% endblock %}
