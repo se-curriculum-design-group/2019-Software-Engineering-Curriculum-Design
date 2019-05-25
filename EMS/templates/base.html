@@ -42,7 +42,8 @@
         <!-- Select2 下拉框工具 -->
         <link rel="stylesheet" href="{% static 'AdminLTE/plugins/select2/select2.min.css' %}">
         <!-- DataTable Buttons 导出数据工具 -->
-        <link rel="stylesheet" href="{% static 'AdminLTE/plugins/datatables/extensions/Buttons/buttons.dataTables.min.css' %}">
+        <link rel="stylesheet"
+              href="{% static 'AdminLTE/plugins/datatables/extensions/Buttons/buttons.dataTables.min.css' %}">
 
     {% endblock %}
 
@@ -51,6 +52,7 @@
     <!--[if lt IE 9]>
   <script src="{% static 'AdminLTE/plugins/html5shiv.min.js' %}"></script>
   <script src="{% static 'AdminLTE/plugins/respond.min.js' %}"></script>
+
   <![endif]-->
 
 </head>
@@ -168,6 +170,8 @@
 <!-- ./wrapper -->
 <!-- 这些是默认加载的js脚本 -->
 <!-- jQuery 2.2.3 -->
+<script src="{% static 'html2canvas.js' %}"></script>
+<script src="{% static 'jsPdf.debug.js' %}"></script>
 <script src="{% static 'AdminLTE/plugins/jQuery/jquery-2.2.3.min.js' %}"></script>
 <!-- jQuery UI 1.11.4 -->
 <script src="{% static 'AdminLTE/plugins/jQueryUI/jquery-ui.min.js' %}"></script>

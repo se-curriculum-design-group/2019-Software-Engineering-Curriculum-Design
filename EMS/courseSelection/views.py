@@ -517,3 +517,5 @@ def student_view_other_course(request):
         "majors": majors
     }
     return render(request, "courseSelection/stu_major.html", context)
+def tables(request):
+    return render(request,"courseSelection/course_table.html")

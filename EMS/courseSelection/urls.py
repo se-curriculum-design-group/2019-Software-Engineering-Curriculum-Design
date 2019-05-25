@@ -26,8 +26,8 @@ urlpatterns = [
                   path('text', views.text, name="text"),
                   path('school_query', views.school_query, name="school_query"),
                   path('class_query', views.class_query, name="class_query"),
-                  path('time_set', views.time_set, name="time_set")
-
+                  path('time_set', views.time_set, name="time_set"),
+                  path('tables', views.tables, name="tables")
               ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
                 
               
