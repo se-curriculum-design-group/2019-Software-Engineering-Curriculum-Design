@@ -75,7 +75,7 @@ def teacher_view_project_detail(request):
      #将输入的数据存储到数据库中
     uno=User.objects.get(username=username)
     tno=Teacher.objects.get(user_ptr_id=uno)
-    id=request.GET.get('nid')
+    id=request.GET.get('id')
      #从数据库中取数据显示到网页上
 
     info=GraduationProject.objects.filter(tno=tno,id=id)
