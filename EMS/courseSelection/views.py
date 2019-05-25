@@ -9,11 +9,7 @@ import json
 import numpy as np
 import datetime
 from django.conf import settings
-from .models import Picture
 import pymysql
-import matplotlib.pyplot as plt
-import matplotlib
-
 
 def welcome(request):
     return render(request, 'courseSelection/welcome.html')
