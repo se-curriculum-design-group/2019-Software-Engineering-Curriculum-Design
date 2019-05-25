@@ -3,7 +3,6 @@
 
 {% block content %}
     <body>
-
         <form method="post" action="{% url 'courseSelection:time_set' %}">
             {% csrf_token %}
             <h1>设置选课时间</h1>
@@ -16,7 +15,6 @@
     </body>
 {% endblock %}
 {% block script %}
-
     <script>
         function Time_set(obj){
             {#alert(obj);#}

@@ -1,55 +1,256 @@
 {% extends "adm_base.html" %}
+{% load staticfiles %}
+
 {% block title %}欢迎登录教务管理系统{% endblock %}
-{% load static %}
+
 {% block content %}
     <section class="content-header">
         <h1>系统管理员
         </h1>
     </section>
-    <form method="post" action="{% url 'courseSelection:school_query' %}">
-        {% csrf_token %}
-        <section class="content">
-            <section class="content">
-                <p>时间</p>
-                <select name="time">
-                    <option value="2018-2019">2018-2019</option>
-                    <option value="2017-2018">2017-2018</option>
-                    <option value="2016-2017">2016-2017</option>
-                </select>
-                <p>授课年级</p>
-                <select name="grade">
-                    <option value="大四">大四</option>
-                    <option value="大三">大三</option>
-                    <option value="大二">大二</option>
-                    <option value="大一">大一</option>
-                </select>
-                <p>学院</p>
-                <select name="college">
-                    <option value="材料学院">材料学院</option>
-                    <option value="信息学院">信息学院</option>
-                    <option value="文法学院">文法学院</option>
-                    <option value="化工学院">化工学院</option>
-                    <option value="材料学院">材料学院</option>
-                    <option value="马克思主义学院">马克思主义学院</option>
-                    <option value="能源学院">能源学院</option>
 
-                </select>
-                <p>科目</p>
-                <select name="subject">
-                    <option value="软件工程">软件工程</option>
+    <section class="content">
+        <div class="box">
+            <div class="box-header">
+                <h2 class="box-title">
+                    课程选课情况
+                </h2>
+            </div>
+            <div class="box-body">
+                <div id="img1" style="width: 100%;height:400px"></div>
+                <div id="img2" style="width:100%;height: 300px;"></div>
+                <div id="img3" style="width:100%;height: 300px;"></div>
+            </div>
+        </div>
+    </section>
 
-                </select>
-                <button type="submit" class="btn btn-primary " onclick="show_img()">搜索</button>
-            </section>
-        </section>
-    </form>
+{% endblock %}
 
-        <body>
-        <p>历年选课人数</p>
-        <left><img src="{% static "img/adm_query/test1.jpg" %} " alt=""/></left>
-        <p>选课专业分布</p>
-        <left><img src="{% static "img/adm_query/test.jpg" %} " alt=""/></left>
-        <p>选课专业人数</p>
-        <left><img src="{% static "img/adm_query/test3.jpg" %} " alt=""/></left>
-        </body>
+{% block script %}
+    <script src="{% static 'AdminLTE/plugins/echarts.js' %}"></script>
+    <script>
+        function show_img1() {
+            var time = ["2016", "2017", "2018"];
+            var student_selectcourse_num = [120, 150, 190];
+            {% for year_semester in my_year_semester %}
+                time.push("{{ year_semester }}");
+                student_selectcourse_num.push("{{ number }}");
+            {% endfor %}
+            var linechart = echarts.init(document.getElementById('img1'));
+            var option = {
+                title: {
+                    text: '历年选课人数',
+                },
+                tooltip: {
+                    trigger: 'axis'
+                },
+                legend: {
+                    data: ['每学期选课总人数']
+                },
+                toolbox: {
+                    show: true,
+                    feature: {
+                        mark: {show: true},
+                        magicType: {show: true, type: ['line', 'bar']},
+                    }
+                },
+                calculable: true,
+                xAxis: [
+                    {
+                        type: 'category',
+                        boundaryGap: false,
+                        data: time,
+                    }
+                ],
+                yAxis: [
+                    {
+                        type: 'value',
+                        axisLabel: {
+                            formatter: '{value}'
+                        }
+                    }
+                ],
+                series: [
+                    {
+                        name: '选课总人数',
+                        type: 'line',
+                        data: student_selectcourse_num,
+                        markPoint: {
+                            data: [
+                                {type: 'max', name: '最大值'},
+                                {type: 'min', name: '最小值'}
+                            ]
+                        },
+                    },
+
+                ]
+            };
+            linechart.setOption(option);
+        }
+
+        show_img1();
+
+        function show_img2() {
+            var majors = ["计科", "自动化", "电子信息"];
+            var major_num = [180, 20, 50];
+            var datas = [];
+            {% for major in all_majors %}
+                majors.push("{{ major }}");
+                major_num.push("{{ every_major_number }}")
+
+            {% endfor %}
+            for (var i = 0; i < majors.length; i++) {
+                datas.push({
+                    name: majors[i],
+                    value: major_num[i]
+                })
+            }
+            var circlechart = echarts.init(document.getElementById('img2'));
+            var option = {
+                title: {
+                    text: '选课专业分布'
+                },
+                tooltip: {
+                    trigger: 'item',
+                    formatter: "{a} <br/>{b} : {d}%"
+                },
+                series: [{
+                    name: '专业选课人数',
+                    type: 'pie',
+                    radius: '80%',
+                    data: datas
+
+
+                }]
+            };
+            circlechart.setOption(option)
+        }
+
+        show_img2();
+
+        function show_img3() {
+            var barchart = echarts.init(document.getElementById('img3'));
+            var majors = ["计科", "自动化", "电子信息"];
+            var major_num = [180, 20, 50];
+            {% for major in all_majors %}
+                majors.push("{{ major }}");
+                major_num.push("{{ every_major_number }}")
+            {% endfor %}
+            var option = {
+                title: {
+                    text: '各专业选课人数',
+                },
+                tooltip: {
+                    trigger: 'axis'
+                },
+                legend: {
+                    data: ['各专业学生数量']
+                },
+                toolbox: {
+                    show: true,
+                },
+                calculable: true,
+                xAxis: [
+                    {
+                        type: 'category',
+                        data: majors
+                    }
+                ],
+                yAxis: [
+                    {
+                        type: 'value'
+                    }
+                ],
+                series: [
+                    {
+                        name: '各专业学生选课人数',
+                        type: 'bar',
+                        data: major_num,
+                        markPoint: {
+                            data: [
+                                {type: 'max', name: '最大值'},
+                                {type: 'min', name: '最小值'}
+                            ]
+                        },
+                    },
+                ]
+            };
+            barchart.setOption(option);
+        }
+
+        show_img3();//学生学分条形统计图
+
+
+        $.fn.dataTable.ext.search.push(
+            function (settings, data, dataIndex) {
+                var college = $('#college').val();
+                var course_type = $('#course_type').val();
+                return ((college === data[1] || college === "ALL") && (course_type === data[4] || course_type === "ALL"));
+            }
+        );
+        $(document).ready(function () {
+            var table = $('#courses_table').DataTable(
+                {
+                    dom: 'Bfrtip',
+                    buttons: [
+                        'copy',
+                        {
+                            extend: 'excel',
+                            filename: "全校课程信息表",
+                        }, 'pdf', 'print'
+                    ],
+                    "paging": true,       <!-- 允许分页 -->
+                    "lengthChange": true, <!-- 允许改变每页显示的行数 -->
+                    "searching": true,    <!-- 允许内容搜索 -->
+                    "ordering": true,     <!-- 允许排序 -->
+                    "info": true,         <!-- 显示信息 -->
+                    "autoWidth": false,    <!-- 固定宽度 -->
+                    "language": {
+                        "sProcessing": "处理中...",
+                        "sLengthMenu": "显示 _MENU_ 项结果",
+                        "sZeroRecords": "没有匹配结果",
+                        "sInfo": "显示第 _START_ 至 _END_ 项结果，共 _TOTAL_ 项",
+                        "sInfoEmpty": "显示第 0 至 0 项结果，共 0 项",
+                        "sInfoFiltered": "(由 _MAX_ 项结果过滤)",
+                        "sInfoPostFix": "",
+                        "sSearch": "搜索:",
+                        "sUrl": "",
+                        "sEmptyTable": "表中数据为空",
+                        "sLoadingRecords": "载入中...",
+                        "sInfoThousands": ",",
+                        "oPaginate": {
+                            "sFirst": "首页",
+                            "sPrevious": "上页",
+                            "sNext": "下页",
+                            "sLast": "末页"
+                        },
+                        "oAria": {
+                            "sSortAscending": ": 以升序排列此列",
+                            "sSortDescending": ": 以降序排列此列"
+                        }
+                    },
+                    "columnDefs": [{
+                        "searchable": false,
+                        "orderable": true,
+                        "targets": 0
+                    }],
+                    "order": [[0, 'asc']]
+                }
+            );
+
+            $('#courses_table tbody').on('click', 'tr', function (e) {
+                if ($(this).hasClass('selected')) {
+                    $(this).removeClass('selected');
+                } else {
+                    table.$('tr.selected').removeClass('selected');
+                    $(this).addClass('selected');
+                }
+            });
+            // Event listener to the two range filtering inputs to redraw on input
+            $('#course_type, #college').change(function () {
+                table.draw();
+            });
+            $('.select2').select2();
+        });
+    </script>
 {% endblock %}
