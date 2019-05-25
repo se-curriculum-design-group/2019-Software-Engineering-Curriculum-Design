@@ -10,7 +10,7 @@ app_name = 'scoreManagement'
 
 
 class TestStudent(TestCase):
-    def setUp(self) -> None:
+    def setUp(self):
         student1 = mixer.blend(Student)
         student1.username = '2016000474'
         student1.password = make_encode('2016000474')
@@ -174,3 +174,6 @@ class TestTeacher(TestCase):
     def test_teacher_submit_score(self):
         response = self.client.get('/graduationManagement/teacher_submit_score')
         self.assertIn(response.status_code, [200, 301, 302])
+
+    def test_domo(self):
+        print ("testdomo")
