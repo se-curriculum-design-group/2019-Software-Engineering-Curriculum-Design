@@ -168,6 +168,8 @@
                             <thead>
                             <tr>
                                 <th>编号</th>
+                                <th>学院</th>
+                                <th>专业</th>
                                 <th>课程号</th>
                                 <th>课程名</th>
                                 <th>学时</th>
@@ -182,6 +184,8 @@
                             {% for info in mC %}
                                 <tr>
                                     <td>{{ forloop.counter }}</td>
+                                    <td>{{ info.tno.mcno.cno.college.name }}</td>
+                                    <td>{{ info.tno.mcno.mno.major.mname }}</td>
                                     <td>{{ info.tno.mcno.cno.cno }}</td>
                                     <td>{{ info.tno.mcno.cno.cname }}</td>
                                     <td>{{ info.tno.mcno.hour_total }}</td>
@@ -262,9 +266,9 @@
         {#--------------------------------------------筛选------------------------------------------------------#}
         $.fn.dataTable.ext.search.push(
             function (setting, data, dataIndex) {
-                let sl_year = $("#course_year").val();
-                let sl_semester = $("#course_semester").val();
-                return ((sl_year === data[1] || sl_year === 'All') && (sl_semester === 'All' || sl_semester === data[2]));
+                let college = $("#course_year").val();
+                let major = $("#course_semester").val();
+                return ((college === data[1] || major === 'All') && (major === 'All' || major === data[2]));
             }
         );
 
