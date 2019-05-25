@@ -269,8 +269,6 @@ def send_emails(request):
                 for user in users:
                     recipient_list.append(user.email)
 
-
-
             from_mail = settings.EMAIL_HOST_USER
             msg = mail.EmailMessage(title, text, from_mail, recipient_list)
             msg.content_subtype = "html"
