@@ -696,7 +696,7 @@ def has_table_hazzard(table1, table2):
             return True
     return False
 
-def Search_time_room(time: object) -> object:
+def Search_time_room(time: str) -> object:
     init_room()
     res = []
     table = String_to_table(time)
@@ -976,10 +976,21 @@ def search_exam_time(stu_username: str):
 if __name__ == '__main__':
     #autoSchedule()
     #exam_schedule()
+    #Sycho()
+    #手工排
+    #以上在管理员的排课界面
+
+    #查询空闲教室页面 学生教师只能看
+    #管理员看+占用空闲教室 ssss('时间段，16-18-14-15'，'地点'，'陈述') 返回是否加入成功
+
+    #仅学生可以看自己的考试时间表
+
+
     #bf = get_students_teacher_courseSchedule(['2016000474', '2016000475', '2016000476', '2016000477'], teacher_username='198500038', )
     #Search_time_room()
     #print('-----------------')
     #print(bf.courseSchedule)
     #fff = Search_time_room("14-16-1-1,27-29-8-8")
-        #manual_schedule('16-18-14-15', 'A-101', ['2016000474', '2016000475', '2016000476', '2016000477'], [], '199000064', 'CSE14302C')
+    #manual_schedule('16-18-14-15', 'A-101', ['2016000474', '2016000475', '2016000476', '2016000477'], [], '199000064', 'CSE14302C')
+
     a = 1
