@@ -223,7 +223,6 @@
                 let sl_college = $("#course_college").val();
                 let sl_major = $("#course_major").val();
                 return ((sl_college === data[3] || sl_college === 'ALL') && (sl_major === data[4] || sl_major === 'ALL'));
-
             }
         );
         $(function () {
@@ -296,7 +295,6 @@
 
 
             $('#change_score_btn').click(function () {
-
                 if (table.rows('.selected').data().length) {
                     var rowData = table.rows('.selected').data()[0];
                     var form_modal = $('#changeScore');
@@ -358,9 +356,7 @@
                         }
                     }
                 );
-
             });
-
         })
     </script>
 {% endblock %}

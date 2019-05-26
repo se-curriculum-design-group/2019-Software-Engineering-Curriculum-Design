@@ -14,7 +14,7 @@
     </section>
     <div class="box">
         <div class="box-header">
-            <h3 class="box-title">查询专业培养计划</h3>
+            <h3 class="box-title">专业培养计划表</h3>
             <div class="box-header ">
                 <label style="color: red">学院：</label><select id="college" class="select2" style="width: 20%">
                 <option value="ALL" selected="selected">全部</option>
@@ -67,7 +67,102 @@
                     {% endfor %}
                     </tbody>
                 </table>
+            </div>
+        </div>
+        <div class="box-footer">
+            <div class="btn-group pull-left ">
+                <a id="a">
+                    <button id='change_major_plan_btn' class="btn btn-info" type="button">
+                        <span class="glyphicon glyphicon-pencil"></span>修改专业计划方案
+                    </button>
+                </a>
+            </div>
+        </div>
+    </div>
 
+    <div class="modal fade" id="changePlan">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <form action="" name="changeMajorPlan" method="get" onsubmit="return(false);">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal">&times;</button>
+                        <h4 class="modal-title">修改专业培养计划</h4>
+                    </div>
+                    <div class="modal-content" id="changePlanModal">
+                        <div class="form-horizontal">
+                            <div class="form-group">
+                                <label for="changeScoreCollege" class="col-sm-2 control-label">学院：</label>
+                                <div class="col-sm-10">
+                                    <input type="text" id="changeScoreCollege" disabled class="form-control"
+                                           name="change_college">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="changePlanMajor" class="col-sm-2 control-label">专业：</label>
+                                <div class="col-sm-10">
+                                    <input type="text" id="changePlanMajor" disabled class="form-control"
+                                           name="change_major">
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="changePlanYear" class="col-sm-2 control-label">年级：</label>
+                                <div class="col-sm-10">
+                                    <input type="text" id="changePlanYear" disabled class="form-control"
+                                           name="change_year">
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="changePlanNum" class="col-sm-2 control-label">计划人数：</label>
+                                <div class="col-sm-10">
+                                    <input type="text" id="changePlanNum" class="form-control"
+                                           name="change_num">
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="changeLowestScore" class="col-sm-2 control-label">毕业最低学分：</label>
+                                <div class="col-sm-10">
+                                    <input type="text" id="changeLowestScore" class="form-control"
+                                           name="change_lowest_score">
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="changePlanStuMethod" class="col-sm-2 control-label">学制：</label>
+                                <div class="col-sm-10">
+                                    <input type="text" id="changePlanStuMethod" class="form-control"
+                                           name="change_course_stu_method">
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="changePlanCourseNum" class="col-sm-2 control-label">计划课程总数：</label>
+                                <div class="col-sm-10">
+                                    <input type="text" id="changePlanCourseNum" class="form-control"
+                                           name="change_course_num">
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="changePlanClassNum" class="col-sm-2 control-label">班级个数：</label>
+                                <div class="col-sm-10">
+                                    <input type="text" id="changePlanClassNum" class="form-control"
+                                           name="change_class_num">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <div class="center-block">
+                                <button id="cancelChange" type="button" class="btn btn-default"
+                                        data-dismiss="modal">取消
+                                </button>
+                                <button id="sureToChange" type="submit" class="btn btn-success">保存</button>
+                            </div>
+                        </div>
+                    </div>
+                </form>
             </div>
         </div>
     </div>
@@ -145,11 +240,76 @@
                     $(this).addClass('selected');
                 }
             });
-            // Event listener to the two range filtering inputs to redraw on input
             $('#major, #year, #college').change(function () {
                 table.draw();
             });
             $('.select2').select2();
+
+            $('#change_major_plan_btn').click(function () {
+                if (table.rows('.selected').data().length) {
+                    var rowData = table.rows('.selected').data()[0];
+                    var form_modal = $('#changePlan');
+                    var inputs = form_modal.find('input');
+                    for (let i = 1; i <= inputs.length; i++) {
+                        $(inputs[i - 1]).val(rowData[i]);
+                    }
+                    form_modal.modal();
+                } else {
+                    alert("请选择一项成绩修改");
+                }
+            });
+
+            $('#sureToChange').click(function () {
+                var inputs = $('#changePlan').find('input');
+                var values = [];
+                for (let i = 0; i < inputs.length; i++) {
+                    values.push($(inputs[i]).val());
+                }
+
+                const college = values[0];
+                const major = values[1];
+                const year = values[2];
+                const people_num = values[3];
+                const lowest_score = values[4];
+                const stu_method = values[5];
+                const course_num = values[6];
+                const adm_class_num = values[7];
+
+                const data = {
+                    'year': year,
+                    'major': major,
+                    'people_num': people_num,
+                    'lowest_score': lowest_score,
+                    'stu_method': stu_method,
+                    'course_num': course_num,
+                    'adm_class_num': adm_class_num,
+                };
+                console.log(data);
+
+                $.get(
+                    "{% url 'scoreManagement:adm_change_major_plan' %}",
+                    data,
+                    function (ret) {
+                        if (!ret) {
+                            alert("修改失败");
+                        } else {
+                            const new_people_num = ret['new_people_num'];
+                            const new_score_grad = ret['new_score_grad'];
+                            const new_clsw_num = ret['new_clsw_num'];
+                            const new_stu_years = ret['new_stu_years'];
+                            const new_course_num = ret['new_course_num'];
+
+                            let tds = Array.prototype.slice.call($('.selected td'));
+                            tds[4].innerHTML = new_people_num;
+                            tds[5].innerHTML = new_score_grad;
+                            tds[6].innerHTML = new_clsw_num;
+                            tds[7].innerHTML = new_stu_years;
+                            tds[8].innerHTML = new_course_num;
+                            alert('修改成功！');
+                        }
+                    }
+                );
+            });
         });
     </script>
 {% endblock %}

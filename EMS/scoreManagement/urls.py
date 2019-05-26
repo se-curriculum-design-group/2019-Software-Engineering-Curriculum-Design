@@ -52,4 +52,7 @@ urlpatterns = [
 
     # 管理员修改成绩
     path('adm_change_score', views.adm_change_score, name="adm_change_score"),
+    # 管理员修改专业计划
+    path('adm_change_major_plan', views.adm_change_major_plan, name="adm_change_major_plan"),
+
 ]

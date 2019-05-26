@@ -637,7 +637,6 @@ def teacher_view_stu_score(request):
 def adm_change_score(request):
     if request.is_ajax():
         if len(request.GET):
-            print(len(request.GET))
             year = request.GET.get('year')
             semester = request.GET.get('semester')
             college = request.GET.get('college')
@@ -650,7 +649,6 @@ def adm_change_score(request):
             final_score = request.GET.get('final')
             student = Student.objects.get(username=sno)
             teacher = Teacher.objects.get(username=tno)
-            in_college = College.objects.get(name=college)
             try:
                 course = Course.objects.get(cno=cno, course_type=method)
                 major_course = MajorCourses.objects.get(cno=course, year=year, semester=semester)
@@ -675,3 +673,39 @@ def adm_change_score(request):
             }
             return JsonResponse(result)
     return redirect("scoreManagement:adm_all_course_score")
+
+
+def adm_change_major_plan(request):
+    if request.is_ajax():
+        if len(request.GET):
+            year = request.GET.get('year')
+            major_name = request.GET.get('major')
+            people_num = request.GET.get('people_num')
+            lowest_score = request.GET.get('lowest_score')
+            stu_method = request.GET.get('stu_method')
+            course_num = request.GET.get('course_num')
+            adm_class_num = request.GET.get('adm_class_num')
+
+            major = Major.objects.get(mno=major_name.split('-')[0])
+            major_plan = MajorPlan.objects.get(major=major, year=year)
+            # make change
+            major_plan.cls_num = adm_class_num
+            major_plan.people_num = people_num
+            major_plan.score_grad = lowest_score
+            major_plan.stu_years = stu_method
+            major_plan.course_num = course_num
+            major_plan.save()
+            new_people_num = major_plan.people_num
+            new_score_grad = major_plan.score_grad
+            new_clsw_num = major_plan.cls_num
+            new_stu_years = major_plan.stu_years
+            new_course_num = major_plan.course_num
+
+            data = {
+                'new_people_num': new_people_num,
+                'new_score_grad': new_score_grad,
+                'new_clsw_num': new_clsw_num,
+                'new_stu_years': new_stu_years,
+                'new_course_num': new_course_num,
+            }
+            return JsonResponse(data)
