@@ -8,6 +8,8 @@ urlpatterns = [
                   path('', views.welcome, name="welcome"),
                   #首页
                   path('graduation_home_page', views.graduation_home_page, name="graduation_home_page"),
+                  path('student_delete',views.student_delete,name="student_delete"),
+                  path('student_choosing_action',views.student_choosing_action,name="student_choosing_action"),
                   #学生查看选题列表并选题
                   path('student_choose_project',views.student_choose_project,name="student_choose_project"),
                   #学生提交资料
@@ -17,7 +19,7 @@ urlpatterns = [
                   #学生查看成绩
                   path('student_view_score',views.student_view_score,name="student_view_score"),
                   #学生查看选题详情
-                  path('student_view_project_detail',views.student_view_project_detail,name="student_view_project_detail"),
+                  path('student_view_project_detail/<str:id>',views.student_view_project_detail,name="student_view_project_detail"),
                   #学生查看审核结果
                   path('student_view_project_ischoosen',views.student_view_project_ischoosen,name="student_view_project_ischoosen"),
                   #学生查看审核结果详情
@@ -44,5 +46,10 @@ urlpatterns = [
                   path('teacher_submit_score',views.teacher_submit_score,name="teacher_submit_score"),                
                   #教师提交成绩
                   path('teacher_submit_score_detail',views.teacher_submit_score_detail,name="teacher_submit_score_detail"),                
-                                 
-              ]
+                  path('teacher_ref_student',views.teacher_ref_student,name="teacher_ref_student"),
+
+                  path('teacher_acc_student',views.teacher_acc_student,name="teacher_acc_student"),
+                  # 管理员查看选题情况
+                  path('adm_projectSelection', views.adm_projectSelection, name="adm_projectSelection"),
+
+]
