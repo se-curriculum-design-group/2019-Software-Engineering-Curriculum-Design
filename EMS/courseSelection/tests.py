@@ -32,9 +32,9 @@ class TestStudent(TestCase):
         response = self.client.post('/mylogin', self.login_data)
         self.assertIn(response.status_code, [200, 301, 302])
 
-    def test_stu_major(self):
-        response = self.client.get('/courseSelection/stu_major')
-        self.assertIn(response.status_code, [200, 301, 302])
+    # def test_stu_major(self):
+    #     response = self.client.get('/courseSelection/stu_major')
+    #     self.assertIn(response.status_code, [200, 301, 302])
 
 
 class TestAdm(TestCase):
@@ -66,22 +66,6 @@ class TestAdm(TestCase):
         response = self.client.get('/courseSelection/adm_selection_manage')
         self.assertIn(response.status_code, [200, 301, 302])
 
-    def test_adm_class(self):
-        response = self.client.get('/courseSelection/adm_class')
-        self.assertIn(response.status_code, [200, 301, 302])
-
-    def test_adm_school(self):
-        response = self.client.get('/courseSelection/adm_school')
-        self.assertIn(response.status_code, [200, 301, 302])
-
-    def test_class_query(self):
-        response = self.client.get('/courseSelection/class_query')
-        self.assertIn(response.status_code, [200, 301, 302])
-
-    def test_school_query(self):
-        response = self.client.get('/courseSelection/school_query')
-        self.assertIn(response.status_code, [200, 301, 302])
-
     def test_time_set(self):
-         response = self.client.get('/courseSelection/time_set')
-         self.assertIn(response.status_code, [200, 301, 302])
+        response = self.client.get('/courseSelection/time_set')
+        self.assertIn(response.status_code, [200, 301, 302])
