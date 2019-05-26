@@ -725,6 +725,7 @@ def add_active(time:str, room:str, state:str):
                 time=time,
                 statement=state,
             )
+            new_row.save()
     return True
 def get_students_teacher_courseSchedule(stuset: [], class_set=None, teacher_username=None) -> Buffer:
     if teacher_username == None:
