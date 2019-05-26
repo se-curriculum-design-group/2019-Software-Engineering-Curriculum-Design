@@ -19,7 +19,21 @@ def scheduling_home_page(request):
 
 
 def time_exam(request):
-    return render(request, "courseScheduing/time_exam.html")
+    a = [1,2,3,4,5,6]
+    b = [1,2,3,4,5,6]
+    c = [1,2,3,4,5,6]
+    d = [1,2,3,4,5,6]
+    e = [1,2,3,4,5,6]
+    f = [1,2,3,4,5,6]
+    data=[]
+    data.append(a)
+    data.append(b)
+    data.append(c)
+    data.append(d)
+    data.append(e)
+    data.append(f)
+    return render(request, "courseScheduing/time_exam.html", {'data':data})
+
 def find_vacant_room(request):
     rooms = mod.ClassRoom.objects.all()
     # rooms=models.Classroom_other_schedule.objects.all()
