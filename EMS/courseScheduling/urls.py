@@ -8,4 +8,5 @@ urlpatterns = [
     path('scheduling_home_page', views.scheduling_home_page, name="scheduling_home_page"),
     path('find_vacant_room', views.find_vacant_room, name="find_vacant_room"),
     path("search_time_room", views.search_time_room, name="search_time_room"),
+    path("search_time_room_teacher", views.search_time_room_teacher, name="search_time_room_teacher"),
 ]

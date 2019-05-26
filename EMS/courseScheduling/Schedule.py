@@ -696,7 +696,7 @@ def has_table_hazzard(table1, table2):
                 return True
     return False
 
-def Search_time_room(time: str) -> object:
+def Search_time_room(time: str):
     init_room()
     res = []
     table = String_to_table(time)
@@ -706,7 +706,11 @@ def Search_time_room(time: str) -> object:
         if has_table_hazzard(room.courseSchedule, table):
             continue
         else:
-            res.append(room)
+            res.append({
+                'type':room.type,
+                'id':room.id,
+                'container':room.container,
+            })
     return res
 
 #添加临时活动
