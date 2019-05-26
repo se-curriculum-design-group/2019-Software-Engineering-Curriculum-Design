@@ -35,6 +35,8 @@ urlpatterns = [
     path('teacher_view_teaching', views.teacher_view_teaching, name="teacher_view_teaching"),
     # 教师上传成绩
     path('teacher_upload_score', views.teacher_upload_score, name="teacher_upload_score"),
+    # 教师查看学生考试成绩
+    path('teacher_view_stu_score', views.teacher_view_stu_score, name="teacher_view_stu_score"),
 
     # 管理员查看全部的成绩
     path('adm_all_course_score', views.adm_all_course_score,

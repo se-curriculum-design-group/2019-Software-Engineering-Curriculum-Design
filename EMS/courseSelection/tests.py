@@ -35,6 +35,18 @@ class TestStudent(TestCase):
     def test_stu_major(self):
         response = self.client.get('/courseSelection/stu_major')
         self.assertIn(response.status_code, [200, 301, 302])
+    def test_stu_tables(self):
+        response = self.client.get('/courseSelection/tables')
+        self.assertIn(response.status_code, [200, 301, 302])
+    def test_stu_selectcourse(self):
+        response = self.client.get('/courseSelection/select_course')
+        self.assertIn(response.status_code, [200, 301, 302])
+    def test_stu_deletecourse(self):
+        response = self.client.get('/courseSelection/delete_course')
+        self.assertIn(response.status_code, [200, 301, 302])
+    def test_stu_findcourse(self):
+        response = self.client.get('/courseSelection/find_course')
+        self.assertIn(response.status_code, [200, 301, 302])
 
 
 class TestAdm(TestCase):
@@ -66,22 +78,42 @@ class TestAdm(TestCase):
         response = self.client.get('/courseSelection/adm_selection_manage')
         self.assertIn(response.status_code, [200, 301, 302])
 
-    def test_adm_class(self):
-        response = self.client.get('/courseSelection/adm_class')
-        self.assertIn(response.status_code, [200, 301, 302])
-
     def test_adm_school(self):
         response = self.client.get('/courseSelection/adm_school')
         self.assertIn(response.status_code, [200, 301, 302])
 
-    def test_class_query(self):
-        response = self.client.get('/courseSelection/class_query')
-        self.assertIn(response.status_code, [200, 301, 302])
-
-    def test_school_query(self):
-        response = self.client.get('/courseSelection/school_query')
-        self.assertIn(response.status_code, [200, 301, 302])
 
     def test_time_set(self):
-         response = self.client.get('/courseSelection/time_set')
-         self.assertIn(response.status_code, [200, 301, 302])
+        response = self.client.get('/courseSelection/time_set')
+        self.assertIn(response.status_code, [200, 301, 302])
+class TestTeacher(TestCase):
+    def setUp(self) -> None:
+        teacher = mixer.blend(Teacher)
+        teacher.username = '198500038'
+        teacher.password = make_encode('198500038')
+        teacher.save()
+        self.log_data = {
+            'username': teacher.username,
+            'password': teacher.username
+        }
+        data = {
+            'username': '198500038',
+            'password': '198500038'
+        }
+
+        url = ""
+        response = self.client.get(url)
+        self.assertEqual(response.status_code, 200)
+        self.assertTemplateUsed(response, 'login.html')
+
+        url = '/mylogin'
+        response = self.client.post(url, data=self.log_data)
+        self.assertIn(response.status_code, [200, 301, 302])
+    def test_teachercourse(self):
+        response = self.client.get('/courseSelection/teacher_course')
+        self.assertIn(response.status_code, [200, 301, 302])
+    # def test_showstudent(self):
+    #     response = self.client.get('/courseSelection/show_students/%3Fcno=MAT13904T&course_type=公共基础必修')
+    #     self.assertIn(response.status_code,[200,301,302])
+
+
