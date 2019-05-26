@@ -1,0 +1,56 @@
+{% extends "adm_base.html" %}
+{% block title %}欢迎登录教务管理系统{% endblock %}
+{% load static %}
+
+
+
+{% block content %}
+    <section class="content-header">
+        <h1>系统管理员
+        </h1>
+    </section>
+    <form method="post" action="{% url 'courseSelection:school_query' %}">
+        {% csrf_token %}
+
+        <div class="box">
+            <div class="box-header">
+                <h3 class="box-title">全校课程信息管理</h3>
+                <div class="box-header ">
+                    <label style="color: blue">开课学年：</label>
+                    <select id="times" class="select2" style="width: 20%">
+                        <option value="ALL" selected="selected">全部</option>
+                        {% for item in times %}
+                            <option value="{{ item }}">{{ item }}
+                        {% endfor %}
+                    </select>
+                    <label style="color: blue">开课学院：</label>
+                    <select id="college" class="select2" style="width: 20%">
+                        <option value="ALL" selected="selected">全部</option>
+                        {% for item in all_college %}
+                            <option value="{{ item }}">{{ item }}
+                        {% endfor %}
+                    </select>
+                    <label style="color: blue">开课专业：</label>
+                    <select id="college" class="select2" style="width: 20%">
+                        <option value="ALL" selected="selected">全部</option>
+                        {% for item in all_college %}
+                            <option value="{{ item }}">{{ item }}
+                        {% endfor %}
+                    </select>
+                    <label style="color: blue">课程名称：</label>
+                    <select id="course_type" class="select2" style="width: 15%">
+                        <option value="ALL" selected="selected">全部</option>
+                        {% for item in all_course_type %}
+                            <option value="{{ item.course_type }}">{{ item.course_type }}</option>
+                        {% endfor %}
+                    </select>
+                    <button id='add' class="btn btn-primary" type="submit">
+                        <span class="glyphicon glyphicon-plus"></span>搜索
+                    </button>
+                </div>
+
+            </div>
+
+        </div>
+    </form>
+{% endblock %}
