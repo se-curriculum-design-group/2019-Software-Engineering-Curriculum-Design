@@ -157,6 +157,29 @@ def search_time_room(request):
     print(w, d, ls, le)
     t = str((d - 1) * 13 + ls) + "-" + str((d - 1) * 13 + le) + "-" + str(w) + "-" + str(w)
     print(t)
-    rooms=[]
-    sch.init()
+    # rooms=[]
+    # sch.init()
+    rooms=sch.Search_time_room(t)
+    # print(rooms)
     return render(request, 'courseScheduing/student_scheduling_manage.html', {'rooms': rooms})
+
+def search_time_room_teacher(request):
+    w = request.POST.get('week')
+    d = request.POST.get('day')
+    ls = request.POST.get('ls')
+    le = request.POST.get('le')
+    if w==None or w=='' or d==None or d=='' or ls==None or ls=='' or le==None or le=='':
+        rooms=[]
+        return render(request, 'courseScheduing/teacher_scheduling_manage.html', {'rooms': rooms})
+    w=int(w)
+    d=int(d)
+    ls=int(ls)
+    le=int(le)
+    print(w, d, ls, le)
+    t = str((d - 1) * 13 + ls) + "-" + str((d - 1) * 13 + le) + "-" + str(w) + "-" + str(w)
+    print(t)
+    # rooms=[]
+    # sch.init()
+    rooms=sch.Search_time_room(t)
+    # print(rooms)
+    return render(request, 'courseScheduing/teacher_scheduling_manage.html', {'rooms': rooms})
