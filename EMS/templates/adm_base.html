@@ -27,7 +27,7 @@
             <li><a href="#">空闲教室管理</a></li>
             <li class="divider"></li>
             <li><a href=" {% url 'courseSelection:adm_selection_manage' %}">设置选课时间</a></li>
-                        <li><a href=" {% url 'courseSelection:adm_school' %}">查询全校选课情况</a></li>
+            <li><a href=" {% url 'courseSelection:adm_school' %}">查询全校选课情况</a></li>
             <li><a href="#">查看毕设选题情况</a></li>
         </ul>
     </li>
@@ -71,8 +71,10 @@
             <li><a href="{% url 'backstage:adm_view_all_teacher' %}"><i class="fa fa-circle-o"></i>教师信息管理</a></li>
             <li><a href="{% url 'backstage:adm_view_all_course' %}"><i class="fa fa-circle-o"></i>课程信息管理</a></li>
             <li><a href="{% url 'backstage:adm_view_all_class_room' %}"><i class="fa fa-circle-o"></i>教室信息管理</a></li>
-            <li><a href="{% url 'scoreManagement:adm_view_major_plan' %}"><i class="fa fa-circle-o"></i>专业培养计划管理</a></li>
-            <li><a href="{% url 'scoreManagement:adm_view_major_course' %}"><i class="fa fa-circle-o"></i>专业课程计划管理</a></li>
+            <li><a href="{% url 'scoreManagement:adm_view_major_plan' %}"><i class="fa fa-circle-o"></i>专业培养计划管理</a>
+            </li>
+            <li><a href="{% url 'scoreManagement:adm_view_major_course' %}"><i class="fa fa-circle-o"></i>专业课程计划管理</a>
+            </li>
         </ul>
     </li>
 
@@ -100,8 +102,9 @@
             <li><a href="#"><i class="fa fa-circle-o"></i>全校课表管理</a></li>
             <li><a href="#"><i class="fa fa-circle-o"></i>空闲教室管理</a></li>
             <li><a href="#"><i class="fa fa-circle-o"></i>手动排课</a></li>
-            <li><a href=" {% url 'courseSelection:adm_selection_manage' %}"><i class="fa fa-circle-o"></i>设置选课时间</a></li>
-                                    <li><a href=" {% url 'courseSelection:adm_school' %}">查询全校选课情况</a></li>
+            <li><a href=" {% url 'courseSelection:adm_selection_manage' %}"><i class="fa fa-circle-o"></i>设置选课时间</a>
+            </li>
+            <li><a href=" {% url 'courseSelection:adm_school' %}"><i class="fa fa-circle-o"></i>查询全校选课情况</a></li>
             <li><a href="#"><i class="fa fa-circle-o"></i>查看毕设选题情况</a></li>
         </ul>
     </li>
