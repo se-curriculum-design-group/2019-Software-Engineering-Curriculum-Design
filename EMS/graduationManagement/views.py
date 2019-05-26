@@ -88,15 +88,15 @@ def teacher_submit_project(request):
 def teacher_view_project_detail(request):
     # 获取当前老师的id号：当前操作者是谁
     username = request.session['username']
-    # 将输入的数据存储到数据库中
-    uno = User.objects.get(username=username)
-    tno = Teacher.objects.get(user_ptr_id=uno)
-    id = request.GET.get('nid')
-    # 从数据库中取数据显示到网页上
+     #将输入的数据存储到数据库中
+    uno=User.objects.get(username=username)
+    tno=Teacher.objects.get(user_ptr_id=uno)
+    id=request.GET.get('id')
+     #从数据库中取数据显示到网页上
 
-    info = GraduationProject.objects.filter(tno=tno, id=id)
-    contenxt = {
-        'info': info,
+    info=GraduationProject.objects.filter(tno=tno,id=id)
+    contenxt={
+        'info':info,
     }
     return render(request, 'graduationManagement/teacher_view_project_detail.html', contenxt)
 
