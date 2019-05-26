@@ -41,6 +41,12 @@ urlpatterns = [
     # 管理员查看全部的成绩
     path('adm_all_course_score', views.adm_all_course_score,
          name="adm_all_course_score"),
+
+    # 管理员想查看成绩，先查看自己教的课
+    path('get_all_teaching', views.get_all_teaching, name="get_all_teaching"),
+    # 管理员进入页面，查看学生成绩详情
+    path('show_student_score/?cno=<cno>&course_type=<course_type>', views.show_student_score, name="show_student_score"),
+
     # 管理员查看教学评价结果
     path('adm_view_teacher_evaluation', views.adm_view_teacher_evaluation, name="adm_view_teacher_evaluation"),
 ]

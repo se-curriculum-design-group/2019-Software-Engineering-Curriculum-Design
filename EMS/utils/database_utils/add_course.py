@@ -2,8 +2,8 @@ import os
 import pandas as pd
 from backstage.models import College, Major, AdmClass, Student,\
     Teacher, ClassRoom, MajorPlan
-from scoreManagement.models import Course, Teaching
-
+from courseScheduling.models import Course
+from scoreManagement.models import Teaching
 
 
 base_dir = '../others/'

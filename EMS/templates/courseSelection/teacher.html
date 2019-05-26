@@ -54,33 +54,15 @@
                                 <td>{{ teaching.mcno.year }}</td>
                                 <td>{{ teaching.mcno.semester }}</td>
                                 <td>
-{#                                    <a href="{% url 'courseSelection:show_students?cno='+teaching.mcno.cno.cno+'&course_type='+teaching.mcno.cno.course_type %}">#}
                                     <a href="{% url 'courseSelection:show_students' teaching.mcno.cno.cno teaching.mcno.cno.course_type %}">
-{#                                    <a href="{% url 'courseSelection:show_students' teaching %}">#}
                                         <button id='show_students' class="btn btn-primary" type="button">
                                             <span class="glyphicon glyphicon-plus"></span>查看
                                         </button>
                                     </a>
-
                                 </td>
                             </tr>
-{#                        {% endif %}#}
                     {% endfor %}
                     </tbody>
-                    <tfoot>
-                    <tr>
-                        <th>编号</th>
-                        <th>课程号</th>
-                        <th>课程名称</th>
-                        <th>课程性质</th>
-                        <th>年级</th>
-                        <th>授课教室</th>
-                        <th>专业名称</th>
-                        <th>开课学年</th>
-                        <th>开课学期</th>
-                        <th>查看选课学生</th>
-                    </tr>
-                    </tfoot>
                 </table>
             </div>
         </div>
@@ -89,32 +71,6 @@
 
 
 {% block script %}
-
-
-    <!-- jQuery 2.2.3 -->
-    <script src="{% static 'AdminLTE/plugins/jQuery/jquery-2.2.3.min.js' %}"></script>
-    <!-- Bootstrap 3.3.6 -->
-    <script src="{% static 'AdminLTE/bootstrap/js/bootstrap.min.js' %}"></script>
-    <!-- DataTables -->
-    <script src="{% static 'AdminLTE/plugins/datatables/jquery.dataTables.min.js' %}"></script>
-    <script src="{% static 'AdminLTE/plugins/datatables/dataTables.bootstrap.min.js' %}"></script>
-    <!-- SlimScroll -->
-    <script src="{% static 'AdminLTE/plugins/slimScroll/jquery.slimscroll.min.js' %}"></script>
-    <!-- FastClick -->
-    <script src="{% static 'AdminLTE/plugins/fastclick/fastclick.js' %}"></script>
-    <!-- AdminLTE App -->
-    <script src="{% static 'AdminLTE/dist/js/app.min.js' %}"></script>
-    <!-- AdminLTE for demo purposes -->
-    <script src="{% static 'AdminLTE/dist/js/demo.js' %}"></script>
-    <!-- page script -->
-
-{#    <script>#}
-{#    window.onLoad=function()#}
-{#    {#}
-{#        var cookie=$.cookie('name');#}
-{#    }#}
-{#    </script>#}
-
     <script>
         var html = "<html><head><meta charset='utf-8' /></head><body>" + document.getElementsByTagName("table")[0].outerHTML + "</body></html>";
         // 实例化一个Blob对象，其构造函数的第一个参数是包含文件内容的数组，第二个参数是包含文件类型属性的对象
@@ -130,6 +86,18 @@
 
         $(function () {
             var table = $('#teaching_table').DataTable({
+                dom: 'Bfrtip',
+                buttons: [
+                    'copy',
+                    {
+                        extend: 'excel',
+                        filename: "专业课程信息表",
+                    },
+                    {
+                        extend: 'print',
+                        filename: "专业课程信息表",
+                    }
+                ],
                 "paging": true,       <!-- 允许分页 -->
                 "lengthChange": true, <!-- 允许改变每页显示的行数 -->
                 "searching": true,    <!-- 允许内容搜索 -->
@@ -167,15 +135,6 @@
                 }],
                 "order": [[0, 'asc']]
             });
-            {##}
-            {#$('#stu_table tbody').on('click', 'tr', function (e) {#}
-            {#    if ($(this).hasClass('selected')) {#}
-            {#        $(this).removeClass('selected');#}
-            {#    } else {#}
-            {#        table.$('tr.selected').removeClass('selected');#}
-            {#        $(this).addClass('selected');#}
-            {#    }#}
-            {# });#}
 
             $('#teaching_table').on('click', 'tr', function (e) {
                 if ($(this).hasClass('selected')) {
@@ -234,81 +193,6 @@
                 } else {
                     alert("请选择一个项目！");
                 }
-            });
-
-            $('#delete').click(function () {
-                console.log("delete car");
-                if (table.rows('.selected').data().length) {
-                    $("#deleteCar").modal();
-                    $('#sureToDelete').click(function () {
-                        var rowData = table.rows('.selected').data()[0];
-                        const cno = rowData[1];
-                        const data = {'cno': cno};
-                        $.get('#',
-                            data,
-                            function (rec, status) {
-                                if (status === 'success') {
-                                    alert('删除成功');
-                                    table.row('.selected').remove().draw(false);
-                                } else {
-                                    alert('删除失败！');
-                                }
-                            }
-                        );
-                    });
-                } else {
-                    alert("请选择一个要删除的项目。");
-                }
-
-            });
-
-            $('#sureToChange').click(function () {
-                var rowData = table.rows('.selected').data()[0];
-                const cnoOld = rowData[1];
-                const cno = $('#changeCarCNo').val();
-                const ctype = $("#changeCarType").val();
-                const coil = $("#changeCarOild").val();
-                const isava = $('#changeCarAva').val();
-                var isgood;
-                if (isava === '正常') {
-                    isgood = true;
-                } else {
-                    isgood = false;
-                }
-                const data = {
-                    'cnoOld': cnoOld,
-                    'cno': cno,
-                    'ctype': ctype,
-                    'coil': coil,
-                    'isgood': isgood
-                };
-                $.get(
-                    '#',
-                    data,
-                    function (rec) {
-                        if (!rec) {
-                            alert('修改失败，车牌号重复');
-                        } else {
-                            var tds = Array.prototype.slice.call($('.selected td'));
-                            const newcno = rec['newcno'];
-                            const newctype = rec['newctype'];
-                            const newoil = rec['newoil'];
-                            var avg;
-                            console.log(rec['ava']);
-                            console.log(typeof (rec['ava']));
-                            if (rec['ava']) {
-                                avg = '正常';
-                            } else {
-                                avg = '故障'
-                            }
-                            tds[1].innerHTML = newcno;
-                            tds[2].innerHTML = newctype;
-                            tds[3].innerHTML = newoil;
-                            tds[4].innerHTML = avg;
-                            alert("修改成功");
-                        }
-                    }
-                );
             });
 
             $('#show_students').click(function () {

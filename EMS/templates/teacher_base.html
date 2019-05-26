@@ -23,7 +23,7 @@
             <li><a href="{% url 'scoreManagement:teacher_upload_score' %}">成绩录入</a></li>
             <li><a href="{% url 'scoreManagement:teacher_view_teaching' %}">查看所教的课</a></li>
             <li class="divider"></li>
-            <li><a href="{% url 'scoreManagement:teacher_view_stu_score' %}">查看成绩统计</a></li>
+            <li><a href="{% url 'scoreManagement:get_all_teaching' %}">查看成绩统计</a></li>
         </ul>
     </li>
 
@@ -78,7 +78,7 @@
             </li>
             <li><a href="{% url 'scoreManagement:teacher_view_teaching' %}"><i class="fa fa-circle-o"></i>查看所教的课</a>
             </li>
-            <li><a href="{% url 'scoreManagement:teacher_view_stu_score' %}"><i class="fa fa-circle-o"></i>查看成绩统计</a></li>
+            <li><a href="{% url 'scoreManagement:get_all_teaching' %}"><i class="fa fa-circle-o"></i>查看成绩统计</a></li>
         </ul>
     </li>
 
