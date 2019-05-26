@@ -238,23 +238,27 @@
                             <div class="form-horizontal">
 
                                 <div class="form-group">
-                                    <label for=major_plan" style="color: red;">选择专业：</label>
-                                    <select name="major_plan_select" id="major_plan" class="form-control select2"
-                                            style="width: 40%;">
-                                        {% for item in all_major_plan %}
-                                            <option value="{{ item }}">{{ item }}</option>
-                                        {% endfor %}
-                                    </select>
+                                    <label for=major_plan" style="color: red;" class="col-sm-2 control-label">选择专业：</label>
+                                    <div class="col-sm-10">
+                                        <select name="major_plan_select" id="major_plan" class="form-control select2"
+                                                style="width: 40%;">
+                                            {% for item in all_major_plan %}
+                                                <option value="{{ item }}">{{ item }}</option>
+                                            {% endfor %}
+                                        </select>
+                                    </div>
                                 </div>
 
                                 <div class="form-group">
-                                    <label for="major_course" style="color: red">选择课程：</label>
-                                    <select name="course_select" id="major_course" class="form-control select2"
-                                            style="width: 40%">
-                                        {% for item in all_course %}
-                                            <option value="{{ item.cno }}">{{ item.cno }}</option>
-                                        {% endfor %}
-                                    </select>
+                                    <label for="major_course" style="color: red" class="col-sm-2 control-label">选择课程：</label>
+                                    <div class="col-sm-10">
+                                        <select name="course_select" id="major_course" class="form-control select2"
+                                                style="width: 40%">
+                                            {% for item in all_course %}
+                                                <option value="{{ item.cno }}">{{ item.cno }}</option>
+                                            {% endfor %}
+                                        </select>
+                                    </div>
                                 </div>
 
                                 <div class="form-group">
@@ -513,30 +517,27 @@
                     const exam_method = $('#add_course_exam_method').val();
 
                     const data = {
-                            'major_str': major_str,
-                            'major_course': major_course,
-                            'year': year,
-                            'semester': year,
-                            'teach_hour': teach_hour,
-                            'exp_hour': exp_hour,
-                            'exam_method': exam_method,
-                        };
+                        'major_str': major_str,
+                        'major_course': major_course,
+                        'year': year,
+                        'semester': year,
+                        'teach_hour': teach_hour,
+                        'exp_hour': exp_hour,
+                        'exam_method': exam_method,
+                    };
 
                     function val() {
-                        if (String(teach_hour).length === 0 || String(exp_hour).length === 0 || exam_method === 0 || String(year).length === 0 || String(semester).length === 0) {
-                            return false;
-                        } else {
-                            return true;
-                        }
+                        return !(String(teach_hour).length === 0 || String(exp_hour).length === 0 || exam_method === 0 || String(year).length === 0 || String(semester).length === 0);
                     }
-                    if (!val()){
+
+                    if (!val()) {
                         alert("请检查输入");
                     } else {
                         $.get(
                             "{% url 'scoreManagement:adm_add_major_course' %}",
                             data,
                             function (ret) {
-                                if(!ret){
+                                if (!ret) {
                                     alert("添加失败");
                                 } else {
                                     alert("添加成功");

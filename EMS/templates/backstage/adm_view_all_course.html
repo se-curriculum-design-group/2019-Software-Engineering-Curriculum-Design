@@ -12,24 +12,26 @@
             <li class="active">全校课程信息管理</li>
         </ol>
     </section>
-    <div class="box">
-        <div class="box-header">
-            <h3 class="box-title">全校课程信息管理</h3>
-            <div class="box-header ">
-                <label style="color: red">开课学院：</label><select id="college" class="select2" style="width: 20%">
-                <option value="ALL" selected="selected">全部</option>
-                {% for item in all_college %}
-                    <option value="{{ item }}">{{ item }}
-                {% endfor %}
-            </select>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                <label style="color: red">课程性质：</label><select id="course_type" class="select2" style="width: 15%">
-                <option value="ALL" selected="selected">全部</option>
-                {% for item in all_course_type %}
-                    <option value="{{ item.course_type }}">{{ item.course_type }}</option>
-                {% endfor %}
-            </select>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-            </div>
 
+    <section class="content">
+        <div class="box">
+            <div class="box-header">
+                <h3 class="box-title">全校课表</h3>
+                <div class="box-header ">
+                    <label style="color: red">开课学院：</label><select id="college" class="select2" style="width: 20%">
+                    <option value="ALL" selected="selected">全部</option>
+                    {% for item in all_college %}
+                        <option value="{{ item }}">{{ item }}
+                    {% endfor %}
+                </select>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                    <label style="color: red">课程性质：</label><select id="course_type" class="select2" style="width: 15%">
+                    <option value="ALL" selected="selected">全部</option>
+                    {% for item in all_course_type %}
+                        <option value="{{ item.course_type }}">{{ item.course_type }}</option>
+                    {% endfor %}
+                </select>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                </div>
+            </div>
             <div class="box-body">
                 <table id="courses_table" class="table table-bordered table-striped">
                     <thead>
@@ -56,8 +58,168 @@
                     </tbody>
                 </table>
             </div>
+            <div class="box-footer">
+                <div class="btn-group pull-left ">
+                    <button id="add_btn" class="btn btn-success" type="button">
+                        <span class="glyphicon glyphicon-plus">添加课程信息</span>
+                    </button>
+                    <button id='change_btn' class="btn btn-info" type="button">
+                        <span class="glyphicon glyphicon-pencil"></span>修改课程信息
+                    </button>
+                    <button id='delete_btn' class="btn btn-danger" type="button">
+                        <span class="glyphicon glyphicon-remove"></span>删除课程信息
+                    </button>
+                </div>
+            </div>
         </div>
-    </div>
+
+        <div class="modal fade" id="changeForm">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <form action="" name="changeMajorCourse" method="get" onsubmit="return(false);">
+                        <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal">&times;</button>
+                            <h4 class="modal-title">修改课程信息</h4>
+                        </div>
+                        <div class="modal-content" id="changeCourseModal">
+                            <div class="form-horizontal">
+                                <div class="form-group">
+                                    <label for="changeCourseMajor" class="col-sm-2 control-label">开课学院：</label>
+                                    <div class="col-sm-10">
+                                        <input type="text" id="change_collge" class="form-control"
+                                               name="change_major">
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="changeCourseYear" class="col-sm-2 control-label">课程编号：</label>
+                                    <div class="col-sm-10">
+                                        <input type="text" id="change_cno" class="form-control"
+                                               name="change_year">
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="changeCourseSemester" class="col-sm-2 control-label">课程名称：</label>
+                                    <div class="col-sm-10">
+                                        <input type="text" id="change_cname" class="form-control"
+                                               name="change_semester">
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="changeCourseCode" style="color: red" class="col-sm-2 control-label">课程性质：</label>
+                                    <div class="col-sm-10">
+                                        <input type="text" id="change_ctype" class="form-control"
+                                               name="change_cno">
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="changeCourseName" class="col-sm-2 control-label">学分：</label>
+                                    <div class="col-sm-10">
+                                        <input type="text" id="change_cscore" class="form-control"
+                                               name="change_cname">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="modal-footer">
+                                <div class="center-block">
+                                    <button id="cancelChange" type="button" class="btn btn-default"
+                                            data-dismiss="modal">取消
+                                    </button>
+                                    <button id="sureToChange" type="submit" class="btn btn-success">保存</button>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+        <div class="modal fade" id="addForm">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <form action="" name="changeMajorCourse" method="get" onsubmit="return(false);">
+                        <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal">&times;</button>
+                            <h4 class="modal-title">添加课程信息</h4>
+                        </div>
+                        <div class="modal-content" id="changeCourseModal">
+                            <div class="form-horizontal">
+                                <div class="form-group">
+                                    <label for="changeCourseMajor" class="col-sm-2 control-label">开课学院：</label>
+                                    <div class="col-sm-10">
+                                        <select name="adda" id="add_collge" class="select2" style="width: 50%;">
+                                            {% for college in all_college %}
+                                                <option value="{{ college }}">{{ college }}</option>
+                                            {% endfor %}
+                                        </select>
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="changeCourseYear" class="col-sm-2 control-label" style="color: red">课程编号：</label>
+                                    <div class="col-sm-10">
+                                        <input type="text" id="add_cno" class="form-control"
+                                               name="change_year">
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="changeCourseSemester" class="col-sm-2 control-label">课程名称：</label>
+                                    <div class="col-sm-10">
+                                        <input type="text" id="add_cname" class="form-control"
+                                               name="change_semester">
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="changeCourseCode" class="col-sm-2 control-label">课程性质：</label>
+                                    <div class="col-sm-10">
+                                        <input type="text" id="add_ctype" class="form-control"
+                                               name="change_cno">
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="changeCourseName" class="col-sm-2 control-label">学分：</label>
+                                    <div class="col-sm-10">
+                                        <input type="text" id="add_cscore" class="form-control"
+                                               name="change_cname">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="modal-footer">
+                                <div class="center-block">
+                                    <button id="cancelAdd" type="button" class="btn btn-default"
+                                            data-dismiss="modal">取消
+                                    </button>
+                                    <button id="sureToAdd" type="submit" class="btn btn-success">保存</button>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+        <div class="modal fade" id="deleteForm" role="dialog">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal">&times;</button>
+                        <h4 class="modal-title">确认删除该课程信息？</h4>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
+                        <button id="sureToDelete" type="button" class="btn btn-danger">删除</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </section>
 {% endblock %}
 
 {% block script %}
@@ -132,6 +294,158 @@
                 table.draw();
             });
             $('.select2').select2();
+
+
+            $('#add_btn').click(function () {
+                $('#addForm').modal();
+                $('#sureToAdd').click(function () {
+
+                    const add_college = $('#add_collge').val();
+                    const cno = $('#add_cno').val();
+                    const cname = $('#add_cname').val();
+                    const ctype = $('#add_ctype').val();
+                    const cscore = $('#add_cscore').val();
+
+                    function val() {
+                        return !(add_college === null || cno === null || cname === null || ctype === null || cscore === null);
+                    }
+
+                    if (val()) {
+                        const data = {
+                            'add_college': add_college,
+                            'cno': cno,
+                            'cname': cname,
+                            'ctype': ctype,
+                            'cscore': cscore,
+                        };
+
+                        $.get(
+                            "{% url 'scoreManagement:adm_add_course' %}",
+                            data,
+                            function (ret) {
+                                if(!ret){
+                                    console.log("add faild");
+                                } else {
+                                    console.log("add success");
+                                }
+                            }
+                        );
+
+                    } else {
+                        alert("请检查输入");
+                    }
+                });
+            });
+
+            $('#delete_btn').click(function () {
+                if (table.rows('.selected').data().length) {
+                    var deleteForm = $('#deleteForm');
+                    deleteForm.modal();
+                    $('#sureToDelete').click(function () {
+                        var rowData = table.rows('.selected').data()[0];
+                        const op_college = rowData[1];
+                        const cno = rowData[2];
+                        const cname = rowData[3];
+                        const ctype = rowData[4];
+                        const cscore = rowData[5];
+
+                        const data = {
+                            'op_college': op_college,
+                            'cno': cno,
+                            'cname': cname,
+                            'ctype': ctype,
+                            'cscore': cscore,
+                        };
+                        console.log(data);
+                        $.get(
+                            "{% url 'scoreManagement:adm_delete_course' %}",
+                            data,
+                            function (ret) {
+                                if (!ret) {
+                                    console.log("delete course failed");
+                                } else {
+                                    console.log("delete course success");
+                                    table.row('.selected').remove().draw(false);
+                                    alert("删除成功！");
+                                }
+                            }
+                        );
+                    });
+                } else {
+                    alert("请选择一项课程删除");
+                }
+
+            });
+
+            $('#change_btn').click(function () {
+                if (table.rows('.selected').data().length) {
+                    var changeForm = $('#changeForm');
+                    var rowData = table.rows('.selected').data()[0];
+                    var inputs = changeForm.find('input');
+                    for (let i = 1; i <= inputs.length; i++) {
+                        $(inputs[i - 1]).val(rowData[i]);
+                    }
+                    changeForm.modal();
+
+                    $('#sureToChange').click(function () {
+                        const op_college = rowData[1];
+                        const cno = rowData[2];
+                        const cname = rowData[3];
+                        const ctype = rowData[4];
+                        const cscore = rowData[5];
+
+                        let values = [];
+
+                        for (let i = 0; i < inputs.length; i++) {
+                            values.push($(inputs[i]).val());
+                        }
+
+                        const n_op_college = values[0];
+                        const n_cno = values[1];
+                        const n_cname = values[2];
+                        const n_ctype = values[3];
+                        const n_cscore = values[4];
+
+                        const data = {
+                            'op_college': op_college,
+                            'cno': cno,
+                            'cname': cname,
+                            'ctype': ctype,
+                            'cscore': cscore,
+                            'n_op_college': n_op_college,
+                            'n_cno': n_cno,
+                            'n_cname': n_cname,
+                            'n_ctype': n_ctype,
+                            'n_cscore': n_cscore,
+                        };
+
+                        $.get(
+                            "{% url 'scoreManagement:adm_add_course' %}",
+                            data,
+                            function (ret) {
+                                if (!ret) {
+                                    console.log("change course failed");
+                                } else {
+                                    console.log("change course success");
+                                    let tds = Array.prototype.slice.call($('.selected td'));
+                                    tds[1].innerHTML = n_op_college;
+                                    tds[2].innerHTML = n_cno;
+                                    tds[3].innerHTML = n_cname;
+                                    tds[4].innerHTML = n_ctype;
+                                    tds[5].innerHTML = n_cscore;
+                                    alert('修改成功');
+                                }
+                            }
+                        );
+
+                    });
+
+                } else {
+                    alert("请选择一项课程修改");
+                }
+            });
+
+
         });
     </script>
 {% endblock %}

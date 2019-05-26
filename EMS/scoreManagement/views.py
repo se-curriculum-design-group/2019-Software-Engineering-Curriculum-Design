@@ -771,7 +771,7 @@ def adm_add_major_course(request):
             return JsonResponse({})
 
 
-# 管理员删除专业课程信息
+# 管理员删除专业课程MajorCourse信息
 def adm_delete_major_course(request):
     if request.is_ajax():
         if len(request.GET):
@@ -782,4 +782,58 @@ def adm_delete_major_course(request):
             major_plan = MajorPlan.objects.get(year=major_plan_str[0], major__mno=major_plan_str[1])
             major_course = MajorCourses.objects.get(cno=course, mno=major_plan)
             major_course.delete()
+            return JsonResponse({})
+
+
+# 管理员添加课程Course
+def adm_add_course(request):
+    if request.is_ajax():
+        if len(request.GET):
+            add_college = request.GET.get('add_college')
+            cno = request.GET.get('cno')
+            cname = request.GET.get('cname')
+            ctype = request.GET.get('ctype')
+            cscore = request.GET.get('cscore')
+            college = College.objects.get(name=add_college)
+            Course.objects.update_or_create(cno=cno, cname=cname, college=college, course_type=ctype, score=cscore)
+            return JsonResponse({})
+
+
+# 管理员修改课程Course
+def adm_change_course(request):
+    if request.is_ajax():
+        if len(request.GET):
+            cno = request.GET.get('cno')
+            ctype = request.GET.get('ctype')
+            n_op_college = request.GET.get('n_op_college')
+            n_cno = request.GET.get('n_cno')
+            n_cname = request.GET.get('n_cname')
+            n_ctype = request.GET.get('n_ctype')
+            n_cscore = request.GET.get('n_cscore')
+            course = Course.objects.get(cno=cno, course_type=ctype)
+            try:
+                college = College.objects.get(name=n_op_college)
+                course.college = college
+                course.course_type = n_ctype
+                course.cno = n_cno
+                course.cname = n_cname
+                course.score = n_cscore
+                course.save()
+            except College.DoesNotExist:
+                return JsonResponse({"exception": '学院不存在'})
+            return JsonResponse({})
+
+
+# 管理员删除课程Course
+def adm_delete_course(request):
+    if request.is_ajax():
+        if len(request.GET):
+            cno = request.GET.get('cno')
+            ctype = request.GET.get('ctype')
+            cname = request.GET.get('cname')
+            try:
+                course = Course.objects.get(cno=cno, course_type=ctype, cname=cname)
+                course.delete()
+            except Course.DoesNotExist:
+                print(cno, ctype, cname)
             return JsonResponse({})

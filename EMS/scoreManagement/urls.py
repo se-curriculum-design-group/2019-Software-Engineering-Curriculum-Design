@@ -62,4 +62,10 @@ urlpatterns = [
     # 管理员删除专业课程信息
     path('adm_delete_major_course', views.adm_delete_major_course, name="adm_delete_major_course"),
 
+    # 管理员修改Course
+    path('adm_change_course', views.adm_change_course, name="adm_change_course"),
+    # 管理员添加Course
+    path('adm_add_course', views.adm_add_course, name="adm_add_course"),
+    # 管理员删除Course
+    path('adm_delete_course', views.adm_delete_course, name="adm_delete_course"),
 ]
