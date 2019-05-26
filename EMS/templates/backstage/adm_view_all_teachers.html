@@ -43,6 +43,7 @@
                         <th>性别</th>
                         <th>学历</th>
                         <th>职称</th>
+                        <th>操作</th>
                     </tr>
                     </thead>
                     <tbody>
@@ -60,6 +61,19 @@
                             {% endif %}
                             <td>{{ teacher.edu_background }}</td>
                             <td>{{ teacher.title }}</td>
+                            <td style="vertical-align: middle">
+                                <div class="btn-group-lg">
+                                    <form action="" method="post" action="{% url 'backstage:adm_view_all_teacher' %}">
+                                        {% csrf_token %}
+                                        <button type="submit" class="btn btn-info" name="change"
+                                                value={{ teacher.username }}>修改
+                                        </button>
+                                        <button type="submit" class="btn btn-danger" name="delete"
+                                                value={{ teacher.username }}>删除
+                                        </button>
+                                    </form>
+                                </div>
+                            </td>
                         </tr>
                     {% endfor %}
                     </tbody>

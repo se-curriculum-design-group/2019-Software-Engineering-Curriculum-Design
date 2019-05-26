@@ -210,10 +210,6 @@ def send_announcement(request):
             new_announcement_year = new_announcement.cleaned_data['year']
             new_announcement_title = new_announcement.cleaned_data['title']
             new_announcement_text = request.POST.get('editor')
-            # print(new_announcement_receiver)
-            # print(new_announcement_year)
-            # print(new_announcement_title)
-            # print(new_announcement_text)
             new_announcement_objects = Announcement.objects.create()
             new_announcement_objects.title = new_announcement_title
             new_announcement_objects.messages = new_announcement_text
@@ -275,39 +271,161 @@ def send_emails(request):
 
 
 def adm_view_all_stu(request):
-    username = request.session['username']
-    adm = User.objects.get(username=username)
-    if not adm.is_superuser:
-        return render(request, 'errors/403page.html')
-    all_college = College.objects.all()
-    all_major = Major.objects.all()
-    all_students = Student.objects.all()
-    all_in_year = all_students.values("in_year").order_by("in_year").distinct()
+    if request.method == "POST":
+        if "delete" in request.POST:
+            username = request.POST["delete"]
+            try:
+                change_user = User.objects.get(username=username)
+                change_user.delete()
+            except:
+                return render(request, 'adm_base.html', locals())
 
-    context = {
-        'all_college': all_college,
-        'all_major': all_major,
-        'all_in_year': all_in_year,
-        'all_students': all_students
-    }
-    return render(request, "backstage/adm_view_all_stu.html", context)
+            username = request.session['username']
+            adm = User.objects.get(username=username)
+            if not adm.is_superuser:
+                return render(request, 'errors/403page.html')
+            all_college = College.objects.all()
+            all_major = Major.objects.all()
+            all_students = Student.objects.all()
+            all_in_year = all_students.values("in_year").order_by("in_year").distinct()
+
+            context = {
+                'all_college': all_college,
+                'all_major': all_major,
+                'all_in_year': all_in_year,
+                'all_students': all_students
+            }
+            return render(request, "backstage/adm_view_all_stu.html", context)
+        elif "change" in request.POST:
+            username = request.POST["change"]
+            request.session['choose_user'] = username
+            try:
+                user = Student.objects.get(username=username)
+            except:
+                return render(request, 'adm_base.html', locals())
+            return render(request, 'backstage/adm_change_stu.html', locals())
+        else:
+            new_password = request.POST.get('Password')
+            new_name = request.POST.get('name')
+            new_in_cls = request.POST.get('in_cls')
+            new_score_got = request.POST.get('score_got')
+            username = request.session.get('choose_user', False)
+
+            try:
+
+                user_op = Student.objects.get(username=username)
+                new_in_class_num = AdmClass.objects.get(name=new_in_cls)
+
+                if new_password != "":
+                    change_user = User.objects.get(username=username)
+                    change_user.password = make_encode(new_password)
+                    change_user.save()
+
+                user_op.in_cls = new_in_class_num
+                user_op.score_got = new_score_got
+                user_op.name = new_name
+                user_op.save()
+                user = Student.objects.get(username=username)
+                return render(request, 'backstage/adm_change_stu.html', locals())
+            except:
+                return JsonResponse({})
+    else:
+        username = request.session['username']
+        adm = User.objects.get(username=username)
+        if not adm.is_superuser:
+            return render(request, 'errors/403page.html')
+        all_college = College.objects.all()
+        all_major = Major.objects.all()
+        all_students = Student.objects.all()
+        all_in_year = all_students.values("in_year").order_by("in_year").distinct()
+
+        context = {
+            'all_college': all_college,
+            'all_major': all_major,
+            'all_in_year': all_in_year,
+            'all_students': all_students
+        }
+        return render(request, "backstage/adm_view_all_stu.html", context)
 
 
 def adm_view_all_teacher(request):
-    username = request.session['username']
-    adm = User.objects.get(username=username)
-    if not adm.is_superuser:
-        return render(request, 'errors/403page.html')
-    all_college = College.objects.all()
-    all_teacher = Teacher.objects.all()
-    all_in_year = all_teacher.values("in_year").order_by("in_year").distinct()
+    if request.method == "POST":
+        if "delete" in request.POST:
+            username = request.POST["delete"]
+            try:
+                change_user = User.objects.get(username=username)
+                change_user.delete()
+            except:
+                return render(request, 'adm_base.html', locals())
 
-    context = {
-        'all_college': all_college,
-        'all_in_year': all_in_year,
-        'all_teacher': all_teacher
-    }
-    return render(request, "backstage/adm_view_all_teachers.html", context)
+            username = request.session['username']
+            adm = User.objects.get(username=username)
+            if not adm.is_superuser:
+                return render(request, 'errors/403page.html')
+            all_college = College.objects.all()
+            all_teacher = Teacher.objects.all()
+            all_in_year = all_teacher.values("in_year").order_by("in_year").distinct()
+
+            context = {
+                'all_college': all_college,
+                'all_in_year': all_in_year,
+                'all_teacher': all_teacher
+            }
+            return render(request, "backstage/adm_view_all_teachers.html", context)
+        elif "change" in request.POST:
+            username = request.POST["change"]
+            request.session['choose_user'] = username
+            try:
+                user = Teacher.objects.get(username=username)
+                college_id = user.college_id
+                college_name = College.objects.get(id=college_id).name
+            except:
+                return render(request, 'adm_base.html', locals())
+            return render(request, 'backstage/adm_change_tea.html', locals())
+        else:
+            new_password = request.POST.get('Password')
+            new_name = request.POST.get('name')
+            college_name = request.POST.get('college_name')
+            new_in_year = request.POST.get('in_year')
+            new_title = request.POST.get('title')
+            new_edu_background = request.POST.get('edu_background')
+            username = request.session.get('choose_user', False)
+            try:
+
+                user_op = Teacher.objects.get(username=username)
+
+                new_college = College.objects.get(name=college_name)
+
+                if new_password != "":
+                    change_user = User.objects.get(username=username)
+                    change_user.password = make_encode(new_password)
+                    change_user.save()
+
+                user_op.college_id = new_college
+                user_op.title = new_title
+                user_op.name = new_name
+                user_op.in_year = new_in_year
+                user_op.edu_background = new_edu_background
+                user_op.save()
+                user = Teacher.objects.get(username=username)
+                return render(request, 'backstage/adm_change_tea.html', locals())
+            except:
+                return JsonResponse({})
+    else:
+        username = request.session['username']
+        adm = User.objects.get(username=username)
+        if not adm.is_superuser:
+            return render(request, 'errors/403page.html')
+        all_college = College.objects.all()
+        all_teacher = Teacher.objects.all()
+        all_in_year = all_teacher.values("in_year").order_by("in_year").distinct()
+
+        context = {
+            'all_college': all_college,
+            'all_in_year': all_in_year,
+            'all_teacher': all_teacher
+        }
+        return render(request, "backstage/adm_view_all_teachers.html", context)
 
 
 def adm_view_all_class_room(request):
@@ -336,4 +454,3 @@ def adm_view_all_course(request):
         'all_course_type': all_course_type,
     }
     return render(request, "backstage/adm_view_all_course.html", context)
-

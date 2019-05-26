@@ -48,6 +48,7 @@
                         <th>学号</th>
                         <th>姓名</th>
                         <th>性别</th>
+                        <th>操作</th>
                     </tr>
                     </thead>
                     <tbody>
@@ -60,11 +61,24 @@
                             <td>{{ student.in_cls }}</td>
                             <td>{{ student.username }}</td>
                             <td>{{ student.name }}</td>
-                            {% if student.sex == True%}
+                            {% if student.sex == True %}
                                 <td>男</td>
                             {% else %}
                                 <td>女</td>
                             {% endif %}
+                            <td style="vertical-align: middle">
+                                <div class="btn-group-lg">
+                                    <form action="" method="post" action="{% url 'backstage:adm_view_all_stu' %}">
+                                        {% csrf_token %}
+                                        <button type="submit" class="btn btn-info" name="change"
+                                                value={{ student.username }}>修改
+                                        </button>
+                                        <button type="submit" class="btn btn-danger" name="delete"
+                                                value={{ student.username }}>删除
+                                        </button>
+                                    </form>
+                                </div>
+                            </td>
                         </tr>
                     {% endfor %}
                     </tbody>
