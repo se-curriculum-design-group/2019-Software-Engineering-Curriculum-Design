@@ -45,7 +45,8 @@ urlpatterns = [
     # 管理员想查看成绩，先查看自己教的课
     path('get_all_teaching', views.get_all_teaching, name="get_all_teaching"),
     # 管理员进入页面，查看学生成绩详情
-    path('show_student_score/?cno=<cno>&course_type=<course_type>', views.show_student_score, name="show_student_score"),
+    path('show_student_score/?cno=<cno>&course_type=<course_type>', views.show_student_score,
+         name="show_student_score"),
 
     # 管理员查看教学评价结果
     path('adm_view_teacher_evaluation', views.adm_view_teacher_evaluation, name="adm_view_teacher_evaluation"),
@@ -56,5 +57,9 @@ urlpatterns = [
     path('adm_change_major_plan', views.adm_change_major_plan, name="adm_change_major_plan"),
     # 管理员修改专业课程信息
     path('adm_change_major_course', views.adm_change_major_course, name="adm_change_major_course"),
+    # 管理员添加专业课程信息
+    path('adm_add_major_course', views.adm_add_major_course, name="adm_add_major_course"),
+    # 管理员删除专业课程信息
+    path('adm_delete_major_course', views.adm_delete_major_course, name="adm_delete_major_course"),
 
 ]

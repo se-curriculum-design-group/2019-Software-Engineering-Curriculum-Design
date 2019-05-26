@@ -257,6 +257,8 @@ def adm_view_major_course(request):
     adm = User.objects.get(username=username)
     if not adm.is_superuser:
         return render(request, 'errors/403page.html')
+    all_major_plan = MajorPlan.objects.all()
+    all_course = Course.objects.all()
     all_major_course = MajorCourses.objects.all()
     all_college = College.objects.all()
     all_course_type = Course.objects.values("course_type").distinct()
@@ -264,9 +266,12 @@ def adm_view_major_course(request):
     all_major = Major.objects.all()
     context = {"all_major_course": all_major_course,
                "all_college": all_college,
-               "all_course": all_course_type,
+               "all_course_type": all_course_type,
                "all_year": all_year,
-               "all_major": all_major
+               "all_major": all_major,
+
+               "all_major_plan": all_major_plan,
+               "all_course": all_course,
                }
     return render(request, "scoreManage/adm_major_course.html", context)
 
@@ -737,3 +742,44 @@ def adm_change_major_course(request):
             major_course.save()
             return JsonResponse({})
 
+
+# 管理员添加专业课程信息
+def adm_add_major_course(request):
+    if request.is_ajax():
+        if len(request.GET):
+            major_str = request.GET.get('major_str').split('-')
+            year = request.GET.get('year')
+            semester = request.GET.get('semester')
+            major_course = request.GET.get('major_course')
+            teach_hour = request.GET.get('teach_hour')
+            exp_hour = request.GET.get('exp_hour')
+            hour_total = teach_hour + exp_hour
+            exam_method = request.GET.get('exam_method')
+            exam_method = (exam_method == '考试')
+            major = MajorPlan.objects.get(major__mno=major_str[1], year=major_str[0])
+            course = Course.objects.filter(cno=major_course)[0]
+            MajorCourses.objects.update_or_create(
+                cno=course,
+                mno=major,
+                year=year,
+                semester=semester,
+                hour_total=hour_total,
+                hour_class=teach_hour,
+                hour_other=exp_hour,
+                exam_method=exam_method
+            )
+            return JsonResponse({})
+
+
+# 管理员删除专业课程信息
+def adm_delete_major_course(request):
+    if request.is_ajax():
+        if len(request.GET):
+            major_plan_str = request.GET.get('major_plan').split('-')
+            cno = request.GET.get('cno')
+            ctype = request.GET.get('ctype')
+            course = Course.objects.get(cno=cno, course_type=ctype)
+            major_plan = MajorPlan.objects.get(year=major_plan_str[0], major__mno=major_plan_str[1])
+            major_course = MajorCourses.objects.get(cno=course, mno=major_plan)
+            major_course.delete()
+            return JsonResponse({})
