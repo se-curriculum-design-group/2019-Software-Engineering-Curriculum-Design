@@ -4,20 +4,20 @@
 
 {% block content %}
     <section class="content-header">
-        <h1>查询空闲教室
+        <h1>查询考试时间
             <small>Info</small>
         </h1>
         <ol class="breadcrumb">
             <li><a href="{% url 'scoreManagement:welcome' %}"><i class="fa fa-dashboard"></i> 主页</a></li>
             <li class="active">成绩管理</li>
-            <li class="active">查询空闲教室</li>
+            <li class="active">查询考试时间</li>
         </ol>
     </section>
     <div class="box">
         <div class="box-header">
-            <h3 class="box-title">查询空闲教室</h3>
+            <h3 class="box-title">查询考试时间</h3>
             <div class="box-header ">
-                <form method="post" action="{% url "courseScheduling:search_time_room" %}">
+                <form method="post" action="{% url 'courseScheduling:time_exam' %}">
                     {% csrf_token %}
                 <label style="">学年：</label><select name="year" id="year" class="select2" style="width: 20%">
 
@@ -36,9 +36,8 @@
                     <tr>
                         <th>考试学年</th>
                         <th>考试学期</th>
-                        <th>课程代码</th>
                         <th>课程名称</th>
-                        <th>教学班名称</th>
+                        <th>老师名字</th>
                         <th>考试时间</th>
                     </tr>
                     </thead>
