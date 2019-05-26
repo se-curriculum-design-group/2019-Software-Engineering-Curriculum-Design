@@ -1,0 +1,166 @@
+{% extends 'adm_base.html' %}
+{% load staticfiles %}
+
+{% block content %}
+    <section class="content-header">
+        <h1>全校学生信息管理
+            <small>管理员</small>
+        </h1>
+        <ol class="breadcrumb">
+            <li><a href="{% url 'backstage:welcome' %}"><i class="fa fa-dashboard"></i> 主页</a></li>
+            <li class="active">基本信息管理</li>
+            <li class="active">全校学生信息管理</li>
+        </ol>
+    </section>
+    <div class="box">
+        <div class="box-header">
+            <h3 class="box-title">全校学生信息管理</h3>
+            <div class="box-header ">
+                <label style="color: red">学院：</label><select id="college" class="select2" style="width: 20%">
+                <option value="ALL" selected="selected">全部</option>
+                {% for item in all_college %}
+                    <option value="{{ item }}">{{ item }}
+                {% endfor %}
+            </select>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                <label style="color: red">专业：</label><select id="major" class="select2" style="width: 15%">
+                <option value="ALL" selected="selected">全部</option>
+                {% for item in all_major %}
+                    <option value="{{ item }}">{{ item }}</option>
+                {% endfor %}
+            </select>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                <label>入学年份：</label><select id="year" class="select2" style="width: 15%">
+                <option value="ALL" selected="selected">全部</option>
+                {% for item in all_in_year %}
+                    <option value="{{ item.in_year }}">{{ item.in_year }}</option>
+                {% endfor %}
+            </select>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+            </div>
+
+            <div class="box-body">
+                <table id="students_table" class="table table-bordered table-striped">
+                    <thead>
+                    <tr>
+                        <th>序号</th>
+                        <th>学院</th>
+                        <th>专业</th>
+                        <th>入学年份</th>
+                        <th>班级</th>
+                        <th>学号</th>
+                        <th>姓名</th>
+                        <th>性别</th>
+                        <th>操作</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    {% for student in all_students %}
+                        <tr>
+                            <td>{{ forloop.counter }}</td>
+                            <td>{{ student.in_cls.major.major.in_college }}</td>
+                            <td>{{ student.in_cls.major.major }}</td>
+                            <td>{{ student.in_year }}</td>
+                            <td>{{ student.in_cls }}</td>
+                            <td>{{ student.username }}</td>
+                            <td>{{ student.name }}</td>
+                            {% if student.sex == True %}
+                                <td>男</td>
+                            {% else %}
+                                <td>女</td>
+                            {% endif %}
+                            <td style="vertical-align: middle">
+                                <div class="btn-group-lg">
+                                    <form action="" method="post" action="{% url 'backstage:adm_view_all_stu' %}">
+                                        {% csrf_token %}
+                                        <button type="submit" class="btn btn-info" name="change"
+                                                value={{ student.username }}>修改
+                                        </button>
+                                        <button type="submit" class="btn btn-danger" name="delete"
+                                                value={{ student.username }}>删除
+                                        </button>
+                                    </form>
+                                </div>
+                            </td>
+                        </tr>
+                    {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+
+{% block script %}
+    <script>
+        $.fn.dataTable.ext.search.push(
+            function (settings, data, dataIndex) {
+                var college = $('#college').val();
+                var major = $('#major').val();
+                var year = $('#year').val();
+                return ((college === data[1] || college === "ALL") && (((major === data[2] || major === "ALL") && (year === data[3] || year === "ALL"))));
+            }
+        );
+        $(document).ready(function () {
+            var table = $('#students_table').DataTable(
+                {
+                    dom: 'Bfrtip',
+                    buttons: [
+                        'copy',
+                        {
+                            extend: 'excel',
+                            filename: "全校学生信息表",
+                        }, 'pdf', 'print'
+                    ],
+                    "paging": true,       <!-- 允许分页 -->
+                    "lengthChange": true, <!-- 允许改变每页显示的行数 -->
+                    "searching": true,    <!-- 允许内容搜索 -->
+                    "ordering": true,     <!-- 允许排序 -->
+                    "info": true,         <!-- 显示信息 -->
+                    "autoWidth": false,    <!-- 固定宽度 -->
+                    "language": {
+                        "sProcessing": "处理中...",
+                        "sLengthMenu": "显示 _MENU_ 项结果",
+                        "sZeroRecords": "没有匹配结果",
+                        "sInfo": "显示第 _START_ 至 _END_ 项结果，共 _TOTAL_ 项",
+                        "sInfoEmpty": "显示第 0 至 0 项结果，共 0 项",
+                        "sInfoFiltered": "(由 _MAX_ 项结果过滤)",
+                        "sInfoPostFix": "",
+                        "sSearch": "搜索:",
+                        "sUrl": "",
+                        "sEmptyTable": "表中数据为空",
+                        "sLoadingRecords": "载入中...",
+                        "sInfoThousands": ",",
+                        "oPaginate": {
+                            "sFirst": "首页",
+                            "sPrevious": "上页",
+                            "sNext": "下页",
+                            "sLast": "末页"
+                        },
+                        "oAria": {
+                            "sSortAscending": ": 以升序排列此列",
+                            "sSortDescending": ": 以降序排列此列"
+                        }
+                    },
+                    "columnDefs": [{
+                        "searchable": false,
+                        "orderable": true,
+                        "targets": 0
+                    }],
+                    "order": [[0, 'asc']]
+                }
+            );
+
+            $('#students_table tbody').on('click', 'tr', function (e) {
+                if ($(this).hasClass('selected')) {
+                    $(this).removeClass('selected');
+                } else {
+                    table.$('tr.selected').removeClass('selected');
+                    $(this).addClass('selected');
+                }
+            });
+            // Event listener to the two range filtering inputs to redraw on input
+            $('#major, #year, #college').change(function () {
+                table.draw();
+            });
+            $('.select2').select2();
+        });
+    </script>
+{% endblock %}

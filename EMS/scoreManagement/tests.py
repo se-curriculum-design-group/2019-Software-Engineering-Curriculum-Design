@@ -10,7 +10,7 @@ app_name = 'scoreManagement'
 
 
 class TestStudent(TestCase):
-    def setUp(self) -> None:
+    def setUp(self):
         student1 = mixer.blend(Student)
         student1.username = '2016000474'
         student1.password = make_encode('2016000474')
@@ -52,24 +52,12 @@ class TestStudent(TestCase):
         response = self.client.get('/my_personal_details')
         self.assertIn(response.status_code, [200, 301, 302])
 
-    def test_stu_tongshi(self):
-        response = self.client.get('/courseSelection/stu_tongshi')
-        self.assertIn(response.status_code, [200, 301, 302])
-
-    def test_stu_major(self):
-        response = self.client.get('/courseSelection/stu_major')
-        self.assertIn(response.status_code, [200, 301, 302])
-
     def test_student_choose_project(self):
         response = self.client.get('/graduationManagement/student_choose_project')
         self.assertIn(response.status_code, [200, 301, 302])
 
     def test_student_view_project(self):
         response = self.client.get('/graduationManagement/student_view_project')
-        self.assertIn(response.status_code, [200, 301, 302])
-
-    def test_student_view_score(self):
-        response = self.client.get('/graduationManagement/student_view_score')
         self.assertIn(response.status_code, [200, 301, 302])
 
 
@@ -96,6 +84,10 @@ class TestAdm(TestCase):
 
         url = '/mylogin'
         response = self.client.post(url, data=self.log_data)
+        self.assertIn(response.status_code, [200, 301, 302])
+
+    def test_adm_view_all_stu(self):
+        response = self.client.get('/adm_view_all_stu')
         self.assertIn(response.status_code, [200, 301, 302])
 
     def test_adm_view_major_course(self):
@@ -174,3 +166,6 @@ class TestTeacher(TestCase):
     def test_teacher_submit_score(self):
         response = self.client.get('/graduationManagement/teacher_submit_score')
         self.assertIn(response.status_code, [200, 301, 302])
+
+    def test_domo(self):
+        print ("testdomo")

@@ -49,7 +49,7 @@ MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
-    'django.middleware.csrf.CsrfViewMiddleware',
+    # 'django.middleware.csrf.CsrfViewMiddleware',
     
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
@@ -86,7 +86,7 @@ DATABASES = {
         'ENGINE': 'django.db.backends.mysql',
         # 'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
         'NAME': 'ems',
-        'HOST': '127.0.0.1',
+        'HOST': 'localhost',
         'PORT': 3306,
         'USER': 'EMS',
         'PASSWORD': 'password',
@@ -138,13 +138,3 @@ STATICFILES_DIRS = [
 
 MEDIA_ROOT = os.path.join(BASE_DIR, 'backstage/media').replace('\\', '/')  # media即为图片上传的根路径
 MEDIA_URL = '/backstage/media/'
-# 设置邮件域名
-EMAIL_HOST = 'smtp.163.com'
-# 设置端口号，为数字
-EMAIL_PORT = 465
-# 设置发件人邮箱
-EMAIL_HOST_USER = ''
-# 设置发件人 授权码
-EMAIL_HOST_PASSWORD = ''
-# 设置是否启用安全链接
-EMAIL_USE_SSL = True

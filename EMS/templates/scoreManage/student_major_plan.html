@@ -24,7 +24,7 @@
                         <option value="{{ item }}">{{ item }}
                     {% endif %}
                 {% endfor %}
-            </select>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+            </select>&nbsp;&nbsp;
                 <label style="color: red">专业：</label><select id="major" class="select2" style="width: 15%">
                 <option value="ALL">全部</option>
                 {% for item in all_major %}
@@ -55,7 +55,6 @@
                         <th>序号</th>
                         <th>学院</th>
                         <th>专业</th>
-                        <th>专业代码</th>
                         <th>年级</th>
                         <th>计划人数</th>
                         <th>最低毕业学分</th>
@@ -70,7 +69,6 @@
                             <td>{{ forloop.counter }}</td>
                             <td>{{ item.major.in_college }}</td>
                             <td>{{ item.major }}</td>
-                            <td>{{ item.major.mno }}</td>
                             <td>{{ item.year }}</td>
                             <td>{{ item.people_num }}</td>
                             <td>{{ item.score_grad }}</td>
@@ -112,7 +110,11 @@
                 {
                     dom: 'Bfrtip',
                     buttons: [
-                        'copy', 'csv', 'excel', 'pdf', 'print'
+                        'copy',
+                        {
+                            extend: 'excel',
+                            filename: "专业计划信息表",
+                        }, 'pdf', 'print'
                     ],
                     "paging": true,       <!-- 允许分页 -->
                     "lengthChange": true, <!-- 允许改变每页显示的行数 -->
