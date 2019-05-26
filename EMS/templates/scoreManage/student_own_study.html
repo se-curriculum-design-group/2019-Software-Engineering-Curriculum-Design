@@ -1,0 +1,231 @@
+{% extends 'student_base.html' %}
+{% load staticfiles %}
+{% block content %}
+    <section class="content-header">
+        <h1>成绩管理子系统
+            <small>Info</small>
+        </h1>
+        <ol class="breadcrumb">
+            <li><a href="{% url 'scoreManagement:welcome' %}"><i class="fa fa-dashboard"></i> 主页</a></li>
+            <li class="active">查看个人学业情况</li>
+        </ol>
+    </section>
+
+    <section class="content">
+        <div class="box">
+            <div class="box-header">
+                <h2 class="box-title">
+                    查看个人学业情况
+                </h2>
+            </div>
+            <div class="box-body">
+                <div id="stusit0" style="width: 100%;height:400px"></div>
+                <div id="stusit1" style="width:100%;height: 300px;"></div>
+                <div id="stusit2" style="width:100%;height: 300px;"></div>
+                <div id="stusit3" style="width:100%;height: 300px;"></div>
+            </div>
+        </div>
+    </section>
+
+{% endblock %}
+{% block script %}
+    <script src="{% static 'AdminLTE/plugins/echarts.js' %}"></script>
+    <script>
+       function student_stu_sit0() {
+           var piechart = echarts.init(document.getElementById('stusit0'));
+           var option = {
+               title : {
+                   text: '学分完成率：{{ my_scoresum }}/{{ my_score_gg }}',
+                   subtext: '',
+    },
+    tooltip : {
+        formatter: "{a} <br/>{b} : {c}%"
+    },
+    toolbox: {
+        show : true,
+    },
+    series : [
+        {
+            name:'学分完成率',
+            type:'gauge',
+            detail : {formatter:'{value}%'},
+            data:[{value:{{ my_score_g }}*100, name: '完成率'}]
+        }
+    ]
+};
+          piechart.setOption(option);
+       }
+       student_stu_sit0();//学生学分完成率
+       function student_stu_sit1() {
+           var year_semester = [];
+           var my_GPA=[];
+           var semester_GPA=[];
+        {% for year_semester in my_year_semester %}
+            year_semester.push("{{ year_semester }}");
+            my_GPA.push("{{ my_gpa }}");
+        {% endfor %}
+           {% for semester_GPA_list in semester_GPA %}
+            semester_GPA.push("{{semester_GPA_list }}");
+         {% endfor %}
+           var linechart = echarts.init(document.getElementById('stusit1'));
+           var option = {
+    title : {
+        text: '绩点随学期变化',
+    },
+    tooltip : {
+        trigger: 'axis'
+    },
+    legend: {
+        data:['某平均学期GPA','总体平均GPA']
+    },
+    toolbox: {
+        show : true,
+        feature : {
+            mark : {show: true},
+            magicType : {show: true, type: ['line', 'bar']},
+        }
+    },
+    calculable : true,
+    xAxis : [
+        {
+            type : 'category',
+            boundaryGap : false,
+            data :year_semester,
+        }
+    ],
+    yAxis : [
+        {
+            type : 'value',
+            axisLabel : {
+                formatter: '{value}'
+            }
+        }
+    ],
+    series : [
+        {
+            name:'某平均学期GPA',
+            type:'line',
+            data:semester_GPA,
+            markPoint : {
+                data : [
+                    {type : 'max', name: '最大值'},
+                    {type : 'min', name: '最小值'}
+                ]
+            },
+        },
+        {
+            name:'总体平均GPA',
+            type:'line',
+            data: my_GPA,
+        }
+        ]
+};
+           linechart.setOption(option);
+       }
+       student_stu_sit1();//学生绩点折线统计图
+       function student_stu_sit2() {
+           var barchart = echarts.init(document.getElementById('stusit2'));
+           var year_semester = [];
+           var semester_score=[];
+           {% for year_semester in my_year_semester %}
+            year_semester.push("{{ year_semester }}");
+           {% endfor %}
+            {% for semester_sum_list in semester_scoresum %}
+            semester_score.push("{{semester_sum_list}}");
+           {% endfor %}
+           var option = {
+          title : {
+          text: '各学期获得学分情况',
+          },
+        tooltip : {
+        trigger: 'axis'
+        },
+       legend: {
+        data:['学生各学期获得学分']
+       },
+    toolbox: {
+        show : true,
+      },
+    calculable : true,
+    xAxis : [
+        {
+            type: 'category',
+            data: year_semester
+        }
+    ],
+    yAxis : [
+        {
+            type : 'value'
+        }
+    ],
+    series : [
+        {
+            name:'学生各学期获得学分',
+            type:'bar',
+            data:semester_score,
+            markPoint : {
+                data : [
+                    {type : 'max', name: '最大值'},
+                    {type : 'min', name: '最小值'}
+                ]
+            },
+        },
+    ]
+};
+           barchart.setOption(option);
+       }
+       student_stu_sit2();//学生学分条形统计图
+      function student_stu_sit3() {
+           var barchart = echarts.init(document.getElementById('stusit3'));
+           var year_semester = [];
+           var semester_num=[];
+           {% for year_semester in my_year_semester %}
+            year_semester.push("{{ year_semester }}");
+           {% endfor %}
+            {% for semester_num_list in semester_num %}
+            semester_num.push("{{semester_num_list}}");
+           {% endfor %}
+           var option = {
+          title : {
+          text: '各学期选课数量情况',
+          },
+        tooltip : {
+        trigger: 'axis'
+        },
+       legend: {
+        data:['学生各学期选课数量']
+       },
+    toolbox: {
+        show : true,
+      },
+    calculable : true,
+    xAxis : [
+        {
+            type: 'category',
+            data: year_semester
+        }
+    ],
+    yAxis : [
+        {
+            type : 'value'
+        }
+    ],
+    series : [
+        {
+            name:'学生各学期选课数量',
+            type:'bar',
+            data:semester_num,
+            markPoint : {
+                data : [
+                    {type : 'max', name: '最大值'},
+                    {type : 'min', name: '最小值'}
+                ]
+            },
+        },
+    ]
+};
+           barchart.setOption(option);
+       }
+       student_stu_sit3();//学生课程数量条形统计图
+    </script>
+{% endblock %}

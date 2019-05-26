@@ -1,0 +1,541 @@
+{% extends 'student_base.html' %}
+{% load staticfiles %}
+{% block content %}
+    <section class="content-header">
+        <h4>请对当前学期所学课程的授课教师进行客观评价</h4>
+        <ol class="breadcrumb">
+            <li><a href="{% url 'scoreManagement:welcome' %}"><i class="fa fa-dashboard"></i> 主页</a></li>
+            <li class="active">教学评价</li>
+        </ol>
+    </section>
+    <section class="content">
+        <div class="row">
+            <form id="submit_all" method="get" action="{% url 'scoreManagement:submit_all' %}">{% csrf_token %}
+
+                <div class="col-md-4">
+                    <div class="box">
+                        <div class="box-header with-border">
+                            <h3 class="box-title" style="font-size: 13px;">可评价教学班：已评{{ num1 }}门，未评{{ num2 }}门；</h3>
+                            <input type="hidden" name="num2" value={{ num2 }}>
+                        </div>
+                        <!-- /.box-header -->
+                        <div class="box-body">
+                            <table class="table table-bordered" style="font-size: 12px;" id="mainTable">
+                                <thead>
+                                <tr>
+                                    <th style="width: 60px">状态</th>
+                                    <th style="width: 150px">课程</th>
+                                    <th style="width: 50px">类型</th>
+                                    <th style="width: 70px">教师</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                {% for item in log %}
+                                    <tr>
+                                        {% if flag == False %}
+                                            {% if item.state == False %}
+                                                <td><a onclick="show1({{ forloop.counter0 }})"
+                                                       style="color: grey">未保存</a></td>
+                                            {% elif item.state == True %}
+                                                <td><a onclick="show1({{ forloop.counter0 }})"
+                                                       style="color: forestgreen">已保存</a></td>
+                                            {% endif %}
+                                        {% else %}
+                                            <td><a onclick="show2({{ forloop.counter0 }})" style="color: forestgreen">已保存</a>
+                                            </td>
+                                        {% endif %}
+                                        <td>{{ item.cname }}</td>
+                                        <td>{{ item.type }}</td>
+                                        <td>{{ item.tname }}</td>
+                                    </tr>
+                                {% endfor %}
+                                </tbody>
+                            </table>
+                            {% if flag == True %}
+                                <label style="margin-left: 100px; margin-top: 10px">您已提交！</label>
+                            {% elif num2 == 0 %}
+                                <button type="submit" class="btn btn-primary btn-flat" formtarget="_parent"
+                                        style="margin-left: 100px; margin-top: 10px">全部提交
+                                </button>
+                            {% else %}
+                                <button type="submit" class="btn btn-primary btn-flat" formtarget="_parent"
+                                        style="margin-left: 100px; margin-top: 10px" disabled="disabled">全部提交
+                                </button>
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+            </form>
+            {% for item in log %}
+                <div class="col-md-8">
+                    <form method="get" action="{% url 'scoreManagement:submit_result' %}">{% csrf_token %}
+                        <div class="box" id="d{{ forloop.counter0 }}" name="dv1" style="display: none;">
+                            <div class="box-header">
+                                <h3 class="box-title">教师名——{{ item.tname }}</h3>
+                            </div>
+                            <!-- /.box-header -->
+                            <div class="box-body no-padding">
+                                <table class="table">
+                                    <tr>
+                                        <th style="width: 80%">评价指标</th>
+                                        <th style="width: 20%"> A | B | C | D | E</th>
+                                    </tr>
+                                    <tr>
+                                        <td>我学到并理解了该课程所教授的主要内容并从这门课程学到了很多东西</td>
+                                        <td>
+                                            <!-- radio -->
+                                            <div class="form-group" style="margin-bottom: 0">
+                                                <label>
+                                                    <input id="r1a{{ forloop.counter0 }}" type="radio" name="r1"
+                                                           class="minimal-red"
+                                                           style="margin-right: 5px" value="A" checked="checked">
+                                                </label>
+                                                <label>
+                                                    <input id="r1b{{ forloop.counter0 }}" type="radio" name="r1"
+                                                           class="minimal"
+                                                           style="margin-right: 5px" value="B">
+                                                </label>
+                                                <label>
+                                                    <input id="r1c{{ forloop.counter0 }}" type="radio" name="r1"
+                                                           class="minimal"
+                                                           style="margin-right: 5px" value="C">
+                                                </label>
+                                                <label>
+                                                    <input id="r1d{{ forloop.counter0 }}" type="radio" name="r1"
+                                                           class="minimal"
+                                                           style="margin-right: 5px" value="D">
+                                                </label>
+                                                <label>
+                                                    <input id="r1e{{ forloop.counter0 }}" type="radio" name="r1"
+                                                           class="minimal"
+                                                           style="margin-right: 5px" value="E">
+                                                </label>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>教师对教授本门课程充满激情、自信</td>
+                                        <td>
+                                            <!-- radio -->
+                                            <div class="form-group" style="margin-bottom: 0">
+                                                <label>
+                                                    <input id="r2a{{ forloop.counter0 }}" type="radio" name="r2"
+                                                           class="minimal"
+                                                           style="margin-right: 5px" value="A" checked>
+                                                </label>
+                                                <label>
+                                                    <input id="r2b{{ forloop.counter0 }}" type="radio" name="r2"
+                                                           class="minimal"
+                                                           style="margin-right: 5px" value="B">
+                                                </label>
+                                                <label>
+                                                    <input id="r2c{{ forloop.counter0 }}" type="radio" name="r2"
+                                                           class="minimal"
+                                                           style="margin-right: 5px" value="C">
+                                                </label>
+                                                <label>
+                                                    <input id="r2d{{ forloop.counter0 }}" type="radio" name="r2"
+                                                           class="minimal"
+                                                           style="margin-right: 5px" value="D">
+                                                </label>
+                                                <label>
+                                                    <input id="r2e{{ forloop.counter0 }}" type="radio" name="r2"
+                                                           class="minimal"
+                                                           style="margin-right: 5px" value="E">
+                                                </label>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>教师的授课材料经过充分准备，课堂讲解清楚易懂</td>
+                                        <td>
+                                            <!-- radio -->
+                                            <div class="form-group" style="margin-bottom: 0">
+                                                <label>
+                                                    <input id="r3a{{ forloop.counter0 }}" type="radio" name="r3"
+                                                           class="minimal"
+                                                           style="margin-right: 5px" value="A" checked>
+                                                </label>
+                                                <label>
+                                                    <input id="r3b{{ forloop.counter0 }}" type="radio" name="r3"
+                                                           class="minimal"
+                                                           style="margin-right: 5px" value="B">
+                                                </label>
+                                                <label>
+                                                    <input id="r3c{{ forloop.counter0 }}" type="radio" name="r3"
+                                                           class="minimal"
+                                                           style="margin-right: 5px" value="C">
+                                                </label>
+                                                <label>
+                                                    <input id="r3d{{ forloop.counter0 }}" type="radio" name="r3"
+                                                           class="minimal"
+                                                           style="margin-right: 5px" value="D">
+                                                </label>
+                                                <label>
+                                                    <input id="r3e{{ forloop.counter0 }}" type="radio" name="r3"
+                                                           class="minimal"
+                                                           style="margin-right: 5px" value="E">
+                                                </label>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>注重学习过程考核，能认真批改作业并注意分析存在的问题</td>
+                                        <td>
+                                            <!-- radio -->
+                                            <div class="form-group" style="margin-bottom: 0">
+                                                <label>
+                                                    <input id="r4a{{ forloop.counter0 }}" type="radio" name="r4"
+                                                           class="minimal"
+                                                           style="margin-right: 5px" value="A" checked>
+                                                </label>
+                                                <label>
+                                                    <input id="r4b{{ forloop.counter0 }}" type="radio" name="r4"
+                                                           class="minimal"
+                                                           style="margin-right: 5px" value="B">
+                                                </label>
+                                                <label>
+                                                    <input id="r4c{{ forloop.counter0 }}" type="radio" name="r4"
+                                                           class="minimal"
+                                                           style="margin-right: 5px" value="C">
+                                                </label>
+                                                <label>
+                                                    <input id="r4d{{ forloop.counter0 }}" type="radio" name="r4"
+                                                           class="minimal"
+                                                           style="margin-right: 5px" value="D">
+                                                </label>
+                                                <label>
+                                                    <input id="r4e{{ forloop.counter0 }}" type="radio" name="r4"
+                                                           class="minimal"
+                                                           style="margin-right: 5px" value="E">
+                                                </label>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>恰当运用教学手段，教学方法灵活</td>
+                                        <td>
+                                            <!-- radio -->
+                                            <div class="form-group" style="margin-bottom: 0">
+                                                <label>
+                                                    <input id="r5a{{ forloop.counter0 }}" type="radio" name="r5"
+                                                           class="minimal"
+                                                           style="margin-right: 5px" value="A" checked>
+                                                </label>
+                                                <label>
+                                                    <input id="r5b{{ forloop.counter0 }}" type="radio" name="r5"
+                                                           class="minimal"
+                                                           style="margin-right: 5px" value="B">
+                                                </label>
+                                                <label>
+                                                    <input id="r5c{{ forloop.counter0 }}" type="radio" name="r5"
+                                                           class="minimal"
+                                                           style="margin-right: 5px" value="C">
+                                                </label>
+                                                <label>
+                                                    <input id="r5d{{ forloop.counter0 }}" type="radio" name="r5"
+                                                           class="minimal"
+                                                           style="margin-right: 5px" value="D">
+                                                </label>
+                                                <label>
+                                                    <input id="r5e{{ forloop.counter0 }}" type="radio" name="r5"
+                                                           class="minimal"
+                                                           style="margin-right: 5px" value="E">
+                                                </label>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>课内外容易与教师交流，鼓励学生表达自己的见解或对教师提出质疑，并能很好处理</td>
+                                        <td>
+                                            <!-- radio -->
+                                            <div class="form-group" style="margin-bottom: 0">
+                                                <label>
+                                                    <input id="r6a{{ forloop.counter0 }}" type="radio" name="r6"
+                                                           class="minimal"
+                                                           style="margin-right: 5px" value="A" checked>
+                                                </label>
+                                                <label>
+                                                    <input id="r6b{{ forloop.counter0 }}" type="radio" name="r6"
+                                                           class="minimal"
+                                                           style="margin-right: 5px" value="B">
+                                                </label>
+                                                <label>
+                                                    <input id="r6c{{ forloop.counter0 }}" type="radio" name="r6"
+                                                           class="minimal"
+                                                           style="margin-right: 5px" value="C">
+                                                </label>
+                                                <label>
+                                                    <input id="r6d{{ forloop.counter0 }}" type="radio" name="r6"
+                                                           class="minimal"
+                                                           style="margin-right: 5px" value="D">
+                                                </label>
+                                                <label>
+                                                    <input id="r6e{{ forloop.counter0 }}" type="radio" name="r6"
+                                                           class="minimal"
+                                                           style="margin-right: 5px" value="E">
+                                                </label>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>教师能在照顾大多数学生的基础上，针对学生的个体差异因材施教</td>
+                                        <td>
+                                            <!-- radio -->
+                                            <div class="form-group" style="margin-bottom: 0">
+                                                <label>
+                                                    <input id="r7a{{ forloop.counter0 }}" type="radio" name="r7"
+                                                           class="minimal"
+                                                           style="margin-right: 5px" value="A" checked>
+                                                </label>
+                                                <label>
+                                                    <input id="r7b{{ forloop.counter0 }}" type="radio" name="r7"
+                                                           class="minimal"
+                                                           style="margin-right: 5px" value="B">
+                                                </label>
+                                                <label>
+                                                    <input id="r7c{{ forloop.counter0 }}" type="radio" name="r7"
+                                                           class="minimal"
+                                                           style="margin-right: 5px" value="C">
+                                                </label>
+                                                <label>
+                                                    <input id="r7d{{ forloop.counter0 }}" type="radio" name="r7"
+                                                           class="minimal"
+                                                           style="margin-right: 5px" value="D">
+                                                </label>
+                                                <label>
+                                                    <input id="r7e{{ forloop.counter0 }}" type="radio" name="r7"
+                                                           class="minimal"
+                                                           style="margin-right: 5px" value="E">
+                                                </label>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>与本学期的其他任课教师比较，我对该教师的总体评价</td>
+                                        <td>
+                                            <!-- radio -->
+                                            <div class="form-group" style="margin-bottom: 0">
+                                                <label>
+                                                    <input id="r8a{{ forloop.counter0 }}" type="radio" name="r8"
+                                                           class="minimal"
+                                                           style="margin-right: 5px;" value="A" checked>
+                                                </label>
+                                                <label>
+                                                    <input id="r8b{{ forloop.counter0 }}" type="radio" name="r8"
+                                                           class="minimal"
+                                                           style="margin-right: 5px" value="B">
+                                                </label>
+                                                <label>
+                                                    <input id="r8c{{ forloop.counter0 }}" type="radio" name="r8"
+                                                           class="minimal"
+                                                           style="margin-right: 5px" value="C">
+                                                </label>
+                                                <label>
+                                                    <input id="r8d{{ forloop.counter0 }}" type="radio" name="r8"
+                                                           class="minimal"
+                                                           style="margin-right: 5px" value="D">
+                                                </label>
+                                                <label>
+                                                    <input id="r8e{{ forloop.counter0 }}" type="radio" name="r8"
+                                                           class="minimal"
+                                                           style="margin-right: 5px" value="E">
+                                                </label>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                </table>
+                            </div>
+                            <!-- /.box-body -->
+                            <div class="box-footer">
+                                <div class="input-group">
+                                    <label>评语：</label>
+                                    <input type="text" name="message" placeholder="选填" class="form-control">
+                                    <span class="input-group-btn">
+                                        {% if item.flag == False %}
+                                            <input type="hidden" name="item_sno" value={{ item.student }}>
+                                            <input type="hidden" name="item_cno" value={{ item.course }}>
+                                            <input type="hidden" name="item_tno" value={{ item.teacher }}>
+                                            <button id="submit_result" type="submit"
+                                                    name="submit_result" class="btn btn-primary btn-flat"
+                                                    style="margin-top: 24px">保存</button>
+                                        {% endif %}
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            {% endfor %}
+            {% for item in log %}
+                <div class="col-md-8">
+                    <div class="box" id="v{{ forloop.counter0 }}" name="dv2" style="display: none;">
+                        <div class="box-header">
+                            <h3 class="box-title">教师名——{{ item.tname }}</h3>
+                            <input type="hidden" name="item_sno" value={{ item.student }}>
+                            <input type="hidden" name="item_cno" value={{ item.course }}>
+                            <input type="hidden" name="item_tno" value={{ item.teacher }}>
+                        </div>
+                        <!-- /.box-header -->
+                        <div class="box-body no-padding">
+                            <table class="table">
+                                <tr>
+                                    <th style="width: 80%">评价指标</th>
+                                    <th style="width: 20%">评分</th>
+                                </tr>
+                                <tr>
+                                    <td>我学到并理解了该课程所教授的主要内容并从这门课程学到了很多东西</td>
+                                    <td>
+                                        <!-- radio -->
+                                        <div class="form-group" style="margin-bottom: 0">
+                                            <label>{{ item.r1 }}</label>
+                                        </div>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>教师对教授本门课程充满激情、自信</td>
+                                    <td>
+                                        <!-- radio -->
+                                        <div class="form-group" style="margin-bottom: 0">
+                                            <label>{{ item.r2 }}</label>
+                                        </div>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>教师的授课材料经过充分准备，课堂讲解清楚易懂</td>
+                                    <td>
+                                        <!-- radio -->
+                                        <div class="form-group" style="margin-bottom: 0">
+                                            <label>{{ item.r3 }}</label>
+                                        </div>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>注重学习过程考核，能认真批改作业并注意分析存在的问题</td>
+                                    <td>
+                                        <!-- radio -->
+                                        <div class="form-group" style="margin-bottom: 0">
+                                            <label>{{ item.r4 }}</label>
+                                        </div>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>恰当运用教学手段，教学方法灵活</td>
+                                    <td>
+                                        <!-- radio -->
+                                        <div class="form-group" style="margin-bottom: 0">
+                                            <label>{{ item.r5 }}</label>
+                                        </div>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>课内外容易与教师交流，鼓励学生表达自己的见解或对教师提出质疑，并能很好处理</td>
+                                    <td>
+                                        <!-- radio -->
+                                        <div class="form-group" style="margin-bottom: 0">
+                                            <label>{{ item.r6 }}</label>
+                                        </div>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>教师能在照顾大多数学生的基础上，针对学生的个体差异因材施教</td>
+                                    <td>
+                                        <!-- radio -->
+                                        <div class="form-group" style="margin-bottom: 0">
+                                            <label>{{ item.r7 }}</label>
+                                        </div>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>与本学期的其他任课教师比较，我对该教师的总体评价</td>
+                                    <td>
+                                        <!-- radio -->
+                                        <div class="form-group" style="margin-bottom: 0">
+                                            <label>{{ item.r8 }}</label>
+                                        </div>
+                                    </td>
+                                </tr>
+                            </table>
+                        </div>
+                        <!-- /.box-body -->
+                        <div class="box-footer">
+                            <div class="input-group">
+                                <label>评语：</label>
+                                <input type="text" placeholder="{{ item.text }}" class="form-control"
+                                       disabled="disabled">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+
+    </section>
+{% endblock %}
+
+{% block script %}
+
+
+    <!-- jQuery 2.2.3 -->
+    <script src="{% static 'AdminLTE/plugins/jQuery/jquery-2.2.3.min.js' %}"></script>
+    <!-- Bootstrap 3.3.6 -->
+    <script src="{% static 'AdminLTE/bootstrap/js/bootstrap.min.js' %}"></script>
+    <!-- DataTables -->
+    <script src="{% static 'AdminLTE/plugins/datatables/jquery.dataTables.min.js' %}"></script>
+    <script src="{% static 'AdminLTE/plugins/datatables/dataTables.bootstrap.min.js' %}"></script>
+    <!-- SlimScroll -->
+    <script src="{% static 'AdminLTE/plugins/slimScroll/jquery.slimscroll.min.js' %}"></script>
+    <!-- FastClick -->
+    <script src="{% static 'AdminLTE/plugins/fastclick/fastclick.js' %}"></script>
+    <!-- AdminLTE App -->
+    <script src="{% static 'AdminLTE/dist/js/app.min.js' %}"></script>
+    <!-- AdminLTE for demo purposes -->
+    <script src="{% static 'AdminLTE/dist/js/demo.js' %}"></script>
+    <!-- page script -->
+    <script>
+        //Red color scheme for iCheck
+
+
+        $(function () {
+            $('input[type="checkbox"].minimal-red, input[type="radio"].minimal-red').iCheck({
+                checkboxClass: 'icheckbox_minimal-red',
+                radioClass: 'iradio_minimal-red'
+            });
+        });
+
+    </script>
+    <script>
+        function show1(num) {
+            var divs = document.getElementsByName("dv1");
+            for (var i = 0; i < divs.length; i++) {
+                if (divs[i].id === "d" + num) {
+                    divs[i].style.display = "block";
+                } else {
+                    divs[i].style.display = "none";
+                }
+            }
+        }
+
+        function show2(num) {
+            var divs = document.getElementsByName("dv2");
+            for (var i = 0; i < divs.length; i++) {
+                if (divs[i].id === "v" + num) {
+                    divs[i].style.display = "block";
+                } else {
+                    divs[i].style.display = "none";
+                }
+            }
+        }
+
+        $(function () {
+            $('#mainTable tbody').on('click', 'tr', function (e) {
+                if ($(this).hasClass('selected')) {
+                    $(this).removeClass('selected');
+                } else {
+                    table.$('tr.selected').removeClass('selected');
+                    $(this).addClass('selected');
+                }
+            });
+        });
+    </script>
+{% endblock %}

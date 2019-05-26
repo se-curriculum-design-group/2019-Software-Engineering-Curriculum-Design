@@ -1,0 +1,80 @@
+{% extends "adm_base.html" %}
+{% load static %}
+{% load admin_static %}
+{% load staticfiles %}
+{% block title %}发送通知{% endblock %}
+
+
+{% block content %}
+    <form role="form" method="post" action="{% url 'backstage:send_announcements' %}">
+        {% csrf_token %}
+        <div class="row">
+            <!-- Left col -->
+            <section class="col-lg-9" style="margin-top: 5px">
+                <!-- quick email widget -->
+                <div class="box box-info">
+                    <div class="box-header">
+                        <i class="fa fa-envelope"></i>
+
+                        <h3 class="box-title">通知编辑发送</h3>
+                    </div>
+                    <div class="box-body">
+                        <div class="form-group">
+                            {{ add_announcement.title.label_tag }}
+                            {{ add_announcement.title }}
+                        </div>
+                        <textarea id="editor1" name="editor"></textarea>
+                    </div>
+
+                </div>
+
+            </section>
+            <!-- /.Left col -->
+            <!-- right col (We are only adding the ID to make the widgets sortable)-->
+            <section class="col-lg-3" style="margin-top: 5px">
+                <div class="box box-primary">
+                    <div class="box-header with-border">
+                        <h3 class="box-title">操作板</h3>
+                    </div>
+                    <!-- /.box-header -->
+                    <!-- form start -->
+
+                    <div class="box-body">
+                        <div class="form-group" style="margin-top: 20px">
+                            {{ add_announcement.receiver.label_tag }}
+                            {{ add_announcement.receiver }}
+                        </div>
+
+                        <div class="form-group" style="margin-top: 20px">
+                            {{ add_announcement.individual.label_tag }}
+                            {{ add_announcement.individual }}
+                        </div>
+                        <div class="form-group">
+                            {{ add_announcement.year.label_tag }}
+                            {{ add_announcement.year }}
+                        </div>
+                    </div>
+                    <!-- /.box-body -->
+
+                    <div class="box-footer clearfix">
+                        <button type="submit" class="pull-right btn btn-default">Send
+                            <i class="fa fa-arrow-circle-right"></i></button>
+                    </div>
+
+                </div>
+            </section>
+            <!-- right col -->
+        </div>
+    </form>
+
+    <script>
+        ClassicEditor
+            .create(document.querySelector('#editor1'), {
+                language: 'zh-cn',
+                height: '380px', width: '100%'
+            })
+            .catch(error => {
+                console.error(error);
+            });
+    </script>
+{% endblock %}

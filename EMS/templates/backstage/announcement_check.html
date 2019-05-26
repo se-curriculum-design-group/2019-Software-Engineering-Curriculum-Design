@@ -1,0 +1,14 @@
+{% extends "adm_base.html" %}
+{% block title %}通知查看{% endblock %}
+
+
+{% block content %}
+    {% for foo in announcements %}
+        <h3 class="text-center" style="">{{ forloop.counter }}.主题：{{ foo.title }} </h3>
+        <div class="text-center" style="">
+            {% autoescape off %}
+                {{ foo.messages }}
+            {% endautoescape %}
+        </div>
+    {% endfor %}
+{% endblock %}

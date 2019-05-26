@@ -1,0 +1,126 @@
+{% extends 'adm_base.html' %}
+{% load staticfiles %}
+
+{% block content %}
+<section class="content-header">
+<h1>查看教学评价结果
+            <small>管理员</small>
+        </h1>
+        <ol class="breadcrumb">
+            <li><a href="{% url 'scoreManagement:welcome' %}"><i class="fa fa-dashboard"></i> 主页</a></li>
+            <li class="active">成绩管理</li>
+            <li class="active">查看教师教学评价结果</li>
+        </ol>
+</section>
+    <section class="content">
+    <div class="box-body">
+                <table id="evaluation_result_table" class="table table-bordered table-striped">
+                    <thead>
+                    <tr>
+                        <th>序号</th>
+                        <th>学院</th>
+                        <th>专业</th>
+                        <th>教师</th>
+                        <th>课程</th>
+                        <th>总分</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    {% for evaluation in evaluation_sets %}
+                        <tr>
+                            <td>{{ forloop.counter }}</td>
+                            <td>{{ evaluation.teacher.college }}</td>
+                            <td>{{ evaluation.student.in_cls.major }}</td>
+                            <td>{{ evaluation.teacher.name }}</td>
+                            <td>{{ evaluation.course.cno.cname }}</td>
+                            <td>{{ evaluation.sum }}</td>
+                        </tr>
+                    {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+    </section>
+{% endblock %}
+
+{% block script %}
+    <script>
+        {% comment %}
+        $.fn.dataTable.ext.search.push(
+            function (settings, data, dataIndex) {
+                var college = $('#college').val();
+                var major = $('#major').val();
+                var year = $('#year').val();
+                return ((college === data[1] || college === "ALL") && (((major === data[2] || major === "ALL") && (year === data[4] || year === "ALL"))));
+            }
+        );
+        {% endcomment %}
+        $(document).ready(function () {
+            var table = $('#evaluation_result_table').DataTable(
+                {
+                    dom: 'Bfrtip',
+                    buttons: [
+                        'copy',
+                        {
+                            extend: 'excel',
+                            filename: '学生评教信息表'
+                        },
+                        {
+                            extend: 'print',
+                            filename: "学生评教信息表",
+                        }
+                    ],
+                    "paging": true,       <!-- 允许分页 -->
+                    "lengthChange": true, <!-- 允许改变每页显示的行数 -->
+                    "searching": true,    <!-- 允许内容搜索 -->
+                    "ordering": true,     <!-- 允许排序 -->
+                    "info": true,         <!-- 显示信息 -->
+                    "autoWidth": false,    <!-- 固定宽度 -->
+                    "language": {
+                        "sProcessing": "处理中...",
+                        "sLengthMenu": "显示 _MENU_ 项结果",
+                        "sZeroRecords": "没有匹配结果",
+                        "sInfo": "显示第 _START_ 至 _END_ 项结果，共 _TOTAL_ 项",
+                        "sInfoEmpty": "显示第 0 至 0 项结果，共 0 项",
+                        "sInfoFiltered": "(由 _MAX_ 项结果过滤)",
+                        "sInfoPostFix": "",
+                        "sSearch": "搜索:",
+                        "sUrl": "",
+                        "sEmptyTable": "表中数据为空",
+                        "sLoadingRecords": "载入中...",
+                        "sInfoThousands": ",",
+                        "oPaginate": {
+                            "sFirst": "首页",
+                            "sPrevious": "上页",
+                            "sNext": "下页",
+                            "sLast": "末页"
+                        },
+                        "oAria": {
+                            "sSortAscending": ": 以升序排列此列",
+                            "sSortDescending": ": 以降序排列此列"
+                        }
+                    },
+                    "columnDefs": [{
+                        "searchable": false,
+                        "orderable": true,
+                        "targets": 0
+                    }],
+                    "order": [[0, 'asc']]
+                }
+            );
+
+            $('#evaluation_result_table tbody').on('click', 'tr', function (e) {
+                if ($(this).hasClass('selected')) {
+                    $(this).removeClass('selected');
+                } else {
+                    table.$('tr.selected').removeClass('selected');
+                    $(this).addClass('selected');
+                }
+            });
+            // Event listener to the two range filtering inputs to redraw on input
+            $('#major, #year, #college').change(function () {
+                table.draw();
+            });
+            $('.select2').select2();
+        });
+    </script>
+{% endblock %}

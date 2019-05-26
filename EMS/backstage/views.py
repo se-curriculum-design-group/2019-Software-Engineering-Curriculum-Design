@@ -1,85 +1,339 @@
 import os
-from django.shortcuts import render, redirect
-from . import models
-from . import forms
-from django.contrib import auth
-from random import choice
-from django.contrib.auth.hashers import make_password, check_password
-import datetime
+from django.contrib.auth import authenticate, login, logout, models
+from django.contrib.auth.decorators import login_required
+from django.contrib.auth.hashers import make_password
+from django.http import HttpResponse, JsonResponse
+from django.views.decorators.csrf import csrf_exempt
+from django.shortcuts import render, redirect, get_object_or_404
+
+from backstage.models import Student, Teacher, User, Announcement, College, AdmClass, Major, UploadFiles
+from backstage.forms import *
+from utils import make_encode
 # 邮件模块
 from django.conf import settings
 from django.core import mail
+from courseScheduling.models import ClassRoom, Course
 
-
-# Please Create your views here.
 
 def welcome(request):
-    return render(request, 'Welcome.html')  # 引入欢迎页
+    name = request.session['name']
+    user_type = request.session['user_type']
+    context = {
+        'name': name,
+        'user_type': user_type
+    }
+    return render(request, 'base.html', context)
 
 
-
-def login(request):  # 用户登录验证函数
-    if request.session.get('user_is_login', None):  # 如果用户在session中存在记录，则跳过登录认证程序进入主页
-        return redirect('backstage:Homepage')
-
-    if request.method == "POST":  # 若request的类型为POST，即前端表单返回数据。
-        login_form = forms.UserForm(request.POST)  # 取UserForm表单数据
-        message = "请检查填写的内容！(验证码)"
-        if login_form.is_valid():  # 验证输入数据的类型合法性
-            username = login_form.cleaned_data['username']  # 取出前端用户名输入框中输入的用户名
-            password = login_form.cleaned_data['password']  # 取出前端密码输入框中输入的用户名
-            user = auth.authenticate(username=username, password=password)  # 在父类用户表中匹配输入
-
-            if user is not None and user.is_active:  # 若在父类用户表中找到并该用户活跃
-                auth.login(request, user)
-                user_is_teacher = models.Teacher.objects.filter(tno=username)  # 尝试在teacher子表中查找，更小若预测错误开销更小
-                if user_is_teacher.first() is None:  # 若不在教师表中则在学生表中
-                    user_is_student = models.Student.objects.get(sno=username)  # 尝试在student子表中查找
-                    request.session['user_is_login'] = True  # 将登录信息存入session
-                    request.session['user_code'] = user_is_student.sno  # 传入编号
-                    request.session['user_name'] = user_is_student.username  # 传入姓名
-                    # request.session['user_department'] = user_is_student.department_id  # 传入部门
-                else:
-                    request.session['user_is_login'] = True  # 将登录信息存入session
-                    request.session['user_code'] = user_is_teacher.tno  # 传入编号
-                    request.session['user_name'] = user_is_teacher.username  # 传入姓名
-                    request.session['user_department'] = user_is_teacher.college  # 传入部门
-                return redirect('backstage:homepage')  # 重定向到主页
-            elif user is None:  # 如果用户不存在反馈前端信息
-                message = "用户不存在"
-                return render(request, 'Login.html', locals())
-            else:  # 密码错误情况判断逻辑
-                # 登陆失败
-                message = "密码错误，请重试！"
-                return render(request, 'Login.html', locals())
-        return render(request, 'Login.html', locals())
-
-    login_form = forms.UserForm()  # 调起表单传到前端等待输入
-    return render(request, 'Login.html', locals())
+def goto_login(request):
+    return render(request, 'login.html')
 
 
-def log_out(request):
-    if not request.session.get('user_is_login', None):  # 原本未登录则无登出
-        return redirect("backstage:welcome")
+@csrf_exempt
+def mylogin(request):
+    def save_session(user_type):
+        request.session['username'] = username
+        if user_type == '管理员':
+            request.session['name'] = username
+        else:
+            request.session['name'] = user.name
+        request.session['password'] = password
+        request.session['user_type'] = user_type
 
-    request.session.flush()  # 清空所有session
+    if request.POST:
+        username = request.POST.get('username')
+        password = request.POST.get('password')
+        # 对密码进行加密
+        password = make_encode(password)
+        try:
+            user = User.objects.get(username=username, password=password)
+            login(request, user)
+            if user.is_superuser:
+                save_session('管理员')
+                return redirect('backstage:admin_view')
+            elif len(username) == 10:
+                user = Student.objects.get(username=username)
+                save_session('学生')
+                return redirect('backstage:student_view')
+            elif len(user.username) == 9:
+                user = Teacher.objects.get(username=username)
+                save_session('教师')
+                return redirect('backstage:teacher_view')
+            else:
+                return redirect("backstage:goto_login")
+        except:
+            return redirect("backstage:goto_login")
 
-    return redirect("backstage:welcome")  # 重定向到欢迎页
 
-
-def homepage(request):  # 主页
-    if not request.session.get('user_is_login', None):  # 若用户登录信息缺失，重定向到登录页
-        return redirect('backstage:login')
-
+@login_required
+def student_view(request):
     if request.method == "GET":
-        announcement_all = models.Announcement.objects.filter(visible=True, receiver="全体成员")  # 取全员广播
-        announcement_department = models.Announcement.objects.filter(visible=True,
-                                                                     receiver=request.session.get('user_department',
-                                                                                                  None),
-                                                                     year=request.session.get('user_start_year',
-                                                                                              None))  # 取部门年级广播
-        announcement = announcement_all | announcement_department  # 通知消息队列
-        return render(request, 'Homepage.html', locals())
+        username = request.session.get('username', False)
+        user = Student.objects.get(username=username)
+        x = str(user.in_cls)
+        department = College.objects.get(major__short_name=x[:2])
+        usi = user.in_year
+        announcement = Announcement.objects.filter(receiver=department, year=usi)
+        announcements_to_all = Announcement.objects.filter(receiver="全体成员")
+        announcements = announcement | announcements_to_all
+        return render(request, 'student_base.html', locals())
+    else:
+        anno_id = request.POST.get('details')
+        announcement = Announcement.objects.get(id=anno_id)
+        return render(request, 'backstage/anno_details.html', locals())
 
 
+@login_required
+def admin_view(request):
+    if request.method == "GET":
+        announcements = Announcement.objects.all()
+        adm_operator = Adm()
+        return render(request, 'adm_base.html', locals())
+    elif "search" in request.POST:
+        adm_operator = Adm(request.POST)
+        if adm_operator.is_valid():
+            receivers = adm_operator.cleaned_data['receiver']
+            year = adm_operator.cleaned_data['year']
+            announcements = Announcement.objects.filter(receiver=receivers, year=year)
+            adm_operator = Adm()
+            return render(request, 'adm_base.html', locals())
+        else:
+            return render(request, 'errors/403page.html')
+    else:
+        anno_id = request.POST.get('details')
+        announcement = Announcement.objects.get(id=anno_id)
+        adm_operator = Adm()
+        return render(request, 'backstage/adm_base_emails_details.html', locals())
+
+
+@login_required
+def teacher_view(request):
+    if request.method == "GET":
+        announcements = Announcement.objects.all()
+        adm_operator = Adm()
+        return render(request, 'teacher_base.html', locals())
+    elif "search" in request.POST:
+        adm_operator = Adm(request.POST)
+        if adm_operator.is_valid():
+            receivers = adm_operator.cleaned_data['receiver']
+            year = adm_operator.cleaned_data['year']
+            announcements = Announcement.objects.filter(receiver=receivers, year=year)
+            adm_operator = Adm()
+            return render(request, 'teacher_base.html', locals())
+        else:
+            return render(request, 'errors/403page.html')
+    else:
+        anno_id = request.POST.get('details')
+        announcement = Announcement.objects.get(id=anno_id)
+        adm_operator = Adm()
+        return render(request, 'backstage/adm_base_emails_details.html', locals())
+
+
+@login_required
+def mylogout(request):
+    logout(request)
+    return render(request, 'base.html')
+
+
+def backstage_manage(request):
+    return render(request, 'backstage/adm_backstage_manage.html')
+
+
+@login_required
+def register(request):
+    raise NotImplemented
+
+
+def my_personal_details(request):
+    if request.method == "GET":
+        username = request.session.get('username', False)
+        if len(username) == 10:
+            try:
+                user = Student.objects.get(username=username)
+                return render(request, 'backstage/my_personal_details.html', locals())
+            except:
+                return JsonResponse({})
+        else:
+            try:
+                user = Teacher.objects.get(username=username)
+                return render(request, 'backstage/my_personal_details_teacher.html', locals())
+            except:
+                return JsonResponse({})
+    else:
+        new_password = request.POST.get('Password')
+        username = request.session.get('username', False)
+        if new_password != "":
+            if len(username) == 10:
+                try:
+                    user = Student.objects.get(username=username)
+                    change_user = User.objects.get(username=username)
+                    change_user.password = make_encode(new_password)
+                    change_user.save()
+                    return render(request, 'backstage/my_personal_details.html', locals())
+                except:
+                    return JsonResponse({})
+            else:
+                try:
+                    user = Teacher.objects.get(username=username)
+                    change_user = User.objects.get(username=username)
+                    change_user.password = new_password
+                    change_user.save()
+                    return render(request, 'backstage/my_personal_details_teacher.html', locals())
+                except:
+                    return JsonResponse({})
+        else:
+            # print("输入修改值为空，返回主页")
+            if len(username) == 10:
+                return render(request, 'student_base.html')
+            else:
+                return render(request, 'teacher_base.html')
+
+
+def check_announcement(request):
+    if request.method == "GET":
+        username = request.session.get('username', False)
+        user = User.objects.get(username=username)
+        if user.is_superuser:
+            announcements = Announcement.objects.all()
+            return render(request, 'backstage/announcement_check.html', locals())
+
+
+def send_announcement(request):
+    if request.method == "GET":
+        add_announcement = AddAnnouncement()
+        return render(request, 'backstage/announcement_operate.html', locals())
+    else:
+        new_announcement = AddAnnouncement(request.POST)
+        username = request.session.get('username', False)
+        if new_announcement.is_valid():
+            new_announcement_receiver = new_announcement.cleaned_data['receiver']
+            new_announcement_year = new_announcement.cleaned_data['year']
+            new_announcement_title = new_announcement.cleaned_data['title']
+            new_announcement_text = request.POST.get('editor')
+            # print(new_announcement_receiver)
+            # print(new_announcement_year)
+            # print(new_announcement_title)
+            # print(new_announcement_text)
+            new_announcement_objects = Announcement.objects.create()
+            new_announcement_objects.title = new_announcement_title
+            new_announcement_objects.messages = new_announcement_text
+            new_announcement_objects.author = username
+            new_announcement_objects.receiver = new_announcement_receiver
+            new_announcement_objects.year = new_announcement_year
+            new_announcement_objects.visible = True
+            new_announcement_objects.save()
+            add_announcement = AddAnnouncement()
+            return render(request, 'backstage/announcement_operate.html', locals())
+        else:
+            add_announcement = AddAnnouncement()
+            message = "表单错误"
+            return render(request, 'backstage/announcement_operate.html', locals())
+
+
+def send_emails(request):
+    if request.method == "GET":
+        new_email = SendEmails()
+        return render(request, "backstage/send_emails.html", locals())
+    else:
+        Emailform = SendEmails(request.POST, request.FILES)
+        if Emailform.is_valid():
+
+            path = os.getcwd()
+            path_use = path.replace('\\', '/')
+
+            receivers = Emailform.cleaned_data['receiver']
+            title = Emailform.cleaned_data['title']
+            text = request.POST.get('editor')
+            files = request.FILES.getlist('attach')
+            username = request.session.get('username', False)
+            for files in request.FILES.getlist('attach'):
+                record = UploadFiles(file=files, author=username)
+                record.save()
+
+            recipient_list = []
+            if receivers == '0':
+                users = models.User.objects.all()
+                for user in users:
+                    recipient_list.append(user.email)
+            else:
+                users = models.User.objects.filter(department__in=receivers)
+                for user in users:
+                    recipient_list.append(user.email)
+
+            from_mail = settings.EMAIL_HOST_USER
+            msg = mail.EmailMessage(title, text, from_mail, recipient_list)
+            msg.content_subtype = "html"
+            for files in request.FILES.getlist('attach'):
+                src = path_use + '/backstage/media/files/' + files.name
+                msg.attach_file(src)
+            if msg.send():
+                message = "发送成功"
+                return render(request, 'backstage/send_emails.html', locals())
+            else:
+                message = "发送失败"
+                return render(request, 'backstage/send_emails.html', locals())
+
+
+def adm_view_all_stu(request):
+    username = request.session['username']
+    adm = User.objects.get(username=username)
+    if not adm.is_superuser:
+        return render(request, 'errors/403page.html')
+    all_college = College.objects.all()
+    all_major = Major.objects.all()
+    all_students = Student.objects.all()
+    all_in_year = all_students.values("in_year").order_by("in_year").distinct()
+
+    context = {
+        'all_college': all_college,
+        'all_major': all_major,
+        'all_in_year': all_in_year,
+        'all_students': all_students
+    }
+    return render(request, "backstage/adm_view_all_stu.html", context)
+
+
+def adm_view_all_teacher(request):
+    username = request.session['username']
+    adm = User.objects.get(username=username)
+    if not adm.is_superuser:
+        return render(request, 'errors/403page.html')
+    all_college = College.objects.all()
+    all_teacher = Teacher.objects.all()
+    all_in_year = all_teacher.values("in_year").order_by("in_year").distinct()
+
+    context = {
+        'all_college': all_college,
+        'all_in_year': all_in_year,
+        'all_teacher': all_teacher
+    }
+    return render(request, "backstage/adm_view_all_teachers.html", context)
+
+
+def adm_view_all_class_room(request):
+    username = request.session['username']
+    adm = User.objects.get(username=username)
+    if not adm.is_superuser:
+        return render(request, 'errors/403page.html')
+    all_class_room = ClassRoom.objects.all()
+    context = {
+        'all_class_room': all_class_room
+    }
+    return render(request, "backstage/adm_view_all_classroom.html", context)
+
+
+def adm_view_all_course(request):
+    username = request.session['username']
+    adm = User.objects.get(username=username)
+    if not adm.is_superuser:
+        return render(request, 'errors/403page.html')
+    all_course = Course.objects.all()
+    all_college = College.objects.all()
+    all_course_type = all_course.values("course_type").distinct()
+    context = {
+        'all_course': all_course,
+        'all_college': all_college,
+        'all_course_type': all_course_type,
+    }
+    return render(request, "backstage/adm_view_all_course.html", context)
 

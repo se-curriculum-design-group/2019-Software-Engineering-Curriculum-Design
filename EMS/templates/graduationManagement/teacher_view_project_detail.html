@@ -1,0 +1,170 @@
+{% extends 'teacher_base.html' %}
+
+{% load staticfiles %}
+
+{% block content %}
+<section class="content">
+	<div class="row">
+        <div class="col-md-12">
+          <!-- The time line -->
+          <ul class="timeline">
+           {% for item in info %}
+            <!-- timeline item -->
+            <li>
+              <i class="fa fa-envelope bg-aqua"></i>
+
+              <div class="timeline-item">
+                
+
+                <h3 class="timeline-header"><a href="#">题目名称 </a>&nbsp;{{ item.pname }} </h3>
+              </div>
+            </li>
+            <!-- END timeline item -->
+            <!-- timeline item -->
+            <li>
+              <i class="fa fa-user bg-aqua"></i>
+
+              <div class="timeline-item">
+                
+
+                <h3 class="timeline-header no-border"><a href="#">教师</a> {{ item.tno.name }}</h3>
+                 <div class="timeline-footer">
+                  <a class="btn btn-primary btn-xs">了解更多</a>
+                </div>
+                
+
+              </div>
+            </li>
+
+            <li>
+              <i class="fa fa-map-marker bg-aqua"></i>
+
+              <div class="timeline-item">
+                
+
+                <h3 class="timeline-header no-border"><a href="#">题目方向</a> {{ item.pdirection }}</h3>
+                
+
+              </div>
+            </li>
+
+            <li>
+              <i class="fa fa-send-o bg-aqua"></i>
+
+              <div class="timeline-item">
+                
+
+                <h3 class="timeline-header no-border"><a href="#">题目难度</a> {{ item.pdifficulty }}</h3>
+                
+
+              </div>
+            </li>
+
+            <!-- <li>
+              <i class="fa fa-key bg-aqua"></i>
+
+              <div class="timeline-item">
+                
+
+                <h3 class="timeline-header no-border"><a href="#">题目关键词</a> 网站开发  后台管理</h3>
+                
+
+              </div>
+            </li> -->
+
+            <li>
+              <i class="fa fa-pencil bg-aqua"></i>
+
+              <div class="timeline-item">
+                
+
+                <h3 class="timeline-header no-border"><a href="#">题目详细描述</a></h3>
+
+                <div class="timeline-body">
+                	{{ item.pdescription }}
+                </div>
+
+                
+
+              </div>
+            </li>
+
+            <li>
+              <i class="fa fa-male bg-aqua"></i>
+
+              <div class="timeline-item">
+                
+
+                <h3 class="timeline-header no-border"><a href="#">学生要求</a> </h3>
+
+                <div class="timeline-body">
+                	{{ item.pstu }}
+                </div>
+                
+
+              </div>
+            </li>
+            <!-- END timeline item -->
+            <!-- timeline item -->
+            <li>
+             
+          </ul>
+        </div>
+        <!-- /.col -->
+      </div>
+      <div class="row" style="margin-left: 40px;">
+      <button type="button" class="btn btn-info change" onclick="javascript:window.location.href='/graduationManagement/teacher_change_project?id={{ item.id }}'">修改</button>
+      <button type="button" class="btn btn-danger btn-info delete" onclick="javascript:window.location.href='/graduationManagement/teacher_delete_project?id={{ item.id }}'">删除</button>
+      {% endfor %}
+    </div>
+</section>
+{% endblock %}
+
+{% block script %}
+
+
+    <!-- jQuery 2.2.3 -->
+    <script src="{% static 'AdminLTE/plugins/jQuery/jquery-2.2.3.min.js' %}"></script>
+    
+
+    <script src="{% static 'AdminLTE/plugins/jQuery/jquery-2.2.3.min.js' %}"></script>
+	<!-- Bootstrap 3.3.6 -->
+	<script src="{% static 'AdminLTE/bootstrap/js/bootstrap.min.js' %}"></script>
+	<!-- Select2 -->
+	<script src="{% static 'AdminLTE/plugins/select2/select2.full.min.js' %}"></script>
+	<!-- InputMask -->
+	<script src="{% static 'AdminLTE/plugins/input-mask/jquery.inputmask.js' %}"></script>
+	<script src="{% static 'AdminLTE/plugins/input-mask/jquery.inputmask.date.extensions.js' %}"></script>
+	<script src="{% static 'AdminLTE/plugins/input-mask/jquery.inputmask.extensions.js' %}"></script>
+	<!-- date-range-picker -->
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.11.2/moment.min.js' %}"></script>
+	<script src="{% static 'AdminLTE/plugins/daterangepicker/daterangepicker.js' %}"></script>
+	<!-- bootstrap datepicker -->
+	<script src="{% static 'AdminLTE/plugins/datepicker/bootstrap-datepicker.js' %}"></script>
+	<!-- bootstrap color picker -->
+	<script src="{% static 'AdminLTE/plugins/colorpicker/bootstrap-colorpicker.min.js' %}"></script>
+	<!-- bootstrap time picker -->
+	<script src="{% static 'AdminLTE/plugins/timepicker/bootstrap-timepicker.min.js' %}"></script>
+	<!-- SlimScroll 1.3.0 -->
+	<script src="{% static 'AdminLTE/plugins/slimScroll/jquery.slimscroll.min.js' %}"></script>
+	<!-- iCheck 1.0.1 -->
+	<script src="{% static 'AdminLTE/plugins/iCheck/icheck.min.js' %}"></script>
+	<!-- FastClick -->
+	<script src="{% static 'AdminLTE/plugins/fastclick/fastclick.js' %}"></script>
+	<!-- AdminLTE App -->
+	<script src="{% static 'AdminLTE/dist/js/app.min.js' %}"></script>
+	<!-- AdminLTE for demo purposes -->
+	<script src="{% static 'AdminLTE/dist/js/demo.js' %}"></script>
+	<!-- Page script -->
+	<script>
+
+	  $(function () {
+	    //Initialize Select2 Elements
+	    $(".select2").select2();
+	  });
+   
+     
+	</script>
+
+
+{% endblock %}

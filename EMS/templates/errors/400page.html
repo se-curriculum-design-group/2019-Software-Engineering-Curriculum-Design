@@ -1,0 +1,25 @@
+{% extends 'base.html' %}
+{% load staticfiles %}
+{% block content %}
+    <section class="content">
+        <div class="error-page">
+            <h4 class="headline text-red">400</h4>
+            <div class="error-content text-center">
+                <h3><i class="fa fa-warning text-red"></i><b>抱歉！页面发生错误...</b></h3>
+                <h4>Error...SOMETHING WENT WRONG :( </h4>
+                <p>
+                    We will work on fixing that right away.
+                    Meanwhile, you may
+                    {% if request.session.user_type == '学生'  %}
+                        <a href="{% url 'backstage:student_view' %}">
+                    {% elif  request.session.user_type == '教师' %}
+                        <a href="{% url 'backstage:teacher_view' %}">
+                    {% elif  request.session.user_type == '管理员' %}
+                        <a href="{% url 'backstage:admin_view' %}">
+                    {% endif %}
+                    return to dashboard</a> or try using the search form.
+                </p>
+            </div>
+        </div>
+    </section>
+{% endblock %}
