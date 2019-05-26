@@ -1,0 +1,145 @@
+{% extends 'student_base.html' %}
+
+{% load staticfiles %}
+
+{% block content %}
+    <section class="content-header">
+        <h1>查询考试时间
+            <small>Info</small>
+        </h1>
+        <ol class="breadcrumb">
+            <li><a href="{% url 'scoreManagement:welcome' %}"><i class="fa fa-dashboard"></i> 主页</a></li>
+            <li class="active">成绩管理</li>
+            <li class="active">查询考试时间</li>
+        </ol>
+    </section>
+    <div class="box">
+        <div class="box-header">
+            <h3 class="box-title">查询考试时间</h3>
+            <div class="box-header ">
+                <form method="post" action="{% url 'courseScheduling:time_exam' %}">
+                    {% csrf_token %}
+                <label style="">学年：</label><select name="year" id="year" class="select2" style="width: 20%">
+
+            </select>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                <label style="">学期：</label><select name="term" id="term" class="select2" style="width: 15%">
+
+            </select>&nbsp;
+                <button type="submit">查询</button>
+                </form>
+
+            </div>
+
+            <div class="box-body">
+                <table id="exam_time" class="table table-bordered table-striped">
+                    <thead>
+                    <tr>
+                        <th>考试学年</th>
+                        <th>考试学期</th>
+                        <th>课程名称</th>
+                        <th>老师名字</th>
+                        <th>考试时间</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    {% for ii in data %}
+                    <tr>
+                        {% for jj in ii %}
+                        <td>{{ jj }}</td>
+                        {% endfor %}
+                    </tr>
+                    {% endfor %}
+                    </tbody>
+                </table>
+
+            </div>
+        </div>
+    </div>
+{% endblock %}
+
+{% block script %}
+    <script>
+
+        {#$.fn.dataTable.ext.search.push(#}
+        {#    function (settings, data, dataIndex) {#}
+        {#        var year = $('#year').val()#}
+        {#        var term = $('#term').val()#}
+        {#        if (year == 0 || term == 0) return true#}
+        {##}
+        {#        if (data[0][0] == 'B') {#}
+        {#            return true#}
+        {#        } else return false#}
+        {#    }#}
+        {#);#}
+
+        $(document).ready(function () {
+            var table = $('#exam_time').DataTable(
+                {
+                    "paging": true,       <!-- 允许分页 -->
+                    "lengthChange": true, <!-- 允许改变每页显示的行数 -->
+                    "searching": true,    <!-- 允许内容搜索 -->
+                    "ordering": true,     <!-- 允许排序 -->
+                    "info": true,         <!-- 显示信息 -->
+                    "autoWidth": false,    <!-- 固定宽度 -->
+                    "language": {
+                        "sProcessing": "处理中...",
+                        "sLengthMenu": "显示 _MENU_ 项结果",
+                        "sZeroRecords": "没有匹配结果",
+                        "sInfo": "显示第 _START_ 至 _END_ 项结果，共 _TOTAL_ 项",
+                        "sInfoEmpty": "显示第 0 至 0 项结果，共 0 项",
+                        "sInfoFiltered": "(由 _MAX_ 项结果过滤)",
+                        "sInfoPostFix": "",
+                        "sSearch": "搜索:",
+                        "sUrl": "",
+                        "sEmptyTable": "表中数据为空",
+                        "sLoadingRecords": "载入中...",
+                        "sInfoThousands": ",",
+                        "oPaginate": {
+                            "sFirst": "首页",
+                            "sPrevious": "上页",
+                            "sNext": "下页",
+                            "sLast": "末页"
+                        },
+                        "oAria": {
+                            "sSortAscending": ": 以升序排列此列",
+                            "sSortDescending": ": 以降序排列此列"
+                        }
+                    },
+                    "columnDefs": [{
+                        "searchable": true,
+                        "orderable": true,
+                        "targets": 0
+                    }],
+                    "order": [[0, 'asc']]
+                }
+            );
+            var d = new Array('ALL', '1', "2", "3");
+            $('#year').append("<option value=0>ALL</option>")
+            for (var i = 2015; i <= 2022; i++) {
+                var ii = parseInt(i+1);
+                $("#year").append("<option value=" + i + ">" + i + "-" + ii + "</option>")
+            }
+            ;
+
+            for (var i = 0; i <= 3; i++) {
+                $('#term').append("<option value=" + i + ">" + d[i] + "</option>")
+            }
+
+            for (var i = 1; i <= 7; i++)
+
+                $('#exam_time tbody').on('click', 'tr', function (e) {
+                    if ($(this).hasClass('selected')) {
+                        $(this).removeClass('selected');
+                    } else {
+                        table.$('tr.selected').removeClass('selected');
+                        $(this).addClass('selected');
+                    }
+                });
+            // Event listener to the two range filtering inputs to redraw on input
+            $('#year, #term').change(function () {
+                table.draw()
+            });
+            $('.select2').select2();
+        });
+    </script>
+{% endblock %}
