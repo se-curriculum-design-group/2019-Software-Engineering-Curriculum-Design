@@ -840,7 +840,6 @@ def exam_time_generate(bf: Buffer):
 def exam_schedule():
     init()
     init_exam()
-    return
     for e in Classrooms_id:
         Classrooms_id[e].cmp_type = 1
     heap_bigroom = []

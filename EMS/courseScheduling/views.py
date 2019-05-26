@@ -5,7 +5,7 @@ import courseScheduling.Schedule as sch
 import backstage.models as mod
 
 def welcome(request):
-    exam_schedule()
+    #exam_schedule()
     return render(request, 'courseScheduing/welcome.html')
 
 
