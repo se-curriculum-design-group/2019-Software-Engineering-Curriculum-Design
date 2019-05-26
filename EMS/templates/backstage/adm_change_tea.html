@@ -22,15 +22,19 @@
                     </div>
                     <ul class="list-group list-group-flush">
                         <li class="list-group-item px-4">
-                            <strong class="text-muted d-block mb-2">学号:</strong>
+                            <strong class="text-muted d-block mb-2">工号:</strong>
                             <span>{{ user.username }}</span>
                         </li>
                         <li class="list-group-item px-4">
-                            <strong class="text-muted d-block mb-2">班级:</strong>
-                            <span>{{ user.in_cls }}</span>
+                            <strong class="text-muted d-block mb-2">教育背景:</strong>
+                            <span>{{ user.edu_background }}</span>
                         </li>
                         <li class="list-group-item px-4">
-                            <strong class="text-muted d-block mb-2">入学年份：</strong>
+                            <strong class="text-muted d-block mb-2">头衔:</strong>
+                            <span>{{ user.title }}</span>
+                        </li>
+                        <li class="list-group-item px-4">
+                            <strong class="text-muted d-block mb-2">入职年份：</strong>
                             <span>{{ user.in_year }}</span>
                         </li>
                         <li class="list-group-item px-4">
@@ -42,10 +46,6 @@
                             {% endif %}
                         </li>
                         <li class="list-group-item p-4">
-                            <strong class="text-muted d-block mb-2">获得学分：</strong>
-                            <span>{{ user.score_got }}</span>
-                        </li>
-                        <li class="list-group-item p-4">
                             <strong class="text-muted d-block mb-2">最后登录时间：</strong>
                             <span>{{ user.last_login.date.isoformat }}</span>
                         </li>
@@ -55,7 +55,7 @@
                         </li>
                         <li class="list-group-item p-4">
                             <strong class="text-muted d-block mb-2">描述：</strong>
-                            <span>123</span>
+                            <span>{{ user.description }}</span>
                         </li>
                     </ul>
                 </div>
@@ -69,7 +69,7 @@
                         <li class="list-group-item p-3">
                             <div class="row">
                                 <div class="col">
-                                    <form role="form" method="post" action="{% url 'backstage:adm_view_all_stu' %}"
+                                    <form role="form" method="post" action="{% url 'backstage:adm_view_all_teacher' %}"
                                           class="">
                                         {% csrf_token %}
                                         <div class="form-row">
@@ -79,28 +79,42 @@
                                                        placeholder="姓名" value="{{ user.name }}" name="name"
                                                 ></div>
                                             <div class="form-group col-md-6">
-                                                <label for="feFirstName">学号：</label>
+                                                <label for="feFirstName">工号：</label>
                                                 <input type="text" class="form-control"
-                                                       placeholder="学号" value="{{ user.username }}" name="username" disabled
+                                                       placeholder="工号" value="{{ user.username }}" name="username"
+                                                       disabled
                                                 ></div>
                                         </div>
                                         <div class="form-row">
                                             <div class="form-group col-md-6">
-                                                <label for="feFirstName">班级：</label>
+                                                <label for="feFirstName">学院：</label>
                                                 <input type="text" class="form-control"
-                                                       placeholder="班级" value="{{ user.in_cls }}" name="in_cls"
+                                                       placeholder="学院" value="{{ college_name }}" name="college_name"
                                                 ></div>
                                             <div class="form-group col-md-6">
-                                                <label for="feFirstName">学分：</label>
+                                                <label for="feFirstName">加入年份：</label>
                                                 <input type="text" class="form-control"
-                                                       placeholder="学号" value="{{ user.score_got }}" name="score_got"
+                                                       placeholder="加入年份" value="{{ user.in_year }}" name="in_year"
                                                 ></div>
                                         </div>
-                                        <div class="form-group col-md-6">
-                                            <label for="fePassword">修改密码：</label>
-                                            <input type="password" class="form-control" id="Password"
-                                                   name="Password"
-                                                   placeholder="Password">
+                                        <div class="form-row">
+                                            <div class="form-group col-md-6">
+                                                <label for="feEmailAddress">头衔：</label>
+                                                <input type="text" class="form-control"
+                                                       placeholder="头衔" value="{{ user.title }}" name="title"
+                                                >
+                                            </div>
+                                            <div class="form-group col-md-6">
+                                                <label for="feEmailAddress">教育背景：</label>
+                                                <input type="text" class="form-control"
+                                                       placeholder="教育背景" value="{{ user.edu_background }}" name="edu_background"
+                                                >
+                                            </div>
+                                            <div class="form-group col-md-6">
+                                                <label for="fePassword">Password</label>
+                                                <input type="password" class="form-control" id="Password"
+                                                       name="Password"
+                                                       placeholder="Password"></div>
                                         </div>
                                         <div class="form-row">
                                             <div class="form-group col-md-6">
@@ -133,9 +147,7 @@
                                         </div>
                                         <div class="form-row">
                                             <div class="form-group col-md-6">
-                                                <button type="submit" class="btn btn-microsoft" name="update">Update
-                                                    Account
-                                                </button>
+                                                <button type="submit" class="btn btn-microsoft">Update Account</button>
                                             </div>
                                         </div>
 
