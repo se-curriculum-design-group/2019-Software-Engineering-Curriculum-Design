@@ -79,7 +79,7 @@
             function (setting, data, dataIndex) {
                 let college = $("#course_year").val();
                 let major = $("#course_semester").val();
-                return ((college === data[1] || major === 'All') && (major === 'All' || major === data[2]));
+                return ((college === data[1] || college === 'All') && (major === 'All' || major === data[2]));
             }
         );
 
