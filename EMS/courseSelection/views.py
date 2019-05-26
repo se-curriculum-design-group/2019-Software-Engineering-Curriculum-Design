@@ -8,10 +8,14 @@ from courseSelection.models import CourseSelected
 import json
 import numpy as np
 import datetime
+from django.conf import settings
+import pymysql
+
 
 
 def welcome(request):
     return render(request, 'courseSelection/welcome.html')
+
 
 def selection_home_page(request):
     if request.session['user_type'] == '学生':
@@ -83,21 +87,29 @@ def stu_major(request):
         tno__mcno__year=current_year,
         tno__mcno__semester=current_semester
     )
+    college = [c['tno__mcno__cno__college__name'] for c in mC.values("tno__mcno__cno__college__name").distinct()]
+    majors = [s['tno__mcno__mno__major__mname'] for s in mC.values("tno__mcno__mno__major__mname").distinct()]
+
+    context = {
+        "mC": mC,
+        "college": college,
+        "majors": majors
+    }
     majorC = []
     for m in mC:
         print(m.tno.mcno.mno.major.mname)
         if m.tno.mcno.mno.major.mname == majorName and m.state == "专业选修":
             majorC.append(m)
-    data=[]
+    data = []
     dat = []
     haveChosen = {}
 
     courseChosen = CourseSelected.objects.filter(sno__username=sno)
 
     for c in courseChosen:
-        if(c.cno.state != "专业必修" and c.cno.state != "公共基础必修" ):
+        if (c.cno.state != "专业必修" and c.cno.state != "公共基础必修"):
             tmp = {}
-            haveChosen[c.cno.id]=1
+            haveChosen[c.cno.id] = 1
             tmp["id"] = c.cno.id
             tmp["课程号"] = c.cno.tno.mcno.cno.cno
             tmp["课程名"] = c.cno.tno.mcno.cno.cname
@@ -127,7 +139,9 @@ def stu_major(request):
         tmp["上课时间"] = major.time
         if tmp["选课人数"] < tmp["课程容量"]:
             data.append(tmp)
-    return render(request, "courseSelection/stu_major.html", {'data': json.dumps(data), 'dat': json.dumps(dat)})
+    return render(request, "courseSelection/stu_major.html", {'data': json.dumps(data), 'dat': json.dumps(dat),'mC':mC,'college':college,'majors':majors})
+
+
 
 def select_course(request):
     if request.is_ajax():
@@ -255,10 +269,12 @@ def delete(request):
             X = CourseSelected.objects.filter(sno__username=sno, cno_id=ID)
             X.delete()
 
-            return JsonResponse({"flag":1,"tot":tot,"ID":ID})
+            return JsonResponse({"flag": 1, "tot": tot, "ID": ID})
+
+
 # def search(request):
-    # if request.method == 'GET':
-        # request.GET.get[]
+# if request.method == 'GET':
+# request.GET.get[]
 
 
 def find_course(request):
@@ -284,3 +300,187 @@ def find_course(request):
                     tp["节次"] = district[0] + "-" + district[1]
                     dic[i.cno.tno.mcno.cno.cname].append(tp)
             return JsonResponse({"dic": dic, "t_info": t_info, "t_place": t_place})
+
+
+def adm_selection_manage(request):
+    return render(request, "courseSelection/adm_selection_manage.html")
+
+
+def adm_class(request):
+    return render(request, "courseSelection/adm_class.html")
+
+
+def adm_school(request):
+    return render(request, "courseSelection/adm_school.html")
+
+
+def school_query(request):
+    time = request.POST.get("time")
+    grade = request.POST.get("grade")
+    college = request.POST.get("college")
+    subject = request.POST.get("subject")
+
+    print(time, grade, college, subject)
+    db = pymysql.connect("localhost", "EMS", "password", "ems", charset='utf8')
+    cursor = db.cursor()
+
+    # 使用execute方法执行SQL语句
+    cursor.execute("SELECT * FROM course")
+
+    # 使用 fetchone() 方法获取一条数据
+
+    results = cursor.fetchall()
+    n = 0
+    # print(results)
+    final_id = 0
+    final_cno = 0
+    final_cname = ""
+    final_ctype = ""
+    final_cscore = 0
+    final_college = 0
+    target = "CSE32500C"
+    for row in results:
+        id1 = row[0]
+        cno = row[1]
+        cname = row[2]
+        typ = row[3]
+        score = row[4]
+        college = row[5]
+        n += 1
+        if cno == target:
+            final_id = id1
+            final_cno = cno
+            final_cname = cname
+            final_college = college
+            final_cscore = score
+            final_ctype = typ
+            break
+
+    cursor.execute("SELECT * FROM college")
+    print(final_college)
+
+    # cursor.execute("SELECT name,short_name FROM college WHERE id > %s",final_college)
+
+    results = cursor.fetchall()
+    # print(results)
+    for row in results:
+        id1 = row[0]
+        if id1 == final_college:
+            print(row[1], row[2])
+            break
+    # print(n)
+    # print(final_cname)
+
+    # 关闭数据库连接
+    db.close()
+    label_list = ["计科", "自动化", "电子信息"]  # 各部分标签
+    size = [75, 35, 10]  # 各部分大小
+
+    color = ["red", "green", "blue"]  # 各部分颜色
+    explode = [0.05, 0, 0]  # 各部分突出值
+
+    return render(request, "courseSelection/adm_showimg.html")
+
+
+def class_query(request):
+    time = request.POST.get("time")
+    grade = request.POST.get("grade")
+    college = request.POST.get("college")
+    subject = request.POST.get("subject")
+    print(time, grade, college, subject)
+    return render(request, "courseSelection/adm_classshow.html")
+
+
+def time_set(request):
+    '''
+    print(12334)
+    if request.method == 'POST':
+        print('sdas')
+    if request.is_ajax():
+        print(12324)
+        if request.method == 'POST':
+            print(323)
+    print(request)
+    '''
+    print('test1')
+    print(settings.BEGIN)
+    begin = request.POST.get('begin_time')
+    settings.BEGIN = begin
+    print('test2')
+    print(settings.BEGIN)
+    # BEGIN = begin
+    # global END
+    end = request.POST.get('end_time')
+    settings.END = end
+    return render(request, "courseSelection/adm_selection_manage.html")
+
+
+def student_view_other_course(request):
+    sno = request.session["username"]
+
+    current_year = datetime.datetime.now().year
+    current_month = datetime.datetime.now().month
+    current_semester = 0
+    p = Student.objects.get(username=sno)
+
+    majorName = p.in_cls.major.major.mname
+    print(majorName)
+    inyear = p.in_year
+
+    if (current_year - inyear) == 0:
+        current_semester = 1
+    elif (current_year - inyear) == 1:
+        if (current_month >= 1 and current_month <= 2):
+            current_semester = 1
+        elif (current_month > 2 and current_month <= 7):
+            current_semester = 2
+        elif (current_month > 7 and current_month < 9):
+            current_semester = 3
+        elif (current_month >= 9 and current_month <= 12):
+            current_semester = 1
+    elif (current_year - inyear) == 2:
+        if (current_month >= 1 and current_month <= 2):
+            current_semester = 1
+        elif (current_month > 2 and current_month <= 7):
+            current_semester = 2
+        elif (current_month > 7 and current_month < 9):
+            current_semester = 3
+        elif (current_month >= 9 and current_month <= 12):
+            current_semester = 1
+    elif (current_year - inyear) == 3:
+        if (current_month >= 1 and current_month <= 2):
+            current_semester = 1
+        elif (current_month > 2 and current_month <= 7):
+            current_semester = 2
+        elif (current_month > 7 and current_month < 9):
+            current_semester = 3
+        elif (current_month >= 9 and current_month <= 12):
+            current_semester = 1
+    elif (current_year - inyear) == 4:
+        if (1 <= current_month <= 2):
+            current_semester = 1
+        elif (current_month > 2 and current_month <= 7):
+            current_semester = 2
+        elif (current_month > 7 and current_month < 9):
+            current_semester = 3
+        elif (current_month >= 9 and current_month <= 12):
+            current_semester = 1
+
+    mC = Teacher_Schedule_result.objects.filter(
+        tno__mcno__year=current_year,
+        tno__mcno__semester=current_semester
+    )
+    # mC[0].tno.mcno.cno.college
+    # mC[0].tno.mcno.mno.major.mname
+
+    college = [c['tno__mcno__cno__college'] for c in mC.values("tno__mcno__cno__college").distinct()]
+    majors = [s['tno.mcno.mno.major.mname'] for s in mC.values("tno.mcno.mno.major.mname").distinct()]
+
+    context = {
+        "mC": mC,
+        "college": college,
+        "majors": majors
+    }
+    return render(request, "courseSelection/stu_major.html", context)
+def tables(request):
+    return render(request,"courseSelection/course_table.html")
