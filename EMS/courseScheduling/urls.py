@@ -10,6 +10,7 @@ urlpatterns = [
                   path('time_exam', views.time_exam, name="time_exam"),
                   path("search_time_room", views.search_time_room, name="search_time_room"),
                   path("search_time_room_teacher", views.search_time_room_teacher, name="search_time_room_teacher"),
+                  path("occupy_room", views.occupy_room, name="occupy_room"),
 ]
     
     
