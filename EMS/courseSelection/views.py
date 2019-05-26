@@ -17,7 +17,7 @@ def stu_major(request):
     nowtime = nowtime[0:16]
     nowtime = nowtime[0:10] + 'T' + nowtime[11:19]
 
-    if ((nowtime < settings.BEGIN or nowtime > settings.END) or settings.BEGIN == 'NULL' or settings.END == 'NULL'):
+    if ((nowtime < str(settings.BEGIN) or nowtime > str(settings.END)) or settings.BEGIN == 'NULL' or settings.END == 'NULL'):
         return HttpResponse("当前不是选课时间！")
     else:
         sno = request.session["username"]
@@ -236,6 +236,7 @@ def select_course(request):
 
                 return JsonResponse(
                     {"flag": flag, "tot": tot})
+    return HttpResponse("请您点击要选的课程")
 
 
 def delete(request):
@@ -252,7 +253,7 @@ def delete(request):
             X.delete()
 
             return JsonResponse({"flag": 1, "tot": tot, "ID": ID})
-
+    return HttpResponse("请您点击要删除的课程")
 
 def find_course(request):
     if request.is_ajax():
@@ -277,6 +278,7 @@ def find_course(request):
                     tp["节次"] = district[0] + "-" + district[1]
                     dic[i.cno.tno.mcno.cno.cname].append(tp)
             return JsonResponse({"dic": dic, "t_info": t_info, "t_place": t_place})
+    return HttpResponse("此页面为相应页面，无法主动打开")
 
 
 def adm_selection_manage(request):
