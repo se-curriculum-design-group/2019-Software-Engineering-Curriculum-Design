@@ -1,0 +1,105 @@
+{% extends 'adm_base.html' %}
+{% load staticfiles %}
+
+{% block content %}
+    <section class="content-header">
+        <h1>全校教室信息管理
+            <small>管理员</small>
+        </h1>
+        <ol class="breadcrumb">
+            <li><a href="{% url 'backstage:welcome' %}"><i class="fa fa-dashboard"></i> 主页</a></li>
+            <li class="active">基本信息管理</li>
+            <li class="active">全校教室信息管理</li>
+        </ol>
+    </section>
+    <div class="box">
+        <div class="box-header">
+            <h3 class="box-title">全校教室信息管理</h3>
+            <div class="box-body">
+                <table id="class_room_table" class="table table-bordered table-striped">
+                    <thead>
+                    <tr>
+                        <th>序号</th>
+                        <th>教室编号</th>
+                        <th>类型</th>
+                        <th>容量</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    {% for class_room in all_class_room %}
+                        <tr>
+                            <td>{{ forloop.counter }}</td>
+                            <td>{{ class_room.crno }}</td>
+                            <td>{{ class_room.crtype }}</td>
+                            <td>{{ class_room.contain_num }}</td>
+                        </tr>
+                    {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+
+{% block script %}
+    <script>
+        $(document).ready(function () {
+            var table = $('#class_room_table').DataTable(
+                {
+                    dom: 'Bfrtip',
+                    buttons: [
+                        'copy',
+                        {
+                            extend: 'excel',
+                            filename: "全校教室信息表",
+                        }, 'pdf', 'print'
+                    ],
+                    "paging": true,       <!-- 允许分页 -->
+                    "lengthChange": true, <!-- 允许改变每页显示的行数 -->
+                    "searching": true,    <!-- 允许内容搜索 -->
+                    "ordering": true,     <!-- 允许排序 -->
+                    "info": true,         <!-- 显示信息 -->
+                    "autoWidth": false,    <!-- 固定宽度 -->
+                    "language": {
+                        "sProcessing": "处理中...",
+                        "sLengthMenu": "显示 _MENU_ 项结果",
+                        "sZeroRecords": "没有匹配结果",
+                        "sInfo": "显示第 _START_ 至 _END_ 项结果，共 _TOTAL_ 项",
+                        "sInfoEmpty": "显示第 0 至 0 项结果，共 0 项",
+                        "sInfoFiltered": "(由 _MAX_ 项结果过滤)",
+                        "sInfoPostFix": "",
+                        "sSearch": "搜索:",
+                        "sUrl": "",
+                        "sEmptyTable": "表中数据为空",
+                        "sLoadingRecords": "载入中...",
+                        "sInfoThousands": ",",
+                        "oPaginate": {
+                            "sFirst": "首页",
+                            "sPrevious": "上页",
+                            "sNext": "下页",
+                            "sLast": "末页"
+                        },
+                        "oAria": {
+                            "sSortAscending": ": 以升序排列此列",
+                            "sSortDescending": ": 以降序排列此列"
+                        }
+                    },
+                    "columnDefs": [{
+                        "searchable": false,
+                        "orderable": true,
+                        "targets": 0
+                    }],
+                    "order": [[0, 'asc']]
+                }
+            );
+            $('#class_room_table tbody').on('click', 'tr', function (e) {
+                if ($(this).hasClass('selected')) {
+                    $(this).removeClass('selected');
+                } else {
+                    table.$('tr.selected').removeClass('selected');
+                    $(this).addClass('selected');
+                }
+            });
+        });
+    </script>
+{% endblock %}

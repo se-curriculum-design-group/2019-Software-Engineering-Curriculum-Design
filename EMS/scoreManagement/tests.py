@@ -10,7 +10,7 @@ app_name = 'scoreManagement'
 
 
 class TestStudent(TestCase):
-    def setUp(self) -> None:
+    def setUp(self):
         student1 = mixer.blend(Student)
         student1.username = '2016000474'
         student1.password = make_encode('2016000474')
@@ -48,6 +48,18 @@ class TestStudent(TestCase):
         response = self.client.get('/scoreManagement/std_view_major_plan')
         self.assertIn(response.status_code, [200, 301, 302])
 
+    def test_my_personal_details(self):
+        response = self.client.get('/my_personal_details')
+        self.assertIn(response.status_code, [200, 301, 302])
+
+    def test_student_choose_project(self):
+        response = self.client.get('/graduationManagement/student_choose_project')
+        self.assertIn(response.status_code, [200, 301, 302])
+
+    def test_student_view_project(self):
+        response = self.client.get('/graduationManagement/student_view_project')
+        self.assertIn(response.status_code, [200, 301, 302])
+
 
 class TestAdm(TestCase):
     def setUp(self) -> None:
@@ -74,6 +86,10 @@ class TestAdm(TestCase):
         response = self.client.post(url, data=self.log_data)
         self.assertIn(response.status_code, [200, 301, 302])
 
+    def test_adm_view_all_stu(self):
+        response = self.client.get('/adm_view_all_stu')
+        self.assertIn(response.status_code, [200, 301, 302])
+
     def test_adm_view_major_course(self):
         response = self.client.get('/scoreManagement/adm_view_major_course')
         self.assertIn(response.status_code, [200, 301, 302])
@@ -84,6 +100,14 @@ class TestAdm(TestCase):
 
     def test_adm_all_course_score(self):
         response = self.client.get('/scoreManagement/adm_all_course_score')
+        self.assertIn(response.status_code, [200, 301, 302])
+
+    def test_send_announcements(self):
+        response = self.client.get('/send_announcements')
+        self.assertIn(response.status_code, [200, 301, 302])
+
+    def test_send_emails(self):
+        response = self.client.get('/send_emails')
         self.assertIn(response.status_code, [200, 301, 302])
 
 
@@ -126,3 +150,22 @@ class TestTeacher(TestCase):
     def test_teacher_upload_score(self):
         response = self.client.get('/scoreManagement/teacher_upload_score')
         self.assertIn(response.status_code, [200, 301, 302])
+
+    def test_my_personal_details(self):
+        response = self.client.get('/my_personal_details')
+        self.assertIn(response.status_code, [200, 301, 302])
+
+    def test_teacher_submit_project(self):
+        response = self.client.get('/graduationManagement/teacher_submit_project')
+        self.assertIn(response.status_code, [200, 301, 302])
+
+    def test_teacher_choose_student(self):
+        response = self.client.get('/graduationManagement/teacher_choose_student')
+        self.assertIn(response.status_code, [200, 301, 302])
+
+    def test_teacher_submit_score(self):
+        response = self.client.get('/graduationManagement/teacher_submit_score')
+        self.assertIn(response.status_code, [200, 301, 302])
+
+    def test_domo(self):
+        print ("testdomo")

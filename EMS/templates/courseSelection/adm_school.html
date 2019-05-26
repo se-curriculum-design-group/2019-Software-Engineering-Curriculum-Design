@@ -1,0 +1,148 @@
+{% extends "adm_base.html" %}
+{% block title %}欢迎登录教务管理系统{% endblock %}
+{% load static %}
+
+
+
+{% block content %}
+    <section class="content-header">
+        <h1>系统管理员
+        </h1>
+    </section>
+               <section class="content">
+                <div class="box">
+                    <div class="box-header">
+                        <h3 class="box-title">查看全校课程选课情况</h3>
+                        <div class="box-header">
+                            <label style="color: red">学院：</label>
+                            <select name="year" id="course_year" class="select2" style="width: 25%">
+                                <option value="All" selected="selected">全部</option>
+                                {% for c in college %}
+                                    <option value="{{ c }}">{{ c }}</option>
+                                {% endfor %}
+                            </select>
+                            <label style="color: red">专业：</label>
+                            <select name="semester" id="course_semester" class="select2" style="width: 25%">
+                                <option value="All" selected="selected">全部</option>
+                                {% for major in majors %}
+                                    <option value="{{ major }}">{{ major }}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                    </div>
+                    <div class="box-body">
+                        <table id="my_course_score_table" class="table table-bordered table-striped">
+                            <thead>
+                            <tr>
+                                <th>编号</th>
+                                <th>学院</th>
+                                <th>专业</th>
+                                <th>课程号</th>
+                                <th>课程名</th>
+                                <th>学时</th>
+                                <th>选课人数</th>
+                                <th>课程容量</th>
+                                <th>授课教师</th>
+                                <th>上课教室</th>
+                                <th>上课时间</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            {% for info in mC %}
+                                <tr>
+                                    <td>{{ forloop.counter }}</td>
+                                    <td>{{ info.tno.mcno.cno.college.name }}</td>
+                                    <td>{{ info.tno.mcno.mno.major.mname }}</td>
+                                    <td>{{ info.tno.mcno.cno.cno }}</td>
+                                    <td>{{ info.tno.mcno.cno.cname }}</td>
+                                    <td>{{ info.tno.mcno.hour_total }}</td>
+                                    <td>{{ info.current_number}}</td>
+                                    <td>{{ info.MAX_number }}</td>
+                                    <td>{{ info.tno.tno.name }}</td>
+                                    <td>{{ info.where.crno }}</td>
+                                    <td>{{ info.time }}</td>
+                                </tr>
+                            {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </section>
+{% endblock %}
+    {% block script %}
+    <script>
+     $(function () {
+            $(".select2").select2();
+        });
+        {#--------------------------------------------筛选------------------------------------------------------#}
+        $.fn.dataTable.ext.search.push(
+            function (setting, data, dataIndex) {
+                let college = $("#course_year").val();
+                let major = $("#course_semester").val();
+                return ((college === data[1] || major === 'All') && (major === 'All' || major === data[2]));
+            }
+        );
+
+        $(function () {
+            var table = $('#my_course_score_table').DataTable({
+                dom: 'Bfrtip',
+                buttons: [
+                    'copy', 'csv', 'excel', 'pdf', 'print'
+                ],
+                "paging": true,       <!-- 允许分页 -->
+                "lengthChange": true, <!-- 允许改变每页显示的行数 -->
+                "searching": true,    <!-- 允许内容搜索 -->
+                "ordering": true,     <!-- 允许排序 -->
+                "info": true,         <!-- 显示信息 -->
+                "autoWidth": false,    <!-- 固定宽度 -->
+                "language": {
+                    "sProcessing": "处理中...",
+                    "sLengthMenu": "显示 _MENU_ 项结果",
+                    "sZeroRecords": "没有匹配结果",
+                    "sInfo": "显示第 _START_ 至 _END_ 项结果，共 _TOTAL_ 项",
+                    "sInfoEmpty": "显示第 0 至 0 项结果，共 0 项",
+                    "sInfoFiltered": "(由 _MAX_ 项结果过滤)",
+                    "sInfoPostFix": "",
+                    "sSearch": "搜索:",
+                    "sUrl": "",
+                    "sEmptyTable": "表中数据为空",
+                    "sLoadingRecords": "载入中...",
+                    "sInfoThousands": ",",
+                    "oPaginate": {
+                        "sFirst": "首页",
+                        "sPrevious": "上页",
+                        "sNext": "下页",
+                        "sLast": "末页"
+                    },
+                    "oAria": {
+                        "sSortAscending": ": 以升序排列此列",
+                        "sSortDescending": ": 以降序排列此列"
+                    }
+                },
+                "columnDefs": [{
+                    "searchable": false,
+                    "orderable": true,
+                    "targets": 0
+                }],
+                "order": [[0, 'asc']]
+            });
+
+            $('#my_course_score_table tbody').on('click', 'tr', function (e) {
+                if ($(this).hasClass('selected')) {
+                    $(this).removeClass('selected');
+                } else {
+                    table.$('tr.selected').removeClass('selected');
+                    $(this).addClass('selected');
+                }
+            });
+
+            $('#course_year, #course_semester').change(function () {
+                table.draw();
+            });
+
+            $('.select2').select2();
+        });
+        </script>
+
+
+{% endblock %}

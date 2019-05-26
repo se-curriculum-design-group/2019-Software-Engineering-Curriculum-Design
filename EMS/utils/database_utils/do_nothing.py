@@ -15,6 +15,8 @@ from courseScheduling.models import Teacher_Schedule_result, MajorCourses, Teach
 from courseSelection.models import CourseSelected
 from scoreManagement.models import EvaluationForm, CourseScore
 
+from django.db.models import Count, Avg, Sum, StdDev
+
 
 
 

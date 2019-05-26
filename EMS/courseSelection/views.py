@@ -8,174 +8,129 @@ from courseSelection.models import CourseSelected
 import json
 import numpy as np
 import datetime
+from django.conf import settings
 
-
-def welcome(request):
-    return render(request, 'courseSelection/welcome.html')
-
-
-# def resultAdd(request):
-#     teaching = Teaching.objects.all()
-#     for i in teaching:
-#         new_cord = Teacher_Schedule_result()
-#         new_cord.tno = i
-#         # new_cord.contain_num = 19
-#         new_cord.current_number = 0
-#         new_cord.MAX_number = 190
-#         new_cord.time = "1-2-4-5,2-6-7-8"
-#         # new_cord.crtype ="阶教"
-#         # new_cord.crno="A阶-104"
-#
-#         new_cord.state="无"
-#         new_cord.save()
-#
-#     # new_cord = Teacher_Schedule_result()
-#     # new_cord.tno = teaching
-#     # new_cord.time = "1-2-4-5, 2-6-7-8"
-#     # new_cord.crtype = "阶教"
-#     # new_cord.crno = "A阶-104"
-#     # new_cord.contain_num = 190
-#     # new_cord.current_number = 0
-#     # new_cord.MAX_number = 190
-#     # new_cord.state = "无"
-#     # new_cord.save()
-#
-#     student = Student.objects.all()
-#     plan = MajorPlan.objects.all()
-#     for j in plan:
-#         print(j)
-#     print("asdasd")
-#     for i in student:
-#         print(i.in_cls)
-#     return HttpResponse("asd")
-def selection_home_page(request):
-    if request.session['user_type'] == '学生':
-        return render(request, 'courseSelection/student_selection_manage.html')
-    elif request.session['user_type'] == '教师':
-        return render(request, 'courseSelection/teacher_selection_manage.html')
-    else:
-        return render(request, 'courseSelection/adm_selection_manage.html')
-
-
-def stu_tongshi(request):
-    return render(request, "courseSelection/stu_tongshi.html")
-
-
-# def stu_
 
 def stu_major(request):
-    # majorC = Teacher_Schedule_result.objects.all()[:3]
-    sno = request.session["username"]
-    # 学号》incls》name
-    # 学号》inyear》当前时间减去inyear求出学期》
-    # TSR》Teaching》Majorcourse》得出学期
-    # TSR》Teaching》Majorcourse》Majorplan》Major》mname
+    nowtime = datetime.datetime.now()
+    nowtime = str(nowtime)
+    nowtime = nowtime[0:16]
+    nowtime = nowtime[0:10] + 'T' + nowtime[11:19]
 
-    current_year = datetime.datetime.now().year
-    current_month = datetime.datetime.now().month
-    current_semester = 0
-    p = Student.objects.get(username=sno)
+    if ((nowtime < settings.BEGIN or nowtime > settings.END) or settings.BEGIN == 'NULL' or settings.END == 'NULL'):
+        return HttpResponse("当前不是选课时间！")
+    else:
+        sno = request.session["username"]
+        current_year = datetime.datetime.now().year
+        current_month = datetime.datetime.now().month
+        current_semester = 0
+        p = Student.objects.get(username=sno)
 
-    majorName = p.in_cls.name[0:2]
+        majorName = p.in_cls.major.major.mname
+        inyear = p.in_year
 
-    inyear = p.in_year
+        if (current_year - inyear) == 0:
+            current_semester = 1
+        elif (current_year - inyear) == 1:
+            if (current_month >= 1 and current_month <= 2):
+                current_semester = 1
+            elif (current_month > 2 and current_month <= 7):
+                current_semester = 2
+            elif (current_month > 7 and current_month < 9):
+                current_semester = 3
+            elif (current_month >= 9 and current_month <= 12):
+                current_semester = 1
+        elif (current_year - inyear) == 2:
+            if (current_month >= 1 and current_month <= 2):
+                current_semester = 1
+            elif (current_month > 2 and current_month <= 7):
+                current_semester = 2
+            elif (current_month > 7 and current_month < 9):
+                current_semester = 3
+            elif (current_month >= 9 and current_month <= 12):
+                current_semester = 1
+        elif (current_year - inyear) == 3:
+            if (current_month >= 1 and current_month <= 2):
+                current_semester = 1
+            elif (current_month > 2 and current_month <= 7):
+                current_semester = 2
+            elif (current_month > 7 and current_month < 9):
+                current_semester = 3
+            elif (current_month >= 9 and current_month <= 12):
+                current_semester = 1
+        elif (current_year - inyear) == 4:
+            if (current_month >= 1 and current_month <= 2):
+                current_semester = 1
+            elif (current_month > 2 and current_month <= 7):
+                current_semester = 2
+            elif (current_month > 7 and current_month < 9):
+                current_semester = 3
+            elif (current_month >= 9 and current_month <= 12):
+                current_semester = 1
 
-    if (current_year - inyear) == 0:
-        current_semester = 1
-    elif (current_year - inyear) == 1:
-        if (current_month >= 1 and current_month <= 2):
-            current_semester = 1
-        elif (current_month > 2 and current_month <= 7):
-            current_semester = 2
-        elif (current_month > 7 and current_month < 9):
-            current_semester = 3
-        elif (current_month >= 9 and current_month <= 12):
-            current_semester = 1
-    elif (current_year - inyear) == 2:
-        if (current_month >= 1 and current_month <= 2):
-            current_semester = 1
-        elif (current_month > 2 and current_month <= 7):
-            current_semester = 2
-        elif (current_month > 7 and current_month < 9):
-            current_semester = 3
-        elif (current_month >= 9 and current_month <= 12):
-            current_semester = 1
-    elif (current_year - inyear) == 3:
-        if (current_month >= 1 and current_month <= 2):
-            current_semester = 1
-        elif (current_month > 2 and current_month <= 7):
-            current_semester = 2
-        elif (current_month > 7 and current_month < 9):
-            current_semester = 3
-        elif (current_month >= 9 and current_month <= 12):
-            current_semester = 1
-    elif (current_year - inyear) == 4:
-        if (current_month >= 1 and current_month <= 2):
-            current_semester = 1
-        elif (current_month > 2 and current_month <= 7):
-            current_semester = 2
-        elif (current_month > 7 and current_month < 9):
-            current_semester = 3
-        elif (current_month >= 9 and current_month <= 12):
-            current_semester = 1
+        mC = Teacher_Schedule_result.objects.filter(
+            tno__mcno__year=current_year,
+            tno__mcno__semester=current_semester
+        )
+        college = [c['tno__mcno__cno__college__name'] for c in mC.values("tno__mcno__cno__college__name").distinct()]
+        majors = [s['tno__mcno__mno__major__mname'] for s in mC.values("tno__mcno__mno__major__mname").distinct()]
 
-    mC = Teacher_Schedule_result.objects.filter(
-        tno__mcno__year=current_year,
-        tno__mcno__semester=current_semester
-    )
-    majorC = []
-    for m in mC:
-        if m.tno.mcno.mno.major.mname == majorName:
-            majorC.append(m)
+        context = {
+            "mC": mC,
+            "college": college,
+            "majors": majors
+        }
+        majorC = []
+        for m in mC:
+            if m.tno.mcno.mno.major.mname == majorName and m.state == "专业选修":
+                majorC.append(m)
+        data = []
+        dat = []
+        haveChosen = {}
 
-    # print(type(current_month))
-    data = []
-    dat = []
-    haveChosen = {}
+        courseChosen = CourseSelected.objects.filter(sno__username=sno)
 
-    #     # crno = models.CharField(max_length=128)
-    #     # crtype = models.CharField(null=False, max_length=10)
-    #     # contain_num = models.IntegerField()
-    courseChosen = CourseSelected.objects.filter(sno__username=sno)
+        for c in courseChosen:
+            if (c.cno.state != "专业必修" and c.cno.state != "公共基础必修"):
+                tmp = {}
+                haveChosen[c.cno.id] = 1
+                tmp["id"] = c.cno.id
+                tmp["课程号"] = c.cno.tno.mcno.cno.cno
+                tmp["课程名"] = c.cno.tno.mcno.cno.cname
+                tmp["学时"] = c.cno.tno.mcno.hour_total
+                tmp["选课人数"] = c.cno.current_number
+                tmp["课程容量"] = c.cno.MAX_number
+                tmp["授课教师"] = c.cno.tno.tno.name
+                tmp["上课教室"] = c.cno.where.crno
+                tmp["上课时间"] = c.cno.time
 
-    for c in courseChosen:
-        tmp = {}
-        haveChosen[c.cno.id] = 1
-        tmp["id"] = c.cno.id
-        tmp["课程号"] = c.cno.tno.mcno.cno.cno
-        tmp["课程名"] = c.cno.tno.mcno.cno.cname
-        tmp["学时"] = c.cno.tno.mcno.hour_total
-        tmp["选课人数"] = c.cno.current_number
-        tmp["课程容量"] = c.cno.MAX_number
-        tmp["授课教师"] = c.cno.tno.tno.name
-        tmp["上课教室"] = c.cno.where.crno
-        tmp["上课时间"] = c.cno.time
-        dat.append(tmp)
-    for major in majorC:
-        tmp = {}
-        try:
-            if haveChosen[major.id] == 1:
-                tmp["if_chosen"] = 1
-        except:
-            tmp["if_chosen"] = 0
-        tmp["id"] = major.id
-        tmp["课程号"] = major.tno.mcno.cno.cno
-        tmp["课程名"] = major.tno.mcno.cno.cname
-        tmp["学时"] = major.tno.mcno.hour_total
-        tmp["选课人数"] = major.current_number
-        tmp["课程容量"] = major.MAX_number
-        tmp["授课教师"] = major.tno.tno.name
-        tmp["上课教室"] = major.where.crno
-        tmp["上课时间"] = major.time
-        if tmp["选课人数"] < tmp["课程容量"]:
-            data.append(tmp)
-    return render(request, "courseSelection/stu_major.html", {'data': json.dumps(data), 'dat': json.dumps(dat)})
+                dat.append(tmp)
+        for major in majorC:
+            tmp = {}
+            try:
+                if haveChosen[major.id] == 1:
+                    tmp["if_chosen"] = 1
+            except:
+                tmp["if_chosen"] = 0
+            tmp["id"] = major.id
+            tmp["课程号"] = major.tno.mcno.cno.cno
+            tmp["课程名"] = major.tno.mcno.cno.cname
+            tmp["学时"] = major.tno.mcno.hour_total
+            tmp["选课人数"] = major.current_number
+            tmp["课程容量"] = major.MAX_number
+            tmp["授课教师"] = major.tno.tno.name
+            tmp["上课教室"] = major.where.crno
+            tmp["上课时间"] = major.time
+            if tmp["选课人数"] < tmp["课程容量"]:
+                data.append(tmp)
+        return render(request, "courseSelection/stu_major.html",
+                      {'data': json.dumps(data), 'dat': json.dumps(dat), 'mC': mC, 'college': college,
+                       'majors': majors})
 
 
 def select_course(request):
     if request.is_ajax():
         if request.method == 'GET':
-            print("asdasd")
             flag = 1
             ID = request.GET.get("id")
             sno = request.session["username"]
@@ -267,7 +222,6 @@ def select_course(request):
 
                     if np.sum(X[int(week[0]):int(week[1]) + 1, Day, cstart:cend + 1]) != 0:
                         flag = 0
-                        print(flag)
                         break
 
                 if (flag):
@@ -293,7 +247,6 @@ def delete(request):
 
             tot = teach.current_number
             tot -= 1
-            print(ID)
             Teacher_Schedule_result.objects.filter(id=ID).update(current_number=tot)
             X = CourseSelected.objects.filter(sno__username=sno, cno_id=ID)
             X.delete()
@@ -301,17 +254,13 @@ def delete(request):
             return JsonResponse({"flag": 1, "tot": tot, "ID": ID})
 
 
-def teacher(request):  # 教师查看授课选课情况
-    return render(request, "courseSelection/index.html")
-
-
 def find_course(request):
     if request.is_ajax():
         if request.method == 'GET':
             sno = request.session["username"]
             theCourse = CourseSelected.objects.filter(sno__username=sno)
-            print(theCourse)
-            course_time = []  # 收集这些课程的上课时间
+            # 收集这些课程的上课时间
+            course_time = []
             dic = {}
             tmp = {}
             t_info = {}
@@ -328,3 +277,130 @@ def find_course(request):
                     tp["节次"] = district[0] + "-" + district[1]
                     dic[i.cno.tno.mcno.cno.cname].append(tp)
             return JsonResponse({"dic": dic, "t_info": t_info, "t_place": t_place})
+
+
+def adm_selection_manage(request):
+    return render(request, "courseSelection/adm_selection_manage.html")
+
+
+def adm_school(request):
+    mC = Teacher_Schedule_result.objects.filter()
+
+    college = [c['tno__mcno__cno__college__name'] for c in mC.values("tno__mcno__cno__college__name").distinct()]
+    majors = [s['tno__mcno__mno__major__mname'] for s in mC.values("tno__mcno__mno__major__mname").distinct()]
+    context = {
+        "mC": mC,
+        "college": college,
+        "majors": majors
+    }
+    return render(request, "courseSelection/adm_school.html", context)
+
+
+def time_set(request):
+    begin = request.POST.get('begin_time')
+    settings.BEGIN = begin
+    # BEGIN = begin
+    # global END
+    end = request.POST.get('end_time')
+    settings.END = end
+    return render(request, "courseSelection/adm_selection_manage.html")
+
+
+def student_view_other_course(request):
+    sno = request.session["username"]
+
+    current_year = datetime.datetime.now().year
+    current_month = datetime.datetime.now().month
+    current_semester = 0
+    p = Student.objects.get(username=sno)
+
+    majorName = p.in_cls.major.major.mname
+    inyear = p.in_year
+
+    if (current_year - inyear) == 0:
+        current_semester = 1
+    elif (current_year - inyear) == 1:
+        if (current_month >= 1 and current_month <= 2):
+            current_semester = 1
+        elif (current_month > 2 and current_month <= 7):
+            current_semester = 2
+        elif (current_month > 7 and current_month < 9):
+            current_semester = 3
+        elif (current_month >= 9 and current_month <= 12):
+            current_semester = 1
+    elif (current_year - inyear) == 2:
+        if (current_month >= 1 and current_month <= 2):
+            current_semester = 1
+        elif (current_month > 2 and current_month <= 7):
+            current_semester = 2
+        elif (current_month > 7 and current_month < 9):
+            current_semester = 3
+        elif (current_month >= 9 and current_month <= 12):
+            current_semester = 1
+    elif (current_year - inyear) == 3:
+        if (current_month >= 1 and current_month <= 2):
+            current_semester = 1
+        elif (current_month > 2 and current_month <= 7):
+            current_semester = 2
+        elif (current_month > 7 and current_month < 9):
+            current_semester = 3
+        elif (current_month >= 9 and current_month <= 12):
+            current_semester = 1
+    elif (current_year - inyear) == 4:
+        if (1 <= current_month <= 2):
+            current_semester = 1
+        elif (current_month > 2 and current_month <= 7):
+            current_semester = 2
+        elif (current_month > 7 and current_month < 9):
+            current_semester = 3
+        elif (current_month >= 9 and current_month <= 12):
+            current_semester = 1
+
+    mC = Teacher_Schedule_result.objects.filter(
+        tno__mcno__year=current_year,
+        tno__mcno__semester=current_semester
+    )
+    college = [c['tno__mcno__cno__college'] for c in mC.values("tno__mcno__cno__college").distinct()]
+    majors = [s['tno__mcno__mno__major__mname'] for s in mC.values("tno__mcno__mno__major__mname").distinct()]
+
+    context = {
+        "mC": mC,
+        "college": college,
+        "majors": majors
+    }
+    return render(request, "courseSelection/stu_major.html", context)
+
+
+def tables(request):
+    return render(request, "courseSelection/course_table.html")
+
+
+# 教师查看授课选课情况
+def teacher(request):
+    user = request.session["username"]
+    teacher = Teacher.objects.get(username=user)
+    teachings = Teaching.objects.filter(tno=teacher)
+    # coursescore, id, mcno, mcno_id, teacher_schedule_result, tno, tno_id, weight
+    context = {
+        'teachings': teachings
+    }
+    return render(request, "courseSelection/teacher.html", context)
+
+
+# 教师查看授课选课情况
+def show_students(request, cno, course_type):
+    user = request.session["username"]
+    teacher = Teacher.objects.get(username=user)
+    class_no = Course.objects.get(cno=cno, course_type=course_type)
+    major_courses = MajorCourses.objects.get(cno=class_no)
+    teaching = Teaching.objects.get(mcno=major_courses, tno=teacher)
+    teacher_schedule_result = Teacher_Schedule_result.objects.filter(tno=teaching)
+    if not teacher_schedule_result:
+        return render(request, "courseSelection/show_students.html")
+    else:
+        teacher_schedule_result = teacher_schedule_result[0]
+    students = CourseSelected.objects.filter(cno=teacher_schedule_result)
+    context = {
+        'students': students
+    }
+    return render(request, "courseSelection/show_students.html", context)

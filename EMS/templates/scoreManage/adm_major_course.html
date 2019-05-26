@@ -100,20 +100,21 @@
     <script>
         $.fn.dataTable.ext.search.push(
             function (settings, data, dataIndex) {
-                let  major = $('#major').val();
-                let  year = $('#year').val();
-                let  semester = $('#semester').val();
-                let  course_type = $('#course_type').val();
+                let major = $('#major').val();
+                let year = $('#year').val();
+                let semester = $('#semester').val();
+                let course_type = $('#course_type').val();
                 if (
                     (major === "ALL" || major === data[1]) && (year === "ALL" || year === data[2])
                     && (semester === "ALL" || semester === data[2]) && (course_type === "ALL" || course_type === data[7])
-                ){
+                ) {
                     return true;
                 } else {
                     return false
                 }
             }
         );
+
         $(document).ready(function () {
             var year = $('#major').val();
             const myData = {"year": year};
@@ -131,7 +132,18 @@
 
             var table = $('#major_course_table').DataTable(
                 {
-
+                    dom: 'Bfrtip',
+                    buttons: [
+                        'copy',
+                        {
+                            extend: 'excel',
+                            filename: "专业课程信息表",
+                        },
+                        {
+                            extend: 'print',
+                            filename: "专业课程信息表",
+                        }
+                    ],
                     "paging": true,       <!-- 允许分页 -->
                     "lengthChange": true, <!-- 允许改变每页显示的行数 -->
                     "searching": true,    <!-- 允许内容搜索 -->

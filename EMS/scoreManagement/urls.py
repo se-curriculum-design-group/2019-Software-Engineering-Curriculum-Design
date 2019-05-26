@@ -11,10 +11,6 @@ urlpatterns = [
     path('student_view_score', views.student_view_score, name="student_view_score"),
     # 学生查看个人学业情况
     path('student_own_study', views.student_own_study, name="student_own_study"),
-    # 管理员查看全部的成绩
-    path('adm_all_course_score', views.adm_all_course_score,
-         name="adm_all_course_score"),
-
     # 各个角色查看专业计划和课程计划
     path('std_view_major_course', views.std_view_major_course,
          name="std_view_major_course"),
@@ -39,4 +35,18 @@ urlpatterns = [
     path('teacher_view_teaching', views.teacher_view_teaching, name="teacher_view_teaching"),
     # 教师上传成绩
     path('teacher_upload_score', views.teacher_upload_score, name="teacher_upload_score"),
+    # 教师查看学生考试成绩
+    path('teacher_view_stu_score', views.teacher_view_stu_score, name="teacher_view_stu_score"),
+
+    # 管理员查看全部的成绩
+    path('adm_all_course_score', views.adm_all_course_score,
+         name="adm_all_course_score"),
+
+    # 管理员想查看成绩，先查看自己教的课
+    path('get_all_teaching', views.get_all_teaching, name="get_all_teaching"),
+    # 管理员进入页面，查看学生成绩详情
+    path('show_student_score/?cno=<cno>&course_type=<course_type>', views.show_student_score, name="show_student_score"),
+
+    # 管理员查看教学评价结果
+    path('adm_view_teacher_evaluation', views.adm_view_teacher_evaluation, name="adm_view_teacher_evaluation"),
 ]

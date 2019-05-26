@@ -1,101 +1,207 @@
-{% extends "base.html" %}
+{% extends "teacher_base.html" %}
+{% load static %}
 {% block title %}欢迎登录教务管理系统{% endblock %}
 
-{% block custom_nav %}
-    <li class="dropdown">
-        <a href="#" class="dropdown-toggle" data-toggle="dropdown">信息查询 <span
-                class="caret"></span></a>
-        <ul class="dropdown-menu" role="menu">
-            <li><a href="#">查看个人信息</a></li>
-            <li><a href="#">查看个人课表</a></li>
-            <li><a href="#">查看全校课表</a></li>
-            <li><a href="#">查询空闲教室</a></li>
-            <li class="divider"></li>
-            <li><a href="#">查看专业培养计划</a></li>
-            <li><a href="#">查看专业课程计划</a></li>
-            <li class="divider"></li>
-            <li><a href="#">查看考试成绩</a></li>
-            <li><a href="#">查看个人学业情况</a></li>
-        </ul>
-    </li>
-
-    <li class="dropdown">
-        <a href="#" class="dropdown-toggle" data-toggle="dropdown">选课 <span
-                class="caret"></span></a>
-        <ul class="dropdown-menu" role="menu">
-            <li><a href="{% url 'courseSelection:stu_tongshi' %}">通识课</a></li>
-            <li><a href="{% url 'courseSelection:stu_major' %}">专业选修</a></li>
-            <li><a href="#">查看全校课表</a></li>
-        </ul>
-    </li>
-
-    <li class="dropdown">
-        <a href="#" class="dropdown-toggle" data-toggle="dropdown">毕业设计 <span
-                class="caret"></span></a>
-        <ul class="dropdown-menu" role="menu">
-            <li><a href="#">题目浏览</a></li>
-            <li><a href="#">题目提交</a></li>
-        </ul>
-    </li>
-
-    <li><a href="#">教学评价</a></li>
-{% endblock %}
-
-{% block left_side_block %}
-    <!-- 不同用户自定义的左侧的侧边栏 -->
-    <li class="treeview">
-        <a href="{% url 'scoreManagement:score_home_page' %}">
-            <i class="fa fa-dashboard"></i> <span>信息查询</span>
-            <span class="pull-right-container">
-              <i class="fa fa-angle-left pull-right"></i>
-            </span>
-        </a>
-        <ul class="treeview-menu">
-            <li><a href="#"><i class="fa fa-circle-o"></i>查看个人信息</a></li>
-            <li><a href="#"><i class="fa fa-circle-o"></i>查看个人课表</a></li>
-            <li><a href="#"><i class="fa fa-circle-o"></i>查看全校课表</a></li>
-            <li><a href="#"><i class="fa fa-circle-o"></i>查看专业培养计划</a></li>
-            <li><a href="#"><i class="fa fa-circle-o"></i>查看专业课程计划</a></li>
-            <li><a href="#"><i class="fa fa-circle-o"></i>查询空闲教室</a></li>
-            <li><a href="#"><i class="fa fa-circle-o"></i>查看考试成绩</a></li>
-            <li><a href="#"><i class="fa fa-circle-o"></i>查看个人学业情况</a></li>
-        </ul>
-    </li>
-
-    <li class="treeview">
-        <a href="#">
-            <i class="fa fa-table"></i> <span>选课</span>
-            <span class="pull-right-container">
-              <i class="fa fa-angle-left pull-right"></i>
-            </span>
-        </a>
-    </li>
-
-    <li class="treeview">
-        <a href="#">
-            <i class="fa fa-folder"></i> <span>毕业设计</span>
-            <span class="pull-right-container">
-              <i class="fa fa-angle-left pull-right"></i>
-            </span>
-        </a>
-        <ul class="treeview-menu">
-            <li><a href="#"><i class="fa fa-circle-o"></i>题目浏览</a></li>
-            <li><a href="#"><i class="fa fa-circle-o"></i>题目提交</a></li>
-        </ul>
-    </li>
-    <li class="treeview">
-        <a href="#">
-            <i class="fa fa-share"></i> <span>教学评价</span>
-            <span class="pull-right-container">
-              <i class="fa fa-angle-left pull-right"></i>
-            </span>
-        </a>
-    </li>
-{% endblock %}
 {% block content %}
+        <section class="content-header">
+        <h1>选课子系统
+            <small>Info</small>
+        </h1>
+        <ol class="breadcrumb">
+            <li><a href="{% url 'scoreManagement:welcome' %}"><i class="fa fa-dashboard"></i> 主页</a></li>
+            <li class="active">教师选课</li>
+        </ol>
+    </section>
+        <section class="content">
+        <div class="box">
+            <div class="box-header">
+                <h3 class="box-title">教师授课表</h3>
+                <div class="btn-group pull-right ">
+                    <a id="a">
+                        <button id='chart' class="btn btn-success" type="button">
+                            <span class="glyphicon glyphicon-plus"></span>导出表格
+                        </button>
+                    </a>
+                </div>
+            </div>
+            <div class="box-body">
+                <table id="teaching_table" class="table table-bordered table-striped">
+                    <thead>
+                    <tr>
+                        <th>编号</th>
+                        <th>课程号</th>
+                        <th>课程名称</th>
+                        <th>课程性质</th>
+                        <th>年级</th>
+                        <th>授课教室</th>
+                        <th>专业名称</th>
+                        <th>开课学年</th>
+                        <th>开课学期</th>
+                        <th>查看选课学生</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    {% for teaching in teachings %}
+{#                        {% if teaching.tno == cookie %}#}
+                            <tr>
+                                <td>{{ forloop.counter }}</td>
+                                <td>{{ teaching.mcno.cno.cno }}</td>
+                                <td>{{ teaching.mcno.cno.cname }}</td>
+                                <td>{{ teaching.mcno.cno.course_type }}</td>
+                                <td>{{ teaching.mcno.mno.year }}</td>
+                                <td>{{ teaching.mcno.mno.major.mno }}</td>
+                                <td>{{ teaching.mcno.mno.major.mname }}</td>
+                                <td>{{ teaching.mcno.year }}</td>
+                                <td>{{ teaching.mcno.semester }}</td>
+                                <td>
+                                    <a href="{% url 'courseSelection:show_students' teaching.mcno.cno.cno teaching.mcno.cno.course_type %}">
+                                        <button id='show_students' class="btn btn-primary" type="button">
+                                            <span class="glyphicon glyphicon-plus"></span>查看
+                                        </button>
+                                    </a>
+                                </td>
+                            </tr>
+                    {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </section>
+ {% endblock %}
 
 
-
-{% endblock %}
 {% block script %}
+    <script>
+        var html = "<html><head><meta charset='utf-8' /></head><body>" + document.getElementsByTagName("table")[0].outerHTML + "</body></html>";
+        // 实例化一个Blob对象，其构造函数的第一个参数是包含文件内容的数组，第二个参数是包含文件类型属性的对象
+        var blob = new Blob([html], { type: "application/vnd.ms-excel" });
+        var a = document.getElementById('a');
+        // 利用URL.createObjectURL()方法为urlA元素生成blob URL
+        a.href = URL.createObjectURL(blob);
+        // 设置文件名，目前只有Chrome和FireFox支持此属性
+        a.download = "teaching_table.xls";
+    </script>
+
+    <script>
+
+        $(function () {
+            var table = $('#teaching_table').DataTable({
+                dom: 'Bfrtip',
+                buttons: [
+                    'copy',
+                    {
+                        extend: 'excel',
+                        filename: "专业课程信息表",
+                    },
+                    {
+                        extend: 'print',
+                        filename: "专业课程信息表",
+                    }
+                ],
+                "paging": true,       <!-- 允许分页 -->
+                "lengthChange": true, <!-- 允许改变每页显示的行数 -->
+                "searching": true,    <!-- 允许内容搜索 -->
+                "ordering": true,     <!-- 允许排序 -->
+                "info": true,         <!-- 显示信息 -->
+                "autoWidth": false,    <!-- 固定宽度 -->
+                "language": {
+                    "sProcessing": "处理中...",
+                    "sLengthMenu": "显示 _MENU_ 项结果",
+                    "sZeroRecords": "没有匹配结果",
+                    "sInfo": "显示第 _START_ 至 _END_ 项结果，共 _TOTAL_ 项",
+                    "sInfoEmpty": "显示第 0 至 0 项结果，共 0 项",
+                    "sInfoFiltered": "(由 _MAX_ 项结果过滤)",
+                    "sInfoPostFix": "",
+                    "sSearch": "搜索:",
+                    "sUrl": "",
+                    "sEmptyTable": "表中数据为空",
+                    "sLoadingRecords": "载入中...",
+                    "sInfoThousands": ",",
+                    "oPaginate": {
+                        "sFirst": "首页",
+                        "sPrevious": "上页",
+                        "sNext": "下页",
+                        "sLast": "末页"
+                    },
+                    "oAria": {
+                        "sSortAscending": ": 以升序排列此列",
+                        "sSortDescending": ": 以降序排列此列"
+                    }
+                },
+                "columnDefs": [{
+                    "searchable": false,
+                    "orderable": true,
+                    "targets": 0
+                }],
+                "order": [[0, 'asc']]
+            });
+
+            $('#teaching_table').on('click', 'tr', function (e) {
+                if ($(this).hasClass('selected')) {
+                    $(this).removeClass('selected');
+                } else {
+                    table.$('tr.selected').removeClass('selected');
+                    $(this).addClass('selected');
+                }
+            });
+
+
+            {#$('#chart').on('click', '.exportExcel', function(){#}
+            {#	// 使用outerHTML属性获取整个table元素的HTML代码（包括<table>标签），然后包装成一个完整的HTML文档，设置charset为urf-8以防止中文乱码#}
+            {#	//获取表格#}
+            	{#var tableHtml = $('.data-table');#}
+            {#	//不能显示class的样式，所以自己重新添加样式 主要为设置边框 格子大小#}
+            	{#$(tableHtml).css({#}
+            	{#	'border':'1px solid #d5d5d2',#}
+            	{#	'text-align':'center',#}
+            	{#	'border-collapse':'collapse',#}
+            	{# });#}
+            	{#$(tableHtml).find('tr td').css({#}
+            	{#	'text-align':'center',#}
+            	{#	'border':'1px solid #d5d5d2',#}
+            	{#	'line-height':'30px',#}
+            	{#	'padding':'0px 10px',#}
+            	{#	'min-width':'100px'#}
+            	{# });#}
+            {##}
+            {#	var html = "<html><head><meta charset='utf-8' /></head><body>" + tableHtml[0].outerHTML + "</body></html>";#}
+            {#	// 实例化一个Blob对象，其构造函数的第一个参数是包含文件内容的数组，第二个参数是包含文件类型属性的对象#}
+            {#	var blob = new Blob([html], { type: "application/vnd.ms-excel" });#}
+            {#	var urlA = document.createElement('button')[0];#}
+            {#	// 利用URL.createObjectURL()方法为urlA元素生成blob URL#}
+            {#	$('.table-btn-group').append(urlA);#}
+            {#	urlA.href = URL.createObjectURL(blob);#}
+            {#	// 设置文件名，目前只有Chrome和FireFox支持此属性#}
+            {#	urlA.download = "teaching_table.xls";#}
+            {#	urlA.click();#}
+            {# });#}
+
+            $('#add').click(function () {
+                console.log("new car.");
+                $('#addCar').modal();
+            });
+
+            $('#change').click(function () {
+                console.log("change car");
+                if (table.rows('.selected').data().length) {
+                    $("#changeCar").modal();
+                    var rowData = table.rows('.selected').data()[0];
+                    var inputs = $('#changeCar').find('input');
+                    for (let i = 0; i < inputs.length; i++) {
+                        $(inputs[i]).val(rowData[i]);
+                    }
+                } else {
+                    alert("请选择一个项目！");
+                }
+            });
+
+            $('#show_students').click(function () {
+
+            });
+        })
+
+
+
+
+    </script>
 {% endblock %}

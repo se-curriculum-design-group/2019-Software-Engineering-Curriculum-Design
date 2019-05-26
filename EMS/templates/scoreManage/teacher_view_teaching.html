@@ -142,9 +142,7 @@
             function (setting, data, dataIndex) {
                 let sl_year = $("#course_year").val();
                 let sl_semester = $("#course_semester").val();
-                return (sl_year == data[1] && sl_semester == data[2]) ||
-                    (sl_year == "All" && sl_semester == "All") || (sl_year == "All" && sl_semester == data[2]) |
-                    (sl_year == data[1] && sl_semester == "All");
+                return ((sl_year === "All" || sl_year === data[1]) && (sl_semester === "All" || sl_semester === data[2]));
             }
         );
 
@@ -152,14 +150,26 @@
             function (setting, data, dataIndex) {
                 let sl_year = $("#others_course_year").val();
                 let sl_semester = $("#others_course_semester").val();
-                return (sl_year == data[1] && sl_semester == data[2]) ||
-                    (sl_year == "All" && sl_semester == "All") || (sl_year == "All" && sl_semester == data[2]) |
-                    (sl_year == data[1] && sl_semester == "All");
+                return ((sl_year === "All" || sl_year === data[1]) && (sl_semester === "All" || sl_semester === data[2]));
             }
         );
 
+        let name = '{{ request.session.name }}';
+
         $(function () {
             var table = $('#my_teaching_table').DataTable({
+                dom: 'Bfrtip',
+                buttons: [
+                    'copy',
+                    {
+                        extend: 'excel',
+                        filename: name + "所教学课程",
+                    },
+                    {
+                        extend: 'print',
+                        filename: name + "所教学课程",
+                    }
+                ],
                 "paging": true,       <!-- 允许分页 -->
                 "lengthChange": true, <!-- 允许改变每页显示的行数 -->
                 "searching": true,    <!-- 允许内容搜索 -->
@@ -197,7 +207,20 @@
                 }],
                 "order": [[0, 'asc']]
             });
+
             var table2 = $('#others_teaching_table').DataTable({
+                dom: 'Bfrtip',
+                buttons: [
+                    'copy',
+                    {
+                        extend: 'excel',
+                        filename: {{ other_tno }} +"所教学课程",
+                    },
+                    {
+                        extend: 'print',
+                        filename: {{ other_tno }} +"所教学课程",
+                    }
+                ],
                 "paging": true,       <!-- 允许分页 -->
                 "lengthChange": true, <!-- 允许改变每页显示的行数 -->
                 "searching": true,    <!-- 允许内容搜索 -->
@@ -263,26 +286,5 @@
 
             $('.select2').select2();
         });
-
-        {% comment %}
-        function search_click() {
-            let tno = $('#seacher_teacher').val();
-            if (tno.length != 9) {
-                alert("检查输入9位工号是否正确！");
-            } else {
-                $.ajax({
-                    url: "{% url 'scoreManagement:teacher_view_teaching' %}",
-                    type: 'GET',
-                    data: {"tno": tno},
-                    success: function (res, status) {
-                        console.log(res);
-                    },
-                    error: function () {
-                        console.log("error");
-                    }
-                });
-            }
-        }
-        {% endcomment %}
     </script>
 {% endblock %}

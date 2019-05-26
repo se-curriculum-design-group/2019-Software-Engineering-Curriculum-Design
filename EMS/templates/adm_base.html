@@ -6,11 +6,11 @@
         <a href="#" class="dropdown-toggle" data-toggle="dropdown">基本信息管理<span
                 class="caret"></span></a>
         <ul class="dropdown-menu" role="menu">
-            <li><a href="#">学生信息管理</a></li>
-            <li><a href="#">教师信息管理</a></li>
+            <li><a href="{% url 'backstage:adm_view_all_stu' %}">学生信息管理</a></li>
+            <li><a href="{% url 'backstage:adm_view_all_teacher' %}">教师信息管理</a></li>
             <li class="divider"></li>
-            <li><a href="#">课程信息管理</a></li>
-            <li><a href="#">教室信息管理</a></li>
+            <li><a href="{% url 'backstage:adm_view_all_course' %}">课程信息管理</a></li>
+            <li><a href="{% url 'backstage:adm_view_all_class_room' %}">教室信息管理</a></li>
             <li class="divider"></li>
             <li><a href="{% url 'scoreManagement:adm_view_major_plan' %}">专业培养计划管理</a></li>
             <li><a href="{% url 'scoreManagement:adm_view_major_course' %}">专业课程计划管理</a></li>
@@ -26,11 +26,12 @@
             <li><a href="#">全校课表管理</a></li>
             <li><a href="#">空闲教室管理</a></li>
             <li class="divider"></li>
-            <li><a href="#">查看选课情况</a></li>
+            <li><a href=" {% url 'courseSelection:adm_selection_manage' %}">设置选课时间</a></li>
+                        <li><a href=" {% url 'courseSelection:adm_school' %}">查询全校选课情况</a></li>
             <li><a href="#">查看毕设选题情况</a></li>
-            <li><a href="#">查看教学评价</a></li>
         </ul>
     </li>
+    <li><a href="{% url 'scoreManagement:adm_view_teacher_evaluation' %}">查看教学评价</a></li>
     <li class="dropdown">
         <a href="#" class="dropdown-toggle" data-toggle="dropdown">成绩管理<span
                 class="caret"></span></a>
@@ -66,10 +67,10 @@
             </span>
         </a>
         <ul class="treeview-menu">
-            <li><a href="#"><i class="fa fa-circle-o"></i>学生信息管理</a></li>
-            <li><a href="#"><i class="fa fa-circle-o"></i>教师信息管理</a></li>
-            <li><a href="#"><i class="fa fa-circle-o"></i>课程信息管理</a></li>
-            <li><a href="#"><i class="fa fa-circle-o"></i>教室信息管理</a></li>
+            <li><a href="{% url 'backstage:adm_view_all_stu' %}"><i class="fa fa-circle-o"></i>学生信息管理</a></li>
+            <li><a href="{% url 'backstage:adm_view_all_teacher' %}"><i class="fa fa-circle-o"></i>教师信息管理</a></li>
+            <li><a href="{% url 'backstage:adm_view_all_course' %}"><i class="fa fa-circle-o"></i>课程信息管理</a></li>
+            <li><a href="{% url 'backstage:adm_view_all_class_room' %}"><i class="fa fa-circle-o"></i>教室信息管理</a></li>
             <li><a href="{% url 'scoreManagement:adm_view_major_plan' %}"><i class="fa fa-circle-o"></i>专业培养计划管理</a></li>
             <li><a href="{% url 'scoreManagement:adm_view_major_course' %}"><i class="fa fa-circle-o"></i>专业课程计划管理</a></li>
         </ul>
@@ -99,25 +100,35 @@
             <li><a href="#"><i class="fa fa-circle-o"></i>全校课表管理</a></li>
             <li><a href="#"><i class="fa fa-circle-o"></i>空闲教室管理</a></li>
             <li><a href="#"><i class="fa fa-circle-o"></i>手动排课</a></li>
-            <li class="divider"></li>
-            <li><a href="#"><i class="fa fa-circle-o"></i>查看选课情况</a></li>
+            <li><a href=" {% url 'courseSelection:adm_selection_manage' %}"><i class="fa fa-circle-o"></i>设置选课时间</a></li>
+                                    <li><a href=" {% url 'courseSelection:adm_school' %}">查询全校选课情况</a></li>
             <li><a href="#"><i class="fa fa-circle-o"></i>查看毕设选题情况</a></li>
-            <li><a href="#"><i class="fa fa-circle-o"></i>查看教学评价</a></li>
         </ul>
     </li>
     <li class="treeview">
-        <a href="#">
+        <a href="{% url 'scoreManagement:adm_view_teacher_evaluation' %}">
             <i class="fa fa-share"></i> <span>教学评价</span>
+            <span class="pull-right-container">
+              <i class="fa fa-angle-left pull-right"></i>
+    </span>
+        </a>
+    </li>
+
+    <li class="treeview">
+        <a href="#">
+            <i class="fa fa-mail-reply-all"></i> <span>通知邮件管理</span>
             <span class="pull-right-container">
               <i class="fa fa-angle-left pull-right"></i>
             </span>
         </a>
-    <li><a href="{% url 'backstage:send_announcements' %}"><i class="fa fa-circle-o"></i>发送通知</a></li>
-    <li><a href="{% url 'backstage:check_announcements' %}"><i class="fa fa-circle-o"></i>查看通知</a></li>
-    <li class="divider"></li>
-    <li><a href="{% url 'backstage:send_emails' %}"><i class="fa fa-circle-o"></i>发送邮件</a></li>
-    <li><a href="#"><i class="fa fa-circle-o"></i>查看邮件</a></li>
+        <ul class="treeview-menu">
+            <li><a href="{% url 'backstage:send_announcements' %}"><i class="fa fa-circle-o"></i>发送通知</a></li>
+            <li><a href="{% url 'backstage:check_announcements' %}"><i class="fa fa-circle-o"></i>查看通知</a></li>
+            <li><a href="{% url 'backstage:send_emails' %}"><i class="fa fa-circle-o"></i>发送邮件</a></li>
+            <li><a href="#"><i class="fa fa-circle-o"></i>查看邮件</a></li>
+        </ul>
     </li>
+
 {% endblock %}
 
 {% block content %}
@@ -136,101 +147,105 @@
     <!-- Main content -->
     <section class="content">
         <div class="row">
-            <div class="col-md-3">
-                <a href="#" class="btn btn-primary btn-block margin-bottom">控制板</a>
+            {% block main %}
+                <div class="col-md-3">
+                    <a href="#" class="btn btn-primary btn-block margin-bottom">控制板</a>
 
-                <!-- /. box -->
-                <div class="box box-solid">
-                    <div class="box-header with-border">
-                        <h3 class="box-title">分类查找</h3>
-
-                        <div class="box-tools">
-                            <button type="button" class="btn btn-box-tool" data-widget="collapse"><i
-                                    class="fa fa-minus"></i>
-                            </button>
-                        </div>
-                    </div>
-                    <div class="box-body no-padding">
-                        <form role="form" method="post" action="{% url 'backstage:admin_view' %}">
-                            {% csrf_token %}
-                            <ul class="nav nav-pills nav-stacked">
-
-                                <li><a href="#"><i class="fa fa-circle-o text-red"></i>{{ adm_operator.receiver }}</a>
-                                </li>
-                                <li><a href="#"><i class="fa fa-circle-o text-light-blue"></i> {{ adm_operator.year }}
-                                </a></li>
-                                <div class="box-footer clearfix">
-                                    <button type="submit" class="pull-right btn btn-default" name="search">查找
-                                        <i class="fa fa-arrow-circle-right"></i></button>
-                                </div>
-
-                            </ul>
-                        </form>
-                    </div>
-                    <!-- /.box-body -->
-                </div>
-                <!-- /.box -->
-            </div>
-            <!-- /.col -->
-            <div class="col-md-9">
-                {% block details %}
-                    <div class="box box-primary">
+                    <!-- /. box -->
+                    <div class="box box-solid">
                         <div class="box-header with-border">
-                            <h3 class="box-title">通知集合</h3>
-                        </div>
-                        <!-- /.box-header -->
-                        <div class="box-body no-padding">
-                            <div class="mailbox-controls">
-                                <!-- /.btn-group -->
-                                <button type="button" class="btn btn-default btn-sm"><i class="fa fa-refresh"></i>
+                            <h3 class="box-title">分类查找</h3>
+
+                            <div class="box-tools">
+                                <button type="button" class="btn btn-box-tool" data-widget="collapse"><i
+                                        class="fa fa-minus"></i>
                                 </button>
                             </div>
-                            <div class="table-responsive mailbox-messages">
+                        </div>
+                        <div class="box-body no-padding">
+                            <form role="form" method="post" action="{% url 'backstage:admin_view' %}">
+                                {% csrf_token %}
+                                <ul class="nav nav-pills nav-stacked">
 
-                                <table class="table table-hover table-striped">
-                                    <tr>
-                                        <td style="vertical-align: middle">编号</td>
-                                        <td class="mailbox-name">通知主题</td>
-                                        <td class="mailbox-messages">签发</td>
-                                        <td class="mailbox-messages">对象</td>
-                                        <td class="mailbox-messages">年级</td>
-                                        <td class="mailbox-date">时间</td>
-                                        <td class="mailbox-messages">查看</td>
-                                    </tr>
-                                    <tbody>
-                                    {% for announcement in announcements %}
-                                        <tr>
-                                            <td style="vertical-align: middle">{{ forloop.counter }}</td>
-                                            <td class="mailbox-name">
-                                                {{ announcement.title }}
-                                            </td>
-                                            <td class="mailbox-messages">{{ announcement.author }}</td>
-                                            <td class="mailbox-messages">{{ announcement.receiver }}</td>
-                                            <td class="mailbox-messages">{{ announcement.year }}</td>
-                                            <td class="mailbox-date">{{ announcement.time }}</td>
-                                            <td>
-                                                <form action="{% url 'backstage:admin_view' %}" method="post"
-                                                      id="form1">
-                                                    {% csrf_token %}
-                                                    <button type="submit" class="btn btn-instagram" name="details"
-                                                            value={{ announcement.id }}>查看
-                                                    </button>
-                                                </form>
-                                            </td>
-                                        </tr>
-                                    {% endfor %}
-                                    </tbody>
-                                </table>
-                                <!-- /.table -->
-                            </div>
-                            <!-- /.mail-box-messages -->
+                                    <li><a href="#"><i class="fa fa-circle-o text-red"></i>{{ adm_operator.receiver }}
+                                    </a>
+                                    </li>
+                                    <li><a href="#"><i
+                                            class="fa fa-circle-o text-light-blue"></i> {{ adm_operator.year }}
+                                    </a></li>
+                                    <div class="box-footer clearfix">
+                                        <button type="submit" class="pull-right btn btn-default" name="search">查找
+                                            <i class="fa fa-arrow-circle-right"></i></button>
+                                    </div>
+
+                                </ul>
+                            </form>
                         </div>
                         <!-- /.box-body -->
                     </div>
-                    <!-- /. box -->
-                {% endblock %}
-            </div>
-            <!-- /.col -->
+                    <!-- /.box -->
+                </div>
+                <!-- /.col -->
+                <div class="col-md-9">
+                    {% block details %}
+                        <div class="box box-primary">
+                            <div class="box-header with-border">
+                                <h3 class="box-title">通知集合</h3>
+                            </div>
+                            <!-- /.box-header -->
+                            <div class="box-body no-padding">
+                                <div class="mailbox-controls">
+                                    <!-- /.btn-group -->
+                                    <button type="button" class="btn btn-default btn-sm"><i class="fa fa-refresh"></i>
+                                    </button>
+                                </div>
+                                <div class="table-responsive mailbox-messages">
+
+                                    <table class="table table-hover table-striped">
+                                        <tr>
+                                            <td style="vertical-align: middle">编号</td>
+                                            <td class="mailbox-name">通知主题</td>
+                                            <td class="mailbox-messages">签发</td>
+                                            <td class="mailbox-messages">对象</td>
+                                            <td class="mailbox-messages">年级</td>
+                                            <td class="mailbox-date">时间</td>
+                                            <td class="mailbox-messages">查看</td>
+                                        </tr>
+                                        <tbody>
+                                        {% for announcement in announcements %}
+                                            <tr>
+                                                <td style="vertical-align: middle">{{ forloop.counter }}</td>
+                                                <td class="mailbox-name">
+                                                    {{ announcement.title }}
+                                                </td>
+                                                <td class="mailbox-messages">{{ announcement.author }}</td>
+                                                <td class="mailbox-messages">{{ announcement.receiver }}</td>
+                                                <td class="mailbox-messages">{{ announcement.year }}</td>
+                                                <td class="mailbox-date">{{ announcement.time }}</td>
+                                                <td>
+                                                    <form action="{% url 'backstage:admin_view' %}" method="post"
+                                                          id="form1">
+                                                        {% csrf_token %}
+                                                        <button type="submit" class="btn btn-instagram" name="details"
+                                                                value={{ announcement.id }}>查看
+                                                        </button>
+                                                    </form>
+                                                </td>
+                                            </tr>
+                                        {% endfor %}
+                                        </tbody>
+                                    </table>
+                                    <!-- /.table -->
+                                </div>
+                                <!-- /.mail-box-messages -->
+                            </div>
+                            <!-- /.box-body -->
+                        </div>
+                        <!-- /. box -->
+                    {% endblock %}
+                </div>
+                <!-- /.col -->
+            {% endblock %}
         </div>
         <!-- /.row -->
     </section>
