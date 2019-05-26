@@ -36,7 +36,8 @@ class StuChoice(models.Model):
     # 课题编号
     pno = models.ForeignKey(to=GraduationProject, on_delete=models.CASCADE)
     # 学生状态
-    status = models.IntegerField(default=0)
+    status = models.IntegerField(default=0)      #2拒绝  1被接受  0未审核 
+
 
     class Meta:
         db_table = 'StuChoice'

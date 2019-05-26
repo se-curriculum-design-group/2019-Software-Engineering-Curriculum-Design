@@ -22,25 +22,39 @@
             <!-- /.box-header -->
             <div class="box-body table-responsive no-padding">
               <table class="table table-hover">
-                <tbody><tr>
-                 
+                <tbody>
+                   {% for item in info %}
+                  <tr>
                   <th>题目名称</th>
                    <th>选题学生</th>
-                   <th>提交时间</th>
+                   <th>状态</th>
                 </tr>
                 <tr >
                  
-                  <td>基于Django的毕业设计管理系统</td>
-                  <td>zdd <a href="#" class="btn btn-primary btn-xs">了解更多</a></td>
-                  <td><span class="label label-success">接收</span></td>
+                  <td>{{ item.pno.pname }} </td>
+                  <td>{{item.sno.name}}<a href="#" class="btn btn-primary btn-xs">了解更多</a></td>
+                  <!-- <td><span class="label label-success">接收</span></td> -->
+                   <td> <button type="button" class="btn btn-danger btn-info delete" onclick="javascript:window.location.href='/graduationManagement/teacher_acc_student?id={{ item.pno.id}}'"><span >
+                    {% if item.status  == 1 %}
+                  <option value="">已接受</option>
+                  {% else %}
+                  <option value="">接受</option>
+                  {% endif %}</span></button></td>
+                   <td> <button type="button" class="btn btn-danger btn-info delete" onclick="javascript:window.location.href='/graduationManagement/teacher_ref_student?id={{ item.pno.id}}'">拒绝</button></td>
+
+
+
+<span >{% if item.pstatus  == 0 %}
+                  <option value="">未选</option>
+                  {% else %}
+                  <option value="">已选</option>
+                  {% endif %}</span>
+
+                  <!-- <td><span class="label label-success">拒绝</span></td> -->
                 </tr>
-                <tr >
-                  <td>基于Django的毕业设计管理系统</td>
-                  <td>zdd <a href="#" class="btn btn-primary btn-xs">了解更多</a></td>
-                  <td><span class="label label-success">拒绝</span></td>
-                </tr>
+               
             
-                
+                 {% endfor %}
               </tbody></table>
             </div>
             <!-- /.box-body -->
@@ -92,7 +106,7 @@
 	    $(".select2").select2();
 	  });
      $(".jump").click(function () {
-             location.href = "{% url 'graduationManagement:student_view_project_detail' %}";
+             location.href = "{% url 'graduationManagement:teacher_view_project_detail' %}";
          });
 	</script>
 

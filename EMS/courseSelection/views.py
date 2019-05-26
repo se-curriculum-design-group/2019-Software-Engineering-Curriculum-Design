@@ -9,144 +9,128 @@ import json
 import numpy as np
 import datetime
 from django.conf import settings
-import pymysql
 
-
-
-def welcome(request):
-    return render(request, 'courseSelection/welcome.html')
-
-
-def selection_home_page(request):
-    if request.session['user_type'] == '学生':
-        return render(request, 'courseSelection/student_selection_manage.html')
-    elif request.session['user_type'] == '教师':
-        return render(request, 'courseSelection/teacher_selection_manage.html')
-    else:
-        return render(request, 'courseSelection/adm_selection_manage.html')
-
-
-def stu_tongshi(request):
-    return render(request, "courseSelection/stu_tongshi.html")
-
-
-# def stu_
 
 def stu_major(request):
-    sno = request.session["username"]
+    nowtime = datetime.datetime.now()
+    nowtime = str(nowtime)
+    nowtime = nowtime[0:16]
+    nowtime = nowtime[0:10] + 'T' + nowtime[11:19]
 
-    current_year = datetime.datetime.now().year
-    current_month = datetime.datetime.now().month
-    current_semester = 0
-    p = Student.objects.get(username=sno)
+    if ((nowtime < str(settings.BEGIN) or nowtime > str(settings.END)) or settings.BEGIN == 'NULL' or settings.END == 'NULL'):
+        return HttpResponse("当前不是选课时间！")
+    else:
+        sno = request.session["username"]
+        current_year = datetime.datetime.now().year
+        current_month = datetime.datetime.now().month
+        current_semester = 0
+        p = Student.objects.get(username=sno)
 
-    majorName = p.in_cls.major.major.mname
-    print(majorName)
-    inyear = p.in_year
+        majorName = p.in_cls.major.major.mname
+        inyear = p.in_year
 
-    if (current_year - inyear) == 0:
-        current_semester = 1
-    elif (current_year - inyear) == 1:
-        if (current_month >= 1 and current_month <= 2):
+        if (current_year - inyear) == 0:
             current_semester = 1
-        elif (current_month > 2 and current_month <= 7):
-            current_semester = 2
-        elif (current_month > 7 and current_month < 9):
-            current_semester = 3
-        elif (current_month >= 9 and current_month <= 12):
-            current_semester = 1
-    elif (current_year - inyear) == 2:
-        if (current_month >= 1 and current_month <= 2):
-            current_semester = 1
-        elif (current_month > 2 and current_month <= 7):
-            current_semester = 2
-        elif (current_month > 7 and current_month < 9):
-            current_semester = 3
-        elif (current_month >= 9 and current_month <= 12):
-            current_semester = 1
-    elif (current_year - inyear) == 3:
-        if (current_month >= 1 and current_month <= 2):
-            current_semester = 1
-        elif (current_month > 2 and current_month <= 7):
-            current_semester = 2
-        elif (current_month > 7 and current_month < 9):
-            current_semester = 3
-        elif (current_month >= 9 and current_month <= 12):
-            current_semester = 1
-    elif (current_year - inyear) == 4:
-        if (current_month >= 1 and current_month <= 2):
-            current_semester = 1
-        elif (current_month > 2 and current_month <= 7):
-            current_semester = 2
-        elif (current_month > 7 and current_month < 9):
-            current_semester = 3
-        elif (current_month >= 9 and current_month <= 12):
-            current_semester = 1
+        elif (current_year - inyear) == 1:
+            if (current_month >= 1 and current_month <= 2):
+                current_semester = 1
+            elif (current_month > 2 and current_month <= 7):
+                current_semester = 2
+            elif (current_month > 7 and current_month < 9):
+                current_semester = 3
+            elif (current_month >= 9 and current_month <= 12):
+                current_semester = 1
+        elif (current_year - inyear) == 2:
+            if (current_month >= 1 and current_month <= 2):
+                current_semester = 1
+            elif (current_month > 2 and current_month <= 7):
+                current_semester = 2
+            elif (current_month > 7 and current_month < 9):
+                current_semester = 3
+            elif (current_month >= 9 and current_month <= 12):
+                current_semester = 1
+        elif (current_year - inyear) == 3:
+            if (current_month >= 1 and current_month <= 2):
+                current_semester = 1
+            elif (current_month > 2 and current_month <= 7):
+                current_semester = 2
+            elif (current_month > 7 and current_month < 9):
+                current_semester = 3
+            elif (current_month >= 9 and current_month <= 12):
+                current_semester = 1
+        elif (current_year - inyear) == 4:
+            if (current_month >= 1 and current_month <= 2):
+                current_semester = 1
+            elif (current_month > 2 and current_month <= 7):
+                current_semester = 2
+            elif (current_month > 7 and current_month < 9):
+                current_semester = 3
+            elif (current_month >= 9 and current_month <= 12):
+                current_semester = 1
 
-    mC = Teacher_Schedule_result.objects.filter(
-        tno__mcno__year=current_year,
-        tno__mcno__semester=current_semester
-    )
-    college = [c['tno__mcno__cno__college__name'] for c in mC.values("tno__mcno__cno__college__name").distinct()]
-    majors = [s['tno__mcno__mno__major__mname'] for s in mC.values("tno__mcno__mno__major__mname").distinct()]
+        mC = Teacher_Schedule_result.objects.filter(
+            tno__mcno__year=current_year,
+            tno__mcno__semester=current_semester
+        )
+        college = [c['tno__mcno__cno__college__name'] for c in mC.values("tno__mcno__cno__college__name").distinct()]
+        majors = [s['tno__mcno__mno__major__mname'] for s in mC.values("tno__mcno__mno__major__mname").distinct()]
 
-    context = {
-        "mC": mC,
-        "college": college,
-        "majors": majors
-    }
-    majorC = []
-    for m in mC:
-        print(m.tno.mcno.mno.major.mname)
-        if m.tno.mcno.mno.major.mname == majorName and m.state == "专业选修":
-            majorC.append(m)
-    data = []
-    dat = []
-    haveChosen = {}
+        context = {
+            "mC": mC,
+            "college": college,
+            "majors": majors
+        }
+        majorC = []
+        for m in mC:
+            if m.tno.mcno.mno.major.mname == majorName and m.state == "专业选修":
+                majorC.append(m)
+        data = []
+        dat = []
+        haveChosen = {}
 
-    courseChosen = CourseSelected.objects.filter(sno__username=sno)
+        courseChosen = CourseSelected.objects.filter(sno__username=sno)
 
-    for c in courseChosen:
-        if (c.cno.state != "专业必修" and c.cno.state != "公共基础必修"):
+        for c in courseChosen:
+            if (c.cno.state != "专业必修" and c.cno.state != "公共基础必修"):
+                tmp = {}
+                haveChosen[c.cno.id] = 1
+                tmp["id"] = c.cno.id
+                tmp["课程号"] = c.cno.tno.mcno.cno.cno
+                tmp["课程名"] = c.cno.tno.mcno.cno.cname
+                tmp["学时"] = c.cno.tno.mcno.hour_total
+                tmp["选课人数"] = c.cno.current_number
+                tmp["课程容量"] = c.cno.MAX_number
+                tmp["授课教师"] = c.cno.tno.tno.name
+                tmp["上课教室"] = c.cno.where.crno
+                tmp["上课时间"] = c.cno.time
+
+                dat.append(tmp)
+        for major in majorC:
             tmp = {}
-            haveChosen[c.cno.id] = 1
-            tmp["id"] = c.cno.id
-            tmp["课程号"] = c.cno.tno.mcno.cno.cno
-            tmp["课程名"] = c.cno.tno.mcno.cno.cname
-            tmp["学时"] = c.cno.tno.mcno.hour_total
-            tmp["选课人数"] = c.cno.current_number
-            tmp["课程容量"] = c.cno.MAX_number
-            tmp["授课教师"] = c.cno.tno.tno.name
-            tmp["上课教室"] = c.cno.where.crno
-            tmp["上课时间"] = c.cno.time
-
-            dat.append(tmp)
-    for major in majorC:
-        tmp = {}
-        try:
-            if haveChosen[major.id] == 1:
-                tmp["if_chosen"] = 1
-        except:
-            tmp["if_chosen"] = 0
-        tmp["id"] = major.id
-        tmp["课程号"] = major.tno.mcno.cno.cno
-        tmp["课程名"] = major.tno.mcno.cno.cname
-        tmp["学时"] = major.tno.mcno.hour_total
-        tmp["选课人数"] = major.current_number
-        tmp["课程容量"] = major.MAX_number
-        tmp["授课教师"] = major.tno.tno.name
-        tmp["上课教室"] = major.where.crno
-        tmp["上课时间"] = major.time
-        if tmp["选课人数"] < tmp["课程容量"]:
-            data.append(tmp)
-    return render(request, "courseSelection/stu_major.html", {'data': json.dumps(data), 'dat': json.dumps(dat),'mC':mC,'college':college,'majors':majors})
-
+            try:
+                if haveChosen[major.id] == 1:
+                    tmp["if_chosen"] = 1
+            except:
+                tmp["if_chosen"] = 0
+            tmp["id"] = major.id
+            tmp["课程号"] = major.tno.mcno.cno.cno
+            tmp["课程名"] = major.tno.mcno.cno.cname
+            tmp["学时"] = major.tno.mcno.hour_total
+            tmp["选课人数"] = major.current_number
+            tmp["课程容量"] = major.MAX_number
+            tmp["授课教师"] = major.tno.tno.name
+            tmp["上课教室"] = major.where.crno
+            tmp["上课时间"] = major.time
+            if tmp["选课人数"] < tmp["课程容量"]:
+                data.append(tmp)
+        return render(request, "courseSelection/stu_major.html",
+                      {'data': json.dumps(data), 'dat': json.dumps(dat), 'mC': mC, 'college': college,
+                       'majors': majors})
 
 
 def select_course(request):
     if request.is_ajax():
         if request.method == 'GET':
-            print("asdasd")
             flag = 1
             ID = request.GET.get("id")
             sno = request.session["username"]
@@ -238,7 +222,6 @@ def select_course(request):
 
                     if np.sum(X[int(week[0]):int(week[1]) + 1, Day, cstart:cend + 1]) != 0:
                         flag = 0
-                        print(flag)
                         break
 
                 if (flag):
@@ -253,6 +236,7 @@ def select_course(request):
 
                 return JsonResponse(
                     {"flag": flag, "tot": tot})
+    return HttpResponse("请您点击要选的课程")
 
 
 def delete(request):
@@ -264,26 +248,20 @@ def delete(request):
 
             tot = teach.current_number
             tot -= 1
-            print(ID)
             Teacher_Schedule_result.objects.filter(id=ID).update(current_number=tot)
             X = CourseSelected.objects.filter(sno__username=sno, cno_id=ID)
             X.delete()
 
             return JsonResponse({"flag": 1, "tot": tot, "ID": ID})
-
-
-# def search(request):
-# if request.method == 'GET':
-# request.GET.get[]
-
+    return HttpResponse("请您点击要删除的课程")
 
 def find_course(request):
     if request.is_ajax():
         if request.method == 'GET':
             sno = request.session["username"]
             theCourse = CourseSelected.objects.filter(sno__username=sno)
-            print(theCourse)
-            course_time = []  # 收集这些课程的上课时间
+            # 收集这些课程的上课时间
+            course_time = []
             dic = {}
             tmp = {}
             t_info = {}
@@ -300,114 +278,29 @@ def find_course(request):
                     tp["节次"] = district[0] + "-" + district[1]
                     dic[i.cno.tno.mcno.cno.cname].append(tp)
             return JsonResponse({"dic": dic, "t_info": t_info, "t_place": t_place})
+    return HttpResponse("此页面为相应页面，无法主动打开")
 
 
 def adm_selection_manage(request):
     return render(request, "courseSelection/adm_selection_manage.html")
 
 
-def adm_class(request):
-    return render(request, "courseSelection/adm_class.html")
-
-
 def adm_school(request):
-    return render(request, "courseSelection/adm_school.html")
+    mC = Teacher_Schedule_result.objects.filter()
 
-
-def school_query(request):
-    time = request.POST.get("time")
-    grade = request.POST.get("grade")
-    college = request.POST.get("college")
-    subject = request.POST.get("subject")
-
-    print(time, grade, college, subject)
-    db = pymysql.connect("localhost", "EMS", "password", "ems", charset='utf8')
-    cursor = db.cursor()
-
-    # 使用execute方法执行SQL语句
-    cursor.execute("SELECT * FROM course")
-
-    # 使用 fetchone() 方法获取一条数据
-
-    results = cursor.fetchall()
-    n = 0
-    # print(results)
-    final_id = 0
-    final_cno = 0
-    final_cname = ""
-    final_ctype = ""
-    final_cscore = 0
-    final_college = 0
-    target = "CSE32500C"
-    for row in results:
-        id1 = row[0]
-        cno = row[1]
-        cname = row[2]
-        typ = row[3]
-        score = row[4]
-        college = row[5]
-        n += 1
-        if cno == target:
-            final_id = id1
-            final_cno = cno
-            final_cname = cname
-            final_college = college
-            final_cscore = score
-            final_ctype = typ
-            break
-
-    cursor.execute("SELECT * FROM college")
-    print(final_college)
-
-    # cursor.execute("SELECT name,short_name FROM college WHERE id > %s",final_college)
-
-    results = cursor.fetchall()
-    # print(results)
-    for row in results:
-        id1 = row[0]
-        if id1 == final_college:
-            print(row[1], row[2])
-            break
-    # print(n)
-    # print(final_cname)
-
-    # 关闭数据库连接
-    db.close()
-    label_list = ["计科", "自动化", "电子信息"]  # 各部分标签
-    size = [75, 35, 10]  # 各部分大小
-
-    color = ["red", "green", "blue"]  # 各部分颜色
-    explode = [0.05, 0, 0]  # 各部分突出值
-
-    return render(request, "courseSelection/adm_showimg.html")
-
-
-def class_query(request):
-    time = request.POST.get("time")
-    grade = request.POST.get("grade")
-    college = request.POST.get("college")
-    subject = request.POST.get("subject")
-    print(time, grade, college, subject)
-    return render(request, "courseSelection/adm_classshow.html")
+    college = [c['tno__mcno__cno__college__name'] for c in mC.values("tno__mcno__cno__college__name").distinct()]
+    majors = [s['tno__mcno__mno__major__mname'] for s in mC.values("tno__mcno__mno__major__mname").distinct()]
+    context = {
+        "mC": mC,
+        "college": college,
+        "majors": majors
+    }
+    return render(request, "courseSelection/adm_school.html", context)
 
 
 def time_set(request):
-    '''
-    print(12334)
-    if request.method == 'POST':
-        print('sdas')
-    if request.is_ajax():
-        print(12324)
-        if request.method == 'POST':
-            print(323)
-    print(request)
-    '''
-    print('test1')
-    print(settings.BEGIN)
     begin = request.POST.get('begin_time')
     settings.BEGIN = begin
-    print('test2')
-    print(settings.BEGIN)
     # BEGIN = begin
     # global END
     end = request.POST.get('end_time')
@@ -424,7 +317,6 @@ def student_view_other_course(request):
     p = Student.objects.get(username=sno)
 
     majorName = p.in_cls.major.major.mname
-    print(majorName)
     inyear = p.in_year
 
     if (current_year - inyear) == 0:
@@ -470,11 +362,8 @@ def student_view_other_course(request):
         tno__mcno__year=current_year,
         tno__mcno__semester=current_semester
     )
-    # mC[0].tno.mcno.cno.college
-    # mC[0].tno.mcno.mno.major.mname
-
     college = [c['tno__mcno__cno__college'] for c in mC.values("tno__mcno__cno__college").distinct()]
-    majors = [s['tno.mcno.mno.major.mname'] for s in mC.values("tno.mcno.mno.major.mname").distinct()]
+    majors = [s['tno__mcno__mno__major__mname'] for s in mC.values("tno__mcno__mno__major__mname").distinct()]
 
     context = {
         "mC": mC,
@@ -482,5 +371,38 @@ def student_view_other_course(request):
         "majors": majors
     }
     return render(request, "courseSelection/stu_major.html", context)
+
+
 def tables(request):
-    return render(request,"courseSelection/course_table.html")
+    return render(request, "courseSelection/course_table.html")
+
+
+# 教师查看授课选课情况
+def teacher(request):
+    user = request.session["username"]
+    teacher = Teacher.objects.get(username=user)
+    teachings = Teaching.objects.filter(tno=teacher)
+    # coursescore, id, mcno, mcno_id, teacher_schedule_result, tno, tno_id, weight
+    context = {
+        'teachings': teachings
+    }
+    return render(request, "courseSelection/teacher.html", context)
+
+
+# 教师查看授课选课情况
+def show_students(request, cno, course_type):
+    user = request.session["username"]
+    teacher = Teacher.objects.get(username=user)
+    class_no = Course.objects.get(cno=cno, course_type=course_type)
+    major_courses = MajorCourses.objects.get(cno=class_no)
+    teaching = Teaching.objects.get(mcno=major_courses, tno=teacher)
+    teacher_schedule_result = Teacher_Schedule_result.objects.filter(tno=teaching)
+    if not teacher_schedule_result:
+        return render(request, "courseSelection/show_students.html")
+    else:
+        teacher_schedule_result = teacher_schedule_result[0]
+    students = CourseSelected.objects.filter(cno=teacher_schedule_result)
+    context = {
+        'students': students
+    }
+    return render(request, "courseSelection/show_students.html", context)
