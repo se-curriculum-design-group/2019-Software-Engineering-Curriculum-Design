@@ -30,48 +30,49 @@ def welcome(request):
 
 
 def adm_all_course_score(request):
-        try:
-            username = request.session['username']
-            adm = User.objects.get(username=username)
-            if not adm.is_superuser:
-                return render(request, 'errors/403page.html')
-            else:
-                all_colleges = College.objects.all()
-                all_majors = Major.objects.all()
-                all_course_score = CourseScore.objects.all()
-                all_years = [y['teaching__mcno__year'] for y in CourseScore.objects.values("teaching__mcno__year").distinct()]
-                all_semester = [y['teaching__mcno__semester'] for y in
-                                CourseScore.objects.values("teaching__mcno__semester").distinct()]
-                try:
-                    sear_year = request.GET['sear_year']
-                    sear_semester = request.GET['sear_semester']
+    try:
+        username = request.session['username']
+        adm = User.objects.get(username=username)
+        if not adm.is_superuser:
+            return render(request, 'errors/403page.html')
+        else:
+            all_colleges = College.objects.all()
+            all_majors = Major.objects.all()
+            all_course_score = CourseScore.objects.all()
+            all_years = [y['teaching__mcno__year'] for y in
+                         CourseScore.objects.values("teaching__mcno__year").distinct()]
+            all_semester = [y['teaching__mcno__semester'] for y in
+                            CourseScore.objects.values("teaching__mcno__semester").distinct()]
+            try:
+                sear_year = request.GET['sear_year']
+                sear_semester = request.GET['sear_semester']
 
-                    all_course_score = CourseScore.objects.filter(
-                        teaching__mcno__year=sear_year,
-                        teaching__mcno__semester=sear_semester,
-                    )[:20]
-                    context = {
-                        "all_course_score": all_course_score,
-                        "all_years": all_years,
-                        "all_semester": all_semester,
-                        "all_colleges": all_colleges,
-                        "all_majors": all_majors,
-                        "sear_year": sear_year,
-                        "sear_semester": sear_semester,
-                    }
-                    return render(request, 'scoreManage/adm_score_manage.html', context)
-                except Exception:
-                    print(Exception)
-                    context = {
-                        "all_course_score": all_course_score[:10],
-                        "all_years": all_years,
-                        "all_semester": all_semester,
-                        "all_colleges": all_colleges,
-                        "all_majors": all_majors,
-                    }
-                    return render(request, 'scoreManage/adm_score_manage.html', context)
-        except:
-            return render(request, 'errors/500page.html')
+                all_course_score = CourseScore.objects.filter(
+                    teaching__mcno__year=sear_year,
+                    teaching__mcno__semester=sear_semester,
+                )[:20]
+                context = {
+                    "all_course_score": all_course_score,
+                    "all_years": all_years,
+                    "all_semester": all_semester,
+                    "all_colleges": all_colleges,
+                    "all_majors": all_majors,
+                    "sear_year": sear_year,
+                    "sear_semester": sear_semester,
+                }
+                return render(request, 'scoreManage/adm_score_manage.html', context)
+            except Exception:
+                print(Exception)
+                context = {
+                    "all_course_score": all_course_score[:10],
+                    "all_years": all_years,
+                    "all_semester": all_semester,
+                    "all_colleges": all_colleges,
+                    "all_majors": all_majors,
+                }
+                return render(request, 'scoreManage/adm_score_manage.html', context)
+    except:
+        return render(request, 'errors/500page.html')
 
 
 def score_home_page(request):
@@ -632,3 +633,45 @@ def teacher_view_stu_score(request):
     }
     return render(request, 'scoreManage/teacher_view_stu_score.html', context)
 
+
+def adm_change_score(request):
+    if request.is_ajax():
+        if len(request.GET):
+            print(len(request.GET))
+            year = request.GET.get('year')
+            semester = request.GET.get('semester')
+            college = request.GET.get('college')
+            major = request.GET.get('major')
+            sno = request.GET.get('sno')
+            tno = request.GET.get('tno')
+            cno = request.GET.get('cno')
+            method = request.GET.get('method')
+            common = request.GET.get('common')
+            final_score = request.GET.get('final')
+            student = Student.objects.get(username=sno)
+            teacher = Teacher.objects.get(username=tno)
+            in_college = College.objects.get(name=college)
+            try:
+                course = Course.objects.get(cno=cno, course_type=method)
+                major_course = MajorCourses.objects.get(cno=course, year=year, semester=semester)
+                teaching = Teaching.objects.get(tno=teacher, mcno=major_course)
+                course_score = CourseScore.objects.get(sno=student, teaching=teaching)
+            except Course.MultipleObjectsReturned or CourseScore.MultipleObjectsReturned:
+                return JsonResponse({"except": Exception})
+
+            course_score.commen_score = common
+            course_score.final_score = final_score
+            weight = course_score.teaching.weight
+            course_score.score = float(common) * (1 - weight) + float(final_score) * weight
+            course_score.save()
+
+            n_commen = common
+            n_final = final_score
+            score = course_score.score
+            result = {
+                'n_commen': n_commen,
+                'n_final': n_final,
+                'score': score,
+            }
+            return JsonResponse(result)
+    return redirect("scoreManagement:adm_all_course_score")

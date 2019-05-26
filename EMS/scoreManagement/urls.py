@@ -49,4 +49,7 @@ urlpatterns = [
 
     # 管理员查看教学评价结果
     path('adm_view_teacher_evaluation', views.adm_view_teacher_evaluation, name="adm_view_teacher_evaluation"),
+
+    # 管理员修改成绩
+    path('adm_change_score', views.adm_change_score, name="adm_change_score"),
 ]

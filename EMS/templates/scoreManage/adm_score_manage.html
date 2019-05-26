@@ -74,8 +74,9 @@
                         <th>学院</th>
                         <th>专业</th>
                         <th>学生学号</th>
+                        <th>教师工号</th>
                         <th>课程号</th>
-                        <th>考核方式</th>
+                        <th>课程性质</th>
                         <th>平时成绩</th>
                         <th>考试成绩</th>
                         <th>总分</th>
@@ -90,12 +91,9 @@
                             <td>{{ course_score.teaching.mcno.mno.major.in_college | safe }}</td>
                             <td>{{ course_score.teaching.mcno.mno.major | safe }}</td>
                             <td>{{ course_score.sno.username }}</td>
+                            <td>{{ course_score.teaching.tno.username }}</td>
                             <td>{{ course_score.teaching.mcno.cno.cno }}</td>
-                            {% if course_score.teaching.mcno.exam_method  == True %}
-                                <td>考核</td>
-                            {% else %}
-                                <td>考察</td>
-                            {% endif %}
+                            <td>{{ course_score.teaching.mcno.cno.course_type }}</td>
                             <td>{{ course_score.commen_score }}</td>
                             <td>{{ course_score.final_score }}</td>
                             <td>{{ course_score.score }}</td>
@@ -103,6 +101,115 @@
                     {% endfor %}
                     </tbody>
                 </table>
+            </div>
+            <div class="box-footer">
+                <div class="btn-group pull-left ">
+                    <a id="a">
+                        <button id='change_score_btn' class="btn btn-info" type="button">
+                            <span class="glyphicon glyphicon-pencil"></span>修改成绩
+                        </button>
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <div class="modal fade" id="changeScore">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <form action="" name="changeStudentScore" method="get" onsubmit="return(false);">
+                        <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal">&times;</button>
+                            <h4 class="modal-title">修改学生成绩</h4>
+                        </div>
+                        <div class="modal-content" id="changeScoreModal">
+                            <div class="form-horizontal">
+                                <div class="form-group">
+                                    <label for="changeScoreYear" class="col-sm-2 control-label">学年：</label>
+                                    <div class="col-sm-10">
+                                        <input type="text" id="changeScoreYear" disabled class="form-control"
+                                               name="change_year">
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label for="changeScoreSemester" class="col-sm-2 control-label">学期：</label>
+                                    <div class="col-sm-10">
+                                        <input type="text" id="changeScoreSemester" disabled class="form-control"
+                                               name="change_semester">
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label for="changeScoreCollge" class="col-sm-2 control-label">学院：</label>
+                                    <div class="col-sm-10">
+                                        <input type="text" id="changeScoreCollge" disabled class="form-control disabled"
+                                               name="change_score_college">
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label for="changeScoreMajor" class="col-sm-2 control-label">专业：</label>
+                                    <div class="col-sm-10">
+                                        <input type="text" id="changeScoreMajor" disabled class="form-control"
+                                               name="change_score_major">
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="changeScoreSno" class="col-sm-2 control-label">学号：</label>
+                                    <div class="col-sm-10">
+                                        <input type="text" id="changeScoreSno" disabled class="form-control"
+                                               name="change_score_sno">
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="changeScoreTno" class="col-sm-2 control-label">教工号：</label>
+                                    <div class="col-sm-10">
+                                        <input type="text" id="changeScoreSno" disabled class="form-control"
+                                               name="change_score_tno">
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="changeScoreCno" class="col-sm-2 control-label">课程编号：</label>
+                                    <div class="col-sm-10">
+                                        <input type="text" id="changeScoreSno" disabled class="form-control"
+                                               name="change_score_sno">
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="changeScoreMethod" class="col-sm-2 control-label">考核方式：</label>
+                                    <div class="col-sm-10">
+                                        <input type="text" id="changeScoreSno" disabled class="form-control"
+                                               name="change_score_sno">
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="changeScoreCommonScore" class="col-sm-2 control-label">平时成绩：</label>
+                                    <div class="col-sm-10">
+                                        <input type="text" id="changeScoreCommonScore" class="form-control"
+                                               name="change_score_common_score">
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label for="changeScoreFinalScore" class="col-sm-2 control-label">考试成绩：</label>
+                                    <div class="col-sm-10">
+                                        <input type="text" id="changeScoreFinalScore" class="form-control"
+                                               name="change_score_final_score">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="modal-footer">
+                                <div class="center-block">
+                                    <button id="cancelChange" type="button" class="btn btn-default"
+                                            data-dismiss="modal">取消
+                                    </button>
+                                    <button id="sureToChange" type="submit" class="btn btn-success">保存</button>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
             </div>
         </div>
     </section>
@@ -123,16 +230,16 @@
             var table = $('#all_course_table').DataTable({
                 dom: 'Bfrtip',
                 buttons: [
-                        'copy',
-                        {
-                            extend: 'excel',
-                            filename: '全校学生成绩表'
-                        },
-                        {
-                            extend: 'print',
-                            filename: "全校学生成绩表",
-                        }
-                    ],
+                    'copy',
+                    {
+                        extend: 'excel',
+                        filename: '全校学生成绩表'
+                    },
+                    {
+                        extend: 'print',
+                        filename: "全校学生成绩表",
+                    }
+                ],
                 "paging": true,       <!-- 允许分页 -->
                 "lengthChange": true, <!-- 允许改变每页显示的行数 -->
                 "searching": true,    <!-- 允许内容搜索 -->
@@ -186,6 +293,74 @@
                     table.draw();
                 }
             );
+
+
+            $('#change_score_btn').click(function () {
+
+                if (table.rows('.selected').data().length) {
+                    var rowData = table.rows('.selected').data()[0];
+                    var form_modal = $('#changeScore');
+                    var inputs = form_modal.find('input');
+                    for (let i = 1; i <= inputs.length; i++) {
+                        $(inputs[i - 1]).val(rowData[i]);
+                    }
+                    form_modal.modal();
+                } else {
+                    alert("请选择一项成绩修改");
+                }
+            });
+
+            $('#sureToChange').click(function () {
+                var inputs = $('#changeScore').find('input');
+                var values = [];
+                for (let i = 0; i < inputs.length; i++) {
+                    values.push($(inputs[i]).val());
+                }
+
+                const year = values[0];
+                const semester = values[1];
+                const college = values[2];
+                const major = values[3];
+                const sno = values[4];
+                const tno = values[5];
+                const cno = values[6];
+                const method = values[7];
+                const common = values[8];
+                const final = values[9];
+
+                const data = {
+                    'year': year,
+                    'semester': semester,
+                    'college': college,
+                    'sno': sno,
+                    'tno': tno,
+                    'cno': cno,
+                    'method': method,
+                    'common': common,
+                    'final': final,
+                };
+
+                $.get(
+                    "{% url 'scoreManagement:adm_change_score' %}",
+                    data,
+                    function (ret) {
+                        if (ret['except']) {
+                            alert(ret['except']);
+                        } else {
+                            const n_commen = ret['n_commen'];
+                            const n_final = ret['n_final'];
+                            const score = ret['score'];
+                            var tds = Array.prototype.slice.call($('.selected td'));
+                            tds[9].innerHTML = n_commen;
+                            tds[10].innerHTML = n_final;
+                            tds[11].innerHTML = score;
+                            alert('修改成功！');
+                        }
+                    }
+                );
+
+            });
+
         })
     </script>
 {% endblock %}

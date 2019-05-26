@@ -11,7 +11,7 @@ from django.db.utils import IntegrityError
 from django.http import request
 from backstage.models import College, Major, AdmClass, Student,\
     Teacher, ClassRoom, MajorPlan, User
-from courseScheduling.models import Teacher_Schedule_result, MajorCourses, Teaching, Schedule_result
+from courseScheduling.models import Teacher_Schedule_result, MajorCourses, Teaching, Schedule_result, Course
 from courseSelection.models import CourseSelected
 from scoreManagement.models import EvaluationForm, CourseScore
 
