@@ -27,8 +27,9 @@
             <li><a href="#">空闲教室管理</a></li>
             <li class="divider"></li>
             <li><a href=" {% url 'courseSelection:adm_selection_manage' %}">设置选课时间</a></li>
-                        <li><a href=" {% url 'courseSelection:adm_school' %}">查询全校选课情况</a></li>
-            <li><a href="#">查看毕设选题情况</a></li>
+            <li><a href=" {% url 'courseSelection:adm_school' %}">查询全校选课情况</a></li>
+            <li><a href=" {% url 'courseSelection:adm_class' %}">查询课程信息</a></li>
+            <li><a href=" {% url 'graduationManagement:adm_projectSelection' %}">查看毕设选题情况</a></li>
         </ul>
     </li>
     <li><a href="{% url 'scoreManagement:adm_view_teacher_evaluation' %}">查看教学评价</a></li>
@@ -101,8 +102,9 @@
             <li><a href="#"><i class="fa fa-circle-o"></i>空闲教室管理</a></li>
             <li><a href="#"><i class="fa fa-circle-o"></i>手动排课</a></li>
             <li><a href=" {% url 'courseSelection:adm_selection_manage' %}"><i class="fa fa-circle-o"></i>设置选课时间</a></li>
-                                    <li><a href=" {% url 'courseSelection:adm_school' %}">查询全校选课情况</a></li>
-            <li><a href="#"><i class="fa fa-circle-o"></i>查看毕设选题情况</a></li>
+            <li><a href=" {% url 'courseSelection:adm_school' %}">查询全校选课情况</a></li>
+            <li><a href=" {% url 'courseSelection:adm_class' %}">查询课程信息</a></li>
+            <li><a href={% url 'graduationManagement:adm_projectSelection' %}><i class="fa fa-circle-o"></i>查看毕设选题情况</a></li>
         </ul>
     </li>
     <li class="treeview">

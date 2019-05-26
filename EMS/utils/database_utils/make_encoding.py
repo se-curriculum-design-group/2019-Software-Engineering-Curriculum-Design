@@ -26,10 +26,10 @@ def encode_teacher():
 
 
 def encode_adm():
-    users = User.objects.filter(is_superuser=True)
-    for u in users[1:]:
-        u.password = make_encode(u.username)
-        u.save()
+    for s in User.objects.filter(is_superuser=True):
+        s.password = make_encode(s.username)
+        s.save()
+
 
 def view_adm_password():
     for s in User.objects.filter(is_superuser=True):
@@ -40,5 +40,5 @@ def view_adm_password():
 if __name__ == '__main__':
     # encode_stu()
     # encode_teacher()
-    # view_adm_password()
-    encode_adm()
+    view_adm_password()
+    # encode_adm()
