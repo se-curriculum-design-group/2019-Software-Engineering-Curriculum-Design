@@ -1,9 +1,9 @@
 from django.shortcuts import render, redirect, Http404
+from django.utils.datastructures import MultiValueDictKeyError
 from django.views.decorators.csrf import csrf_exempt
 from django.http import JsonResponse, HttpResponseRedirect
 from django.db.models import Q
-from django.core import serializers
-import json
+from datetime import datetime
 
 from backstage.models import Student, Teacher, College, Major, MajorPlan, ClassRoom, AdmClass, User
 from courseScheduling.models import Teaching, Course, MajorPlan, MajorCourses, Teacher, Teacher_Schedule_result
@@ -14,7 +14,6 @@ from scoreManagement.models import CourseScore, EvaluationForm
 def welcome(request):
     students = Student.objects.all()
     teachers = Teacher.objects.all()
-    print(teachers)
 
     colleges = College.objects.all()
     majors = Major.objects.all()
@@ -470,74 +469,122 @@ def submit_all(request):
 
 
 def teacher_view_teaching(request):
-    try:
-        if request.session['user_type'] != '教师':
-            return render(request, 'errors/403page.html')
-        tno = request.session['username']
-        teacher = Teacher.objects.get(username=tno)
-        teaching_list = Teaching.objects.filter(tno=teacher)
-        years = [y['mcno__year'] for y in teaching_list.values('mcno__year').distinct()]
-        semesters = [s['mcno__semester'] for s in teaching_list.values('mcno__semester').distinct()]
-        context = {
+    if request.session['user_type'] != '教师':
+        return render(request, 'errors/403page.html')
+    tno = request.session['username']
+    teacher = Teacher.objects.get(username=tno)
+    teaching_list = Teaching.objects.filter(tno=teacher)
+    years = [y['mcno__year'] for y in teaching_list.values('mcno__year').distinct()]
+    semesters = [s['mcno__semester'] for s in teaching_list.values('mcno__semester').distinct()]
+    context = {
+        'teaching_list': teaching_list,
+        'years': years,
+        'semesters': semesters
+    }
+
+    if request.method == 'GET':
+        try:
+            other_tno = request.GET['seacher_tno']
+        except MultiValueDictKeyError:
+            return render(request, "scoreManage/teacher_view_teaching.html", context)
+        try:
+            other_teacher = Teacher.objects.get(username=other_tno)
+        except Teacher.DoesNotExist:
+            return render(request, "scoreManage/teacher_view_teaching.html", context)
+        other_teaching_list = Teaching.objects.filter(tno=other_teacher)
+        other_years = [y['mcno__year'] for y in other_teaching_list.values('mcno__year').distinct()]
+        other_semesters = [s['mcno__semester'] for s in other_teaching_list.values('mcno__semester').distinct()]
+        result = {
+            "is_find": True,
+            "other_tno": other_tno,
+            "other_years": other_years,
+            "other_semesters": other_semesters,
+            "other_teaching_list": other_teaching_list,
             'teaching_list': teaching_list,
             'years': years,
             'semesters': semesters
         }
-        if request.method == 'GET':
-            try:
-                other_tno = request.GET['seacher_tno']
-                other_teacher = Teacher.objects.get(username=other_tno)
-                other_teaching_list = Teaching.objects.filter(tno=other_teacher)
-                other_years = [y['mcno__year'] for y in other_teaching_list.values('mcno__year').distinct()]
-                other_semesters = [s['mcno__semester'] for s in other_teaching_list.values('mcno__semester').distinct()]
-                result = {
-                    "is_find": True,
-                    "other_tno": other_tno,
-                    "other_years": other_years,
-                    "other_semesters": other_semesters,
-                    "other_teaching_list": other_teaching_list,
-                    'teaching_list': teaching_list,
-                    'years': years,
-                    'semesters': semesters
-                }
-                return render(request, "scoreManage/teacher_view_teaching.html", result)
-            except:
-                return render(request, 'errors/500page.html')
-        return render(request, "scoreManage/teacher_view_teaching.html", context)
-    except:
-        return render(request, 'errors/404page.html')
+        return render(request, "scoreManage/teacher_view_teaching.html", result)
+    return render(request, "scoreManage/teacher_view_teaching.html", context)
 
 
 # 授课老师录入成绩
 def teacher_upload_score(request):
-    try:
-        if request.session['user_type'] != '教师':
-            return render(request, 'errors/403page.html')
-        tno = request.session['username']
-        teacher = Teacher.objects.get(username=tno)
-        my_courses = Teaching.objects.filter(tno=teacher)
-        return render(request, 'scoreManage/teacher_upload_score.html')
-    except:
-        return render(request, 'errors/404page.html')
+    if request.session['user_type'] != '教师':
+        return render(request, 'errors/403page.html')
+    tno = request.session['username']
+    teacher = Teacher.objects.get(username=tno)
+    my_courses = Teaching.objects.filter(tno=teacher)
+    return render(request, 'scoreManage/teacher_upload_score.html')
 
 
 # 管理员查看教学评价情况
 def adm_view_teacher_evaluation(request):
-    try:
-        username = request.session['username']
-        adm = User.objects.get(username=username)
-        if not adm.is_superuser:
-            return render(request, 'errors/403page.html')
-        evaluation_sets = EvaluationForm.objects.all()
-        context = {
-            'evaluation_sets': evaluation_sets
-        }
-        return render(request, 'scoreManage/adm_view_teacher_evaluation.html', context)
-    except:
-        return render(request, 'errors/404page.html')
+    username = request.session['username']
+    adm = User.objects.get(username=username)
+    if not adm.is_superuser:
+        return render(request, 'errors/403page.html')
+    evaluation_sets = EvaluationForm.objects.all()
+    context = {
+        'evaluation_sets': evaluation_sets
+    }
+    return render(request, 'scoreManage/adm_view_teacher_evaluation.html', context)
 
 
-def ajax_send_dt(request):
-    data = [{"name": "DataTables中文网", "age": 2}],
+def teacher_view_stu_score(request):
+    if request.session['user_type'] != '教师':
+        return render(request, 'errors/403page.html')
+    tno = request.session['username']
+    teacher = Teacher.objects.get(username=tno)
+    if request.method == 'GET':
+        try:
+            year = request.GET['year']
+            semester = request.GET['semester']
+            print(year)
+            print(semester)
+            print('--------------')
 
-    return JsonResponse(data, safe=False)
+            if year == '无' or semester == '无':
+                return render(request, 'scoreManage/teacher_view_stu_score.html')
+            teaching_list = Teaching.objects.filter(tno=teacher, mcno__year=year, mcno__semester=semester)
+        except MultiValueDictKeyError:
+            year = datetime.now().year
+            month = datetime.now().month
+            if month == 7:
+                semester = 3
+            elif 3 <= month <= 6:
+                semester = 2
+            else:
+                semester = 1
+            teaching_list = Teaching.objects.filter(tno=teacher, mcno__year=year, mcno__semester=semester)
+        else:
+            year = datetime.now().year
+            month = datetime.now().month
+            if month == 7:
+                semester = 3
+            elif 3 <= month <= 6:
+                semester = 2
+            else:
+                semester = 1
+            teaching_list = Teaching.objects.filter(tno=teacher, mcno__year=year, mcno__semester=semester)
+
+    all_teaching_list = Teaching.objects.filter(tno=teacher)
+    schedule_result = Teacher_Schedule_result.objects.filter(tno__in=teaching_list)
+    course_list = CourseSelected.objects.filter(cno__in=schedule_result)
+    adm_id_list = course_list.values('sno__in_cls').distinct()
+    adm_class_list = []
+    for adm_id in adm_id_list:
+        adm_class_list.append(AdmClass.objects.get(id=adm_id['sno__in_cls']))
+
+    all_year = [year[0] for year in all_teaching_list.values_list('mcno__year').distinct()]
+    all_semester = [semester[0] for semester in all_teaching_list.values_list('mcno__semester').distinct()]
+
+    context = {
+        'course_list': course_list,
+        'adm_class_list': adm_class_list,
+        'all_year': all_year,
+        'all_semester': all_semester,
+        'teaching_list': teaching_list,
+    }
+    return render(request, 'scoreManage/teacher_view_stu_score.html', context)
+

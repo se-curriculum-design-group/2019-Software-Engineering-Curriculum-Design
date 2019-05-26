@@ -15,9 +15,9 @@ def stu_major(request):
     nowtime = datetime.datetime.now()
     nowtime = str(nowtime)
     nowtime = nowtime[0:16]
-    nowtime = nowtime[0:10]+'T'+nowtime[11:19]
+    nowtime = nowtime[0:10] + 'T' + nowtime[11:19]
 
-    if((nowtime < settings.BEGIN or nowtime > settings.END ) or settings.BEGIN == 'NULL' or settings.END == 'NULL'):
+    if ((nowtime < settings.BEGIN or nowtime > settings.END) or settings.BEGIN == 'NULL' or settings.END == 'NULL'):
         return HttpResponse("当前不是选课时间！")
     else:
         sno = request.session["username"]
@@ -123,8 +123,9 @@ def stu_major(request):
             tmp["上课时间"] = major.time
             if tmp["选课人数"] < tmp["课程容量"]:
                 data.append(tmp)
-        return render(request, "courseSelection/stu_major.html", {'data': json.dumps(data), 'dat': json.dumps(dat),'mC':mC,'college':college,'majors':majors})
-
+        return render(request, "courseSelection/stu_major.html",
+                      {'data': json.dumps(data), 'dat': json.dumps(dat), 'mC': mC, 'college': college,
+                       'majors': majors})
 
 
 def select_course(request):
@@ -252,12 +253,14 @@ def delete(request):
 
             return JsonResponse({"flag": 1, "tot": tot, "ID": ID})
 
+
 def find_course(request):
     if request.is_ajax():
         if request.method == 'GET':
             sno = request.session["username"]
             theCourse = CourseSelected.objects.filter(sno__username=sno)
-            course_time = []  # 收集这些课程的上课时间
+            # 收集这些课程的上课时间
+            course_time = []
             dic = {}
             tmp = {}
             t_info = {}
@@ -280,10 +283,6 @@ def adm_selection_manage(request):
     return render(request, "courseSelection/adm_selection_manage.html")
 
 
-def adm_class(request):
-    return render(request, "courseSelection/adm_class.html")
-
-
 def adm_school(request):
     mC = Teacher_Schedule_result.objects.filter()
 
@@ -294,7 +293,8 @@ def adm_school(request):
         "college": college,
         "majors": majors
     }
-    return render(request, "courseSelection/adm_school.html",context)
+    return render(request, "courseSelection/adm_school.html", context)
+
 
 def time_set(request):
     begin = request.POST.get('begin_time')
@@ -369,9 +369,14 @@ def student_view_other_course(request):
         "majors": majors
     }
     return render(request, "courseSelection/stu_major.html", context)
+
+
 def tables(request):
-    return render(request,"courseSelection/course_table.html")
-def teacher(request):  # 教师查看授课选课情况
+    return render(request, "courseSelection/course_table.html")
+
+
+# 教师查看授课选课情况
+def teacher(request):
     user = request.session["username"]
     teacher = Teacher.objects.get(username=user)
     teachings = Teaching.objects.filter(tno=teacher)
@@ -382,7 +387,8 @@ def teacher(request):  # 教师查看授课选课情况
     return render(request, "courseSelection/teacher.html", context)
 
 
-def show_students(request, cno, course_type):  # 教师查看授课选课情况
+# 教师查看授课选课情况
+def show_students(request, cno, course_type):
     user = request.session["username"]
     teacher = Teacher.objects.get(username=user)
     class_no = Course.objects.get(cno=cno, course_type=course_type)
@@ -394,7 +400,6 @@ def show_students(request, cno, course_type):  # 教师查看授课选课情况
     else:
         teacher_schedule_result = teacher_schedule_result[0]
     students = CourseSelected.objects.filter(cno=teacher_schedule_result)
-
     context = {
         'students': students
     }
