@@ -141,7 +141,7 @@ class Teacher(object):
         self.time_count = cnt
 
 
-class Buffer:
+class Buffer(object):
     def __init__(self):
         self.students = []
         self.teachers = []
@@ -681,6 +681,7 @@ def week_has_hazzard(week1: str, week2: str):
     r1 = int(week1.split('-')[1])
     l2 = int(week2.split('-')[0])
     r2 = int(week2.split('-')[1])
+    #print(l1,r1,l2,r2)
     if (l2 <= l1 and l1 <= r2) or (l1 <= l2 and l2 <= r1):
         return True
     else:
@@ -689,11 +690,10 @@ def week_has_hazzard(week1: str, week2: str):
 
 def has_table_hazzard(table1, table2):
     for i in range(8):
-        if i == 0: continue
         for j in range(14):
             if j == 0: continue
-        if week_has_hazzard(table1[i][j], table2[i][j]):
-            return True
+            if week_has_hazzard(table1[i][j], table2[i][j]):
+                return True
     return False
 
 def Search_time_room(time: str) -> object:
@@ -709,7 +709,23 @@ def Search_time_room(time: str) -> object:
             res.append(room)
     return res
 
-
+#添加临时活动
+def add_active(time:str, room:str, state:str):
+    init_room()
+    new_table = String_to_table(time)
+    if Classrooms_id.get(room) == None:
+        return False
+    else:
+        tag_room = Classrooms_id[room]
+        if has_table_hazzard(new_table, tag_room.courseSchedule):
+            return False
+        else:
+            new_row = Classroom_other_schedule.objects.create(
+                crno=ClassRoom.objects.get(crno=room),
+                time=time,
+                statement=state,
+            )
+    return True
 def get_students_teacher_courseSchedule(stuset: [], class_set=None, teacher_username=None) -> Buffer:
     if teacher_username == None:
         return None
@@ -992,5 +1008,5 @@ if __name__ == '__main__':
     #print(bf.courseSchedule)
     #fff = Search_time_room("14-16-1-1,27-29-8-8")
     #manual_schedule('16-18-14-15', 'A-101', ['2016000474', '2016000475', '2016000476', '2016000477'], [], '199000064', 'CSE14302C')
-
+    #print(add_active("3-3-11-12", "阶A-202", "exam"))
     a = 1
