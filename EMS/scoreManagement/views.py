@@ -709,3 +709,31 @@ def adm_change_major_plan(request):
                 'new_course_num': new_course_num,
             }
             return JsonResponse(data)
+
+
+# 管理员修改专业课程，只修改部分属性
+def adm_change_major_course(request):
+    if request.is_ajax():
+        if len(request.GET):
+            major = request.GET.get('major')
+            year = request.GET.get('year')
+            semester = request.GET.get('semester')
+            cno = request.GET.get('cno')
+            teach_hours = request.GET.get('teach_hours')
+            exp_hours = request.GET.get('exp_hours')
+            exam_method = request.GET.get('exam_method')
+
+            major_plan = MajorPlan.objects.get(major__mno=major.split('-')[1], year=major.split('-')[0])
+            # 获取到MajorCourse对象
+            print(cno)
+            major_course = MajorCourses.objects.get(cno__cno=cno, mno=major_plan)
+            major_course.year = year
+            major_course.semester = semester
+            major_course.hour_class = teach_hours
+            major_course.hour_other = exp_hours
+            major_course.hour_total = teach_hours + exp_hours
+            major_course.exam_method = (exam_method == '考试')
+
+            major_course.save()
+            return JsonResponse({})
+

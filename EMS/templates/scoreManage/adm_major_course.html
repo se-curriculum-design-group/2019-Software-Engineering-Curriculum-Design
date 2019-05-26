@@ -53,9 +53,9 @@
                     <thead>
                     <tr>
                         <th>序号</th>
-                        <th>专业</th>
-                        <th>学年</th>
-                        <th>学期</th>
+                        <th>专业计划</th>
+                        <th>开课学年</th>
+                        <th>开课学期</th>
                         <th>课程代码</th>
                         <th>课程名称</th>
                         <th>开课学院</th>
@@ -71,7 +71,7 @@
                     {% for item in all_major_course %}
                         <tr>
                             <td>{{ forloop.counter }}</td>
-                            <td>{{ item.mno.major }}</td>
+                            <td>{{ item.mno }}</td>
                             <td>{{ item.year }}</td>
                             <td>{{ item.semester }}</td>
                             <td>{{ item.cno.cno }}</td>
@@ -92,6 +92,136 @@
                     </tbody>
                 </table>
             </div>
+            <div class="box-footer">
+                <div class="btn-group pull-left ">
+                    <a id="a">
+                        <button id='change_major_course_btn' class="btn btn-info" type="button">
+                            <span class="glyphicon glyphicon-pencil"></span>修改专业课程计划
+                        </button>
+                    </a>
+                </div>
+            </div>
+        </div>
+        <div class="modal fade" id="changeCourse">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <form action="" name="changeMajorCourse" method="get" onsubmit="return(false);">
+                        <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal">&times;</button>
+                            <h4 class="modal-title">修改专业课程计划</h4>
+                        </div>
+                        <div class="modal-content" id="changeCourseModal">
+                            <div class="form-horizontal">
+                                <div class="form-group">
+                                    <label for="changeCourseMajor" class="col-sm-2 control-label">专业：</label>
+                                    <div class="col-sm-10">
+                                        <input type="text" id="changeCourseMajor" disabled class="form-control"
+                                               name="change_major">
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="changeCourseYear" class="col-sm-2 control-label">开课学年：</label>
+                                    <div class="col-sm-10">
+                                        <input type="text" id="changeCourseYear" class="form-control"
+                                               name="change_year">
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="changeCourseSemester" class="col-sm-2 control-label">开课学期：</label>
+                                    <div class="col-sm-10">
+                                        <input type="text" id="changeCourseSemester" class="form-control"
+                                               name="change_semester">
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="changeCourseCode" style="color: red" class="col-sm-2 control-label">课程代码：</label>
+                                    <div class="col-sm-10">
+                                        <input type="text" id="changeCourseCode" disabled class="form-control"
+                                               name="change_cno">
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="changeCourseName" class="col-sm-2 control-label">课程名称：</label>
+                                    <div class="col-sm-10">
+                                        <input type="text" id="changeCourseName" disabled class="form-control"
+                                               name="change_cname">
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="changeOpenCollege" class="col-sm-2 control-label">开课学院：</label>
+                                    <div class="col-sm-10">
+                                        <input type="text" id="changeOpenCollege" disabled class="form-control"
+                                               name="change_open_college">
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="changeCourseType" class="col-sm-2 control-label">课程性质：</label>
+                                    <div class="col-sm-10">
+                                        <input type="text" id="changeCourseType" disabled class="form-control"
+                                               name="change_course_type">
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="changeCourseType" class="col-sm-2 control-label">学分：</label>
+                                    <div class="col-sm-10">
+                                        <input type="text" id="changeCourseType" disabled class="form-control"
+                                               name="change_course_type">
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="changeCourseType" style="color: red" class="col-sm-2 control-label">授课学时：</label>
+                                    <div class="col-sm-10">
+                                        <input type="text" id="changeCourseType" class="form-control"
+                                               name="change_course_type">
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="changeCourseType" style="color: red" class="col-sm-2 control-label">实验学时：</label>
+                                    <div class="col-sm-10">
+                                        <input type="text" id="changeCourseType" class="form-control"
+                                               name="change_course_type">
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="changeCourseType" style="color: red"
+                                           class="col-sm-2 control-label">总学时：</label>
+                                    <div class="col-sm-10">
+                                        <input type="text" id="changeCourseType" disabled class="form-control"
+                                               name="change_course_type">
+                                    </div>
+                                </div>
+
+
+                                <div class="form-group">
+                                    <label for="changePlanStuMethod" style="color: red" class="col-sm-2 control-label">考核方式：</label>
+                                    <div class="col-sm-10">
+                                        <input type="text" id="changePlanStuMethod" class="form-control"
+                                               name="change_course_stu_method">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="modal-footer">
+                                <div class="center-block">
+                                    <button id="cancelChange" type="button" class="btn btn-default"
+                                            data-dismiss="modal">取消
+                                    </button>
+                                    <button id="sureToChange" type="submit" class="btn btn-success">保存</button>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
         </div>
     </section>
 {% endblock %}
@@ -104,32 +234,14 @@
                 let year = $('#year').val();
                 let semester = $('#semester').val();
                 let course_type = $('#course_type').val();
-                if (
+                return (
                     (major === "ALL" || major === data[1]) && (year === "ALL" || year === data[2])
                     && (semester === "ALL" || semester === data[2]) && (course_type === "ALL" || course_type === data[7])
-                ) {
-                    return true;
-                } else {
-                    return false
-                }
+                );
             }
         );
 
         $(document).ready(function () {
-            var year = $('#major').val();
-            const myData = {"year": year};
-            {% comment %} $.get(
-                '{% url "scoreManagement:_ajax" %}',
-                myData,
-                function (ret, status) {
-                    if (ret['yes']) {
-                        alert("YES");
-                    }else{
-                        alert("NO");
-                    }
-                }
-            ); {% endcomment %}
-
             var table = $('#major_course_table').DataTable(
                 {
                     dom: 'Bfrtip',
@@ -197,6 +309,65 @@
             });
 
             $('.select2').select2();
+
+            $('#change_major_course_btn').click(function () {
+                if (table.rows('.selected').data().length) {
+                    var rowData = table.rows('.selected').data()[0];
+                    var form_modal = $('#changeCourse');
+                    var inputs = form_modal.find('input');
+                    for (let i = 1; i <= inputs.length; i++) {
+                        $(inputs[i - 1]).val(rowData[i]);
+                    }
+                    form_modal.modal();
+                } else {
+                    alert("请选择一项成绩修改");
+                }
+            });
+
+            $('#sureToChange').click(function () {
+                var inputs = $('#changeCourse').find('input');
+                var values = [];
+                for (let i = 0; i < inputs.length; i++) {
+                    values.push($(inputs[i]).val());
+                }
+                const major = values[0];
+                const year = values[1];
+                const semeser = values[2];
+                const cno = values[3];
+                const course_type = values[6];
+                const teach_hours = values[9];
+                const exp_hours = values[10];
+                const exam_method = values[11];
+                const data = {
+                    'major': major,
+                    'year': year,
+                    'semester': semeser,
+                    'cno': cno,
+                    'course_type': course_type,
+                    'teach_hours': teach_hours,
+                    'exp_hours': exp_hours,
+                    'exam_method': exam_method,
+                };
+
+                $.get(
+                    "{% url 'scoreManagement:adm_change_major_course' %}",
+                    data,
+                    function (ret) {
+                        if (!ret) {
+                            alert("修改失败");
+                        } else {
+                            let tds = Array.prototype.slice.call($('.selected td'));
+                            tds[2].innerHTML = year;
+                            tds[3].innerHTML = semeser;
+                            tds[9].innerHTML = all_hours;
+                            tds[10].innerHTML = teach_hours;
+                            tds[11].innerHTML = exp_hours;
+                            tds[12].innerHTML = exam_method;
+                            alert('修改成功！');
+                        }
+                    }
+                );
+            });
         });
     </script>
 {% endblock %}
