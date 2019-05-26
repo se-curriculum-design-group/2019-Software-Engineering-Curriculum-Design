@@ -167,5 +167,8 @@ class TestTeacher(TestCase):
         response = self.client.get('/graduationManagement/teacher_submit_score')
         self.assertIn(response.status_code, [200, 301, 302])
 
-    def test_domo(self):
-        print ("testdomo")
+    def test_get_all_teaching(self):
+        url = "/scoreManagement/get_all_teaching"
+        response = self.client.get(url)
+        self.assertIn(response.status_code, [200, 301, 302])
+
