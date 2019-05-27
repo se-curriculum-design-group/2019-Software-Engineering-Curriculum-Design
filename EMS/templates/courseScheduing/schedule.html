@@ -1,0 +1,178 @@
+{% extends 'student_base.html' %}
+
+{% load staticfiles %}
+
+{% block content %}
+    <section class="content-header">
+        <h1>排课
+            <small>Info</small>
+        </h1>
+        <ol class="breadcrumb">
+            <li><a href="{% url 'scoreManagement:welcome' %}"><i class="fa fa-dashboard"></i> 主页</a></li>
+            <li class="active">成绩管理</li>
+            <li class="active">排课</li>
+        </ol>
+    </section>
+    <div class="box">
+        <div class="box-header">
+            <h3 class="box-title">排课</h3>
+            <div class="box-header ">
+                <form method="post" action="{% url "courseScheduling:search_time_room" %}">
+                    {% csrf_token %}
+                    <div class="form-group col-md-6">
+                        <label class="control-label">学生：</label>
+                        <input class="form-control">
+                    </div>
+                    <div class="form-group col-md-6">
+                        <label class="control-label">教师：</label>
+                        <input class="form-control">
+                    </div>
+
+                    <div class="form-group col-md-12">
+                        <label style="">起始周：&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</label>
+                        <select name="ws" id="ws" class="select2" style="width: 20%"></select>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                    </div>
+                    <div class="form-group col-md-12">
+                        <label style="">起始周：&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</label>
+                        <select name="we" id="we" class="select2" style="width: 20%"></select>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                    </div>
+
+                    <div class="form-group col-md-12">
+                        <label>时间段1：</label>
+                        <label>日：</label>
+                        <select name="d1" id="d1" class="select2" style="width: 20%"></select>&nbsp;
+                        <label>从</label>
+                        <select name="f1" id="f1" class="select2" style="width: 20%"></select>&nbsp;
+                        <label>到</label>
+                        <select name="e1" id="e1" class="select2" style="width: 20%"></select>
+                    </div>
+                    <div class="form-group col-md-12">
+                        <label>时间段2：</label>
+                        <label>日：</label>
+                        <select name="d2" id="d2" class="select2" style="width: 20%"></select>&nbsp;
+                        <label>从</label>
+                        <select name="f2" id="f2" class="select2" style="width: 20%"></select>&nbsp;
+                        <label>到</label>
+                        <select name="e2" id="e2" class="select2" style="width: 20%"></select>
+                    </div>
+                    <div class="form-group col-md-12">
+                        <label>选择教室：&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</label>
+                        <select name="rooms" id="rooms" class="select2" style="width: 20%"></select>&nbsp;
+                    </div>
+                    <div class="form-group col-md-12">
+                        <button type="submit" class="btn btn-defaul col-md-2">提交</button>
+                    </div>
+                </form>
+
+            </div>
+
+            <div class="box-body">
+                <table id="vacant_room_table" class="table table-bordered table-striped">
+                    <thead>
+                    <tr>
+                        <th>星期一</th>
+                        <th>星期二</th>
+                        <th>星期三</th>
+                        <th>星期四</th>
+                        <th>星期五</th>
+                        <th>星期六</th>
+                        <th>星期七</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+
+                    </tbody>
+                </table>
+
+            </div>
+        </div>
+    </div>
+{% endblock %}
+
+{% block script %}
+    <script>
+
+        $(document).ready(function () {
+            var table = $('#vacant_room_table').DataTable(
+                {
+                    "paging": false,       <!-- 允许分页 -->
+                    "lengthChange": false, <!-- 允许改变每页显示的行数 -->
+                    "searching": false,    <!-- 允许内容搜索 -->
+                    "ordering": true,     <!-- 允许排序 -->
+                    "info": true,         <!-- 显示信息 -->
+                    "autoWidth": false,    <!-- 固定宽度 -->
+                    "language": {
+                        "sProcessing": "处理中...",
+                        "sLengthMenu": "显示 _MENU_ 项结果",
+                        "sZeroRecords": "没有匹配结果",
+                        "sInfo": "显示第 _START_ 至 _END_ 项结果，共 _TOTAL_ 项",
+                        "sInfoEmpty": "显示第 0 至 0 项结果，共 0 项",
+                        "sInfoFiltered": "(由 _MAX_ 项结果过滤)",
+                        "sInfoPostFix": "",
+                        "sSearch": "搜索:",
+                        "sUrl": "",
+                        "sEmptyTable": "表中数据为空",
+                        "sLoadingRecords": "载入中...",
+                        "sInfoThousands": ",",
+                        "oPaginate": {
+                            "sFirst": "首页",
+                            "sPrevious": "上页",
+                            "sNext": "下页",
+                            "sLast": "末页"
+                        },
+                        "oAria": {
+                            "sSortAscending": ": 以升序排列此列",
+                            "sSortDescending": ": 以降序排列此列"
+                        }
+                    },
+                    "columnDefs": [{
+                        "searchable": true,
+                        "orderable": true,
+                        "targets": 0
+                    }],
+                    "order": [[0, 'asc']]
+                }
+            );
+            var d = new Array('周一', "周二", "周三", "周四", "周五", "周六", "周日")
+
+            for (var i = 1; i <= 20; i++) {
+                $("#ws").append("<option value=" + i + ">" + "第" + i + '周' + "</option>")
+            }
+            ;
+            for (var i = 1; i <= 20; i++) {
+                $("#we").append("<option value=" + i + ">" + "第" + i + '周' + "</option>")
+            }
+            ;
+
+            for (var i = 0; i < 7; i++) {
+                $('#d1').append("<option value=" + i + ">" + d[i] + "</option>")
+            }
+            ;
+            for (var i = 0; i < 7; i++) {
+                $('#d2').append("<option value=" + i + ">" + d[i] + "</option>")
+            }
+            ;
+
+            for (var i = 1; i <= 13; i++) {
+                $('#f1').append("<option value=" + i + ">" + "第" + i + '节' + "</option>")
+            }
+            ;
+            for (var i = 1; i <= 13; i++) {
+                $('#f2').append("<option value=" + i + ">" + "第" + i + '节' + "</option>")
+            }
+            ;
+
+            for (var i = 1; i <= 13; i++) {
+                $('#e1').append("<option value=" + i + ">" + "第" + i + '节' + "</option>")
+            }
+            ;
+            for (var i = 1; i <= 13; i++) {
+                $('#e2').append("<option value=" + i + ">" + "第" + i + '节' + "</option>")
+            }
+            ;
+
+
+            $('.select2').select2();
+        });
+    </script>
+{% endblock %}
