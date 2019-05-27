@@ -9,8 +9,7 @@ from courseSelection.models import CourseSelected as courseSelected
 # 输出
 from courseScheduling.models import Schedule_result, Teacher_Schedule_result, Classroom_other_schedule, Exam_Schedule
 
-year = 2019
-semester = 2
+
 Students_id = dict()
 Teachers_id = dict()
 Classrooms_id = dict()
@@ -865,6 +864,7 @@ def exam_schedule(year=2019, semester=2):
         if Classrooms_id[elements.crno].type == '小':
             heapq.heappush(heap_smallroom, Classrooms_id[elements.crno])
     exam_set = Teacher_Schedule_result.objects.filter(tno__mcno__year=year, tno__mcno__semester=semester)
+    print(len(exam_set), year, semester)
     for course in exam_set:
         if '必修' in course.tno.mcno.cno.course_type:
             if course.current_number >= 165:  # 三个大教室

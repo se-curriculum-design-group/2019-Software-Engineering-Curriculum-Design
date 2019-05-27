@@ -1,11 +1,5 @@
 from courseSelection.models import CourseSelected as courseSelected
 from courseScheduling.models import Schedule_result, Teacher_Schedule_result
-from courseScheduling.Schedule import year as Schedule_year
-from courseScheduling.Schedule import semester as Schedule_semester
-
-year = Schedule_year
-semester = Schedule_semester
-
 
 def Sychronize_with_courseSelected(year=2019, semester=2):
     rows_in_Schedule_result = Schedule_result.objects.filter(tno__mcno__year=year, tno__mcno__semester=semester)
