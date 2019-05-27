@@ -3,7 +3,7 @@
 {% block title %}发送邮件{% endblock %}
 
 {% block content %}
-    <form role="form" method="post" action="{% url 'backstage:send_announcements' %}">
+    <form role="form" method="post" action="{% url 'backstage:send_emails' %}" enctype="multipart/form-data">
         {% csrf_token %}
 
         <!-- Content Header (Page header) -->
@@ -91,7 +91,7 @@
 
     <script>
         ClassicEditor
-            .create(document.querySelector('#editor1'),{
+            .create(document.querySelector('#editor1'), {
                 language: 'zh-cn',
                 height: '380px', width: '100%'
             })
