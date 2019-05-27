@@ -270,5 +270,37 @@ def occupy_room(request):
 #     return render(request, 'courseScheduing/occupy_room.html')
 
 
-def schedule(REQUEST):
-    return render(REQUEST, 'courseScheduing\schedule.html')
+def schedule(request):
+    s=request.POST.get("s")
+    t=request.POST.get('t')
+    ws=request.POST.get("ws")
+    we=request.POST.get("we")
+    d1=request.POST.get("d1")
+    f1=request.POST.get("f1")
+    e1=request.POST.get("e1")
+    d2=request.POST.get("d2")
+    f2=request.POST.get("f2")
+    e2=request.POST.get("e2")
+    cd=request.POST.get('cd')
+    r=request.POST.get('rooms')
+    print(r,s,t,cd,d1,f1,e1)
+    if r is None or s is None or t is None or cd is None or e1 is None or d1 is None or f1 is None or\
+                (len(r) and len(s) and len(t) and len(e1) and len(cd) and len(d1) and len(f1)) == 0:
+        return render(request,"courseScheduing/schedule.html",{'f':0})
+    time1 = str((int(d1) - 1) * 13 + int(f1)) + "-" + str((int(d1) - 1) * 13 + int(e1)) + "-" + ws + "-" + we
+    time2 = ""
+    if len(d2) == 0 or len(f2) == 0 or len(e2) == 0:
+        time2 = ""
+    else:
+        time2 = ',' + str((int(d2) - 1) * 13 + int(f2)) + "-" + str((int(d2) - 1) * 13 + int(e2)) + "-" + ws + "-" + we
+
+    time3=time1+time2
+
+    f=manual_schedule(time3, r, str(s).split(' '), [], t,cd)
+
+    if f==True:
+        return render(request,'courseScheduing/schedule.html',{"f":1})
+    else:
+        return render(request, 'courseScheduing/schedule.html', {"f": 2})
+
+

@@ -793,8 +793,13 @@ def manual_schedule(time_string, place_name, stuset: [], class_set=[], teacher_u
         if teacher_username != None:
             bf.courseSchedule = mergeTable(bf.courseSchedule, Teachers_id[teacher_username].courseSchedule)
         table = String_to_table(time_string)
+        print(table)
+        print(bf.courseSchedule)
         if has_table_hazzard(table, bf.courseSchedule) == False:
             write_to_database(time_string, bf)
+            return True
+        else:
+            return False
     else:
         pass
 
@@ -1011,6 +1016,7 @@ if __name__ == '__main__':
     #print('-----------------')
     #print(bf.courseSchedule)
     #fff = Search_time_room("14-16-1-1,27-29-8-8")
-    #manual_schedule('16-18-14-15', 'A-101', ['2016000474', '2016000475', '2016000476', '2016000477'], [], '199000064', 'CSE14302C')
+    #False print(manual_schedule('16-18-14-15', 'A-202', ['2016000474', '2016000475', '2016000476', '2016000477'], [], '199000064', 'CSE14302C'))
+    #print(manual_schedule('14-15-17-18', 'A-202', ['2016000474', '2016000475', '2016000476', '2016000477'], [], '199000064', 'CSE14302C'))
     #print(add_active("3-3-11-12", "阶A-202", "exam"))
     a = 1

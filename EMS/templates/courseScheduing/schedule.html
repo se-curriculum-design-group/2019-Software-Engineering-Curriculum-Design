@@ -9,7 +9,7 @@
         </h1>
         <ol class="breadcrumb">
             <li><a href="{% url 'scoreManagement:welcome' %}"><i class="fa fa-dashboard"></i> 主页</a></li>
-            <li class="active">成绩管理</li>
+            <li class="active">选课-临时教学</li>
             <li class="active">排课</li>
         </ol>
     </section>
@@ -17,29 +17,32 @@
         <div class="box-header">
             <h3 class="box-title">排课</h3>
             <div class="box-header ">
-                <form method="post" action="{% url "courseScheduling:search_time_room" %}">
+                <form method="post" action="{% url "courseScheduling:schedule" %}">
                     {% csrf_token %}
                     <div class="form-group col-md-6">
                         <label class="control-label">学生：</label>
-                        <input class="form-control">
+                        <input class="form-control" name="s">
                     </div>
                     <div class="form-group col-md-6">
                         <label class="control-label">教师：</label>
-                        <input class="form-control">
+                        <input class="form-control" name="t">
                     </div>
-
+                    <div class="form-group col-md-6">
+                        <label class="control-label">课程代码：</label>
+                        <input class="form-control" name="cd">
+                    </div>
                     <div class="form-group col-md-12">
                         <label style="">起始周：&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</label>
                         <select name="ws" id="ws" class="select2" style="width: 20%"></select>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                     </div>
                     <div class="form-group col-md-12">
-                        <label style="">起始周：&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</label>
+                        <label style="">结束周：&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</label>
                         <select name="we" id="we" class="select2" style="width: 20%"></select>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                     </div>
 
                     <div class="form-group col-md-12">
                         <label>时间段1：</label>
-                        <label>日：</label>
+                        <label>星期：</label>
                         <select name="d1" id="d1" class="select2" style="width: 20%"></select>&nbsp;
                         <label>从</label>
                         <select name="f1" id="f1" class="select2" style="width: 20%"></select>&nbsp;
@@ -48,7 +51,7 @@
                     </div>
                     <div class="form-group col-md-12">
                         <label>时间段2：</label>
-                        <label>日：</label>
+                        <label>星期：</label>
                         <select name="d2" id="d2" class="select2" style="width: 20%"></select>&nbsp;
                         <label>从</label>
                         <select name="f2" id="f2" class="select2" style="width: 20%"></select>&nbsp;
@@ -60,36 +63,28 @@
                         <select name="rooms" id="rooms" class="select2" style="width: 20%"></select>&nbsp;
                     </div>
                     <div class="form-group col-md-12">
-                        <label>课程代码：&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</label>
-                        <input class="form-control" style="width: 20%">
-                    </div>
-                    <div class="form-group col-md-12">
                         <button type="submit" class="btn btn-defaul col-md-2">提交</button>
                     </div>
                 </form>
 
             </div>
 
-            <div class="box-body">
-                <table id="vacant_room_table" class="table table-bordered table-striped">
-                    <thead>
-                    <tr>
-                        <th>星期一</th>
-                        <th>星期二</th>
-                        <th>星期三</th>
-                        <th>星期四</th>
-                        <th>星期五</th>
-                        <th>星期六</th>
-                        <th>星期七</th>
-                    </tr>
-                    </thead>
-                    <tbody>
 
-                    </tbody>
-                </table>
+        </div>
+    </div>
 
+    <div class="box">
+        <div class="box-header">
+            <h3 class="box-title">自动排课</h3>
+
+        <div class="form-group col-md-12">
+                        <button type="submit" class="btn btn-defaul col-md-2">同步</button>
+            </div>
+            <div class="form-group col-md-12">
+                        <button type="submit" class="btn btn-defaul col-md-2">自动排课</button>
             </div>
         </div>
+
     </div>
 {% endblock %}
 
@@ -137,7 +132,12 @@
                     "order": [[0, 'asc']]
                 }
             );
-            var d = new Array('周一', "周二", "周三", "周四", "周五", "周六", "周日")
+            {% if f is 1 %}
+                alert("success")
+            {% elif f is 2 %}
+                alert("failure")
+            {% endif %}
+            var d = new Array('无','周一', "周二", "周三", "周四", "周五", "周六", "周日")
 
             for (var i = 1; i <= 20; i++) {
                 $("#ws").append("<option value=" + i + ">" + "第" + i + '周' + "</option>")
@@ -148,34 +148,351 @@
             }
             ;
 
-            for (var i = 0; i < 7; i++) {
-                $('#d1').append("<option value=" + i + ">" + d[i] + "</option>")
+            for (var i = 0; i <= 7; i++) {
+                if(i==0){
+                    $('#d1').append("<option value=" + '' + ">" + d[i] + "</option>");
+                }
+                else
+                    $('#d1').append("<option value=" + i + ">" + d[i] + "</option>");
             }
             ;
-            for (var i = 0; i < 7; i++) {
-                $('#d2').append("<option value=" + i + ">" + d[i] + "</option>")
-            }
-            ;
-
-            for (var i = 1; i <= 13; i++) {
-                $('#f1').append("<option value=" + i + ">" + "第" + i + '节' + "</option>")
-            }
-            ;
-            for (var i = 1; i <= 13; i++) {
-                $('#f2').append("<option value=" + i + ">" + "第" + i + '节' + "</option>")
-            }
-            ;
-
-            for (var i = 1; i <= 13; i++) {
-                $('#e1').append("<option value=" + i + ">" + "第" + i + '节' + "</option>")
-            }
-            ;
-            for (var i = 1; i <= 13; i++) {
-                $('#e2').append("<option value=" + i + ">" + "第" + i + '节' + "</option>")
+            for (var i = 0; i <= 7; i++) {
+                if(i==0){
+                    $('#d2').append("<option value=" + '' + ">" + d[i] + "</option>");
+                }
+                else
+                    $('#d2').append("<option value=" + i + ">" + d[i] + "</option>");
             }
             ;
 
+            for (var i = 0; i <= 13; i++) {
+                if(i==0){
+                    $('#f1').append("<option value=" + '' + ">" + "无" + "</option>");
+                }
+                else {
+                    $('#f1').append("<option value=" + i + ">" + "第" + i + '节' + "</option>");
+                }
 
+            }
+            ;
+            for (var i = 0; i <= 13; i++) {
+                if(i==0){
+                    $('#f2').append("<option value=" + '' + ">" + "无" + "</option>");
+                }
+                else {
+                    $('#f2').append("<option value=" + i + ">" + "第" + i + '节' + "</option>");
+                }
+            }
+            ;
+
+            for (var i = 0; i <= 13; i++) {
+                if(i==0){
+                    $('#e1').append("<option value=" + '' + ">" + "无" + "</option>");
+                }
+                else {
+                    $('#e1').append("<option value=" + i + ">" + "第" + i + '节' + "</option>");
+                }
+            }
+            ;
+            for (var i = 0; i <= 13; i++) {
+                if(i==0){
+                    $('#e2').append("<option value=" + '' + ">" + "无" + "</option>");
+                }
+                else {
+                    $('#e2').append("<option value=" + i + ">" + "第" + i + '节' + "</option>");
+                }
+            }
+            ;
+
+            room = new Array("无\n", "A-101" ,
+                "A-102" ,
+                "A-103" ,
+                "A-104" ,
+                "A-105" ,
+                "A-106" ,
+                "A-107" ,
+                "A-108" ,
+                "A-109" ,
+                "A-110" ,
+                "A-111" ,
+                "A-112" ,
+                "A-113" ,
+                "A-114" ,
+                "A-115" ,
+                "A-116" ,
+                "A-117" ,
+                "A-118" ,
+                "A-119" ,
+                "A-120" ,
+                "A-121" ,
+                "A-122" ,
+                "A-123" ,
+                "A-124" ,
+                "A-125" ,
+                "A-201" ,
+                "A-202" ,
+                "A-203" ,
+                "A-204" ,
+                "A-205" ,
+                "A-206" ,
+                "A-207" ,
+                "A-208" ,
+                "A-209" ,
+                "A-210" ,
+                "A-211" ,
+                "A-212" ,
+                "A-213" ,
+                "A-214" ,
+                "A-215" ,
+                "A-216" ,
+                "A-217" ,
+                "A-218" ,
+                "A-219" ,
+                "A-220" ,
+                "A-221" ,
+                "A-222" ,
+                "A-223" ,
+                "A-224" ,
+                "A-225" ,
+                "A-301" ,
+                "A-302" ,
+                "A-303" ,
+                "A-304" ,
+                "A-305" ,
+                "A-306" ,
+                "A-307" ,
+                "A-308" ,
+                "A-309" ,
+                "A-310" ,
+                "A-311" ,
+                "A-312" ,
+                "A-313" ,
+                "A-314" ,
+                "A-315" ,
+                "A-316" ,
+                "A-317" ,
+                "A-318" ,
+                "A-319" ,
+                "A-320" ,
+                "A-321" ,
+                "A-322" ,
+                "A-323" ,
+                "A-324" ,
+                "A-325" ,
+                "A-401" ,
+                "A-402" ,
+                "A-403" ,
+                "A-404" ,
+                "A-405" ,
+                "A-406" ,
+                "A-407" ,
+                "A-408" ,
+                "A-409" ,
+                "A-410" ,
+                "A-411" ,
+                "A-412" ,
+                "A-413" ,
+                "A-414" ,
+                "A-415" ,
+                "A-416" ,
+                "A-417" ,
+                "A-418" ,
+                "A-419" ,
+                "A-420" ,
+                "A-421" ,
+                "A-422" ,
+                "A-423" ,
+                "A-424" ,
+                "A-425" ,
+                "A-501" ,
+                "A-502" ,
+                "A-503" ,
+                "A-504" ,
+                "A-505" ,
+                "A-506" ,
+                "A-507" ,
+                "A-508" ,
+                "A-509" ,
+                "A-510" ,
+                "A-511" ,
+                "A-512" ,
+                "A-513" ,
+                "A-514" ,
+                "A-515" ,
+                "A-516" ,
+                "A-517" ,
+                "A-518" ,
+                "A-519" ,
+                "A-520" ,
+                "A-521" ,
+                "A-522" ,
+                "A-523" ,
+                "A-524" ,
+                "A-525" ,
+                "B-101" ,
+                "B-102" ,
+                "B-103" ,
+                "B-104" ,
+                "B-105" ,
+                "B-106" ,
+                "B-107" ,
+                "B-108" ,
+                "B-109" ,
+                "B-110" ,
+                "B-111" ,
+                "B-112" ,
+                "B-113" ,
+                "B-114" ,
+                "B-115" ,
+                "B-116" ,
+                "B-117" ,
+                "B-118" ,
+                "B-119" ,
+                "B-120" ,
+                "B-121" ,
+                "B-122" ,
+                "B-123" ,
+                "B-124" ,
+                "B-125" ,
+                "B-201" ,
+                "B-202" ,
+                "B-203" ,
+                "B-204" ,
+                "B-205" ,
+                "B-206" ,
+                "B-207" ,
+                "B-208" ,
+                "B-209" ,
+                "B-210" ,
+                "B-211" ,
+                "B-212" ,
+                "B-213" ,
+                "B-214" ,
+                "B-215" ,
+                "B-216" ,
+                "B-217" ,
+                "B-218" ,
+                "B-219" ,
+                "B-220" ,
+                "B-221" ,
+                "B-222" ,
+                "B-223" ,
+                "B-224" ,
+                "B-225" ,
+                "B-301" ,
+                "B-302" ,
+                "B-303" ,
+                "B-304" ,
+                "B-305" ,
+                "B-306" ,
+                "B-307" ,
+                "B-308" ,
+                "B-309" ,
+                "B-310" ,
+                "B-311" ,
+                "B-312" ,
+                "B-313" ,
+                "B-314" ,
+                "B-315" ,
+                "B-316" ,
+                "B-317" ,
+                "B-318" ,
+                "B-319" ,
+                "B-320" ,
+                "B-321" ,
+                "B-322" ,
+                "B-323" ,
+                "B-324" ,
+                "B-325" ,
+                "B-401" ,
+                "B-402" ,
+                "B-403" ,
+                "B-404" ,
+                "B-405" ,
+                "B-406" ,
+                "B-407" ,
+                "B-408" ,
+                "B-409" ,
+                "B-410" ,
+                "B-411" ,
+                "B-412" ,
+                "B-413" ,
+                "B-414" ,
+                "B-415" ,
+                "B-416" ,
+                "B-417" ,
+                "B-418" ,
+                "B-419" ,
+                "B-420" ,
+                "B-421" ,
+                "B-422" ,
+                "B-423" ,
+                "B-424" ,
+                "B-425" ,
+                "B-501" ,
+                "B-502" ,
+                "B-503" ,
+                "B-504" ,
+                "B-505" ,
+                "B-506" ,
+                "B-507" ,
+                "B-508" ,
+                "B-509" ,
+                "B-510" ,
+                "B-511" ,
+                "B-512" ,
+                "B-513" ,
+                "B-514" ,
+                "B-515" ,
+                "B-516" ,
+                "B-517" ,
+                "B-518" ,
+                "B-519" ,
+                "B-520" ,
+                "B-521" ,
+                "B-522" ,
+                "B-523" ,
+                "B-524" ,
+                "B-525" ,
+                "阶A-101" ,
+                "阶A-102" ,
+                "阶A-103" ,
+                "阶A-104" ,
+                "阶A-105" ,
+                "阶A-201" ,
+                "阶A-202" ,
+                "阶A-203" ,
+                "阶A-204" ,
+                "阶A-205" ,
+                "阶A-301" ,
+                "阶A-302" ,
+                "阶A-303" ,
+                "阶A-304" ,
+                "阶A-305" ,
+                "阶B-101" ,
+                "阶B-102" ,
+                "阶B-103" ,
+                "阶B-104" ,
+                "阶B-105" ,
+                "阶B-201" ,
+                "阶B-202" ,
+                "阶B-203" ,
+                "阶B-204" ,
+                "阶B-205" ,
+                "阶B-301" ,
+                "阶B-302" ,
+                "阶B-303" ,
+                "阶B-304" ,
+                "阶B-305");
+            for(var i=0;i<room.length;i++){
+                if(i==0){
+                    $('#rooms').append("<option value=" + '' + ">" + room[i] + "</option>");
+                }
+                else
+                {
+                    $('#rooms').append("<option value=" + room[i] + ">" + room[i] + "</option>");
+                }
+            }
             $('.select2').select2();
         });
     </script>
