@@ -16,7 +16,7 @@ from courseSelection.models import CourseSelected
 from scoreManagement.models import EvaluationForm, CourseScore
 
 from django.db.models import Count, Avg, Sum, StdDev
-
-
+from datetime import datetime
+from scoreManagement.utils import get_semester
 
 
