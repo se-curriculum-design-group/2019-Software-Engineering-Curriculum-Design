@@ -18,20 +18,22 @@
                 <h3 class="box-title">查询专业课程</h3>
                 <div class="box-header ">
                     <div class="form-group">
-                        <label style="color: red">专业：</label><select id="major" class="form-control select2"
-                                                                     style="width: 20%;">
-                        <option value="ALL">全部</option>
+                        <label style="color: red">专业：</label>
+                        <select id="major" class="select2"
+                                style="width: 20%;">
+                            <option value="ALL">全部</option>
 
-                        {% for item in all_major %}
-                            <option value="{{ item }}">{{ item }}
-                        {% endfor %}
-                    </select>
-                        <label>建议修读学年：</label><select id="year" class="form-control select2" style="width: 15%;">
-                        <option value="ALL">全部</option>
-                        {% for item in all_year %}
-                            <option value="{{ item.year }}">{{ item.year }}</option>
-                        {% endfor %}
-                    </select>
+                            {% for item in all_major %}
+                                <option value="{{ item }}">{{ item }}
+                            {% endfor %}
+                        </select>
+                        <label>建议修读学年：</label>
+                        <select id="year" class="select2" style="width: 15%;">
+                            <option value="ALL">全部</option>
+                            {% for item in all_year %}
+                                <option value="{{ item.year }}">{{ item.year }}</option>
+                            {% endfor %}
+                        </select>
                         <label>建议修读学期：</label><select id="semester" class="form-control select2" style="width: 15%;">
                         <option value="ALL">全部</option>
                         <option value="1">1</option>
@@ -40,7 +42,7 @@
                     </select>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                         <label>课程性质：</label><select id="course_type" class="form-control select2" style="width: 15%;">
                         <option value="ALL">全部</option>
-                        {% for item in all_course %}
+                        {% for item in all_course_type %}
                             <option value="{{ item.course_type }}">{{ item.course_type }}</option>
                         {% endfor %}
                     </select>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
@@ -53,9 +55,9 @@
                     <thead>
                     <tr>
                         <th>序号</th>
-                        <th>专业</th>
-                        <th>学年</th>
-                        <th>学期</th>
+                        <th>专业计划</th>
+                        <th>开课学年</th>
+                        <th>开课学期</th>
                         <th>课程代码</th>
                         <th>课程名称</th>
                         <th>开课学院</th>
@@ -71,7 +73,7 @@
                     {% for item in all_major_course %}
                         <tr>
                             <td>{{ forloop.counter }}</td>
-                            <td>{{ item.mno.major }}</td>
+                            <td>{{ item.mno }}</td>
                             <td>{{ item.year }}</td>
                             <td>{{ item.semester }}</td>
                             <td>{{ item.cno.cno }}</td>
@@ -92,7 +94,242 @@
                     </tbody>
                 </table>
             </div>
+            <div class="box-footer">
+                <div class="btn-group pull-left ">
+                    <button id="add_btn" class="btn btn-success" type="button">
+                        <span class="glyphicon glyphicon-plus">添加专业计划</span>
+                    </button>
+                    <button id='change_btn' class="btn btn-info" type="button">
+                        <span class="glyphicon glyphicon-pencil"></span>修改专业课程计划
+                    </button>
+                    <button id='delete_btn' class="btn btn-danger" type="button">
+                        <span class="glyphicon glyphicon-remove"></span>删除专业课程计划
+                    </button>
+                </div>
+            </div>
         </div>
+
+        <div class="modal fade" id="changeCourse">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <form action="" name="changeMajorCourse" method="get" onsubmit="return(false);">
+                        <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal">&times;</button>
+                            <h4 class="modal-title">修改专业课程计划</h4>
+                        </div>
+                        <div class="modal-content" id="changeCourseModal">
+                            <div class="form-horizontal">
+                                <div class="form-group">
+                                    <label for="changeCourseMajor" class="col-sm-2 control-label">专业：</label>
+                                    <div class="col-sm-10">
+                                        <input type="text" id="changeCourseMajor" disabled class="form-control"
+                                               name="change_major">
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="changeCourseYear" class="col-sm-2 control-label">开课学年：</label>
+                                    <div class="col-sm-10">
+                                        <input type="text" id="changeCourseYear" class="form-control"
+                                               name="change_year">
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="changeCourseSemester" class="col-sm-2 control-label">开课学期：</label>
+                                    <div class="col-sm-10">
+                                        <input type="text" id="changeCourseSemester" class="form-control"
+                                               name="change_semester">
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="changeCourseCode" style="color: red" class="col-sm-2 control-label">课程代码：</label>
+                                    <div class="col-sm-10">
+                                        <input type="text" id="changeCourseCode" disabled class="form-control"
+                                               name="change_cno">
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="changeCourseName" class="col-sm-2 control-label">课程名称：</label>
+                                    <div class="col-sm-10">
+                                        <input type="text" id="changeCourseName" disabled class="form-control"
+                                               name="change_cname">
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="changeOpenCollege" class="col-sm-2 control-label">开课学院：</label>
+                                    <div class="col-sm-10">
+                                        <input type="text" id="changeOpenCollege" disabled class="form-control"
+                                               name="change_open_college">
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="changeCourseType" class="col-sm-2 control-label">课程性质：</label>
+                                    <div class="col-sm-10">
+                                        <input type="text" id="changeCourseType" disabled class="form-control"
+                                               name="change_course_type">
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="changeCourseType" class="col-sm-2 control-label">学分：</label>
+                                    <div class="col-sm-10">
+                                        <input type="text" id="changeCourseType" disabled class="form-control"
+                                               name="change_course_type">
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label for="changeCourseType" style="color: red" class="col-sm-2 control-label">授课学时：</label>
+                                    <div class="col-sm-10">
+                                        <input type="text" id="changeCourseType" class="form-control"
+                                               name="change_course_type">
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label for="changeCourseType" style="color: red" class="col-sm-2 control-label">实验学时：</label>
+                                    <div class="col-sm-10">
+                                        <input type="text" id="changeCourseType" class="form-control"
+                                               name="change_course_type">
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label for="changeCourseType" style="color: red"
+                                           class="col-sm-2 control-label">总学时：</label>
+                                    <div class="col-sm-10">
+                                        <input type="text" id="changeCourseType" disabled class="form-control"
+                                               name="change_course_type">
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label for="changePlanStuMethod" style="color: red" class="col-sm-2 control-label">考核方式：</label>
+                                    <div class="col-sm-10">
+                                        <input type="text" id="changePlanStuMethod" class="form-control"
+                                               name="change_course_stu_method">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="modal-footer">
+                                <div class="center-block">
+                                    <button id="cancelChange" type="button" class="btn btn-default"
+                                            data-dismiss="modal">取消
+                                    </button>
+                                    <button id="sureToChange" type="submit" class="btn btn-success">保存</button>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+        <div class="modal fade" id="addForm">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <form action="" name="changeMajorCourse" method="get" onsubmit="return(false);">
+                        <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal">&times;</button>
+                            <h4 class="modal-title">添加专业课程计划</h4>
+                        </div>
+                        <div class="modal-content" id="changeCourseModal">
+                            <div class="form-horizontal">
+
+                                <div class="form-group">
+                                    <label for=major_plan" style="color: red;" class="col-sm-2 control-label">选择专业：</label>
+                                    <div class="col-sm-10">
+                                        <select name="major_plan_select" id="major_plan" class="form-control select2"
+                                                style="width: 40%;">
+                                            {% for item in all_major_plan %}
+                                                <option value="{{ item }}">{{ item }}</option>
+                                            {% endfor %}
+                                        </select>
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="major_course" style="color: red" class="col-sm-2 control-label">选择课程：</label>
+                                    <div class="col-sm-10">
+                                        <select name="course_select" id="major_course" class="form-control select2"
+                                                style="width: 40%">
+                                            {% for item in all_course %}
+                                                <option value="{{ item.cno }}">{{ item.cno }}</option>
+                                            {% endfor %}
+                                        </select>
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="changeCourseType" class="col-sm-2 control-label" style="color: red">开课学年：</label>
+                                    <div class="col-sm-10">
+                                        <input type="text" id="add_course_year" class="form-control"
+                                               name="change_course_type" placeholder="2018">
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="changeCourseType" class="col-sm-2 control-label" style="color: red">开课学期：</label>
+                                    <div class="col-sm-10">
+                                        <input type="text" id="add_course_semester" class="form-control"
+                                               name="change_course_type" placeholder="1">
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="changeCourseType" class="col-sm-2 control-label">授课学时：</label>
+                                    <div class="col-sm-10">
+                                        <input type="text" id="add_course_teach_hour" class="form-control"
+                                               name="change_course_type">
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="changeCourseType" class="col-sm-2 control-label">实验学时：</label>
+                                    <div class="col-sm-10">
+                                        <input type="text" id="add_course_exp_hour" class="form-control"
+                                               name="change_course_type">
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label for="changePlanStuMethod" class="col-sm-2 control-label">考核方式：</label>
+                                    <div class="col-sm-10">
+                                        <input type="text" id="add_course_exam_method" class="form-control"
+                                               name="change_course_stu_method">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="modal-footer">
+                                <div class="center-block">
+                                    <button id="cancelChange" type="button" class="btn btn-default"
+                                            data-dismiss="modal">取消
+                                    </button>
+                                    <button id="sureToAdd" type="submit" class="btn btn-success">保存</button>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+
+        <div class="modal fade" id="deleteForm" role="dialog">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal">&times;</button>
+                        <h4 class="modal-title">确认删除该专业信息？</h4>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
+                        <button id="sureToDelete" type="button" class="btn btn-danger">删除</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
     </section>
 {% endblock %}
 
@@ -104,31 +341,14 @@
                 let year = $('#year').val();
                 let semester = $('#semester').val();
                 let course_type = $('#course_type').val();
-                if (
+                return (
                     (major === "ALL" || major === data[1]) && (year === "ALL" || year === data[2])
                     && (semester === "ALL" || semester === data[2]) && (course_type === "ALL" || course_type === data[7])
-                ) {
-                    return true;
-                } else {
-                    return false
-                }
+                );
             }
         );
-        $(document).ready(function () {
-            var year = $('#major').val();
-            const myData = {"year": year};
-            {% comment %} $.get(
-                '{% url "scoreManagement:_ajax" %}',
-                myData,
-                function (ret, status) {
-                    if (ret['yes']) {
-                        alert("YES");
-                    }else{
-                        alert("NO");
-                    }
-                }
-            ); {% endcomment %}
 
+        $(document).ready(function () {
             var table = $('#major_course_table').DataTable(
                 {
                     dom: 'Bfrtip',
@@ -137,7 +357,11 @@
                         {
                             extend: 'excel',
                             filename: "专业课程信息表",
-                        }, 'pdf', 'print'
+                        },
+                        {
+                            extend: 'print',
+                            filename: "专业课程信息表",
+                        }
                     ],
                     "paging": true,       <!-- 允许分页 -->
                     "lengthChange": true, <!-- 允许改变每页显示的行数 -->
@@ -186,11 +410,143 @@
                 }
             });
 
-            // Event listener to the two range filtering inputs to redraw on input
             $(' #course_type, #major, #year, #semester').change(function () {
                 table.draw();
             });
 
+            $('#change_btn').click(function () {
+                if (table.rows('.selected').data().length) {
+                    var rowData = table.rows('.selected').data()[0];
+                    var form_modal = $('#changeCourse');
+                    var inputs = form_modal.find('input');
+                    for (let i = 1; i <= inputs.length; i++) {
+                        $(inputs[i - 1]).val(rowData[i]);
+                    }
+                    form_modal.modal();
+                } else {
+                    alert("请选择一项成绩修改");
+                }
+            });
+
+            $('#sureToChange').click(function () {
+                var inputs = $('#changeCourse').find('input');
+                var values = [];
+                for (let i = 0; i < inputs.length; i++) {
+                    values.push($(inputs[i]).val());
+                }
+                const major = values[0];
+                const year = values[1];
+                const semeser = values[2];
+                const cno = values[3];
+                const course_type = values[6];
+                const teach_hours = values[9];
+                const exp_hours = values[10];
+                const exam_method = values[11];
+                const data = {
+                    'major': major,
+                    'year': year,
+                    'semester': semeser,
+                    'cno': cno,
+                    'course_type': course_type,
+                    'teach_hours': teach_hours,
+                    'exp_hours': exp_hours,
+                    'exam_method': exam_method,
+                };
+
+                $.get(
+                    "{% url 'scoreManagement:adm_change_major_course' %}",
+                    data,
+                    function (ret) {
+                        if (!ret) {
+                            alert("修改失败");
+                        } else {
+                            let tds = Array.prototype.slice.call($('.selected td'));
+                            tds[2].innerHTML = year;
+                            tds[3].innerHTML = semeser;
+                            tds[9].innerHTML = all_hours;
+                            tds[10].innerHTML = teach_hours;
+                            tds[11].innerHTML = exp_hours;
+                            tds[12].innerHTML = exam_method;
+                            alert('修改成功！');
+                        }
+                    }
+                );
+            });
+
+            $('#delete_btn').click(function () {
+                console.log("delete clicked");
+                if (table.rows('.selected').data().length) {
+                    $("#deleteForm").modal();
+                    $('#sureToDelete').click(function () {
+                        var rowData = table.rows('.selected').data()[0];
+                        const major_plan = rowData[1];
+                        const cno = rowData[4];
+                        const ctype = rowData[7];
+
+                        const data = {
+                            'major_plan': major_plan,
+                            'cno': cno,
+                            'ctype': ctype,
+                        };
+                        $.get(
+                            "{% url 'scoreManagement:adm_delete_major_course' %}",
+                            data,
+                            function (ret) {
+                                if (!ret) {
+                                    console.log("删除失败");
+                                } else {
+                                    table.row('.selected').remove().draw(false);
+                                }
+                            }
+                        );
+                    });
+                } else {
+                    alert("请选择一个要删除的项目。");
+                }
+            });
+
+            $('#add_btn').click(function () {
+                $('#addForm').modal();
+                $('#sureToAdd').click(function () {
+                    const major_str = $('#major_plan').val();
+                    const major_course = $('#major_course').val();
+                    const year = $('#add_course_year').val();
+                    const semester = $('#add_course_semester').val();
+                    const teach_hour = $('#add_course_teach_hour').val();
+                    const exp_hour = $('#add_course_exp_hour').val();
+                    const exam_method = $('#add_course_exam_method').val();
+
+                    const data = {
+                        'major_str': major_str,
+                        'major_course': major_course,
+                        'year': year,
+                        'semester': year,
+                        'teach_hour': teach_hour,
+                        'exp_hour': exp_hour,
+                        'exam_method': exam_method,
+                    };
+
+                    function val() {
+                        return !(String(teach_hour).length === 0 || String(exp_hour).length === 0 || exam_method === 0 || String(year).length === 0 || String(semester).length === 0);
+                    }
+
+                    if (!val()) {
+                        alert("请检查输入");
+                    } else {
+                        $.get(
+                            "{% url 'scoreManagement:adm_add_major_course' %}",
+                            data,
+                            function (ret) {
+                                if (!ret) {
+                                    alert("添加失败");
+                                } else {
+                                    alert("添加成功");
+                                }
+                            }
+                        );
+                    }
+                });
+            });
             $('.select2').select2();
         });
     </script>

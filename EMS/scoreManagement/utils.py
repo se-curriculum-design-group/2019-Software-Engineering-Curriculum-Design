@@ -4,9 +4,14 @@ import numpy as np
 from backstage.models import Student, Major, MajorPlan, Teacher, User
 from .models import CourseScore, MajorCourses, Teacher, Teaching
 
-student = Student.objects.get(username='2016000474')
-teacher = Teacher.objects.get(username='198500038')
-adm = User.objects.get(username='LuoD')
+
+def get_semester(month:int):
+    if month == 7:
+        return 3
+    elif 3 <= month <= 6:
+        return 2
+    else:
+        return 1
 
 
 def stu_search_course(student, year, semester):
