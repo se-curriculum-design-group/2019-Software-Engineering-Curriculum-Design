@@ -22,7 +22,7 @@
         <a href="#" class="dropdown-toggle" data-toggle="dropdown">排课-临时教学<span
                 class="caret"></span></a>
         <ul class="dropdown-menu" role="menu">
-            <li><a href="#">排课</a></li>
+            <li><a href="{% url 'courseScheduling:schedule' %}">排课</a></li>
             <li><a href="{% url 'courseScheduling:occupy_room' %}">临时教学活动安排</a></li>
         </ul>
     </li>
@@ -93,7 +93,7 @@
             </span>
         </a>
         <ul class="treeview-menu">
-            <li><a href="#"><i class="fa fa-circle-o"></i>排课</a></li>
+            <li><a href="{% url 'courseScheduling:schedule' %}"><i class="fa fa-circle-o"></i>排课</a></li>
             <li><a href="{% url 'courseScheduling:occupy_room' %}"><i class="fa fa-circle-o"></i>临时教学活动安排</a></li>
         </ul>
     </li>
