@@ -11,7 +11,7 @@
             <li class="divider"></li>
             <li><a href="{% url 'backstage:adm_view_all_course' %}">课程信息管理</a></li>
             <li><a href="{% url 'backstage:adm_view_all_class_room' %}">教室信息管理</a></li>
-            <li><a href="#">临时教学活动安排</a> </li>
+            <li><a href="#">临时教学活动安排</a></li>
             <li class="divider"></li>
             <li><a href="{% url 'scoreManagement:adm_view_major_plan' %}">专业培养计划管理</a></li>
             <li><a href="{% url 'scoreManagement:adm_view_major_course' %}">专业课程计划管理</a></li>
@@ -24,7 +24,7 @@
         <ul class="dropdown-menu" role="menu">
             <li><a href="{% url 'courseScheduling:schedule' %}">手动排课</a></li>
             <li><a href="{% url 'courseScheduling:occupy_room' %}">临时教学活动安排</a></li>
-            <li><a href="{% url 'courseScheduling:last_html' %}">自动排课</a> </li>
+            <li><a href="{% url 'courseScheduling:last_html' %}">自动排课</a></li>
         </ul>
     </li>
 
@@ -32,12 +32,10 @@
         <a href="#" class="dropdown-toggle" data-toggle="dropdown">课业管理<span
                 class="caret"></span></a>
         <ul class="dropdown-menu" role="menu">
-            <li><a href="#">全校课表管理</a></li>
-            <li><a href="#">空闲教室管理</a></li>
             <li class="divider"></li>
             <li><a href=" {% url 'courseSelection:adm_selection_manage' %}">设置选课时间</a></li>
-                        <li><a href=" {% url 'courseSelection:adm_school' %}">查询全校选课情况</a></li>
-                        <li><a href=" {% url 'courseSelection:adm_class' %}">查询课程信息</a></li>
+            <li><a href=" {% url 'courseSelection:adm_school' %}">查询全校选课情况</a></li>
+            <li><a href=" {% url 'courseSelection:adm_class' %}">查询课程信息</a></li>
             <li><a href="#">查看毕设选题情况</a></li>
         </ul>
     </li>
@@ -81,8 +79,10 @@
             <li><a href="{% url 'backstage:adm_view_all_teacher' %}"><i class="fa fa-circle-o"></i>教师信息管理</a></li>
             <li><a href="{% url 'backstage:adm_view_all_course' %}"><i class="fa fa-circle-o"></i>课程信息管理</a></li>
             <li><a href="{% url 'backstage:adm_view_all_class_room' %}"><i class="fa fa-circle-o"></i>教室信息管理</a></li>
-            <li><a href="{% url 'scoreManagement:adm_view_major_plan' %}"><i class="fa fa-circle-o"></i>专业培养计划管理</a></li>
-            <li><a href="{% url 'scoreManagement:adm_view_major_course' %}"><i class="fa fa-circle-o"></i>专业课程计划管理</a></li>
+            <li><a href="{% url 'scoreManagement:adm_view_major_plan' %}"><i class="fa fa-circle-o"></i>专业培养计划管理</a>
+            </li>
+            <li><a href="{% url 'scoreManagement:adm_view_major_course' %}"><i class="fa fa-circle-o"></i>专业课程计划管理</a>
+            </li>
         </ul>
     </li>
 
@@ -96,7 +96,7 @@
         <ul class="treeview-menu">
             <li><a href="{% url 'courseScheduling:schedule' %}"><i class="fa fa-circle-o"></i>手工排课</a></li>
             <li><a href="{% url 'courseScheduling:occupy_room' %}"><i class="fa fa-circle-o"></i>临时教学活动安排</a></li>
-            <li><a href="{% url 'courseScheduling:last_html'%}"><i class="fa fa-circle-o"></i>自动排课</a> </li>
+            <li><a href="{% url 'courseScheduling:last_html' %}"><i class="fa fa-circle-o"></i>自动排课</a></li>
         </ul>
     </li>
     <li class="treeview">
@@ -120,12 +120,9 @@
             </span>
         </a>
         <ul class="treeview-menu">
-            <li><a href="#"><i class="fa fa-circle-o"></i>全校课表管理</a></li>
-            <li><a href="#"><i class="fa fa-circle-o"></i>空闲教室管理</a></li>
-            <li><a href="{% url 'courseScheduling:schedule' %}"><i class="fa fa-circle-o"></i>手动排课</a></li>
             <li><a href="{% url 'courseSelection:adm_selection_manage' %}"><i class="fa fa-circle-o"></i>设置选课时间</a></li>
-                                    <li><a href=" {% url 'courseSelection:adm_school' %}">查询全校选课情况</a></li>
-                        <li><a href=" {% url 'courseSelection:adm_class' %}">查询课程信息</a></li>
+            <li><a href=" {% url 'courseSelection:adm_school' %}"><i class="fa fa-circle-o"></i>查询全校选课情况</a></li>
+            <li><a href=" {% url 'courseSelection:adm_class' %}"><i class="fa fa-circle-o"></i>查询课程信息</a></li>
             <li><a href="#"><i class="fa fa-circle-o"></i>查看毕设选题情况</a></li>
         </ul>
     </li>
