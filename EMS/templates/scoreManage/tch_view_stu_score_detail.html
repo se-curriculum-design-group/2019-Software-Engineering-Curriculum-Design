@@ -1,94 +1,91 @@
 {% extends 'teacher_base.html' %}
 {% load staticfiles %}
 
+
 {% block content %}
     <section class="content-header">
-        <h1>查询学生成绩
-            <small>教师</small>
+        <h1>成绩管理
+            <small>Info</small>
         </h1>
         <ol class="breadcrumb">
             <li><a href="{% url 'scoreManagement:welcome' %}"><i class="fa fa-dashboard"></i> 主页</a></li>
-            <li class="active">成绩管理</li>
-            <li class="active">查询学生成绩</li>
+            <li class="active">查看学生成绩</li>
         </ol>
     </section>
-    <div class="box">
-        <div class="box-header">
-            <h3 class="box-title">所教学的课程</h3>
+    <section class="content">
+        <div class="box">
             <div class="box-header">
-                <label for="">学年：</label>
-                <select name="teach_year" id="year" class="select2" style="width: 20%;">
-                    <option value="ALL" selected="selected">全部</option>
-                    {% for item in all_year %}
-                        <option value="{{ item }}">{{ item }}</option>
-                    {% endfor %}
-                </select>
+                <h3 class="box-title">学生成绩表</h3>
 
-                <label for="">学期：</label>
-                <select name="teach_semester" id="semester" class="select2" style="width: 20%;">
-                    <option value="ALL" selected="selected">全部</option>
-                    {% for item in all_semester %}
-                        <option value="{{ item }}">{{ item }}</option>
-                    {% endfor %}
-                </select>
+                <div class="box-header">
+
+                    <label for="">行政班：</label>
+                    <select name="adm_class" id="in_class" class="select2" style="width: 20%;">
+                        <option value="ALL" selected="selected">全部</option>
+                        {% for item in adm_class_list %}
+                            <option value="{{ item }}">{{ item }}</option>
+                        {% endfor %}
+                    </select>
+
+                </div>
 
             </div>
-        </div>
-
-        <div class="box-body">
-            <table id="all_teaching_table" class="table table-bordered table-striped">
-                <thead>
-                <th>编号</th>
-                <th>课程号</th>
-                <th>课程名称</th>
-                <th>课程性质</th>
-                <th>年级</th>
-                <th>授课教室</th>
-                <th>专业名称</th>
-                <th>开课学年</th>
-                <th>开课学期</th>
-                <th>查看学生成绩</th>
-                </thead>
-                <tbody>
-                {% for teaching in teaching_list %}
+            <div class="box-body">
+                <table id="student_score_table" class="table table-bordered table-striped">
+                    <thead>
                     <tr>
-                        <td>{{ forloop.counter }}</td>
-                        <td>{{ teaching.mcno.cno.cno }}</td>
-                        <td>{{ teaching.mcno.cno.cname }}</td>
-                        <td>{{ teaching.mcno.cno.course_type }}</td>
-                        <td>{{ teaching.mcno.mno.year }}</td>
-                        <td>{{ teaching.mcno.mno.major.mno }}</td>
-                        <td>{{ teaching.mcno.mno.major.mname }}</td>
-                        <td>{{ teaching.mcno.year }}</td>
-                        <td>{{ teaching.mcno.semester }}</td>
-                        <td>
-                            <a href="{% url 'scoreManagement:show_student_score' teaching.mcno.cno.cno teaching.mcno.cno.course_type %}">
-                                <button id='show_students' class="btn btn-primary" type="button">
-                                    <span class="glyphicon glyphicon-plus"></span>查看
-                                </button>
-                            </a>
-                        </td>
+                        <th>编号</th>
+                        <th>学号</th>
+                        <th>姓名</th>
+                        <th>性别</th>
+                        <th>年级</th>
+                        <th>班级</th>
+                        <th>平时分</th>
+                        <th>考试分</th>
+                        <th>考试权重</th>
+                        <th>总分</th>
                     </tr>
-                {% endfor %}
-                </tbody>
-            </table>
+                    </thead>
+                    <tbody>
+                    {% for student in course_selected %}
+                        <tr>
+                            <td>{{ forloop.counter }}</td>
+                            <td>{{ student.sno }}</td>
+                            <td>{{ student.sno.name }}</td>
+                            {% if student.sno.sex == True %}
+                                <td>男</td>
+                            {% else %}
+                                <td>女</td>
+                            {% endif %}
+                            <td>{{ student.sno.in_year }}</td>
+                            <td>{{ student.sno.in_cls.name }}</td>
+                            <td>{{ student.common_score }}</td>
+                            <td>{{ student.final_score }}</td>
+                            <td>{{ student.cno.tno.weight }}</td>
+                            <td>{{ student.score }}</td>
+                        </tr>
+                    {% endfor %}
+                    </tbody>
+                    <tfoot>
+                </table>
+            </div>
         </div>
-    </div>
+    </section>
 {% endblock %}
+
 
 {% block script %}
     <script>
 
-    $.fn.dataTable.ext.search.push(
+        $.fn.dataTable.ext.search.push(
             function (settings, data, dataIndex) {
-                let year = $('#year').val();
-                let semester = $('#semester').val();
-                return (year === "ALL" || year === data[7]) && (semester === "ALL" || semester === data[8]);
+                let adm_class = $('#in_class').val();
+                return adm_class === "ALL" || adm_class === data[5];
             }
         );
 
         $(document).ready(function () {
-            var table = $('#all_teaching_table').DataTable(
+            var table = $('#student_score_table').DataTable(
                 {
                     dom: 'Bfrtip',
                     buttons: [
@@ -141,7 +138,7 @@
                 }
             );
 
-            $('#all_teaching_table tbody').on('click', 'tr', function (e) {
+            $('#student_score_table tbody').on('click', 'tr', function (e) {
                 if ($(this).hasClass('selected')) {
                     $(this).removeClass('selected');
                 } else {
@@ -150,10 +147,11 @@
                 }
             });
             // Event listener to the two range filtering inputs to redraw on input
-            $('#semester, #year').change(function () {
+            $('#in_class').change(function () {
                 table.draw();
             });
             $('.select2').select2();
         });
     </script>
 {% endblock %}
+

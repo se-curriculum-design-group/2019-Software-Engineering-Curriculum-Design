@@ -53,33 +53,15 @@
                                 <td>{{ teaching.mcno.year }}</td>
                                 <td>{{ teaching.mcno.semester }}</td>
                                 <td>
-{#                                    <a href="{% url 'courseSelection:show_students?cno='+teaching.mcno.cno.cno+'&course_type='+teaching.mcno.cno.course_type %}">#}
                                     <a href="{% url 'courseSelection:show_students' teaching.mcno.cno.cno teaching.mcno.cno.course_type %}">
-{#                                    <a href="{% url 'courseSelection:show_students' teaching %}">#}
                                         <button id='show_students' class="btn btn-primary" type="button">
                                             <span class="glyphicon glyphicon-plus"></span>查看
                                         </button>
                                     </a>
-
                                 </td>
                             </tr>
-{#                        {% endif %}#}
                     {% endfor %}
                     </tbody>
-                    <tfoot>
-                    <tr>
-                        <th>编号</th>
-                        <th>课程号</th>
-                        <th>课程名称</th>
-                        <th>课程性质</th>
-                        <th>年级</th>
-                        <th>授课教室</th>
-                        <th>专业名称</th>
-                        <th>开课学年</th>
-                        <th>开课学期</th>
-                        <th>查看选课学生</th>
-                    </tr>
-                    </tfoot>
                 </table>
             </div>
         </div>
@@ -88,32 +70,6 @@
 
 
 {% block script %}
-
-
-    <!-- jQuery 2.2.3 -->
-    <script src="{% static 'AdminLTE/plugins/jQuery/jquery-2.2.3.min.js' %}"></script>
-    <!-- Bootstrap 3.3.6 -->
-    <script src="{% static 'AdminLTE/bootstrap/js/bootstrap.min.js' %}"></script>
-    <!-- DataTables -->
-    <script src="{% static 'AdminLTE/plugins/datatables/jquery.dataTables.min.js' %}"></script>
-    <script src="{% static 'AdminLTE/plugins/datatables/dataTables.bootstrap.min.js' %}"></script>
-    <!-- SlimScroll -->
-    <script src="{% static 'AdminLTE/plugins/slimScroll/jquery.slimscroll.min.js' %}"></script>
-    <!-- FastClick -->
-    <script src="{% static 'AdminLTE/plugins/fastclick/fastclick.js' %}"></script>
-    <!-- AdminLTE App -->
-    <script src="{% static 'AdminLTE/dist/js/app.min.js' %}"></script>
-    <!-- AdminLTE for demo purposes -->
-    <script src="{% static 'AdminLTE/dist/js/demo.js' %}"></script>
-    <!-- page script -->
-
-{#    <script>#}
-{#    window.onLoad=function()#}
-{#    {#}
-{#        var cookie=$.cookie('name');#}
-{#    }#}
-{#    </script>#}
-
     <script>
         var html = "<html><head><meta charset='utf-8' /></head><body>" + document.getElementsByTagName("table")[0].outerHTML + "</body></html>";
         // 实例化一个Blob对象，其构造函数的第一个参数是包含文件内容的数组，第二个参数是包含文件类型属性的对象
@@ -129,6 +85,18 @@
 
         $(function () {
             var table = $('#teaching_table').DataTable({
+                dom: 'Bfrtip',
+                buttons: [
+                    'copy',
+                    {
+                        extend: 'excel',
+                        filename: "专业课程信息表",
+                    },
+                    {
+                        extend: 'print',
+                        filename: "专业课程信息表",
+                    }
+                ],
                 "paging": true,       <!-- 允许分页 -->
                 "lengthChange": true, <!-- 允许改变每页显示的行数 -->
                 "searching": true,    <!-- 允许内容搜索 -->
