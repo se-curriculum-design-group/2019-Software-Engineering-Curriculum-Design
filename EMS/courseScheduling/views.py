@@ -202,7 +202,9 @@ def occupy_room(request):
     d = int(d)
     ls = int(ls)
     le = int(le)
-
+    if w == 0 and d == 0 and ls == 0 and le == 0:
+        rooms = []
+        return render(request, 'courseScheduing/occupy_room.html', {'rooms': rooms})
     print(w, d, ls, le)
     t = str((d - 1) * 13 + ls) + "-" + str((d - 1) * 13 + le) + "-" + str(w) + "-" + str(w)
     print(t)
@@ -215,7 +217,7 @@ def occupy_room(request):
     # sch.init()
     rooms = sch.Search_time_room(t)
     # print(rooms)
-    return render(request, "courseScheduing/occupy_room.html", {'rooms':rooms})
+    return render(request, "courseScheduing/occupy_room.html", {'rooms': rooms})
 
 # def occupy_room(request):
 #     global w,d,le,ls,note
@@ -266,3 +268,7 @@ def occupy_room(request):
 #     # sch.add_active(sss,)
 #     # print(rooms)
 #     return render(request, 'courseScheduing/occupy_room.html')
+
+
+def schedule(REQUEST):
+    return render(REQUEST, 'courseScheduing\schedule.html')
