@@ -58,9 +58,8 @@
                             <td>{{ r.container }}</td>
                             <form action="{% url 'courseScheduling:occupy_room' %}" method="post">
                                 {% csrf_token %}
-                                <td><button type="submit" name={{ r.id }} value={{ r.id }}>占用</button> </td>
+                                <td><button type="button" name="{{ r.id }}" value="{{ r.id }}">占用</button> </td>
                             </form>
-
                         </tr>
                     {% endfor %}
                     </form>

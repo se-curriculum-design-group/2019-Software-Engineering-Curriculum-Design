@@ -185,10 +185,10 @@ def search_time_room_teacher(request):
     # print(rooms)
     return render(request, 'courseScheduing/teacher_scheduling_manage.html', {'rooms': rooms})
 
-w,d,ls,le,note,t=0,0,0,0,0
+w,d,ls,le,note=0,0,0,0,0
 
 def occupy_room(request):
-    global w,d,ls,le,note,t
+    global w,d,ls,le,note
     w = request.POST.get('week')
     d = request.POST.get('day')
     ls = request.POST.get('ls')
@@ -212,7 +212,7 @@ def occupy_room(request):
     a = request.POST.get('B-101')
     print(a)
     rooms=[]
-    sch.init()
+    # sch.init()
     rooms = sch.Search_time_room(t)
     # print(rooms)
     return render(request, "courseScheduing/occupy_room.html", {'rooms':rooms})
