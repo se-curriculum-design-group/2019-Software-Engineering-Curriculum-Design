@@ -246,15 +246,15 @@ def send_emails(request):
                 record = UploadFiles(file=files, author=username)
                 record.save()
 
-            recipient_list = []
-            if receivers == '0':
-                users = models.User.objects.all()
-                for user in users:
-                    recipient_list.append(user.email)
-            else:
-                users = models.User.objects.filter(department__in=receivers)
-                for user in users:
-                    recipient_list.append(user.email)
+            recipient_list = ['18811610600@163.com']
+            # if receivers == '0':
+            #     users = models.User.objects.all()
+            #     for user in users:
+            #         recipient_list.append(user.email)
+            # else:
+            #     users = models.User.objects.filter(department__in=receivers)
+            #     for user in users:
+            #         recipient_list.append(user.email)
 
             from_mail = settings.EMAIL_HOST_USER
             msg = mail.EmailMessage(title, text, from_mail, recipient_list)
