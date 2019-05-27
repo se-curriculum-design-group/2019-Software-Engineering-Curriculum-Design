@@ -5,7 +5,7 @@ from django.shortcuts import render
 import courseScheduling.Schedule as sch
 import backstage.models as mod
 from . import models
-
+from courseScheduling.Synchronize import Sychronize_with_courseSelected
 def welcome(request):
     #exam_schedule()
     return render(request, 'courseScheduing/welcome.html')
@@ -304,3 +304,23 @@ def schedule(request):
         return render(request, 'courseScheduing/schedule.html', {"f": 2})
 
 
+def last_html(request):
+    ff = '0'
+    if request.method == 'POST':
+        bu1 = request.POST.get('bu1')
+        bu2 = request.POST.get("bu2")
+        bu3 = request.POST.get('bu3')
+        week = request.POST.get('week')
+        day = request.POST.get('day')
+        print(bu1, bu2, bu3, week, day)
+        if bu1 == "1":
+            print("fu")
+            sch.autoSchedule(int(week), int(day))
+            ff = '1'
+        elif bu2 == '1':
+            Sychronize_with_courseSelected(int(week), int(day))
+            ff = '1'
+        else:
+            sch.exam_schedule(int(week), int(day))
+            ff = '1'
+    return render(request, "courseScheduing/last_html.html", {'ff':ff})

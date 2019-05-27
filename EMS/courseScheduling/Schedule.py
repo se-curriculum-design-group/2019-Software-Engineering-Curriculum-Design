@@ -233,7 +233,7 @@ def String_to_table(string1: str):
     return res
 
 
-def init():
+def init(year=2019, semester=2):
     "目前只有自动排课"
     set1 = Teacher_Schedule_result.objects.filter(tno__mcno__year=year, tno__mcno__semester=semester)
     for elements in set1:
@@ -485,10 +485,10 @@ def distribute_single(bf: Buffer, room: Classroom, tch: Teacher, course):
     write_to_database(res, bf)
 
 
-def autoSchedule():
-    year = 2019
-    semester = 2
-    init()
+def autoSchedule(yy=2019, smt=2):
+    year = yy
+    semester = smt
+    init(yy, smt)
     # 1找课 2找老师 3找学生 4找教室 5生成并检查 6写入数据库
     heap_bigroom = []
     heap_midroom = []
@@ -813,7 +813,7 @@ def String_to_examTable(string:str):
     res[int(string.split('-')[0])][int(string.split('-')[1])] = '20-20'
     return res
 
-def init_exam():
+def init_exam(year=2019, semester=2):
     rows_in_exam = Exam_Schedule.objects.filter(tno_mno_course__tno__mcno__year=year, tno_mno_course__tno__mcno__semester=semester)
     for element in rows_in_exam:
         if Students_id.get(element.sno.username) == None:
@@ -842,9 +842,9 @@ def exam_time_generate(bf: Buffer):
                 return str(i)+'-'+str(j)
 
 
-def exam_schedule():
-    init()
-    init_exam()
+def exam_schedule(year=2019, semester=2):
+    init(year, semester)
+    init_exam(year, semester)
     for e in Classrooms_id:
         Classrooms_id[e].cmp_type = 1
     heap_bigroom = []

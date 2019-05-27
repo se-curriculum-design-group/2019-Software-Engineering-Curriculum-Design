@@ -12,6 +12,7 @@ urlpatterns = [
                   path("search_time_room_teacher", views.search_time_room_teacher, name="search_time_room_teacher"),
                   path("occupy_room", views.occupy_room, name="occupy_room"),
                   path("schedule", views.schedule, name="schedule"),
+                  path("last_html", views.last_html, name="last_html"),
 ]
     
     

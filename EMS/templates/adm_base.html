@@ -24,6 +24,7 @@
         <ul class="dropdown-menu" role="menu">
             <li><a href="{% url 'courseScheduling:schedule' %}">排课</a></li>
             <li><a href="{% url 'courseScheduling:occupy_room' %}">临时教学活动安排</a></li>
+            <li><a href="{% url 'courseScheduling:last_html' %}">自动排课</a> </li>
         </ul>
     </li>
 
@@ -95,6 +96,7 @@
         <ul class="treeview-menu">
             <li><a href="{% url 'courseScheduling:schedule' %}"><i class="fa fa-circle-o"></i>排课</a></li>
             <li><a href="{% url 'courseScheduling:occupy_room' %}"><i class="fa fa-circle-o"></i>临时教学活动安排</a></li>
+            <li><a href="{% url 'courseScheduling:last_html'%}"><i class="fa fa-circle-o"></i>自动排课</a> </li>
         </ul>
     </li>
     <li class="treeview">
