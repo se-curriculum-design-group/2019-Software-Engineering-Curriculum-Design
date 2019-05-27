@@ -236,6 +236,7 @@ def String_to_table(string1: str):
 def init(year=2019, semester=2):
     "目前只有自动排课"
     set1 = Teacher_Schedule_result.objects.filter(tno__mcno__year=year, tno__mcno__semester=semester)
+    print("set1", len(set1), year, semester)
     for elements in set1:
         Table = String_to_table(elements.time)
         if Classrooms_id.get(elements.where.crno) == None:
@@ -278,6 +279,8 @@ def init(year=2019, semester=2):
                     Students_id[element.sno.username].courseSchedule, stu_table)
         if has_already_scheduled.get(elements.tno.mcno.cno.cno+elements.tno.mcno.mno.major.mname) == None:
             has_already_scheduled[elements.tno.mcno.cno.cno+elements.tno.mcno.mno.major.mname] = True
+        print("init", elements.tno.mcno.cno.cno, elements.tno.mcno.cno.cname, elements.tno.mcno.mno.major.mname, has_already_scheduled.get(elements.tno.mcno.cno.cno+elements.tno.mcno.mno.major.mname))
+
 
     set2 = Schedule_result.objects.filter(tno__mcno__year=year, tno__mcno__semester=semester)
     for elements in set2:
@@ -505,6 +508,7 @@ def autoSchedule(yy=2019, smt=2):
             heapq.heappush(heap_smallroom, Classrooms_id[elements.crno])
     coures_set = MajorCourses.objects.filter(year=year, semester=semester)
     for course in coures_set:
+        print(course.cno.cno, course.cno.cname, course.mno.major.mname, has_already_scheduled.get(course.cno.cno + course.mno.major.mname))
         if has_already_scheduled.get(course.cno.cno + course.mno.major.mname) == True:
             continue
         teacher_set = original_Teaching.objects.filter(mcno__cno__cno=course.cno.cno)
