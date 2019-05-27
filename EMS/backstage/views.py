@@ -246,15 +246,15 @@ def send_emails(request):
                 record = UploadFiles(file=files, author=username)
                 record.save()
 
-            recipient_list = []
-            if receivers == '0':
-                users = models.User.objects.all()
-                for user in users:
-                    recipient_list.append(user.email)
-            else:
-                users = models.User.objects.filter(department__in=receivers)
-                for user in users:
-                    recipient_list.append(user.email)
+            recipient_list = ['18811610600@163.com']
+            # if receivers == '0':
+            #     users = models.User.objects.all()
+            #     for user in users:
+            #         recipient_list.append(user.email)
+            # else:
+            #     users = models.User.objects.filter(department__in=receivers)
+            #     for user in users:
+            #         recipient_list.append(user.email)
 
             from_mail = settings.EMAIL_HOST_USER
             msg = mail.EmailMessage(title, text, from_mail, recipient_list)
@@ -382,6 +382,32 @@ def adm_view_all_teacher(request):
             except:
                 return render(request, 'adm_base.html', locals())
             return render(request, 'backstage/adm_change_tea.html', locals())
+        elif "add" in request.POST:
+            return render(request, 'backstage/adm_add_tea.html', locals())
+        elif "confirm_add" in request.POST:
+            new_password = request.POST.get('Password')
+            new_name = request.POST.get('name')
+            new_username = request.POST.get('username')
+            sex = request.POST.get('sex')
+            college_name = request.POST.get('college_name')
+            new_in_year = request.POST.get('in_year')
+            new_title = request.POST.get('title')
+            new_edu_background = request.POST.get('edu_background')
+            print(123)
+            try:
+                college_id_for_new = College.objects.get(name=college_name).id
+                print(123)
+                if sex == "男":
+                    sex_int = 1
+                else:
+                    sex_int = 0
+                new_tea = Teacher.objects.create(password=new_password, username=new_username,
+                                                 edu_background=new_edu_background, title=new_title,
+                                                 in_year=new_in_year, college=college_id_for_new, sex=sex_int)
+                print(123)
+                new_tea.save()
+            except:
+                return render(request, 'adm_base.html', locals())
         else:
             new_password = request.POST.get('Password')
             new_name = request.POST.get('name')

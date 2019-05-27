@@ -29,6 +29,11 @@
                     <option value="{{ item.in_year }}">{{ item.in_year }}</option>
                 {% endfor %}
             </select>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                <form action="" method="post" action="{% url 'backstage:adm_view_all_teacher' %}">
+                    <button type="submit" class="btn btn-info pull-right" name="add"
+                    >添加
+                    </button>
+                </form>
             </div>
 
             <div class="box-body">

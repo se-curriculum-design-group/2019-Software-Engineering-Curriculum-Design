@@ -15,7 +15,6 @@ import os
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
-
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/2.1/howto/deployment/checklist/
 
@@ -26,7 +25,6 @@ SECRET_KEY = 'f4k^sm!$^$ie$2=3v18j858w@24bj7c(&v-+mn^cxrl!+(x%@&'
 DEBUG = True
 
 ALLOWED_HOSTS = []
-
 
 # Application definition
 
@@ -50,7 +48,7 @@ MIDDLEWARE = [
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
     # 'django.middleware.csrf.CsrfViewMiddleware',
-    
+
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
@@ -77,7 +75,6 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'EMS.wsgi.application'
 
-
 # Database
 # https://docs.djangoproject.com/en/2.1/ref/settings/#databases
 
@@ -92,7 +89,6 @@ DATABASES = {
         'PASSWORD': 'password',
     }
 }
-
 
 # Password validation
 # https://docs.djangoproject.com/en/2.1/ref/settings/#auth-password-validators
@@ -112,7 +108,6 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
-
 # Internationalization
 # https://docs.djangoproject.com/en/2.1/topics/i18n/
 
@@ -126,7 +121,6 @@ USE_L10N = True
 
 USE_TZ = True
 
-
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/2.1/howto/static-files/
 
@@ -135,6 +129,15 @@ STATICFILES_DIRS = [
     os.path.join(BASE_DIR, "static"),
 ]
 
-
 MEDIA_ROOT = os.path.join(BASE_DIR, 'backstage/media').replace('\\', '/')  # media即为图片上传的根路径
 MEDIA_URL = '/backstage/media/'
+# 设置邮件域名
+EMAIL_HOST = 'smtp.163.com'
+# 设置端口号，为数字
+EMAIL_PORT = 465
+# 设置发件人邮箱
+EMAIL_HOST_USER = 'buct_software_2016@163.com'
+# 设置发件人 授权码
+EMAIL_HOST_PASSWORD = 'software2016'
+# 设置是否启用安全链接
+EMAIL_USE_SSL = True
