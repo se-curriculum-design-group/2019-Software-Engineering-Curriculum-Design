@@ -2,35 +2,7 @@
 {% load staticfiles %}
 
 {% block content %}
- 
-	<div class="box box-default">
-        <div class="box-header with-border">
-          <h3 class="box-title">选项</h3>
 
-          <div class="box-tools pull-right">
-            <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i></button>
-            <button type="button" class="btn btn-box-tool" data-widget="remove"><i class="fa fa-remove"></i></button>
-          </div>
-        </div>
-        <!-- /.box-header -->
-           <div class="box-body">
-	          <div class="row">
-	            <div class="col-md-12">
-	               <div class="form-group">
-	                <label>毕设题目</label>
-	                <select class="form-control select2 select2-hidden-accessible" multiple="" style="width: 100%;" tabindex="-1" aria-hidden="true">
-	                  <option selected="selected">基于Django的毕业设计管理系统</option>
-	                  <option>基于Django的毕业设计管理系统</option>
-	                </select>
-	              </div>
-	            </div>
-	            <!-- /.col -->
-	          </div>
-	          <!-- /.row -->
-        </div>
-        <!-- /.box-body -->
-        
-      </div>
 
       <div class="row">
         <div class="col-xs-12">
@@ -50,27 +22,48 @@
             </div>
             <!-- /.box-header -->
            <div class="box-body table-responsive no-padding">
-              <table class="table table-hover">
+              <table class="table table-bordered table-striped dataTable" role="grid" style="text-align: center;vertical-align:middle;">
                 <tbody><tr>
                  
-                  <th>题目名称</th>
-                   <th>选题学生</th>
-                   <th>阶段</th>
-                   <th>提交时间</th>
+                  <th style="text-align:center;width:10%">题目名称</th>
+                   <th style="text-align:center;width:6%">选题学生</th>
+                   <th style="text-align:center;">阶段</th>
+                   <th style="text-align:center;">文档下载</th>
+                   <th style="text-align:center;">论点</th>
+                    <th style="text-align:center;">方案</th>
+                    <th style="text-align:center;">答辩</th>
+                    <th style="text-align:center;">操作</th>
+                    <th style="text-align:center;">总分</th>
                 </tr>
-                <tr class="jump">
-                 
-                  <td>基于Django的毕业设计管理系统</td>
-                  <td>zdd</td>
-                  <td>中期报告</td>
-                  <td>2019-4-12 14:20</td>
+                {% for item1,item2,item11,item22 in info %}
+
+                  <td rowspan="2" style="text-align:center;vertical-align:middle;">{{ item1.schoic.pno.pname }}</td>
+                  <td rowspan="2" style="text-align:center;vertical-align:middle;">{{ item1.schoic.sno.name}}</td>
+                  <td>{{ item1.dtype }}</td>
+                  <td><button type="button" class="btn btn-default">文档下载</button></td>
+                  <td>{{ item11.lundian }}</td>
+                    <td>{{ item11.fangan }}</td>
+                    <td>{{ item11.dabian }}</td>
+                    {% if item11.dabian == 0 %}
+                  <td><button type="button" class="btn btn-default" onclick="javascript:window.location.href='/graduationManagement/teacher_view_projectfiles_detail?id={{ item1.id }}'">待添加</button></td>
+                    {% else %}
+                  <td><button type="button" class="btn btn-default" onclick="javascript:window.location.href='/graduationManagement/teacher_view_projectfiles_detail?id={{ item1.id }}'">修改</button></td>
+                    {% endif  %}
+                    <td rowspan="2" style="text-align:center;vertical-align:middle;">{{ item11.grade }}</td>
                 </tr>
-                <tr class="jump">
-                  <td>基于Django的毕业设计管理系统</td>
-                  <td>zdd</td>
-                  <td>开题报告</td>
-                  <td>2019-4-12 14:20</td>
-                </tr>
+                    <tr>
+                     <td>{{ item2.dtype }}</td>
+                  <td><button type="button" class="btn btn-default">文档下载</button></td>
+                  <td>{{ item11.lundian }}</td>
+                    <td>{{ item11.fangan }}</td>
+                    <td>{{ item11.dabian }}</td>
+                    {% if item22.dabian == 0 %}
+                  <td><button type="button" class="btn btn-default" onclick="javascript:window.location.href='/graduationManagement/teacher_view_projectfiles_detail?id={{ item2.id }}'">待添加</button></td>
+                    {% else %}
+                  <td><button type="button" class="btn btn-default" onclick="javascript:window.location.href='/graduationManagement/teacher_view_projectfiles_detail?id={{ item2.id }}'">修改</button></td>
+                    {% endif  %}
+                    </tr>
+               {% endfor %}
             
                 
               </tbody></table>
@@ -123,10 +116,6 @@
 	    //Initialize Select2 Elements
 	    $(".select2").select2();
 	  });
-     $(".jump").click(function () {
-             location.href = "{% url 'graduationManagement:teacher_view_projectfiles_detail' %}";
-         });
-	</script>
 
 
 {% endblock %}

@@ -2,8 +2,9 @@ from django.shortcuts import render, redirect
 from django.http import HttpResponse
 from backstage.models import User, Teacher, Student, \
     College, MajorPlan, AdmClass, ClassRoom
-from graduationManagement.models import GraduationProject,StuChoice,Student
+from graduationManagement.models import GraduationProject,StuChoice,ProjectDocument,ProjectScore
 from django.views.decorators.csrf import csrf_exempt
+from django.http import StreamingHttpResponse
 
 from django.shortcuts import render,HttpResponse
 import json
@@ -53,11 +54,40 @@ def student_choose_project(request):
 
 
 def student_submit_project(request):
+    sno = request.session['username']
+    uno = User.objects.get(username=sno)
+    sno = Student.objects.get(user_ptr_id=uno)
+    stu=StuChoice.objects.get(sno=sno)
+    if request.method == "POST":
+        File = request.FILES.get("myfile", None)
+        with open("./graduationManagement/temp_file/%s" % File.name, 'wb+') as f:
+            for chunk in File.chunks():
+                f.write(chunk)
+        path='./graduationManagement/temp_file/'+File.name
+        dtype=request.POST.get('dtype')
+        if ProjectDocument.objects.filter(schoic=stu,dtype=dtype) == 0:
+            ProjectDocument.objects.create(dtype=dtype,dpath=path,schoic=stu)
+        else:
+            ProjectDocument.objects.filter(schoic=stu,dtype=dtype).update(dpath=path)
     return render(request, 'graduationManagement/student_submit_project.html')
 
 
+
 def student_view_score(request):
-    return render(request, 'graduationManagement/student_view_score.html')
+    username = request.session['username']
+    uno = User.objects.get(username=username)
+    sno = Student.objects.get(user_ptr_id=uno)
+    info1=stu=StuChoice.objects.get(sno=sno)
+    grade=ProjectScore.objects.get(project=ProjectDocument.objects.get(schoic=stu,dtype="中期")).grade
+    documents=ProjectDocument.objects.filter(schoic=stu)
+    info=ProjectScore.objects.filter(project__in=documents)
+
+    context={
+        'grade':grade,
+        'info1':info1,
+        'info':info
+    }
+    return render(request, 'graduationManagement/student_view_score.html',context)
 
 
 
@@ -113,26 +143,6 @@ def student_view_project_detail(request, id):
 
     else:
         return render(request, 'graduationManagement/student_view_project_detail.html', {'info': info})
-    # return HttpResponse('test'+id)
-    # print(name)
-    # if request.method == 'POST':
-    #     print(1)
-    #     if request.is_ajax():
-    #         pname=request.POST.get('s')
-    #         # p = GraduationProject.objects.get(pname=m)
-    #         # print(type(pname))
-    #         print(pname)
-    #         # print(len(pname))
-    #             # tno = Teacher.objects.get(user_ptr_id=p.tno_id).name
-    #         info = GraduationProject.objects.filter(pname=pname)
-    #         return 'mytest'
-    #         # contenxt = {
-    #         #   'info': info,
-    #         #   }
-    #         # return render(request, 'graduationManagement/student_view_project_detail.html')
-    #     return render(request, 'graduationManagement/test.html', {'info': info})
-    # else:
-    #     return HttpResponse(1) 
 
 
 # 学生查看审核结果
@@ -164,7 +174,7 @@ def teacher_submit_project(request):
         ptype = request.POST.get('project_type')
         descripe = request.POST.get('project_descripe')
         require = request.POST.get('project_requirments')
-        GraduationProject.objects.get(pname=name).delete()
+        # GraduationProject.objects.get(pname=name).delete()
         if 'change' not in request.path:
             # 将输入的数据存储到数据库中
             GraduationProject.objects.create(pname=name, tno=tno, pdirection=ptype, pdifficulty=difficulty,
@@ -254,7 +264,7 @@ def teacher_acc_student(request):
     s.status=1
     s.save()
     inf= GraduationProject.objects.filter(id=id)
-    inf.pstatus=0
+    inf.pstatus=0#?
     # print(sid)
     username = request.session['username']
     uno = User.objects.get(username=username)
@@ -285,12 +295,65 @@ def teacher_ref_student(request):
     return render(request, 'graduationManagement/teacher_choose_student.html',contenxt) 
 # 教师查看学生提交的文件
 def teacher_view_projectfiles(request):
-    return render(request, 'graduationManagement/teacher_view_projectfiles.html')
+    username = request.session['username']
+    uno = User.objects.get(username=username)
+    tno = Teacher.objects.get(user_ptr_id=uno).user_ptr_id
+    s = StuChoice.objects.filter(tno_id=tno)
+    id=request.GET.get('id')
+    info1 = ProjectDocument.objects.filter(schoic__in=s, dtype="中期报告")
+
+    info2 = ProjectDocument.objects.filter(schoic__in=s, dtype="最终报告")
+
+    for i in info1:
+        if ProjectScore.objects.filter(project=i).count() ==0:
+            ProjectScore.objects.create(project=i,lundian=0,fangan=0,dabian=0,comments=0)
+    for i in info2:
+        if ProjectScore.objects.filter(project=i).count() ==0:
+            ProjectScore.objects.create(project=i,lundian=0,fangan=0,dabian=0,comments=0)
+    info22 = ProjectScore.objects.filter(project__in=info2)
+    info11 = ProjectScore.objects.filter(project__in=info1)
+    if request.method == 'POST':
+        lundian = request.POST.get('lundian')
+        fangan = request.POST.get('fangan')
+        dabian = request.POST.get('dabian')
+        comments = request.POST.get('comments')
+        ProjectScore.objects.filter(project=id).update(lundian=int(lundian),fangan=int(fangan),dabian=int(dabian),comments=comments)
+
+    # for i in range(infos.count()):
+    #     ProjectDocument.objects.getinfos[i]
+    context={
+        'info':zip(info1,info2,info11,info22),
+    }
+    return render(request, 'graduationManagement/teacher_view_projectfiles.html',context)
 
 
 # 教师查看学生提交的文件详情
 def teacher_view_projectfiles_detail(request):
-    return render(request, 'graduationManagement/teacher_view_projectfiles_detail.html')
+    id=request.GET.get('id')
+    info = ProjectDocument.objects.filter(id=id)
+    context = {
+        'info': info
+    }
+    return render(request, 'graduationManagement/teacher_view_projectfiles_detail.html',context)
+
+#教师下载文档
+def teacher_dowload_files(request):
+    id = request.GET.get('id')
+    info = ProjectDocument.objects.get(id=id)
+    filepath=info.dpath
+    def file_iterator(file,chunk_size=512):
+        with open(file) as f:
+            while True:
+                c=f.read(chunk_size)
+                if c:
+                    yield c
+                else:
+                    break
+    response=StreamingHttpResponse(file_iterator(filepath))
+    response['Content-Type'] = 'application/octet-stream'
+    response['Content-Disposition'] = 'attachment;filename="{0}"'.format(filepath)
+    return response
+
 
 
 # 教师提交成绩
@@ -305,5 +368,47 @@ def teacher_submit_score_detail(request):
 def adm_projectSelection(request):
     return render(request, 'graduationManagement/adm_projectSelection.html')
 
+def admin_submit_project(request):
+    # 获取当前老师的id号：当前操作者是谁
+    username = request.session['username']
+    uno = User.objects.get(username=username)
+    tno = Teacher.objects.get(user_ptr_id=uno)
+    if request.method == 'POST':
+        # 获取当前用户输入的信息
+        name = request.POST.get('project_name')
+        difficulty = request.POST.get('project_difficulty')
+        ptype = request.POST.get('project_type')
+        descripe = request.POST.get('project_descripe')
+        require = request.POST.get('project_requirments')
+        if 'change' not in request.path:
+            # 将输入的数据存储到数据库中
+            GraduationProject.objects.create(pname=name, tno=tno, pdirection=ptype, pdifficulty=difficulty,
+                                             pdescription=descripe, pstu=require)
+        else:
+            GraduationProject.objects.filter(tno=tno, id=id).update(pname=project_name)
+            GraduationProject.objects.filter(tno=tno, id=id).update(pdirection=ptype)
+            GraduationProject.objects.filter(tno=tno, id=id).update(pdifficulty=difficulty)
+            GraduationProject.objects.filter(tno=tno, id=id).update(pdescription=project_descripe)
+            GraduationProject.objects.filter(tno=tno, id=id).update(pstu=require)
+        # 从数据库中取数据显示到网页上
+    info = GraduationProject.objects.all()
+    contenxt = {
+        'info': info,
+    }
+    return render(request, "graduationManagement/admin_submit_project.html", contenxt)
+def admin_view_project_detail(request):
+    # 获取当前老师的id号：当前操作者是谁
+    username = request.session['username']
+    # 将输入的数据存储到数据库中
+    uno = User.objects.get(username=username)
+    tno = Teacher.objects.get(user_ptr_id=uno)
+    id = request.GET.get('id')
+    # 从数据库中取数据显示到网页上
+
+    info = GraduationProject.objects.filter(tno=tno, id=id)
+    contenxt = {
+        'info': info,
+    }
+    return render(request, 'graduationManagement/admin_view_project_detail.html', contenxt)
 
 

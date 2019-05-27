@@ -3,12 +3,13 @@
 {% load staticfiles %}
 
 {% block content %}
-<section class="content">
+<section class="content" id="document">
 	<div class="row">
         <div class="col-md-12">
           <!-- The time line -->
+          {% for item in info %}
           <ul class="timeline">
-           
+
             <!-- timeline item -->
             <li>
               <i class="fa fa-envelope bg-aqua"></i>
@@ -16,7 +17,7 @@
               <div class="timeline-item">
                 
 
-                <h3 class="timeline-header"><a href="#">题目名称 </a>&nbsp;毕业设计管理子系统 </h3>
+                <h3 class="timeline-header"><a href="#">题目名称 </a>&nbsp;{{ item.schoic.pno.pname }} </h3>
 
                 
                 
@@ -30,7 +31,7 @@
               <div class="timeline-item">
                 
 
-                <h3 class="timeline-header no-border"><a href="#">学生</a> Zdd</h3>
+                <h3 class="timeline-header no-border"><a href="#">学生</a> {{ item.schoic.sno.name}}</h3>
                  <div class="timeline-footer">
                   <a class="btn btn-primary btn-xs">了解更多</a>
                 </div>
@@ -45,7 +46,7 @@
               <div class="timeline-item">
                 
 
-                <h3 class="timeline-header no-border"><a href="#">阶段</a> 中期报告</h3>
+                <h3 class="timeline-header no-border"><a href="#">阶段</a> {{ item.dtype }}</h3>
                 
 
               </div>
@@ -90,8 +91,9 @@
 
                 <h3 class="timeline-header no-border"><a href="#">文档下载</a> </h3>
 
+
                 <div class="timeline-footer">
-                	<a href="#" class="btn btn-primary"><i class="fa fa-download"></i>下载</a>
+                	<a href="/graduationManagement/teacher_dowload_files?id={{ item.id }}" class="btn btn-primary"><i class="fa fa-download"></i>下载</a>
                 </div>
                 
 
@@ -100,16 +102,63 @@
             <!-- END timeline item -->
             <!-- timeline item -->
             <li>
-             
+
           </ul>
         </div>
         <!-- /.col -->
       </div>
-      <form action="">      
-        <button type="button" class="btn btn-block btn-info jump">前往成绩录入</button>
+        <a type="button" href="#score" class="btn btn-block btn-info" >成绩录入</a>
 
-      </form>
 </section>
+    <section class="content" id="score">
+     <div class='row' style="margin-top: 30px">
+
+          <!-- /.box -->
+          <!-- general form elements disabled -->
+          <div class="box box-warning">
+            <div class="box-header with-border">
+              <h3 class="box-title">成绩录入</h3>
+            </div>
+            <!-- /.box-header -->
+            <div class="box-body">
+              <form role="form" method="post"  action="/graduationManagement/teacher_view_projectfiles?id={{ item.id }}">
+                <!-- text input -->
+                <div class="form-group">
+                  <label>论述情况(是否严谨合理，是否符合逻辑)</label>
+                  <input type="text" class="form-control" name="lundian">
+                </div>
+
+                <div class="form-group">
+                  <label>设计方案(是否深入，是否符合逻辑)</label>
+                  <input type="text" class="form-control" name="fangan">
+                </div>
+                  <div class="form-group">
+                  <label>答辩情况(问题是否流畅回答，表述是否清晰)</label>
+                  <input type="text" class="form-control" name="dabian">
+                </div>
+
+                <!-- textarea -->
+                <div class="form-group">
+                  <label>答辩评语</label>
+                  <textarea class="form-control" rows="3" name="comments"></textarea>
+                </div>
+               <div class="box-footer">
+               <button type="submit" class="btn btn-info pull-right">确定</button>
+                <button type="submit" class="btn btn-default">取消</button>
+
+              </div>
+              </form>
+            </div>
+            <!-- /.box-body -->
+
+
+          </div>
+
+            {% endfor %}
+          <!-- /.box -->
+        </div>
+	</div>
+    </section>
 {% endblock %}
 
 {% block script %}
