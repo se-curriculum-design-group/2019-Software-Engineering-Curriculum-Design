@@ -1,39 +1,45 @@
-{% extends 'teacher_base.html' %}
+{% extends 'adm_base.html' %}
 
 {% load staticfiles %}
 
 {% block content %}
     <section class="content-header">
-        <h1>查询空闲教室
+        <h1>占用空闲教室
             <small>Info</small>
         </h1>
         <ol class="breadcrumb">
             <li><a href="{% url 'scoreManagement:welcome' %}"><i class="fa fa-dashboard"></i> 主页</a></li>
-            <li class="active">资源成绩管理</li>
-            <li class="active">查询空闲教室</li>
+            <li class="active">排课-临时教学</li>
+            <li class="active">占用空闲教室</li>
         </ol>
     </section>
     <div class="box">
         <div class="box-header">
-            <h3 class="box-title">查询空闲教室</h3>
+            <h3 class="box-title">占用空闲教室</h3>
             <div class="box-header ">
-                <form method="post" action="{% url "courseScheduling:search_time_room_teacher" %}">
+                <form method="post" action="{% url "courseScheduling:occupy_room" %}">
                     {% csrf_token %}
-                <label style="">教学周选择：</label><select name="week" id="week" class="select2" style="width: 20%">
+                    <label style="">周：</label><select name="week" id="week" class="select2" style="width: 10%">
 
-            </select>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                <label style="">星期：</label><select name="day" id="day" class="select2" style="width: 15%">
+                </select>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                    <label style="">日：</label><select name="day" id="day" class="select2" style="width: 10%">
 
-            </select>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                <label>开始：</label><select name="ls" id="lessons" class="select2" style="width: 15%">
+                </select>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                    <label>开始：</label><select name="ls" id="lessons" class="select2" style="width: 10%">
 
-            </select>&nbsp;
-                <label>结束：</label><select name="le" id="lessone" class="select2" style="width: 15%">
+                </select>&nbsp;
+                    <label>结束：</label><select name="le" id="lessone" class="select2" style="width: 10%">
 
-            </select>&nbsp;
-                <button type="submit">搜索</button>
+                </select>&nbsp;
+                    <div class="form-group">
+                        <button type="submit" class="pull-right btn btn-primary"><span
+                                class="glyphicon glyphicon-search">搜索空闲教室</span></button>
+                    </div>
+                    <div class="form-group">
+                        <label style="">备注（占用原因)：</label>
+                        <input type="text" name="inp" style="width: 50%">
+                    </div>
                 </form>
-
             </div>
 
             <div class="box-body">
@@ -43,16 +49,25 @@
                         <th>名称</th>
                         <th>类型</th>
                         <th>容量</th>
+                        <th>操作</th>
                     </tr>
                     </thead>
                     <tbody>
-                    {% for r in rooms %}
-                        <tr>
-                            <td>{{ r.id }}</td>
-                            <td>{{ r.type }}</td>
-                            <td>{{ r.container }}</td>
-                        </tr>
-                    {% endfor %}
+                    <form>
+                        {% for r in rooms %}
+                            <tr id={{ r.id }}>
+                                <td>{{ r.id }}</td>
+                                <td>{{ r.type }}</td>
+                                <td>{{ r.container }}</td>
+                                <form action="{% url 'courseScheduling:occupy_room' %}" method="post">
+                                    {% csrf_token %}
+                                    <td>
+                                        <button type="button" name="{{ r.id }}" value="{{ r.id }}">占用</button>
+                                    </td>
+                                </form>
+                            </tr>
+                        {% endfor %}
+                    </form>
                     </tbody>
                 </table>
 
@@ -63,7 +78,27 @@
 
 {% block script %}
     <script>
-
+        {#console.log(r);#}
+        {#var room = {{ rooms|safe }};#}
+        var room = new Array();
+        var i = 0;
+        {% for r in rooms %}
+            room[i] = "{{ r.id|safe }}";
+            i++;
+        {% endfor %}
+        {#console.log(room);#}
+        for (var i = 0; i < room.length; i++) {
+            var s = '#' + room[i];
+            $(s).click(function () {
+                {#alert("asdasd");#}
+                {#console.log(typeof room[i].id);#}
+                {#console.log(this.id);#}
+                {#alert("asdasd");#}
+                {#console.log(room[i]);#}
+                {#var data = document.getElementById(this.id);#}
+                this.style.display = "none";
+            });
+        }
         $.fn.dataTable.ext.search.push(
             function (settings, data, dataIndex) {
                 var week = $('#week').val()

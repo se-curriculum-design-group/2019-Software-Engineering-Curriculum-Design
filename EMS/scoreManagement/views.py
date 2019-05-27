@@ -30,48 +30,49 @@ def welcome(request):
 
 
 def adm_all_course_score(request):
-        try:
-            username = request.session['username']
-            adm = User.objects.get(username=username)
-            if not adm.is_superuser:
-                return render(request, 'errors/403page.html')
-            else:
-                all_colleges = College.objects.all()
-                all_majors = Major.objects.all()
-                all_course_score = CourseScore.objects.all()
-                all_years = [y['teaching__mcno__year'] for y in CourseScore.objects.values("teaching__mcno__year").distinct()]
-                all_semester = [y['teaching__mcno__semester'] for y in
-                                CourseScore.objects.values("teaching__mcno__semester").distinct()]
-                try:
-                    sear_year = request.GET['sear_year']
-                    sear_semester = request.GET['sear_semester']
+    try:
+        username = request.session['username']
+        adm = User.objects.get(username=username)
+        if not adm.is_superuser:
+            return render(request, 'errors/403page.html')
+        else:
+            all_colleges = College.objects.all()
+            all_majors = Major.objects.all()
+            all_course_score = CourseScore.objects.all()
+            all_years = [y['teaching__mcno__year'] for y in
+                         CourseScore.objects.values("teaching__mcno__year").distinct()]
+            all_semester = [y['teaching__mcno__semester'] for y in
+                            CourseScore.objects.values("teaching__mcno__semester").distinct()]
+            try:
+                sear_year = request.GET['sear_year']
+                sear_semester = request.GET['sear_semester']
 
-                    all_course_score = CourseScore.objects.filter(
-                        teaching__mcno__year=sear_year,
-                        teaching__mcno__semester=sear_semester,
-                    )[:20]
-                    context = {
-                        "all_course_score": all_course_score,
-                        "all_years": all_years,
-                        "all_semester": all_semester,
-                        "all_colleges": all_colleges,
-                        "all_majors": all_majors,
-                        "sear_year": sear_year,
-                        "sear_semester": sear_semester,
-                    }
-                    return render(request, 'scoreManage/adm_score_manage.html', context)
-                except Exception:
-                    print(Exception)
-                    context = {
-                        "all_course_score": all_course_score[:10],
-                        "all_years": all_years,
-                        "all_semester": all_semester,
-                        "all_colleges": all_colleges,
-                        "all_majors": all_majors,
-                    }
-                    return render(request, 'scoreManage/adm_score_manage.html', context)
-        except:
-            return render(request, 'errors/500page.html')
+                all_course_score = CourseScore.objects.filter(
+                    teaching__mcno__year=sear_year,
+                    teaching__mcno__semester=sear_semester,
+                )[:20]
+                context = {
+                    "all_course_score": all_course_score,
+                    "all_years": all_years,
+                    "all_semester": all_semester,
+                    "all_colleges": all_colleges,
+                    "all_majors": all_majors,
+                    "sear_year": sear_year,
+                    "sear_semester": sear_semester,
+                }
+                return render(request, 'scoreManage/adm_score_manage.html', context)
+            except Exception:
+                print(Exception)
+                context = {
+                    "all_course_score": all_course_score[:10],
+                    "all_years": all_years,
+                    "all_semester": all_semester,
+                    "all_colleges": all_colleges,
+                    "all_majors": all_majors,
+                }
+                return render(request, 'scoreManage/adm_score_manage.html', context)
+    except:
+        return render(request, 'errors/500page.html')
 
 
 def score_home_page(request):
@@ -256,6 +257,8 @@ def adm_view_major_course(request):
     adm = User.objects.get(username=username)
     if not adm.is_superuser:
         return render(request, 'errors/403page.html')
+    all_major_plan = MajorPlan.objects.all()
+    all_course = Course.objects.all()
     all_major_course = MajorCourses.objects.all()
     all_college = College.objects.all()
     all_course_type = Course.objects.values("course_type").distinct()
@@ -263,9 +266,12 @@ def adm_view_major_course(request):
     all_major = Major.objects.all()
     context = {"all_major_course": all_major_course,
                "all_college": all_college,
-               "all_course": all_course_type,
+               "all_course_type": all_course_type,
                "all_year": all_year,
-               "all_major": all_major
+               "all_major": all_major,
+
+               "all_major_plan": all_major_plan,
+               "all_course": all_course,
                }
     return render(request, "scoreManage/adm_major_course.html", context)
 
@@ -632,3 +638,202 @@ def teacher_view_stu_score(request):
     }
     return render(request, 'scoreManage/teacher_view_stu_score.html', context)
 
+
+def adm_change_score(request):
+    if request.is_ajax():
+        if len(request.GET):
+            year = request.GET.get('year')
+            semester = request.GET.get('semester')
+            college = request.GET.get('college')
+            major = request.GET.get('major')
+            sno = request.GET.get('sno')
+            tno = request.GET.get('tno')
+            cno = request.GET.get('cno')
+            method = request.GET.get('method')
+            common = request.GET.get('common')
+            final_score = request.GET.get('final')
+            student = Student.objects.get(username=sno)
+            teacher = Teacher.objects.get(username=tno)
+            try:
+                course = Course.objects.get(cno=cno, course_type=method)
+                major_course = MajorCourses.objects.get(cno=course, year=year, semester=semester)
+                teaching = Teaching.objects.get(tno=teacher, mcno=major_course)
+                course_score = CourseScore.objects.get(sno=student, teaching=teaching)
+            except Course.MultipleObjectsReturned or CourseScore.MultipleObjectsReturned:
+                return JsonResponse({"except": Exception})
+
+            course_score.commen_score = common
+            course_score.final_score = final_score
+            weight = course_score.teaching.weight
+            course_score.score = float(common) * (1 - weight) + float(final_score) * weight
+            course_score.save()
+
+            n_commen = common
+            n_final = final_score
+            score = course_score.score
+            result = {
+                'n_commen': n_commen,
+                'n_final': n_final,
+                'score': score,
+            }
+            return JsonResponse(result)
+    return redirect("scoreManagement:adm_all_course_score")
+
+
+def adm_change_major_plan(request):
+    if request.is_ajax():
+        if len(request.GET):
+            year = request.GET.get('year')
+            major_name = request.GET.get('major')
+            people_num = request.GET.get('people_num')
+            lowest_score = request.GET.get('lowest_score')
+            stu_method = request.GET.get('stu_method')
+            course_num = request.GET.get('course_num')
+            adm_class_num = request.GET.get('adm_class_num')
+
+            major = Major.objects.get(mno=major_name.split('-')[0])
+            major_plan = MajorPlan.objects.get(major=major, year=year)
+            # make change
+            major_plan.cls_num = adm_class_num
+            major_plan.people_num = people_num
+            major_plan.score_grad = lowest_score
+            major_plan.stu_years = stu_method
+            major_plan.course_num = course_num
+            major_plan.save()
+            new_people_num = major_plan.people_num
+            new_score_grad = major_plan.score_grad
+            new_clsw_num = major_plan.cls_num
+            new_stu_years = major_plan.stu_years
+            new_course_num = major_plan.course_num
+
+            data = {
+                'new_people_num': new_people_num,
+                'new_score_grad': new_score_grad,
+                'new_clsw_num': new_clsw_num,
+                'new_stu_years': new_stu_years,
+                'new_course_num': new_course_num,
+            }
+            return JsonResponse(data)
+
+
+# 管理员修改专业课程，只修改部分属性
+def adm_change_major_course(request):
+    if request.is_ajax():
+        if len(request.GET):
+            major = request.GET.get('major')
+            year = request.GET.get('year')
+            semester = request.GET.get('semester')
+            cno = request.GET.get('cno')
+            teach_hours = request.GET.get('teach_hours')
+            exp_hours = request.GET.get('exp_hours')
+            exam_method = request.GET.get('exam_method')
+
+            major_plan = MajorPlan.objects.get(major__mno=major.split('-')[1], year=major.split('-')[0])
+            # 获取到MajorCourse对象
+            print(cno)
+            major_course = MajorCourses.objects.get(cno__cno=cno, mno=major_plan)
+            major_course.year = year
+            major_course.semester = semester
+            major_course.hour_class = teach_hours
+            major_course.hour_other = exp_hours
+            major_course.hour_total = teach_hours + exp_hours
+            major_course.exam_method = (exam_method == '考试')
+
+            major_course.save()
+            return JsonResponse({})
+
+
+# 管理员添加专业课程信息
+def adm_add_major_course(request):
+    if request.is_ajax():
+        if len(request.GET):
+            major_str = request.GET.get('major_str').split('-')
+            year = request.GET.get('year')
+            semester = request.GET.get('semester')
+            major_course = request.GET.get('major_course')
+            teach_hour = request.GET.get('teach_hour')
+            exp_hour = request.GET.get('exp_hour')
+            hour_total = teach_hour + exp_hour
+            exam_method = request.GET.get('exam_method')
+            exam_method = (exam_method == '考试')
+            major = MajorPlan.objects.get(major__mno=major_str[1], year=major_str[0])
+            course = Course.objects.filter(cno=major_course)[0]
+            MajorCourses.objects.update_or_create(
+                cno=course,
+                mno=major,
+                year=year,
+                semester=semester,
+                hour_total=hour_total,
+                hour_class=teach_hour,
+                hour_other=exp_hour,
+                exam_method=exam_method
+            )
+            return JsonResponse({})
+
+
+# 管理员删除专业课程MajorCourse信息
+def adm_delete_major_course(request):
+    if request.is_ajax():
+        if len(request.GET):
+            major_plan_str = request.GET.get('major_plan').split('-')
+            cno = request.GET.get('cno')
+            ctype = request.GET.get('ctype')
+            course = Course.objects.get(cno=cno, course_type=ctype)
+            major_plan = MajorPlan.objects.get(year=major_plan_str[0], major__mno=major_plan_str[1])
+            major_course = MajorCourses.objects.get(cno=course, mno=major_plan)
+            major_course.delete()
+            return JsonResponse({})
+
+
+# 管理员添加课程Course
+def adm_add_course(request):
+    if request.is_ajax():
+        if len(request.GET):
+            add_college = request.GET.get('add_college')
+            cno = request.GET.get('cno')
+            cname = request.GET.get('cname')
+            ctype = request.GET.get('ctype')
+            cscore = request.GET.get('cscore')
+            college = College.objects.get(name=add_college)
+            Course.objects.update_or_create(cno=cno, cname=cname, college=college, course_type=ctype, score=cscore)
+            return JsonResponse({})
+
+
+# 管理员修改课程Course
+def adm_change_course(request):
+    if request.is_ajax():
+        if len(request.GET):
+            cno = request.GET.get('cno')
+            ctype = request.GET.get('ctype')
+            n_op_college = request.GET.get('n_op_college')
+            n_cno = request.GET.get('n_cno')
+            n_cname = request.GET.get('n_cname')
+            n_ctype = request.GET.get('n_ctype')
+            n_cscore = request.GET.get('n_cscore')
+            course = Course.objects.get(cno=cno, course_type=ctype)
+            try:
+                college = College.objects.get(name=n_op_college)
+                course.college = college
+                course.course_type = n_ctype
+                course.cno = n_cno
+                course.cname = n_cname
+                course.score = n_cscore
+                course.save()
+            except College.DoesNotExist:
+                return JsonResponse({"exception": '学院不存在'})
+            return JsonResponse({})
+
+
+# 管理员删除课程Course
+def adm_delete_course(request):
+    if request.is_ajax():
+        if len(request.GET):
+            cno = request.GET.get('cno')
+            ctype = request.GET.get('ctype')
+            cname = request.GET.get('cname')
+            try:
+                course = Course.objects.get(cno=cno, course_type=ctype, cname=cname)
+                course.delete()
+            except Course.DoesNotExist:
+                print(cno, ctype, cname)
+            return JsonResponse({})

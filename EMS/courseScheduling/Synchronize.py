@@ -7,7 +7,7 @@ year = Schedule_year
 semester = Schedule_semester
 
 
-def Sychronize_with_courseSelected():
+def Sychronize_with_courseSelected(year=2019, semester=2):
     rows_in_Schedule_result = Schedule_result.objects.filter(tno__mcno__year=year, tno__mcno__semester=semester)
     for element in rows_in_Schedule_result:
         if len(courseSelected.objects.filter(

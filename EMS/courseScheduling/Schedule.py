@@ -141,7 +141,7 @@ class Teacher(object):
         self.time_count = cnt
 
 
-class Buffer:
+class Buffer(object):
     def __init__(self):
         self.students = []
         self.teachers = []
@@ -233,9 +233,10 @@ def String_to_table(string1: str):
     return res
 
 
-def init():
+def init(year=2019, semester=2):
     "目前只有自动排课"
     set1 = Teacher_Schedule_result.objects.filter(tno__mcno__year=year, tno__mcno__semester=semester)
+    print("set1", len(set1), year, semester)
     for elements in set1:
         Table = String_to_table(elements.time)
         if Classrooms_id.get(elements.where.crno) == None:
@@ -278,6 +279,8 @@ def init():
                     Students_id[element.sno.username].courseSchedule, stu_table)
         if has_already_scheduled.get(elements.tno.mcno.cno.cno+elements.tno.mcno.mno.major.mname) == None:
             has_already_scheduled[elements.tno.mcno.cno.cno+elements.tno.mcno.mno.major.mname] = True
+        print("init", elements.tno.mcno.cno.cno, elements.tno.mcno.cno.cname, elements.tno.mcno.mno.major.mname, has_already_scheduled.get(elements.tno.mcno.cno.cno+elements.tno.mcno.mno.major.mname))
+
 
     set2 = Schedule_result.objects.filter(tno__mcno__year=year, tno__mcno__semester=semester)
     for elements in set2:
@@ -485,10 +488,10 @@ def distribute_single(bf: Buffer, room: Classroom, tch: Teacher, course):
     write_to_database(res, bf)
 
 
-def autoSchedule():
-    year = 2019
-    semester = 2
-    init()
+def autoSchedule(yy=2019, smt=2):
+    year = yy
+    semester = smt
+    init(yy, smt)
     # 1找课 2找老师 3找学生 4找教室 5生成并检查 6写入数据库
     heap_bigroom = []
     heap_midroom = []
@@ -505,6 +508,7 @@ def autoSchedule():
             heapq.heappush(heap_smallroom, Classrooms_id[elements.crno])
     coures_set = MajorCourses.objects.filter(year=year, semester=semester)
     for course in coures_set:
+        print(course.cno.cno, course.cno.cname, course.mno.major.mname, has_already_scheduled.get(course.cno.cno + course.mno.major.mname))
         if has_already_scheduled.get(course.cno.cno + course.mno.major.mname) == True:
             continue
         teacher_set = original_Teaching.objects.filter(mcno__cno__cno=course.cno.cno)
@@ -681,6 +685,7 @@ def week_has_hazzard(week1: str, week2: str):
     r1 = int(week1.split('-')[1])
     l2 = int(week2.split('-')[0])
     r2 = int(week2.split('-')[1])
+    #print(l1,r1,l2,r2)
     if (l2 <= l1 and l1 <= r2) or (l1 <= l2 and l2 <= r1):
         return True
     else:
@@ -689,27 +694,47 @@ def week_has_hazzard(week1: str, week2: str):
 
 def has_table_hazzard(table1, table2):
     for i in range(8):
-        if i == 0: continue
         for j in range(14):
             if j == 0: continue
-        if week_has_hazzard(table1[i][j], table2[i][j]):
-            return True
+            if week_has_hazzard(table1[i][j], table2[i][j]):
+                return True
     return False
 
-def Search_time_room(time: object) -> object:
+def Search_time_room(time: str):
     init_room()
     res = []
     table = String_to_table(time)
     for element in Classrooms_id:
-        print(Classrooms_id[element].id)
+        # print(Classrooms_id[element].id)
         room = Classrooms_id[element]
         if has_table_hazzard(room.courseSchedule, table):
             continue
         else:
-            res.append(room)
+            res.append({
+                'type':room.type,
+                'id':room.id,
+                'container':room.container,
+            })
     return res
 
-
+#添加临时活动
+def add_active(time:str, room:str, state:str):
+    init_room()
+    new_table = String_to_table(time)
+    if Classrooms_id.get(room) == None:
+        return False
+    else:
+        tag_room = Classrooms_id[room]
+        if has_table_hazzard(new_table, tag_room.courseSchedule):
+            return False
+        else:
+            new_row = Classroom_other_schedule.objects.create(
+                crno=ClassRoom.objects.get(crno=room),
+                time=time,
+                statement=state,
+            )
+            new_row.save()
+    return True
 def get_students_teacher_courseSchedule(stuset: [], class_set=None, teacher_username=None) -> Buffer:
     if teacher_username == None:
         return None
@@ -772,8 +797,13 @@ def manual_schedule(time_string, place_name, stuset: [], class_set=[], teacher_u
         if teacher_username != None:
             bf.courseSchedule = mergeTable(bf.courseSchedule, Teachers_id[teacher_username].courseSchedule)
         table = String_to_table(time_string)
+        print(table)
+        print(bf.courseSchedule)
         if has_table_hazzard(table, bf.courseSchedule) == False:
             write_to_database(time_string, bf)
+            return True
+        else:
+            return False
     else:
         pass
 
@@ -787,7 +817,7 @@ def String_to_examTable(string:str):
     res[int(string.split('-')[0])][int(string.split('-')[1])] = '20-20'
     return res
 
-def init_exam():
+def init_exam(year=2019, semester=2):
     rows_in_exam = Exam_Schedule.objects.filter(tno_mno_course__tno__mcno__year=year, tno_mno_course__tno__mcno__semester=semester)
     for element in rows_in_exam:
         if Students_id.get(element.sno.username) == None:
@@ -816,10 +846,9 @@ def exam_time_generate(bf: Buffer):
                 return str(i)+'-'+str(j)
 
 
-def exam_schedule():
-    init()
-    init_exam()
-    return
+def exam_schedule(year=2019, semester=2):
+    init(year, semester)
+    init_exam(year, semester)
     for e in Classrooms_id:
         Classrooms_id[e].cmp_type = 1
     heap_bigroom = []
@@ -975,11 +1004,23 @@ def search_exam_time(stu_username: str):
 
 if __name__ == '__main__':
     #autoSchedule()
-    #exam_schedule()
+    exam_schedule()
+    #Sycho()
+    #手工排
+    #以上在管理员的排课界面
+
+    #查询空闲教室页面 学生教师只能看
+    #管理员看+占用空闲教室 ssss('时间段，16-18-14-15'，'地点'，'陈述') 返回是否加入成功
+
+    #仅学生可以看自己的考试时间表
+
+
     #bf = get_students_teacher_courseSchedule(['2016000474', '2016000475', '2016000476', '2016000477'], teacher_username='198500038', )
     #Search_time_room()
     #print('-----------------')
     #print(bf.courseSchedule)
     #fff = Search_time_room("14-16-1-1,27-29-8-8")
-        #manual_schedule('16-18-14-15', 'A-101', ['2016000474', '2016000475', '2016000476', '2016000477'], [], '199000064', 'CSE14302C')
+    #False print(manual_schedule('16-18-14-15', 'A-202', ['2016000474', '2016000475', '2016000476', '2016000477'], [], '199000064', 'CSE14302C'))
+    #print(manual_schedule('14-15-17-18', 'A-202', ['2016000474', '2016000475', '2016000476', '2016000477'], [], '199000064', 'CSE14302C'))
+    #print(add_active("3-3-11-12", "阶A-202", "exam"))
     a = 1

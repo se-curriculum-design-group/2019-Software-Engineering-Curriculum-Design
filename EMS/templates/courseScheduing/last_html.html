@@ -1,60 +1,50 @@
-{% extends 'teacher_base.html' %}
+{% extends 'adm_base.html' %}
 
 {% load staticfiles %}
 
 {% block content %}
     <section class="content-header">
-        <h1>查询空闲教室
+        <h1>其他操作
             <small>Info</small>
         </h1>
         <ol class="breadcrumb">
             <li><a href="{% url 'scoreManagement:welcome' %}"><i class="fa fa-dashboard"></i> 主页</a></li>
-            <li class="active">资源成绩管理</li>
-            <li class="active">查询空闲教室</li>
+            <li class="active">排课-临时活动</li>
+            <li class="active">其他操作</li>
         </ol>
     </section>
     <div class="box">
         <div class="box-header">
-            <h3 class="box-title">查询空闲教室</h3>
+            <h3 class="box-title">其他操作</h3>
             <div class="box-header ">
-                <form method="post" action="{% url "courseScheduling:search_time_room_teacher" %}">
+                <form method="post" action="{% url "courseScheduling:last_html" %}">
                     {% csrf_token %}
-                <label style="">教学周选择：</label><select name="week" id="week" class="select2" style="width: 20%">
+                    <div class="box-header" style="left: 30%">
+                <label style="">学年：</label><select name="week" id="week" class="select2" style="width: 20%">
+{#                <label style="">周：</label><select name="week" id="week" class="select2" style="width: 10%">#}
+            </select>&nbsp;&nbsp;&nbsp;
+                        </div>
+
+                    <div class="box-header " style="left: 30%">
+                <label style="">学期：</label><select name="day" id="day" class="select2" style="width: 15%">
 
             </select>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                <label style="">星期：</label><select name="day" id="day" class="select2" style="width: 15%">
+                        </div>
 
-            </select>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                <label>开始：</label><select name="ls" id="lessons" class="select2" style="width: 15%">
-
-            </select>&nbsp;
-                <label>结束：</label><select name="le" id="lessone" class="select2" style="width: 15%">
-
-            </select>&nbsp;
-                <button type="submit">搜索</button>
+                    <div class="box-header" style="left: 35%;">
+                        <button class="btn btn-success" type="submit" name="bu1" value="1"><span class="glyphicon glyphicon-plus">自动排课</span></button>
+                    </div>
+                    <div class="box-header" style="left: 35%">
+                        <button class="btn btn-success" type="submit" name="bu2" value="1"><span class="glyphicon glyphicon-plus">同步</span></button>
+                    </div>
+                    <div class="box-header" style="left: 35%">
+                        <button class="btn btn-success" type="submit" name="bu3" value="1"><span class="glyphicon glyphicon-plus">自动排考试时间</span></button>
+                    </div>
                 </form>
 
             </div>
 
             <div class="box-body">
-                <table id="vacant_room_table" class="table table-bordered table-striped">
-                    <thead>
-                    <tr>
-                        <th>名称</th>
-                        <th>类型</th>
-                        <th>容量</th>
-                    </tr>
-                    </thead>
-                    <tbody>
-                    {% for r in rooms %}
-                        <tr>
-                            <td>{{ r.id }}</td>
-                            <td>{{ r.type }}</td>
-                            <td>{{ r.container }}</td>
-                        </tr>
-                    {% endfor %}
-                    </tbody>
-                </table>
 
             </div>
         </div>
@@ -78,7 +68,7 @@
         );
 
         $(document).ready(function () {
-            var table = $('#vacant_room_table').DataTable(
+            var table = $(' #vacant_room_table').DataTable(
                 {
                     "paging": true,       <!-- 允许分页 -->
                     "lengthChange": true, <!-- 允许改变每页显示的行数 -->
@@ -118,20 +108,19 @@
                     "order": [[0, 'asc']]
                 }
             );
-            var d = new Array('ALL', '周一', "周二", "周三", "周四", "周五", "周六", "周日")
-            $('#week').append("<option value=0>ALL</option>")
-            for (var i = 1; i <= 20; i++) {
-                $("#week").append("<option value=" + i + ">" + "第" + i + '周' + "</option>")
+            var d = new Array('1', "2", '3');
+            for (var i = 2015;i<= 2022; i++) {
+                var yyy = i+1;
+                $("#week").append("<option value=" + i + ">" + i+"-"+yyy + "</option>")
             }
-            ;
 
             {% for r in rooms %}
                 console.log('{{ r.crno }}')
             {% endfor %}
 
 
-            for (var i = 0; i <= 7; i++) {
-                $('#day').append("<option value=" + i + ">" + d[i] + "</option>")
+            for (var i = 0; i <= 2; i++) {
+                $('#day').append("<option value=" + i+1 + ">" + d[i] + "</option>")
             }
 
             $('#lessons').append("<option value=0>ALL</option>")
@@ -159,5 +148,10 @@
             });
             $('.select2').select2();
         });
+    </script>
+    <script>
+        {% ifequal ff '1' %}
+            alert("成功");
+        {% endifequal %}
     </script>
 {% endblock %}

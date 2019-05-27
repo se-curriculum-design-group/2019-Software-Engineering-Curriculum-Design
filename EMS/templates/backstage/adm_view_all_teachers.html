@@ -101,12 +101,16 @@
             var table = $('#teachers_table').DataTable(
                 {
                     dom: 'Bfrtip',
-                    buttons: [
+                   buttons: [
                         'copy',
                         {
                             extend: 'excel',
                             filename: "全校教师信息表",
-                        }, 'pdf', 'print'
+                        },
+                        {
+                            extend: 'print',
+                            filename: "全校教师信息表",
+                        }
                     ],
                     "paging": true,       <!-- 允许分页 -->
                     "lengthChange": true, <!-- 允许改变每页显示的行数 -->

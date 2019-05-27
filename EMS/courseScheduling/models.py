@@ -145,7 +145,10 @@ class Exam_Schedule(models.Model):
     where = models.ForeignKey(to=ClassRoom, on_delete=models.CASCADE)
 
     def __str__(self):
-        return "-".join([self.sno, self.tno_mno_course, self.time, self.where])
+        return "-".join([self.sno.username, self.tno_mno_course.tno.mcno.cno.cname, self.time, self.where.crno])
+
+    def get_class_name(self):
+        return self.tno_mno_course.tno.mcno.cno.cname
 
     class Meta:
         db_table = 'exam_schedule'

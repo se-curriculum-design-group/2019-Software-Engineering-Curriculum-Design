@@ -25,16 +25,12 @@ class CourseScore(models.Model):
             'sno'
         )
 
-
 # 学生评价表
 class EvaluationForm(models.Model):
     # 三个对象引用
-    student = models.ForeignKey(
-        to=Student, on_delete=models.CASCADE, default=None)
-    course = models.ForeignKey(
-        to=MajorCourses, on_delete=models.CASCADE, default=None)
-    teacher = models.ForeignKey(
-        to=Teacher, on_delete=models.CASCADE, default=None)
+    student = models.ForeignKey(to=Student, on_delete=models.CASCADE, default=None)
+    course = models.ForeignKey(to=MajorCourses, on_delete=models.CASCADE, default=None)
+    teacher = models.ForeignKey(to=Teacher, on_delete=models.CASCADE, default=None)
 
     # 八个评分项（A=100 B=90 C=75 D=60 E=50）
     item1 = models.IntegerField(default=0)
