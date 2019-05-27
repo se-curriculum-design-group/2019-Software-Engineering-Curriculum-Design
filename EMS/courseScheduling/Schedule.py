@@ -701,7 +701,7 @@ def Search_time_room(time: str):
     res = []
     table = String_to_table(time)
     for element in Classrooms_id:
-        print(Classrooms_id[element].id)
+        # print(Classrooms_id[element].id)
         room = Classrooms_id[element]
         if has_table_hazzard(room.courseSchedule, table):
             continue

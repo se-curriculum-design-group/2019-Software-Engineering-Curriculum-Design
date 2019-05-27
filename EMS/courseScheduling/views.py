@@ -1,5 +1,6 @@
 from django.shortcuts import render
 from courseScheduling.Schedule import *
+from django.http import JsonResponse
 from django.shortcuts import render
 import courseScheduling.Schedule as sch
 import backstage.models as mod
@@ -184,24 +185,84 @@ def search_time_room_teacher(request):
     # print(rooms)
     return render(request, 'courseScheduing/teacher_scheduling_manage.html', {'rooms': rooms})
 
+w,d,ls,le,note=0,0,0,0,0
 
 def occupy_room(request):
+    global w,d,ls,le,note
     w = request.POST.get('week')
     d = request.POST.get('day')
     ls = request.POST.get('ls')
     le = request.POST.get('le')
-    if w==None or w=='' or d==None or d=='' or ls==None or ls=='' or le==None or le=='':
+    # print(week, day, ls, le)
+    if w == None or w == '' or d == None or d == '' or ls == None or ls == '' or le == None or le == '':
         rooms=[]
+
         return render(request, 'courseScheduing/occupy_room.html', {'rooms': rooms})
-    w=int(w)
-    d=int(d)
-    ls=int(ls)
-    le=int(le)
+    w = int(w)
+    d = int(d)
+    ls = int(ls)
+    le = int(le)
+
     print(w, d, ls, le)
     t = str((d - 1) * 13 + ls) + "-" + str((d - 1) * 13 + le) + "-" + str(w) + "-" + str(w)
     print(t)
-    # rooms=[]
+    print("asdasd")
+
+    ppp = models.ClassRoom.objects.all()
+    a = request.POST.get('B-101')
+    print(a)
+    rooms=[]
     # sch.init()
-    rooms=sch.Search_time_room(t)
+    rooms = sch.Search_time_room(t)
     # print(rooms)
-    return render(request, 'courseScheduing/occupy_room.html', {'rooms': rooms})
+    return render(request, "courseScheduing/occupy_room.html", {'rooms':rooms})
+
+# def occupy_room(request):
+#     global w,d,le,ls,note
+#     # print("Asd")
+#     if request.is_ajax():
+#         # print("第一层")
+#         if request.method=='GET':
+#             week = request.GET.get('week')
+#             day = request.GET.get('day')
+#             ls = request.GET.get('ls')
+#             le = request.GET.get('le')
+#             # print(week, day, ls, le)
+#             w = int(week)
+#             d = int(day)
+#             ls = int(ls)
+#             le = int(le)
+#             # print(w, d, ls, le)
+#             t = str((d - 1) * 13 + ls) + "-" + str((d - 1) * 13 + le) + "-" + str(w) + "-" + str(w)
+#             # print(t)
+#             # rooms=[]
+#             # sch.init()
+#             rooms = sch.Search_time_room(t)
+#             id={}
+#             type = {}
+#             container={}
+#             co = 0
+#             for i in rooms:
+#                 # print(i.get('id'), i.get('type'), i.get('container'))
+#                 id[co] = i.get('id')
+#                 type[co] = i.get('type')
+#                 container[co] = i.get('container')
+#                 co+=1
+#             return JsonResponse({"idd":id, "typee":type, "con":container})
+#
+#     # print(w,d,ls,le,note)
+#     if w==None or w=='' or d==None or d=='' or ls==None or ls=='' or le==None or le=='':
+#         rooms=[]
+#         return render(request, 'courseScheduing/occupy_room.html', {'rooms': rooms})
+#     we=str(w)
+#     sta = (d-1)*13+ls
+#     end = (d-1)*13+le
+#     sss = we+"-"+we+"-"+str(sta)+"-"+str(end)
+#     ppp = models.ClassRoom.objects.all()
+#     for i in ppp:
+#         if request.GET.get(i):
+#             print('asd')
+#             print(i)
+#     # sch.add_active(sss,)
+#     # print(rooms)
+#     return render(request, 'courseScheduing/occupy_room.html')
