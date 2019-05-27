@@ -1,4 +1,4 @@
-{% extends 'student_base.html' %}
+{% extends 'adm_base.html' %}
 
 {% load staticfiles %}
 
@@ -19,24 +19,27 @@
             <div class="box-header ">
                 <form method="post" action="{% url "courseScheduling:occupy_room" %}">
                     {% csrf_token %}
-                <label style="">周：</label><select name="week" id="week" class="select2" style="width: 10%">
+                    <label style="">周：</label><select name="week" id="week" class="select2" style="width: 10%">
 
-            </select>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                <label style="">日：</label><select name="day" id="day" class="select2" style="width: 10%">
+                </select>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                    <label style="">日：</label><select name="day" id="day" class="select2" style="width: 10%">
 
-            </select>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                <label>开始：</label><select name="ls" id="lessons" class="select2" style="width: 10%">
+                </select>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                    <label>开始：</label><select name="ls" id="lessons" class="select2" style="width: 10%">
 
-            </select>&nbsp;
-                <label>结束：</label><select name="le" id="lessone" class="select2" style="width: 10%">
+                </select>&nbsp;
+                    <label>结束：</label><select name="le" id="lessone" class="select2" style="width: 10%">
 
-            </select>&nbsp;
-                <button type="submit">搜索空闲教室</button>
-                    <br><h></h>
-                    <label style="">备注（占用原因)：</label>
-                    <input type="text" name="inp" style="width: 50%">
+                </select>&nbsp;
+                    <div class="form-group">
+                        <button type="submit" class="pull-right btn btn-primary"><span
+                                class="glyphicon glyphicon-search">搜索空闲教室</span></button>
+                    </div>
+                    <div class="form-group">
+                        <label style="">备注（占用原因)：</label>
+                        <input type="text" name="inp" style="width: 50%">
+                    </div>
                 </form>
-
             </div>
 
             <div class="box-body">
@@ -51,17 +54,19 @@
                     </thead>
                     <tbody>
                     <form>
-                    {% for r in rooms %}
-                        <tr id={{ r.id }}>
-                            <td>{{ r.id }}</td>
-                            <td>{{ r.type }}</td>
-                            <td>{{ r.container }}</td>
-                            <form action="{% url 'courseScheduling:occupy_room' %}" method="post">
-                                {% csrf_token %}
-                                <td><button type="button" name="{{ r.id }}" value="{{ r.id }}">占用</button> </td>
-                            </form>
-                        </tr>
-                    {% endfor %}
+                        {% for r in rooms %}
+                            <tr id={{ r.id }}>
+                                <td>{{ r.id }}</td>
+                                <td>{{ r.type }}</td>
+                                <td>{{ r.container }}</td>
+                                <form action="{% url 'courseScheduling:occupy_room' %}" method="post">
+                                    {% csrf_token %}
+                                    <td>
+                                        <button type="button" name="{{ r.id }}" value="{{ r.id }}">占用</button>
+                                    </td>
+                                </form>
+                            </tr>
+                        {% endfor %}
                     </form>
                     </tbody>
                 </table>
@@ -75,23 +80,23 @@
     <script>
         {#console.log(r);#}
         {#var room = {{ rooms|safe }};#}
-        var room=new Array();
+        var room = new Array();
         var i = 0;
         {% for r in rooms %}
-            room[i]="{{ r.id|safe }}";
+            room[i] = "{{ r.id|safe }}";
             i++;
         {% endfor %}
         {#console.log(room);#}
-        for(var i=0;i<room.length;i++){
-            var s='#'+room[i];
+        for (var i = 0; i < room.length; i++) {
+            var s = '#' + room[i];
             $(s).click(function () {
                 {#alert("asdasd");#}
                 {#console.log(typeof room[i].id);#}
                 {#console.log(this.id);#}
                 {#alert("asdasd");#}
                 {#console.log(room[i]);#}
-               {#var data = document.getElementById(this.id);#}
-               this.style.display="none";
+                {#var data = document.getElementById(this.id);#}
+                this.style.display = "none";
             });
         }
         $.fn.dataTable.ext.search.push(

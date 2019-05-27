@@ -6,8 +6,10 @@ import courseScheduling.Schedule as sch
 import backstage.models as mod
 from . import models
 from courseScheduling.Synchronize import Sychronize_with_courseSelected
+
+
 def welcome(request):
-    #exam_schedule()
+    # exam_schedule()
     return render(request, 'courseScheduing/welcome.html')
 
 
@@ -18,6 +20,7 @@ def scheduling_home_page(request):
         return render(request, 'courseScheduing/teacher_scheduling_manage.html')
     else:
         return render(request, 'courseScheduing/adm_scheduling_manage.html')
+
 
 def get_exam_time(time_class):
     ss = "考试周 星期"
@@ -52,6 +55,7 @@ def get_exam_time(time_class):
         pass
     return ss
 
+
 def time_exam(request):
     if request.method == 'POST':
         print("收到输入")
@@ -70,7 +74,7 @@ def time_exam(request):
         data = []
 
         exam_schedule = models.Exam_Schedule.objects.filter(sno__username=username)
-        if len(exam_schedule)>0:
+        if len(exam_schedule) > 0:
             print("查询有效")
             for i in exam_schedule:
                 f = 0
@@ -86,38 +90,38 @@ def time_exam(request):
                 term_class = mcno.semester
                 cname = mcno.cno.cname
                 # print(cname, year_class, term_class)
-                if year==0 and term==0:
-                    exam_message.append(str(year_class)+"-"+str(year_class+1))
+                if year == 0 and term == 0:
+                    exam_message.append(str(year_class) + "-" + str(year_class + 1))
                     exam_message.append(str(term_class))
                     exam_message.append(cname)
                     exam_message.append(tname)
                     ss = get_exam_time(time_class)
                     exam_message.append(ss)
-                    f= 1
-                elif year==0:
-                    if term_class==term:
+                    f = 1
+                elif year == 0:
+                    if term_class == term:
                         exam_message.append(str(year_class) + "-" + str(year_class + 1))
                         exam_message.append(str(term_class))
                         exam_message.append(cname)
                         exam_message.append(tname)
                         ss = get_exam_time(time_class)
                         exam_message.append(ss)
-                        f=1
+                        f = 1
                     else:
                         pass
-                elif term==0:
-                    if year_class==year:
+                elif term == 0:
+                    if year_class == year:
                         exam_message.append(str(year_class) + "-" + str(year_class + 1))
                         exam_message.append(str(term_class))
                         exam_message.append(cname)
                         exam_message.append(tname)
                         ss = get_exam_time(time_class)
                         exam_message.append(ss)
-                        f=1
+                        f = 1
                     else:
                         pass
                 else:
-                    if year_class==year and term_class==term:
+                    if year_class == year and term_class == term:
                         print("均有选择")
                         exam_message.append(str(year_class) + "-" + str(year_class + 1))
                         exam_message.append(str(term_class))
@@ -125,20 +129,21 @@ def time_exam(request):
                         exam_message.append(tname)
                         ss = get_exam_time(time_class)
                         exam_message.append(ss)
-                        f=1
+                        f = 1
                     else:
                         pass
                 if f == 1:
                     data.append(exam_message)
 
-    # exam_schedule = list(exam_schedule)
-    # print(type(exam_schedule))
-    # print(exam_schedule[0])
-    # print(type(exam_schedule[0]))
-    # print(exam_schedule[0].time)
-    # print(type(exam_schedule[0].time))
-        return render(request, "courseScheduing/time_exam.html", {"data":data})
+        # exam_schedule = list(exam_schedule)
+        # print(type(exam_schedule))
+        # print(exam_schedule[0])
+        # print(type(exam_schedule[0]))
+        # print(exam_schedule[0].time)
+        # print(type(exam_schedule[0].time))
+        return render(request, "courseScheduing/time_exam.html", {"data": data})
     return render(request, "courseScheduing/time_exam.html")
+
 
 def find_vacant_room(request):
     rooms = mod.ClassRoom.objects.all()
@@ -155,47 +160,45 @@ def search_time_room(request):
     d = int(request.POST.get('day'))
     ls = int(request.POST.get('ls'))
     le = int(request.POST.get('le'))
-    print(w, d, ls, le)
     t = str((d - 1) * 13 + ls) + "-" + str((d - 1) * 13 + le) + "-" + str(w) + "-" + str(w)
-    print(t)
-    # rooms=[]
-    # sch.init()
-    rooms=sch.Search_time_room(t)
-    # print(rooms)
+    rooms = sch.Search_time_room(t)
     return render(request, 'courseScheduing/student_scheduling_manage.html', {'rooms': rooms})
+
 
 def search_time_room_teacher(request):
     w = request.POST.get('week')
     d = request.POST.get('day')
     ls = request.POST.get('ls')
     le = request.POST.get('le')
-    if w==None or w=='' or d==None or d=='' or ls==None or ls=='' or le==None or le=='':
-        rooms=[]
+    if w == None or w == '' or d == None or d == '' or ls == None or ls == '' or le == None or le == '':
+        rooms = []
         return render(request, 'courseScheduing/teacher_scheduling_manage.html', {'rooms': rooms})
-    w=int(w)
-    d=int(d)
-    ls=int(ls)
-    le=int(le)
+    w = int(w)
+    d = int(d)
+    ls = int(ls)
+    le = int(le)
     print(w, d, ls, le)
     t = str((d - 1) * 13 + ls) + "-" + str((d - 1) * 13 + le) + "-" + str(w) + "-" + str(w)
     print(t)
     # rooms=[]
     # sch.init()
-    rooms=sch.Search_time_room(t)
+    rooms = sch.Search_time_room(t)
     # print(rooms)
     return render(request, 'courseScheduing/teacher_scheduling_manage.html', {'rooms': rooms})
 
-w,d,ls,le,note=0,0,0,0,0
+
+w, d, ls, le, note = 0, 0, 0, 0, 0
+
 
 def occupy_room(request):
-    global w,d,ls,le,note
+    global w, d, ls, le, note
     w = request.POST.get('week')
     d = request.POST.get('day')
     ls = request.POST.get('ls')
     le = request.POST.get('le')
     # print(week, day, ls, le)
     if w == None or w == '' or d == None or d == '' or ls == None or ls == '' or le == None or le == '':
-        rooms=[]
+        rooms = []
 
         return render(request, 'courseScheduing/occupy_room.html', {'rooms': rooms})
     w = int(w)
@@ -213,11 +216,12 @@ def occupy_room(request):
     ppp = models.ClassRoom.objects.all()
     a = request.POST.get('B-101')
     print(a)
-    rooms=[]
+    rooms = []
     # sch.init()
     rooms = sch.Search_time_room(t)
     # print(rooms)
     return render(request, "courseScheduing/occupy_room.html", {'rooms': rooms})
+
 
 # def occupy_room(request):
 #     global w,d,le,ls,note
@@ -271,22 +275,22 @@ def occupy_room(request):
 
 
 def schedule(request):
-    s=request.POST.get("s")
-    t=request.POST.get('t')
-    ws=request.POST.get("ws")
-    we=request.POST.get("we")
-    d1=request.POST.get("d1")
-    f1=request.POST.get("f1")
-    e1=request.POST.get("e1")
-    d2=request.POST.get("d2")
-    f2=request.POST.get("f2")
-    e2=request.POST.get("e2")
-    cd=request.POST.get('cd')
-    r=request.POST.get('rooms')
-    print(r,s,t,cd,d1,f1,e1)
-    if r is None or s is None or t is None or cd is None or e1 is None or d1 is None or f1 is None or\
-                (len(r) and len(s) and len(t) and len(e1) and len(cd) and len(d1) and len(f1)) == 0:
-        return render(request,"courseScheduing/schedule.html",{'f':0})
+    s = request.POST.get("s")
+    t = request.POST.get('t')
+    ws = request.POST.get("ws")
+    we = request.POST.get("we")
+    d1 = request.POST.get("d1")
+    f1 = request.POST.get("f1")
+    e1 = request.POST.get("e1")
+    d2 = request.POST.get("d2")
+    f2 = request.POST.get("f2")
+    e2 = request.POST.get("e2")
+    cd = request.POST.get('cd')
+    r = request.POST.get('rooms')
+    print(r, s, t, cd, d1, f1, e1)
+    if r is None or s is None or t is None or cd is None or e1 is None or d1 is None or f1 is None or \
+            (len(r) and len(s) and len(t) and len(e1) and len(cd) and len(d1) and len(f1)) == 0:
+        return render(request, "courseScheduing/schedule.html", {'f': 0})
     time1 = str((int(d1) - 1) * 13 + int(f1)) + "-" + str((int(d1) - 1) * 13 + int(e1)) + "-" + ws + "-" + we
     time2 = ""
     if len(d2) == 0 or len(f2) == 0 or len(e2) == 0:
@@ -294,12 +298,12 @@ def schedule(request):
     else:
         time2 = ',' + str((int(d2) - 1) * 13 + int(f2)) + "-" + str((int(d2) - 1) * 13 + int(e2)) + "-" + ws + "-" + we
 
-    time3=time1+time2
+    time3 = time1 + time2
 
-    f=manual_schedule(time3, r, str(s).split(' '), [], t,cd)
+    f = manual_schedule(time3, r, str(s).split(' '), [], t, cd)
 
-    if f==True:
-        return render(request,'courseScheduing/schedule.html',{"f":1})
+    if f == True:
+        return render(request, 'courseScheduing/schedule.html', {"f": 1})
     else:
         return render(request, 'courseScheduing/schedule.html', {"f": 2})
 
@@ -323,4 +327,4 @@ def last_html(request):
         else:
             sch.exam_schedule(int(week), int(day))
             ff = '1'
-    return render(request, "courseScheduing/last_html.html", {'ff':ff})
+    return render(request, "courseScheduing/last_html.html", {'ff': ff})

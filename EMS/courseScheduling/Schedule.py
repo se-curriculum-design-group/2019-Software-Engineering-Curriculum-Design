@@ -1004,7 +1004,7 @@ def search_exam_time(stu_username: str):
 
 if __name__ == '__main__':
     #autoSchedule()
-    #exam_schedule()
+    exam_schedule()
     #Sycho()
     #手工排
     #以上在管理员的排课界面
