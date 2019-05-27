@@ -19,10 +19,10 @@
             <div class="box-header ">
                 <form method="post" action="{% url "courseScheduling:search_time_room" %}">
                     {% csrf_token %}
-                <label style="">周：</label><select name="week" id="week" class="select2" style="width: 20%">
+                <label style="">教学周选择：</label><select name="week" id="week" class="select2" style="width: 20%">
 
             </select>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                <label style="">日：</label><select name="day" id="day" class="select2" style="width: 15%">
+                <label style="">星期：</label><select name="day" id="day" class="select2" style="width: 15%">
 
             </select>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                 <label>开始：</label><select name="ls" id="lessons" class="select2" style="width: 15%">
