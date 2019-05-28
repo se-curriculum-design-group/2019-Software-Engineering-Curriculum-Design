@@ -545,15 +545,17 @@ def get_all_teaching(request):
         return render(request, 'errors/403page.html')
     tno = request.session['username']
     teacher = Teacher.objects.get(username=tno)
-    teaching_list = Teaching.objects.filter(tno=teacher)
-    print(teaching_list)
-    all_year = [year[0] for year in teaching_list.values_list('mcno__year').distinct()]
-    all_semester = [semester[0] for semester in teaching_list.values_list('mcno__semester').distinct()]
     this_year = datetime.now().year
     this_semester = get_semester(datetime.now().month)
+    teaching_list = Teaching.objects.filter(tno=teacher, mcno__year=this_year, mcno__semester=this_semester)
+    tch_sch_list = Teacher_Schedule_result.objects.filter(tno__in=teaching_list)
+
+    all_year = [year[0] for year in teaching_list.values_list('mcno__year').distinct()]
+    all_semester = [semester[0] for semester in teaching_list.values_list('mcno__semester').distinct()]
 
     context = {
         'teaching_list': teaching_list,
+        'tch_sch_list': tch_sch_list,
         'all_year': all_year,
         'all_semester': all_semester,
         'this_year': this_year,
@@ -583,6 +585,29 @@ def show_student_score(request, cno, course_type):
         'adm_class_list': adm_class_list
     }
     return render(request, "scoreManage/tch_view_stu_score_detail.html", context)
+
+
+def upload_student_score(request, cno, course_type):
+    user = request.session["username"]
+    teacher = Teacher.objects.get(username=user)
+    class_no = Course.objects.get(cno=cno, course_type=course_type)
+    major_courses = MajorCourses.objects.get(cno=class_no)
+    teaching = Teaching.objects.get(mcno=major_courses, tno=teacher)
+    teacher_schedule_result = Teacher_Schedule_result.objects.filter(tno=teaching)
+    if not teacher_schedule_result:
+        return render(request, "scoreManage/tch_upload_score_detail.html")
+    else:
+        teacher_schedule_result = teacher_schedule_result[0]
+    course_selected = CourseSelected.objects.filter(cno=teacher_schedule_result)
+    adm_id_list = course_selected.values('sno__in_cls').distinct()
+    adm_class_list = []
+    for adm_id in adm_id_list:
+        adm_class_list.append(AdmClass.objects.get(id=adm_id['sno__in_cls']))
+    context = {
+        'course_selected': course_selected,
+        'adm_class_list': adm_class_list
+    }
+    return render(request, "scoreManage/tch_upload_score_detail.html", context)
 
 
 def teacher_view_stu_score(request):
@@ -837,3 +862,28 @@ def adm_delete_course(request):
             except Course.DoesNotExist:
                 print(cno, ctype, cname)
             return JsonResponse({})
+
+
+# 获取到老师教了并且排了的课
+def get_all_course_selected(request):
+    if request.session['user_type'] != '教师':
+        return render(request, 'errors/403page.html')
+    tno = request.session['username']
+    teacher = Teacher.objects.get(username=tno)
+    this_year = datetime.now().year
+    this_semester = get_semester(datetime.now().month)
+    teaching_list = Teaching.objects.filter(tno=teacher, mcno__year=this_year, mcno__semester=this_semester)
+    tch_sch_list = Teacher_Schedule_result.objects.filter(tno__in=teaching_list)
+
+    all_year = [year[0] for year in teaching_list.values_list('mcno__year').distinct()]
+    all_semester = [semester[0] for semester in teaching_list.values_list('mcno__semester').distinct()]
+
+    context = {
+        'teaching_list': teaching_list,
+        'tch_sch_list': tch_sch_list,
+        'all_year': all_year,
+        'all_semester': all_semester,
+        'this_year': this_year,
+        'this_semester': this_semester,
+    }
+    return render(request, 'scoreManage/teacher_upload_score.html', context)

@@ -40,7 +40,9 @@ urlpatterns = [
                   path('teacher_choose_student',views.teacher_choose_student,name="teacher_choose_student"),
                   #教师查看资料
                   path('teacher_view_projectfiles',views.teacher_view_projectfiles,name="teacher_view_projectfiles"),
-                  #教师查看资料详情
+                  path('teacher_dowload_files', views.teacher_dowload_files, name="teacher_dowload_files"),
+
+                #教师查看资料详情
                   path('teacher_view_projectfiles_detail',views.teacher_view_projectfiles_detail,name="teacher_view_projectfiles_detail"),
                   #教师提交成绩
                   path('teacher_submit_score',views.teacher_submit_score,name="teacher_submit_score"),                
@@ -51,5 +53,10 @@ urlpatterns = [
                   path('teacher_acc_student',views.teacher_acc_student,name="teacher_acc_student"),
                   # 管理员查看选题情况
                   path('adm_projectSelection', views.adm_projectSelection, name="adm_projectSelection"),
+#管理员查看选题：点击左侧功能栏中“毕业设计”下的“点击查看选题”触发
+                  path('admin_submit_project',views.admin_submit_project,name="admin_submit_project"),
+#管理员查看题目详情：点击查看选题界面中的某一个选题触发
+                  path('admin_view_project_detail',views.admin_view_project_detail,name="admin_view_project_detail"),
+
 
 ]
