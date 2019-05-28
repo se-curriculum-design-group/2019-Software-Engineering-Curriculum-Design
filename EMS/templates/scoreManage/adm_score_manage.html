@@ -57,7 +57,14 @@
                             {% endfor %}
                         </select>
                     </div>
+
                     <div class="col-md-4">
+                        <a id="a">
+                            <button id='change_score_btn' class="btn btn-info pull-right" type="button">
+                                <span class="glyphicon glyphicon-pencil"></span>修改成绩
+                            </button>
+                        </a>
+
                         <button id='make_search' class="btn btn-primary pull-right" type="submit">
                             <span class="glyphicon glyphicon-search"></span>查找
                         </button>
@@ -86,30 +93,21 @@
                     {% for course_score in all_course_score %}
                         <tr>
                             <td>{{ forloop.counter }}</td>
-                            <td>{{ course_score.teaching.mcno.year }}</td>
-                            <td>{{ course_score.teaching.mcno.semester }}</td>
-                            <td>{{ course_score.teaching.mcno.mno.major.in_college | safe }}</td>
-                            <td>{{ course_score.teaching.mcno.mno.major | safe }}</td>
+                            <td>{{ course_score.cno.tno.mcno.year }}</td>
+                            <td>{{ course_score.cno.tno.mcno.semester }}</td>
+                            <td>{{ course_score.cno.tno.mcno.mno.major.in_college | safe }}</td>
+                            <td>{{ course_score.cno.tno.mcno.mno.major | safe }}</td>
                             <td>{{ course_score.sno.username }}</td>
-                            <td>{{ course_score.teaching.tno.username }}</td>
-                            <td>{{ course_score.teaching.mcno.cno.cno }}</td>
-                            <td>{{ course_score.teaching.mcno.cno.course_type }}</td>
-                            <td>{{ course_score.commen_score }}</td>
+                            <td>{{ course_score.cno.tno.tno.username }}</td>
+                            <td>{{ course_score.cno.tno.mcno.cno.cno }}</td>
+                            <td>{{ course_score.cno.tno.mcno.cno.course_type }}</td>
+                            <td>{{ course_score.common_score }}</td>
                             <td>{{ course_score.final_score }}</td>
                             <td>{{ course_score.score }}</td>
                         </tr>
                     {% endfor %}
                     </tbody>
                 </table>
-            </div>
-            <div class="box-footer">
-                <div class="btn-group pull-left ">
-                    <a id="a">
-                        <button id='change_score_btn' class="btn btn-info" type="button">
-                            <span class="glyphicon glyphicon-pencil"></span>修改成绩
-                        </button>
-                    </a>
-                </div>
             </div>
         </div>
 

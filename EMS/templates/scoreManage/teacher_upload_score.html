@@ -33,7 +33,7 @@
                 <tbody>
                 {% for tch_sch in tch_sch_list %}
                     <tr>
-                        <td>{{ forloop.counter }}</td>
+                        <td>{{ tch_sch.id }}</td>
                         <td>{{ tch_sch.tno.mcno.cno.cno }}</td>
                         <td>{{ tch_sch.tno.mcno.cno.cname }}</td>
                         <td>{{ tch_sch.tno.mcno.cno.course_type }}</td>
@@ -42,7 +42,7 @@
                         <td>{{ tch_sch.where }}</td>
                         <td>{{ tch_sch.tno.mcno.mno }}</td>
                         <td>
-                            <a href="{% url 'scoreManagement:upload_student_score' tch_sch.tno.mcno.cno.cno tch_sch.tno.mcno.cno.course_type %}">
+                            <a href="{% url 'scoreManagement:upload_student_score' tch_sch.id %}">
                                 <button id='show_students' class="btn btn-primary" type="button">
                                     <span class="glyphicon glyphicon-plus"></span>查看
                                 </button>

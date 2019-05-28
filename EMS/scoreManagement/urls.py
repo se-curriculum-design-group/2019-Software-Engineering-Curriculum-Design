@@ -40,7 +40,10 @@ urlpatterns = [
     # 教师查看学生考试成绩
     path('teacher_view_stu_score', views.teacher_view_stu_score, name="teacher_view_stu_score"),
     # 教师进入到详细的上分页面，下载模板上分等
-    path('upload_student_score/?cno=<cno>&course_type=<course_type>', views.upload_student_score, name="upload_student_score"),
+    path('upload_student_score/?tch_sch_id=<tch_sch_id>', views.upload_student_score, name="upload_student_score"),
+    path('tch_add_score', views.tch_add_score, name="tch_add_score"),
+    path('tch_change_score_weight', views.tch_change_score_weight, name="tch_change_score_weight"),
+    path('handle_batch_score', views.handle_batch_score, name="handle_batch_score"),
 
     # 管理员查看全部的成绩
     path('adm_all_course_score', views.adm_all_course_score,
@@ -49,7 +52,8 @@ urlpatterns = [
     # 管理员想查看成绩，先查看自己教的课
     path('get_all_teaching', views.get_all_teaching, name="get_all_teaching"),
     # 管理员进入页面，查看学生成绩详情
-    path('show_student_score/?cno=<cno>&course_type=<course_type>', views.show_student_score, name="show_student_score"),
+    path('show_student_score/?cno=<cno>&course_type=<course_type>', views.show_student_score,
+         name="show_student_score"),
 
     # 管理员查看教学评价结果
     path('adm_view_teacher_evaluation', views.adm_view_teacher_evaluation, name="adm_view_teacher_evaluation"),

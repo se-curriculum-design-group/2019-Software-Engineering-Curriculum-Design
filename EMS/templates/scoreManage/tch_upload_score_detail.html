@@ -18,6 +18,31 @@
                 <h3 class="box-title">学生成绩表</h3>
 
                 <div class="box-header">
+                    <div class="pull-right">
+                        <div class="col-md-6">
+                            <p>如果需要批量上传成绩，先点击下载Excel文件，再点击批量上传</p>
+                        </div>
+
+                        <div class="btn-group pull-left ">
+                            <a id="a">
+                                <button id='add_score_btn' class="btn btn-info" type="button">
+                                    <span class="glyphicon glyphicon-plus"></span>填成绩
+                                </button>
+                            </a>
+
+                            <a id="a">
+                                <button id='xls_btn' class="btn btn-success" type="button">
+                                    <span class="glyphicon glyphicon-save"></span>批量上传
+                                </button>
+                            </a>
+
+                            <a id="b">
+                                <button id='change_weight_btn' class="btn btn-danger" type="button">
+                                    <span class="glyphicon glyphicon-pencil"></span>修改权重
+                                </button>
+                            </a>
+                        </div>
+                    </div>
 
                     <label for="">行政班：</label>
                     <select name="adm_class" id="in_class" class="select2" style="width: 20%;">
@@ -47,10 +72,10 @@
                     </tr>
                     </thead>
                     <tbody>
-                    {% for student in course_selected %}
+                    {% for student in course_selected_list %}
                         <tr>
-                            <td>{{ forloop.counter }}</td>
-                            <td>{{ student.sno }}</td>
+                            <td>{{ student.id }}</td>
+                            <td>{{ student.sno.username }}</td>
                             <td>{{ student.sno.name }}</td>
                             {% if student.sno.sex == True %}
                                 <td>男</td>
@@ -68,6 +93,166 @@
                     </tbody>
                     <tfoot>
                 </table>
+            </div>
+        </div>
+
+        <div class="modal fade" id="add_score_block">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <form action="" name="changeMajorPlan" method="get" onsubmit="return(false);">
+                        <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal">&times;</button>
+                            <h4 class="modal-title">添加成绩</h4>
+                        </div>
+                        <div class="modal-content" id="add_score_modal">
+                            <div class="form-horizontal">
+                                <div class="form-group">
+                                    <label for="item_id" class="col-sm-2 control-label">编号：</label>
+                                    <div class="col-sm-10">
+                                        <input type="text" id="item_id" disabled class="form-control"
+                                               name="change_college">
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label for="stu_sno" class="col-sm-2 control-label">学号：</label>
+                                    <div class="col-sm-10">
+                                        <input type="text" id="stu_sno" disabled class="form-control"
+                                               name="change_major">
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="stu_name" class="col-sm-2 control-label">姓名：</label>
+                                    <div class="col-sm-10">
+                                        <input type="text" id="stu_name" disabled class="form-control"
+                                               name="change_year">
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="stu_sex" class="col-sm-2 control-label">性别：</label>
+                                    <div class="col-sm-10">
+                                        <input type="text" id="stu_sex" disabled class="form-control"
+                                               name="change_num">
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="stu_year" class="col-sm-2 control-label">年级：</label>
+                                    <div class="col-sm-10">
+                                        <input type="text" id="stu_year" disabled class="form-control"
+                                               name="change_lowest_score">
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="stu_adm_class" class="col-sm-2 control-label">班级：</label>
+                                    <div class="col-sm-10">
+                                        <input type="text" id="stu_adm_class" disabled class="form-control"
+                                               name="change_course_stu_method">
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="stu_common_score" class="col-sm-2 control-label">平时分：</label>
+                                    <div class="col-sm-10">
+                                        <input type="text" id="stu_common_score" class="form-control"
+                                               name="change_course_num">
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="stu_final_score" class="col-sm-2 control-label">考试成绩：</label>
+                                    <div class="col-sm-10">
+                                        <input type="text" id="stu_final_score" class="form-control"
+                                               name="change_class_num">
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="weight" class="col-sm-2 control-label">权重：</label>
+                                    <div class="col-sm-10">
+                                        <input type="text" id="weight" disabled class="form-control"
+                                               name="change_class_num">
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="stu_final_score" class="col-sm-2 control-label">总成绩：</label>
+                                    <div class="col-sm-10">
+                                        <input type="text" id="stu_score" disabled class="form-control"
+                                               name="change_class_num">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="modal-footer">
+                                <div class="center-block">
+                                    <button id="cancel_btn" type="button" class="btn btn-default"
+                                            data-dismiss="modal">取消
+                                    </button>
+                                    <button id="sure_add" type="submit" class="btn btn-success">保存</button>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+        <div class="modal fade" id="change_weigth_form">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <form action="" name="changeMajorPlan" method="get" onsubmit="return(false);">
+                        <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal">&times;</button>
+                            <h4 class="modal-title">修改权重</h4>
+                        </div>
+                        <div class="modal-content" id="change_weight_modal">
+                            <div class="form-horizontal">
+                                <div class="form-group">
+                                    <label for="final_weight_input" class="col-sm-2 control-label">期末考试权重：</label>
+                                    <div class="col-sm-10">
+                                        <input type="number" min="0.0" max="1.0" step="0.1" id="final_weight_input"
+                                               class="form-control"
+                                               name="change_college">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="modal-footer">
+                                <div class="center-block">
+                                    <button id="cancel_btn" type="button" class="btn btn-default"
+                                            data-dismiss="modal">取消
+                                    </button>
+                                    <button id="sure_change_weight" type="submit" class="btn btn-success">保存</button>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+        <div class="modal fade" id="file_upload_form">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <form action="{% url 'scoreManagement:handle_batch_score' %}"  name="changeMajorPlan" method="post" enctype="multipart/form-data">
+                        {% csrf_token %}
+                        <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal">&times;</button>
+                            <h4 class="modal-title">上传Excel成绩表</h4>
+                        </div>
+                        <div class="modal-content" id="change_weight_modal">
+                            <div class="form-horizontal">
+                                <div class="form-group">
+                                    <div class="col-sm-10">
+                                        <input type="file" id="xls_file_input" class="form-control" name="fileUpload"/>
+                                        <input type="submit" class="form-control" value="上传文件"/>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
             </div>
         </div>
     </section>
@@ -92,11 +277,11 @@
                         'copy',
                         {
                             extend: 'excel',
-                            filename: "所教课程表",
+                            filename: "学生成绩表",
                         },
                         {
                             extend: 'print',
-                            filename: "所教课程表",
+                            filename: "学生成绩表",
                         }
                     ],
                     "paging": true,       <!-- 允许分页 -->
@@ -151,6 +336,90 @@
                 table.draw();
             });
             $('.select2').select2();
+
+            $('#add_score_btn').click(function () {
+                if (table.rows('.selected').data().length) {
+                    var rowData = table.rows('.selected').data()[0];
+                    var form_modal = $('#add_score_block');
+                    var inputs = form_modal.find('input');
+                    for (let i = 0; i < inputs.length; i++) {
+                        $(inputs[i]).val(rowData[i]);
+                    }
+                    form_modal.modal();
+                } else {
+                    alert("请选择一项成绩修改");
+                }
+            });
+
+            $('#sure_add').click(function () {
+                var inputs = $('#add_score_block').find('input');
+                var values = [];
+                for (let i = 0; i < inputs.length; i++) {
+                    values.push($(inputs[i]).val());
+                }
+                const cs_id = values[0];
+                const com_score = values[6];
+                const fin_score = values[7];
+                const weight = values[8];
+
+                const data = {
+                    'cs_id': cs_id,
+                    'com_score': com_score,
+                    'fin_score': fin_score,
+                    'weight': weight,
+                };
+
+                console.log(data);
+                $.get(
+                    "{% url 'scoreManagement:tch_add_score' %}",
+                    data,
+                    function (ret) {
+                        if (ret) {
+                            console.log("add success");
+                            let tds = Array.prototype.slice.call($('.selected td'));
+                            tds[6].innerHTML = com_score;
+                            tds[7].innerHTML = fin_score;
+                            tds[9].innerHTML = ret['score'];
+                        } else {
+                            console.log("failue");
+                        }
+                    }
+                );
+            });
+
+            $('#change_weight_btn').click(function () {
+                let old_weight = {{ weight | safe}};
+                let tch_sch_id = {{ tch_sch | safe}};
+                $("#final_weight_input").val(old_weight);
+                $('#change_weigth_form').modal();
+                $('#sure_change_weight').click(function () {
+                    const final_weight = $('#final_weight_input').val();
+                    const data = {
+                        'final_weight': final_weight,
+                        'old_weight': old_weight,
+                        'tch_sch_id': tch_sch_id,
+                    };
+                    $.get(
+                        "{% url 'scoreManagement:tch_change_score_weight' %}",
+                        data,
+                        function (ret) {
+                            if (!ret) {
+                                console.log("修改失败");
+                            } else if (ret['no_need']) {
+                                console.log("无需修改");
+                            } else if (ret['succ']) {
+                                alert("修改成功，刷新查看");
+                            } else {
+                                alert("修改失败");
+                            }
+                        }
+                    );
+                });
+            });
+
+            $('#xls_btn').click(function () {
+                $('#file_upload_form').modal();
+            });
         });
     </script>
 {% endblock %}

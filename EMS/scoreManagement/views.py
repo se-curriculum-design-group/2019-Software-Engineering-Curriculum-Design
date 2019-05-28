@@ -5,6 +5,8 @@ from django.http import JsonResponse, HttpResponseRedirect
 from django.db.models import Q
 from datetime import datetime
 
+import pandas as pd
+
 from backstage.models import Student, Teacher, College, Major, MajorPlan, ClassRoom, AdmClass, User
 from courseScheduling.models import Teaching, Course, MajorPlan, MajorCourses, Teacher, Teacher_Schedule_result
 from courseSelection.models import CourseSelected
@@ -38,7 +40,7 @@ def adm_all_course_score(request):
         else:
             all_colleges = College.objects.all()
             all_majors = Major.objects.all()
-            all_course_score = CourseScore.objects.all()
+            all_course_score = CourseSelected.objects.filter(is_finish=True)
             all_years = [y['teaching__mcno__year'] for y in
                          CourseScore.objects.values("teaching__mcno__year").distinct()]
             all_semester = [y['teaching__mcno__semester'] for y in
@@ -46,11 +48,8 @@ def adm_all_course_score(request):
             try:
                 sear_year = request.GET['sear_year']
                 sear_semester = request.GET['sear_semester']
-
-                all_course_score = CourseScore.objects.filter(
-                    teaching__mcno__year=sear_year,
-                    teaching__mcno__semester=sear_semester,
-                )[:20]
+                tch_sch_list = Teacher_Schedule_result.objects.filter(tno__mcno__year=sear_year, tno__mcno__semester=sear_semester)
+                all_course_score = CourseSelected.objects.filter(cno__in=tch_sch_list)
                 context = {
                     "all_course_score": all_course_score,
                     "all_years": all_years,
@@ -62,9 +61,8 @@ def adm_all_course_score(request):
                 }
                 return render(request, 'scoreManage/adm_score_manage.html', context)
             except Exception:
-                print(Exception)
                 context = {
-                    "all_course_score": all_course_score[:10],
+                    "all_course_score": all_course_score,
                     "all_years": all_years,
                     "all_semester": all_semester,
                     "all_colleges": all_colleges,
@@ -587,29 +585,6 @@ def show_student_score(request, cno, course_type):
     return render(request, "scoreManage/tch_view_stu_score_detail.html", context)
 
 
-def upload_student_score(request, cno, course_type):
-    user = request.session["username"]
-    teacher = Teacher.objects.get(username=user)
-    class_no = Course.objects.get(cno=cno, course_type=course_type)
-    major_courses = MajorCourses.objects.get(cno=class_no)
-    teaching = Teaching.objects.get(mcno=major_courses, tno=teacher)
-    teacher_schedule_result = Teacher_Schedule_result.objects.filter(tno=teaching)
-    if not teacher_schedule_result:
-        return render(request, "scoreManage/tch_upload_score_detail.html")
-    else:
-        teacher_schedule_result = teacher_schedule_result[0]
-    course_selected = CourseSelected.objects.filter(cno=teacher_schedule_result)
-    adm_id_list = course_selected.values('sno__in_cls').distinct()
-    adm_class_list = []
-    for adm_id in adm_id_list:
-        adm_class_list.append(AdmClass.objects.get(id=adm_id['sno__in_cls']))
-    context = {
-        'course_selected': course_selected,
-        'adm_class_list': adm_class_list
-    }
-    return render(request, "scoreManage/tch_upload_score_detail.html", context)
-
-
 def teacher_view_stu_score(request):
     if request.session['user_type'] != '教师':
         return render(request, 'errors/403page.html')
@@ -887,3 +862,82 @@ def get_all_course_selected(request):
         'this_semester': this_semester,
     }
     return render(request, 'scoreManage/teacher_upload_score.html', context)
+
+
+def upload_student_score(request, tch_sch_id):
+    tch_sch = Teacher_Schedule_result.objects.get(id=tch_sch_id)
+    weight = tch_sch.tno.weight
+    course_selected_list = CourseSelected.objects.filter(cno_id=tch_sch_id)
+    context = {
+        'course_selected_list': course_selected_list,
+        'weight': weight,
+        'tch_sch': tch_sch_id,
+    }
+    return render(request, "scoreManage/tch_upload_score_detail.html", context)
+
+
+# 教师添加单个学生成绩
+def tch_add_score(request):
+    if request.is_ajax():
+        if len(request.GET):
+            cs_id = request.GET.get('cs_id')
+            com_score = float(request.GET.get('com_score'))
+            fin_score = float(request.GET.get('fin_score'))
+            weight = float(request.GET.get('weight'))
+            cs = CourseSelected.objects.get(id=cs_id)
+            cs.common_score = com_score
+            cs.final_score = fin_score
+            cs.score = com_score * (1 - weight) + fin_score * weight
+            score = round(cs.score, 2)
+            cs.is_finish = True
+            cs.save()
+            return JsonResponse({"score": score})
+
+
+# 修改成绩权重
+def tch_change_score_weight(request):
+    if request.is_ajax():
+        if len(request.GET):
+            old_weight = float(request.GET.get('old_weight'))
+            final_weight = float(request.GET.get('final_weight'))
+            tch_sch_id = request.GET.get('tch_sch_id')
+
+            print(old_weight, final_weight)
+
+            if old_weight == final_weight:
+                return JsonResponse({"no_need": "yes"})
+
+            course_selected_list = CourseSelected.objects.filter(cno_id=tch_sch_id)
+            course_selected_list[0].cno.tno.weight = final_weight
+            course_selected_list[0].cno.tno.save()
+
+            for c in course_selected_list:
+                c.cno.tno.weight = final_weight
+                c.score = c.common_score * (1 - final_weight) + c.final_score * final_weight
+                print(c.cno.tno.weight)
+                c.save()
+            return JsonResponse({"succ": "yes"})
+
+
+# 处理批量上传的文件
+@csrf_exempt
+def handle_batch_score(request):
+    if request.method == 'POST':
+        f = request.FILES.get('fileUpload')
+        excel_data = pd.read_excel(f)
+        excel_data.columns = excel_data.iloc[0]
+        excel_data = excel_data.drop(0)
+        tch_id = 0
+        try:
+            for _, row in excel_data.iterrows():
+                cs_id, sno, comm, final, wei = row['编号'], row['学号'], row['平时分'], row['考试分'], row['考试权重']
+                cs = CourseSelected.objects.get(id=cs_id)
+                tch_id = cs.cno_id
+                cs.common_score = comm
+                cs.final_score = final
+                cs.score = comm * (1 - wei) + final * wei
+                cs.is_finish = True
+                cs.save()
+        except:
+            return render(request, "errors/500page.html")
+        return redirect("scoreManagement:upload_student_score", tch_id)
