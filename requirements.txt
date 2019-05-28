@@ -1,5 +1,6 @@
 django==2.1.7
 pymysql
+pytest
 numpy
 pandas
 captcha==0.3
