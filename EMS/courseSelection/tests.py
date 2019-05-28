@@ -112,8 +112,5 @@ class TestTeacher(TestCase):
     def test_teachercourse(self):
         response = self.client.get('/courseSelection/teacher_course')
         self.assertIn(response.status_code, [200, 301, 302])
-    # def test_showstudent(self):
-    #     response = self.client.get('/courseSelection/show_students/%3Fcno=MAT13904T&course_type=公共基础必修')
-    #     self.assertIn(response.status_code,[200,301,302])
 
 

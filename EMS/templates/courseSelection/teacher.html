@@ -2,7 +2,7 @@
 {% load static %}
 {% block title %}欢迎登录教务管理系统{% endblock %}
 {% block content %}
-        <section class="content-header">
+    <section class="content-header">
         <h1>选课子系统
             <small>Info</small>
         </h1>
@@ -11,7 +11,7 @@
             <li class="active">教师选课</li>
         </ol>
     </section>
-        <section class="content">
+    <section class="content">
         <div class="box">
             <div class="box-header">
                 <h3 class="box-title">教师授课表</h3>
@@ -41,7 +41,6 @@
                     </thead>
                     <tbody>
                     {% for teaching in teachings %}
-{#                        {% if teaching.tno == cookie %}#}
                             <tr>
                                 <td>{{ forloop.counter }}</td>
                                 <td>{{ teaching.mcno.cno.cno }}</td>
@@ -66,24 +65,14 @@
             </div>
         </div>
     </section>
- {% endblock %}
+{% endblock %}
 
 
 {% block script %}
     <script>
-        var html = "<html><head><meta charset='utf-8' /></head><body>" + document.getElementsByTagName("table")[0].outerHTML + "</body></html>";
-        // 实例化一个Blob对象，其构造函数的第一个参数是包含文件内容的数组，第二个参数是包含文件类型属性的对象
-        var blob = new Blob([html], { type: "application/vnd.ms-excel" });
-        var a = document.getElementById('a');
-        // 利用URL.createObjectURL()方法为urlA元素生成blob URL
-        a.href = URL.createObjectURL(blob);
-        // 设置文件名，目前只有Chrome和FireFox支持此属性
-        a.download = "teaching_table.xls";
-    </script>
-
-    <script>
 
         $(function () {
+
             var table = $('#teaching_table').DataTable({
                 dom: 'Bfrtip',
                 buttons: [
@@ -99,10 +88,10 @@
                 ],
                 "paging": true,       <!-- 允许分页 -->
                 "lengthChange": true, <!-- 允许改变每页显示的行数 -->
-                "searching": true,    <!-- 允许内容搜索 -->
-                "ordering": true,     <!-- 允许排序 -->
-                "info": true,         <!-- 显示信息 -->
-                "autoWidth": false,    <!-- 固定宽度 -->
+                "searching": true, <!-- 允许内容搜索 -->
+                "ordering": true, <!-- 允许排序 -->
+                "info": true, <!-- 显示信息 -->
+                "autoWidth": false, <!-- 固定宽度 -->
                 "language": {
                     "sProcessing": "处理中...",
                     "sLengthMenu": "显示 _MENU_ 项结果",
@@ -144,14 +133,28 @@
                 }
             });
 
+            $('#add').click(function () {
+                console.log("new car.");
+                $('#addCar').modal();
+            });
+
+            $('#change').click(function () {
+                console.log("change car");
+                if (table.rows('.selected').data().length) {
+                    $("#changeCar").modal();
+                    var rowData = table.rows('.selected').data()[0];
+                    var inputs = $('#changeCar').find('input');
+                    for (let i = 0; i < inputs.length; i++) {
+                        $(inputs[i]).val(rowData[i]);
+                    }
+                } else {
+                    alert("请选择一个项目！");
+                }
+            });
 
             $('#show_students').click(function () {
 
             });
         })
-
-
-
-
     </script>
 {% endblock %}

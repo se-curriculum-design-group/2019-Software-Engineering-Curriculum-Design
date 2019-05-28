@@ -7,8 +7,6 @@
                 class="caret"></span></a>
         <ul class="dropdown-menu" role="menu">
             <li><a href="{% url 'backstage:my_personal_details' %}">查看个人信息</a></li>
-            <li><a href="#">查看个人课表</a></li>
-            <li><a href="#">查看全校课表</a></li>
             <li><a href="{% url 'courseScheduling:time_exam' %}">查询考试时间</a> </li>
             <li><a href="{% url 'courseScheduling:scheduling_home_page' %}">查询空闲教室</a></li>
             <li class="divider"></li>
@@ -25,8 +23,8 @@
                 class="caret"></span></a>
         <ul class="dropdown-menu" role="menu">
 {#            <li><a href="{% url 'courseSelection:stu_tongshi' %}">通识课</a></li>#}
-            <li><a href="{% url 'courseSelection:stu_major' %}">专业选修</a></li>
-            <li><a href="#">查看全校课表</a></li>
+            <li><a href="{% url 'courseSelection:stu_major' %}">开始选课</a></li>
+            <li><a href="{% url 'courseSelection:tables' %}">查看个人课表</a></li>
         </ul>
     </li>
 
@@ -55,8 +53,6 @@
         </a>
         <ul class="treeview-menu">
             <li><a href="{% url 'backstage:my_personal_details' %}"><i class="fa fa-circle-o"></i>查看个人信息</a></li>
-            <li><a href="#"><i class="fa fa-circle-o"></i>查看个人课表</a></li>
-            <li><a href="#"><i class="fa fa-circle-o"></i>查看全校课表</a></li>
             <li><a href="{% url 'scoreManagement:std_view_major_plan' %}"><i class="fa fa-circle-o"></i>查看专业培养计划</a>
             </li>
             <li><a href="{% url 'scoreManagement:std_view_major_course' %}"><i class="fa fa-circle-o"></i>查看专业课程计划</a>
@@ -75,9 +71,8 @@
               <i class="fa fa-angle-left pull-right"></i>
             </span></a>
         <ul class="treeview-menu">
-{#            <li><a href="{% url 'courseSelection:stu_tongshi' %}">通识课</a></li>#}
-            <li><a href="{% url 'courseSelection:stu_major' %}">专业选修</a></li>
-            <li><a href="#">查看全校课表</a></li>
+            <li><a href="{% url 'courseSelection:stu_major' %}"><i class="fa fa-circle-o"></i> <span>开始选课</span></a></li>
+            <li><a href="{% url 'courseSelection:tables' %}"><i class="fa fa-circle-o"></i> <span>查看个人课表</span></a></li>
         </ul>
 
     </li>
