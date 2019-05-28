@@ -42,27 +42,25 @@
                 <th>课程号</th>
                 <th>课程名称</th>
                 <th>课程性质</th>
-                <th>年级</th>
-                <th>授课教室</th>
-                <th>专业名称</th>
                 <th>开课学年</th>
                 <th>开课学期</th>
+                <th>授课教室</th>
+                <th>专业名称</th>
                 <th>查看学生成绩</th>
                 </thead>
                 <tbody>
-                {% for teaching in teaching_list %}
+                {% for tch_sch in tch_sch_list %}
                     <tr>
                         <td>{{ forloop.counter }}</td>
-                        <td>{{ teaching.mcno.cno.cno }}</td>
-                        <td>{{ teaching.mcno.cno.cname }}</td>
-                        <td>{{ teaching.mcno.cno.course_type }}</td>
-                        <td>{{ teaching.mcno.mno.year }}</td>
-                        <td>{{ teaching.mcno.mno.major.mno }}</td>
-                        <td>{{ teaching.mcno.mno.major.mname }}</td>
-                        <td>{{ teaching.mcno.year }}</td>
-                        <td>{{ teaching.mcno.semester }}</td>
+                        <td>{{ tch_sch.tno.mcno.cno.cno }}</td>
+                        <td>{{ tch_sch.tno.mcno.cno.cname }}</td>
+                        <td>{{ tch_sch.tno.mcno.cno.course_type }}</td>
+                        <td>{{ tch_sch.tno.mcno.year }}</td>
+                        <td>{{ tch_sch.tno.mcno.semester }}</td>
+                        <td>{{ tch_sch.where }}</td>
+                        <td>{{ tch_sch.tno.mcno.mno }}</td>
                         <td>
-                            <a href="{% url 'scoreManagement:show_student_score' teaching.mcno.cno.cno teaching.mcno.cno.course_type %}">
+                            <a href="{% url 'scoreManagement:show_student_score' tch_sch.tno.mcno.cno.cno tch_sch.tno.mcno.cno.course_type %}">
                                 <button id='show_students' class="btn btn-primary" type="button">
                                     <span class="glyphicon glyphicon-plus"></span>查看
                                 </button>
@@ -79,11 +77,11 @@
 {% block script %}
     <script>
 
-    $.fn.dataTable.ext.search.push(
+        $.fn.dataTable.ext.search.push(
             function (settings, data, dataIndex) {
                 let year = $('#year').val();
                 let semester = $('#semester').val();
-                return (year === "ALL" || year === data[7]) && (semester === "ALL" || semester === data[8]);
+                return (year === "ALL" || year === data[4]) && (semester === "ALL" || semester === data[5]);
             }
         );
 
