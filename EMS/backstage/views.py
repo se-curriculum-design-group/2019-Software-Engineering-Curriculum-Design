@@ -260,7 +260,7 @@ def send_emails(request):
             msg = mail.EmailMessage(title, text, from_mail, recipient_list)
             msg.content_subtype = "html"
             for files in request.FILES.getlist('attach'):
-                src = path_use + '/backstage/media/files/' + files.name
+                src = os.path.join(path_use, 'backstage/media/files/' + files.name)
                 msg.attach_file(src)
             if msg.send():
                 message = "发送成功"

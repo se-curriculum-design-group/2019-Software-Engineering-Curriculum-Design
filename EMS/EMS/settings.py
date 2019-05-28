@@ -137,7 +137,6 @@ STATICFILES_DIRS = [
     os.path.join(BASE_DIR, "static"),
 ]
 
-
 MEDIA_ROOT = os.path.join(BASE_DIR, 'backstage/media').replace('\\', '/')  # media即为图片上传的根路径
 MEDIA_URL = '/backstage/media/'
 # 设置邮件域名
@@ -145,8 +144,8 @@ EMAIL_HOST = 'smtp.163.com'
 # 设置端口号，为数字
 EMAIL_PORT = 465
 # 设置发件人邮箱
-EMAIL_HOST_USER = ''
+EMAIL_HOST_USER = 'buct_software_2016@163.com'
 # 设置发件人 授权码
-EMAIL_HOST_PASSWORD = ''
+EMAIL_HOST_PASSWORD = 'software2016'
 # 设置是否启用安全链接
 EMAIL_USE_SSL = True
