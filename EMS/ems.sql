@@ -806,7 +806,7 @@ CREATE TABLE `graduationproject` (
   PRIMARY KEY (`id`),
   KEY `GraduationProject_tno_id_4bb133f1_fk_teacher_user_ptr_id` (`tno_id`),
   CONSTRAINT `GraduationProject_tno_id_4bb133f1_fk_teacher_user_ptr_id` FOREIGN KEY (`tno_id`) REFERENCES `teacher` (`user_ptr_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -815,6 +815,7 @@ CREATE TABLE `graduationproject` (
 
 LOCK TABLES `graduationproject` WRITE;
 /*!40000 ALTER TABLE `graduationproject` DISABLE KEYS */;
+INSERT INTO `graduationproject` VALUES (1,'Django毕设管理系统','技术应用','简单','','无','无',1,650);
 /*!40000 ALTER TABLE `graduationproject` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -926,6 +927,8 @@ DROP TABLE IF EXISTS `projectdocument`;
  SET character_set_client = utf8mb4 ;
 CREATE TABLE `projectdocument` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
+  `dtype` varchar(10) NOT NULL,
+  `dpath` longtext NOT NULL,
   `schoic_id` int(11) NOT NULL,
   PRIMARY KEY (`id`),
   KEY `ProjectDocument_schoic_id_d715e807_fk_StuChoice_id` (`schoic_id`),
@@ -951,14 +954,45 @@ DROP TABLE IF EXISTS `projectscore`;
  SET character_set_client = utf8mb4 ;
 CREATE TABLE `projectscore` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
-  `grade` varchar(2) NOT NULL,
+  `lundian` int(11) NOT NULL,
+  `fangan` int(11) NOT NULL,
+  `dabian` int(11) NOT NULL,
+  `grade` int(11) NOT NULL,
   `comments` longtext NOT NULL,
-  `schoic_id` int(11) NOT NULL,
+  `project_id` int(11) NOT NULL,
   PRIMARY KEY (`id`),
-  KEY `ProjectScore_schoic_id_aa70fab1_fk_StuChoice_id` (`schoic_id`),
-  CONSTRAINT `ProjectScore_schoic_id_aa70fab1_fk_StuChoice_id` FOREIGN KEY (`schoic_id`) REFERENCES `stuchoice` (`id`)
+  KEY `ProjectScore_project_id_bdd58538_fk_ProjectDocument_id` (`project_id`),
+  CONSTRAINT `ProjectScore_project_id_bdd58538_fk_ProjectDocument_id` FOREIGN KEY (`project_id`) REFERENCES `projectdocument` (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Table structure for table `finalprojectscore`
+--
+
+DROP TABLE IF EXISTS `finalprojectscore`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+ SET character_set_client = utf8mb4 ;
+CREATE TABLE `finalprojectscore` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `grade` int(11) NOT NULL,
+  `project_id` int(11) NOT NULL,
+  PRIMARY KEY (`id`),
+  KEY `FinalProjectScore_project_id_37241049_fk_student_user_ptr_id` (`project_id`),
+  CONSTRAINT `FinalProjectScore_project_id_37241049_fk_student_user_ptr_id` FOREIGN KEY (`project_id`) REFERENCES `student` (`user_ptr_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `finalprojectscore`
+--
+
+LOCK TABLES `finalprojectscore` WRITE;
+/*!40000 ALTER TABLE `finalprojectscore` DISABLE KEYS */;
+/*!40000 ALTER TABLE `finalprojectscore` ENABLE KEYS */;
+UNLOCK TABLES;
+
+
 
 --
 -- Dumping data for table `projectscore`
@@ -1022,7 +1056,7 @@ CREATE TABLE `stuchoice` (
   CONSTRAINT `StuChoice_pno_id_e77115b8_fk_GraduationProject_id` FOREIGN KEY (`pno_id`) REFERENCES `graduationproject` (`id`),
   CONSTRAINT `StuChoice_sno_id_55c5d2f1_fk_student_user_ptr_id` FOREIGN KEY (`sno_id`) REFERENCES `student` (`user_ptr_id`),
   CONSTRAINT `StuChoice_tno_id_38bacb5c_fk_teacher_user_ptr_id` FOREIGN KEY (`tno_id`) REFERENCES `teacher` (`user_ptr_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -1031,6 +1065,7 @@ CREATE TABLE `stuchoice` (
 
 LOCK TABLES `stuchoice` WRITE;
 /*!40000 ALTER TABLE `stuchoice` DISABLE KEYS */;
+INSERT INTO `stuchoice` VALUES (1,1,1,1,650);
 /*!40000 ALTER TABLE `stuchoice` ENABLE KEYS */;
 UNLOCK TABLES;
 
