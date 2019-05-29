@@ -842,7 +842,7 @@ CREATE TABLE `graduationproject` (
 
 LOCK TABLES `graduationproject` WRITE;
 /*!40000 ALTER TABLE `graduationproject` DISABLE KEYS */;
-INSERT INTO `graduationproject` VALUES (1,'Django毕设管理系统','技术应用','简单','','无','无',1,650);
+INSERT INTO `graduationproject` VALUES (4,'Django毕业设计管理子系统','科技研究','中等','',' 管理毕业设计选题和成绩。教师可以提交多个毕业设计题目，描述题目要求和对学生的要求。学生可以浏览教师发布的毕业设计题目，进行选择。在学生完成选择后，针对每个题目教师确认选择一个学生。学生向系统提交毕业设计各种文档。教师可以查看学生提交的毕业设计文档，提交毕业设计最后成绩。最后系统应能够向管理员提供查询界面和各类报表，统计毕业设计选题情况和学生成绩。','无',1,650),(6,'基于深度学习的海陆分割项目','科技研究','较难','','海陆分割是近岸舰船检测中的重要步骤之一，也是光学遥感图像海上目标识别过程中一个重要步骤，目前的海陆图像分割思路可分为基于图像先验信息的自动分割和基于图形学的人工手动分割两大类。第一类是基于雷达在海洋和陆地的反射系数、海洋与陆地之间的灰度、纹理或其他特征差异来进行海岸线检测的算法','有一定的Tensorflow或Pytorch基础，对深度学习领域感兴趣。',0,650),(7,'在线英语自学系统——知识库管理的设计','技术应用','中等','','实现在线英语自学系统，要求能够在线听说读写英语单词','有一定的网站开发基础',0,650),(8,'学校在线二手交易平台-服务器模块','技术应用','较难','','学校在线二手交易平台-服务器模块（本科生毕业设计），主要是一款基于B/S的后台管理系统','有网站开发基础',0,650),(15,'基于opencv 的人脸识别','技术应用','中等','','无','无',0,650),(20,'基于jsp+java的团购网站毕业设计','技术应用','中等','','无','无',0,650);
 /*!40000 ALTER TABLE `graduationproject` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -969,6 +969,7 @@ CREATE TABLE `projectdocument` (
 
 LOCK TABLES `projectdocument` WRITE;
 /*!40000 ALTER TABLE `projectdocument` DISABLE KEYS */;
+INSERT INTO `projectdocument` VALUES (9,'中期报告','./graduationManagement/temp_file/sentences.txt',4),(10,'最终报告','./graduationManagement/temp_file/gmy_list.txt',4);
 /*!40000 ALTER TABLE `projectdocument` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -999,8 +1000,10 @@ CREATE TABLE `projectscore` (
 
 LOCK TABLES `projectscore` WRITE;
 /*!40000 ALTER TABLE `projectscore` DISABLE KEYS */;
+INSERT INTO `projectscore` VALUES (7,90,94,92,0,'无',9),(8,90,94,92,0,'无',10);
 /*!40000 ALTER TABLE `projectscore` ENABLE KEYS */;
 UNLOCK TABLES;
+
 
 --
 -- Table structure for table `schedule_result`
@@ -1064,9 +1067,10 @@ CREATE TABLE `stuchoice` (
 
 LOCK TABLES `stuchoice` WRITE;
 /*!40000 ALTER TABLE `stuchoice` DISABLE KEYS */;
-INSERT INTO `stuchoice` VALUES (1,1,1,1,650);
+INSERT INTO `stuchoice` VALUES (4,1,4,1,650);
 /*!40000 ALTER TABLE `stuchoice` ENABLE KEYS */;
 UNLOCK TABLES;
+
 
 --
 -- Table structure for table `student`
