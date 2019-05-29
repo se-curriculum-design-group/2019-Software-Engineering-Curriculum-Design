@@ -15,6 +15,7 @@
             <!-- /.box-header -->
             <div class="box-body">
               <form method="post" enctype="multipart/form-data" action="/graduationManagement/student_submit_project">
+                  {% csrf_token %}
                  <div class="form-group">
                   <label>类别</label>
                   <select class="form-control" name="dtype">

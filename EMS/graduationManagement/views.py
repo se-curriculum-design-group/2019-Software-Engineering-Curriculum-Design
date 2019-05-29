@@ -52,6 +52,7 @@ def student_choose_project(request):
         return render(request, 'graduationManagement/student_choose_project2.html', contenxt)
 
 
+@csrf_exempt
 def student_submit_project(request):
     sno = request.session['username']
     uno = User.objects.get(username=sno)

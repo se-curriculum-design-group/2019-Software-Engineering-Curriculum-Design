@@ -2,6 +2,7 @@
 {% load staticfiles %}
 
 {% block content %}
+    {% comment %}
   <div class="row">
     <div class="col-md-12">
       <div class="alert alert-danger alert-dismissible" style="height: 200px;margin-top: 50px;margin-left: 20px;margin-right: 20px;">
@@ -13,111 +14,119 @@
               </div>
     </div>
   </div>
-	<div class="box box-default">
+  {% endcomment %}
+    <div class="box box-default">
         <div class="box-header with-border">
-          <h3 class="box-title">选项</h3>
+            <h3 class="box-title">选项</h3>
 
-          <div class="box-tools pull-right">
-            <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i></button>
-            <button type="button" class="btn btn-box-tool" data-widget="remove"><i class="fa fa-remove"></i></button>
-          </div>
+            <div class="box-tools pull-right">
+                <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i>
+                </button>
+                <button type="button" class="btn btn-box-tool" data-widget="remove"><i class="fa fa-remove"></i>
+                </button>
+            </div>
         </div>
         <!-- /.box-header -->
         <div class="box-body">
-          <div class="row">
-            <div class="col-md-6">
-              <div class="form-group">
-                <label>题目状态</label>
-                <select class="form-control select2 select2-hidden-accessible" style="width: 100%;" tabindex="-1" multiple="" aria-hidden="true">
-                  <option selected="selected">未选</option>
-                  <option>已选</option>
-                  <option>全部</option>
-               
-                </select>
-              </div>
-              <!-- /.form-group -->
-              <div class="form-group">
-                <label>专业</label>
-                <select class="form-control select2 select2-hidden-accessible" disabled="" style="width: 100%;" tabindex="-1" aria-hidden="true">
-                  <option selected="selected">计算机科学与技术</option>
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label>题目状态</label>
+                        <select class="form-control select2 select2-hidden-accessible" style="width: 100%;"
+                                tabindex="-1" multiple="" aria-hidden="true">
+                            <option selected="selected">未选</option>
+                            <option>已选</option>
+                            <option>全部</option>
 
-                </select>
+                        </select>
+                    </div>
+                    <!-- /.form-group -->
+                    <div class="form-group">
+                        <label>专业</label>
+                        <select class="form-control select2 select2-hidden-accessible" disabled="" style="width: 100%;"
+                                tabindex="-1" aria-hidden="true">
+                            <option selected="selected">计算机科学与技术</option>
 
-              </div>
-              <!-- /.form-group -->
+                        </select>
+
+                    </div>
+                    <!-- /.form-group -->
+                </div>
+                <!-- /.col -->
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label>题目方向</label>
+                        <select class="form-control select2 select2-hidden-accessible" multiple="" style="width: 100%;"
+                                tabindex="-1" aria-hidden="true">
+                            <option selected="selected">技术应用</option>
+                            <option>科学研究</option>
+
+                        </select>
+                    </div>
+                    <!-- /.form-group -->
+                    <div class="form-group">
+                        <label>题目难度</label>
+                        <select class="form-control select2 select2-hidden-accessible" style="width: 100%;"
+                                tabindex="-1" aria-hidden="true">
+                            <option selected="selected">简单</option>
+                            <option>中等</option>
+                            <option>较难</option>
+                        </select>
+                    </div>
+                    <!-- /.form-group -->
+                </div>
+                <!-- /.col -->
             </div>
-            <!-- /.col -->
-            <div class="col-md-6">
-              <div class="form-group">
-                <label>题目方向</label>
-                <select class="form-control select2 select2-hidden-accessible" multiple="" style="width: 100%;" tabindex="-1" aria-hidden="true">
-                  <option selected="selected">技术应用</option>
-                  <option>科学研究</option>
-                
-                </select>
-              </div>
-              <!-- /.form-group -->
-              <div class="form-group">
-                <label>题目难度</label>
-                <select class="form-control select2 select2-hidden-accessible" style="width: 100%;" tabindex="-1" aria-hidden="true">
-                  <option selected="selected">简单</option>
-                  <option>中等</option>
-                  <option>较难</option>
-                </select>
-              </div>
-              <!-- /.form-group -->
-            </div>
-            <!-- /.col -->
-          </div>
-          <!-- /.row -->
+            <!-- /.row -->
         </div>
         <!-- /.box-body -->
-        
-      </div>
 
-      <div class="row">
+    </div>
+
+    <div class="row">
         <div class="col-xs-12">
-          <div class="box">
-            <div class="box-header">
-              <h3 class="box-title">毕设题目列表</h3>
+            <div class="box">
+                <div class="box-header">
+                    <h3 class="box-title">毕设题目列表</h3>
 
-              <div class="box-tools">
-                <div class="input-group input-group-sm" style="width: 150px;">
-                  <input type="text" name="table_search" class="form-control pull-right" placeholder="Search">
+                    <div class="box-tools">
+                        <div class="input-group input-group-sm" style="width: 150px;">
+                            <input type="text" name="table_search" class="form-control pull-right" placeholder="Search">
 
-                  <div class="input-group-btn">
-                    <button type="submit" class="btn btn-default"><i class="fa fa-search"></i></button>
-                  </div>
+                            <div class="input-group-btn">
+                                <button type="submit" class="btn btn-default"><i class="fa fa-search"></i></button>
+                            </div>
+                        </div>
+                    </div>
                 </div>
-              </div>
-            </div>
-            <!-- /.box-header -->
-            <div class="box-body table-responsive no-padding">
-              <table class="table table-hover"  id="tb">
-                <tbody>
-                <tr>
-                  <th>教师</th>
-                  <th>题目名称</th>
-                  <th>题目难度</th>
-                  <th>题目状态</th>
-                  <th>题目关键词</th>
-                  <th></th>
-                </tr>
-                {% for item in info %}
-                <tr>
-                  <td>{{ item.tno.name }}</td>
-                  <td >
-                    <div><a id="a" class="btn" onclick="AjaxSubmit1(this);">{{item.pname}}</a></div></td>
-                  <td>{{ item.pdifficulty }}</td>
-                  <td><span >{% if item.pstatus  == 0 %}
-                  <option value="">未选</option>
-                  {% else %}
-                  <option value="">已选</option>
-                  {% endif %}</span></td>
-                  <td>{{ item.pkeywords }}</td>
-                <!--   <td> <button type="button" class="btn btn-danger btn-info delete" onclick="javascript:window.location.href='/graduationManagement/student_delete?id={{ item.id }}'">退选</button></td> -->
-                </tr>
-<!-- 
+                <!-- /.box-header -->
+                <div class="box-body table-responsive no-padding">
+                    <table class="table table-hover" id="tb">
+                        <tbody>
+                        <tr>
+                            <th>教师</th>
+                            <th>题目名称</th>
+                            <th>题目难度</th>
+                            <th>题目状态</th>
+                            <th>题目关键词</th>
+                            <th></th>
+                        </tr>
+                        {% for item in info %}
+                            <tr>
+                                <td>{{ item.tno.name }}</td>
+                                <td>
+                                    <div><a id="a" class="btn" onclick="AjaxSubmit1(this);">{{ item.pname }}</a></div>
+                                </td>
+                                <td>{{ item.pdifficulty }}</td>
+                                <td><span>{% if item.pstatus  == 0 %}
+                                    <option value="">未选</option>
+                                {% else %}
+                                    <option value="">已选</option>
+                                {% endif %}</span></td>
+                                <td>{{ item.pkeywords }}</td>
+                                <!--   <td> <button type="button" class="btn btn-danger btn-info delete" onclick="javascript:window.location.href='/graduationManagement/student_delete?id={{ item.id }}'">退选</button></td> -->
+                            </tr>
+                            <!--
                 <tr ng-repeat="value in fahrplanList"  ng-dblclick="fahrplan_bf($event,index)">
                   <td>{{ item.tno.name }}</td>
                   <td class="jump" >{{ item.pname }}</td>
@@ -129,8 +138,8 @@
                   {% endif %}</span></td>
                   <td>{{ item.pkeywords }}</td>
                 </tr>
- --> 
-                  <!-- <td>
+ -->
+                            <!-- <td>
                     {% if item.pstatus == 0 %}
                     <span class="label label-success">未选</span></td>
                     }
@@ -142,72 +151,79 @@
                       <a href="#">
                     <span class="label label-danger">已被选</span></a>
                     {% endif %}</td> -->
-                  <!-- <td>管理系统 Django 数据库</td> -->
-                {% endfor %}
+                            <!-- <td>管理系统 Django 数据库</td> -->
+                        {% endfor %}
 
 
 
-{% if messages %}
-    <script>
-        {% for msg in messages %}
-            alert('{{ msg.message }}');
-        {% endfor %}
-    </script>
-{% endif %}
+                        {% if messages %}
+                            <script>
+                                {% for msg in messages %}
+                                    alert('{{ msg.message }}');
+                                {% endfor %}
+                            </script>
+                        {% endif %}
 
 
-              </tbody></table>
-            </div>
-            <!-- /.box-body -->
-          </div>
-          <!-- /.box -->
-        </div>
-      </div>
-
-
-      <div class="row">
-        <div class="col-xs-12">
-          <div class="box">
-            <div class="box-header">
-              <h3 class="box-title">我的选课</h3>
-
-              <div class="box-tools">
-                <div class="input-group input-group-sm" style="width: 150px;">
-                  <input type="text" name="table_search" class="form-control pull-right" placeholder="Search">
-
-                  <div class="input-group-btn">
-                    <button type="submit" class="btn btn-default"><i class="fa fa-search"></i></button>
-                  </div>
+                        </tbody>
+                    </table>
                 </div>
-              </div>
+                <!-- /.box-body -->
             </div>
-            <!-- /.box-header -->
-            <div class="box-body table-responsive no-padding">
-              <table class="table table-hover"  id="tb">
-                <tbody>
-                <tr>
-                  <th>教师</th>
-                  <th>题目名称</th>
-                  <th>题目难度</th>
-                  <th>题目状态</th>
-                  <th>题目关键词</th>
-                  <th></th>
-                </tr>
-                {% for item in ins %}
-                <tr>
-                  <td>{{ item.tno.name }}</td>
-                  <td >
-                    <div><a id="a" class="btn" onclick="AjaxSubmit1(this);">{{item.pname}}</a></div></td>
-                  <td>{{ item.pdifficulty }}</td>
-                  <td><span >{% if item.pstatus  == 0 %}
-                  <option value="">未选</option>
-                  {% else %}
-                  <option value="">已选</option>
-                  {% endif %}</span></td>
-                  <td>{{ item.pkeywords }}</td>
-                  <td> <button type="button" class="btn btn-danger btn-info delete" onclick="javascript:window.location.href='/graduationManagement/student_delete?id={{ item.id }}'">退选</button></td>
-                </tr>
-<!-- 
+            <!-- /.box -->
+        </div>
+    </div>
+
+
+    <div class="row">
+        <div class="col-xs-12">
+            <div class="box">
+                <div class="box-header">
+                    <h3 class="box-title">我的选课</h3>
+
+                    <div class="box-tools">
+                        <div class="input-group input-group-sm" style="width: 150px;">
+                            <input type="text" name="table_search" class="form-control pull-right" placeholder="Search">
+
+                            <div class="input-group-btn">
+                                <button type="submit" class="btn btn-default"><i class="fa fa-search"></i></button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- /.box-header -->
+                <div class="box-body table-responsive no-padding">
+                    <table class="table table-hover" id="tb">
+                        <tbody>
+                        <tr>
+                            <th>教师</th>
+                            <th>题目名称</th>
+                            <th>题目难度</th>
+                            <th>题目状态</th>
+                            <th>题目关键词</th>
+                            <th></th>
+                        </tr>
+                        {% for item in ins %}
+                            <tr>
+                                <td>{{ item.tno.name }}</td>
+                                <td>
+                                    <div><a id="a" class="btn" onclick="AjaxSubmit1(this);">{{ item.pname }}</a></div>
+                                </td>
+                                <td>{{ item.pdifficulty }}</td>
+                                <td><span>{% if item.pstatus  == 0 %}
+                                    <option value="">未选</option>
+                                {% else %}
+                                    <option value="">已选</option>
+                                {% endif %}</span></td>
+                                <td>{{ item.pkeywords }}</td>
+                                <td>
+                                    <button type="button" class="btn btn-danger btn-info delete"
+                                            onclick="javascript:window.location.href='/graduationManagement/student_delete?id={{ item.id }}'">
+                                        退选
+                                    </button>
+                                </td>
+                            </tr>
+                            <!--
                 <tr ng-repeat="value in fahrplanList"  ng-dblclick="fahrplan_bf($event,index)">
                   <td>{{ item.tno.name }}</td>
                   <td class="jump" >{{ item.pname }}</td>
@@ -219,8 +235,8 @@
                   {% endif %}</span></td>
                   <td>{{ item.pkeywords }}</td>
                 </tr>
- --> 
-                  <!-- <td>
+ -->
+                            <!-- <td>
                     {% if item.pstatus == 0 %}
                     <span class="label label-success">未选</span></td>
                     }
@@ -232,17 +248,18 @@
                       <a href="#">
                     <span class="label label-danger">已被选</span></a>
                     {% endif %}</td> -->
-                  <!-- <td>管理系统 Django 数据库</td> -->
-                {% endfor %}
+                            <!-- <td>管理系统 Django 数据库</td> -->
+                        {% endfor %}
 
 
-              </tbody></table>
+                        </tbody>
+                    </table>
+                </div>
+                <!-- /.box-body -->
             </div>
-            <!-- /.box-body -->
-          </div>
-          <!-- /.box -->
+            <!-- /.box -->
         </div>
-      </div>
+    </div>
 {% endblock %}
 
 {% block script %}
@@ -250,50 +267,50 @@
     <!-- <script src="/static/js/jquery-3.2.0.js"></script> -->
     <!-- jQuery 2.2.3 -->
     <script src="{% static 'AdminLTE/plugins/jQuery/jquery-2.2.3.min.js' %}"></script>
-    
+
 
     <script src="{% static 'AdminLTE/plugins/jQuery/jquery-2.2.3.min.js' %}"></script>
-	<!-- Bootstrap 3.3.6 -->
-	<script src="{% static 'AdminLTE/bootstrap/js/bootstrap.min.js' %}"></script>
-	<!-- Select2 -->
-	<script src="{% static 'AdminLTE/plugins/select2/select2.full.min.js' %}"></script>
-	<!-- InputMask -->
-	<script src="{% static 'AdminLTE/plugins/input-mask/jquery.inputmask.js' %}"></script>
-	<script src="{% static 'AdminLTE/plugins/input-mask/jquery.inputmask.date.extensions.js' %}"></script>
-	<script src="{% static 'AdminLTE/plugins/input-mask/jquery.inputmask.extensions.js' %}"></script>
-	<!-- date-range-picker -->
-	<script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.11.2/moment.min.js' %}"></script>
-	<script src="{% static 'AdminLTE/plugins/daterangepicker/daterangepicker.js' %}"></script>
-	<!-- bootstrap datepicker -->
-	<script src="{% static 'AdminLTE/plugins/datepicker/bootstrap-datepicker.js' %}"></script>
-	<!-- bootstrap color picker -->
-	<script src="{% static 'AdminLTE/plugins/colorpicker/bootstrap-colorpicker.min.js' %}"></script>
-	<!-- bootstrap time picker -->
-	<script src="{% static 'AdminLTE/plugins/timepicker/bootstrap-timepicker.min.js' %}"></script>
-	<!-- SlimScroll 1.3.0 -->
-	<script src="{% static 'AdminLTE/plugins/slimScroll/jquery.slimscroll.min.js' %}"></script>
-	<!-- iCheck 1.0.1 -->
-	<script src="{% static 'AdminLTE/plugins/iCheck/icheck.min.js' %}"></script>
-	<!-- FastClick -->
-	<script src="{% static 'AdminLTE/plugins/fastclick/fastclick.js' %}"></script>
-	<!-- AdminLTE App -->
-	<script src="{% static 'AdminLTE/dist/js/app.min.js' %}"></script>
-	<!-- AdminLTE for demo purposes -->
-	<script src="{% static 'AdminLTE/dist/js/demo.js' %}"></script>
-	<!-- Page script -->
-	<script>
-	  $(function () {
-	    //Initialize Select2 Elements
-	    $(".select2").select2();
-	  });
+    <!-- Bootstrap 3.3.6 -->
+    <script src="{% static 'AdminLTE/bootstrap/js/bootstrap.min.js' %}"></script>
+    <!-- Select2 -->
+    <script src="{% static 'AdminLTE/plugins/select2/select2.full.min.js' %}"></script>
+    <!-- InputMask -->
+    <script src="{% static 'AdminLTE/plugins/input-mask/jquery.inputmask.js' %}"></script>
+    <script src="{% static 'AdminLTE/plugins/input-mask/jquery.inputmask.date.extensions.js' %}"></script>
+    <script src="{% static 'AdminLTE/plugins/input-mask/jquery.inputmask.extensions.js' %}"></script>
+    <!-- date-range-picker -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.11.2/moment.min.js' %}"></script>
+    <script src="{% static 'AdminLTE/plugins/daterangepicker/daterangepicker.js' %}"></script>
+    <!-- bootstrap datepicker -->
+    <script src="{% static 'AdminLTE/plugins/datepicker/bootstrap-datepicker.js' %}"></script>
+    <!-- bootstrap color picker -->
+    <script src="{% static 'AdminLTE/plugins/colorpicker/bootstrap-colorpicker.min.js' %}"></script>
+    <!-- bootstrap time picker -->
+    <script src="{% static 'AdminLTE/plugins/timepicker/bootstrap-timepicker.min.js' %}"></script>
+    <!-- SlimScroll 1.3.0 -->
+    <script src="{% static 'AdminLTE/plugins/slimScroll/jquery.slimscroll.min.js' %}"></script>
+    <!-- iCheck 1.0.1 -->
+    <script src="{% static 'AdminLTE/plugins/iCheck/icheck.min.js' %}"></script>
+    <!-- FastClick -->
+    <script src="{% static 'AdminLTE/plugins/fastclick/fastclick.js' %}"></script>
+    <!-- AdminLTE App -->
+    <script src="{% static 'AdminLTE/dist/js/app.min.js' %}"></script>
+    <!-- AdminLTE for demo purposes -->
+    <script src="{% static 'AdminLTE/dist/js/demo.js' %}"></script>
+    <!-- Page script -->
+    <script>
+        $(function () {
+            //Initialize Select2 Elements
+            $(".select2").select2();
+        });
 
-</script>
+    </script>
 
 
-<script>
-    
+    <script>
 
- function AjaxSubmit1(event) {
+
+        function AjaxSubmit1(event) {
             // console.log('test');
             // console.log('{{ csrf_token }}');
             // console.log(event.innertext);
@@ -316,7 +333,7 @@
             //     }
             // })
         }
-	</script>
+    </script>
 
 
 
