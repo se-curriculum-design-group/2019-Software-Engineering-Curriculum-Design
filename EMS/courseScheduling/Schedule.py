@@ -372,9 +372,9 @@ def coures_time_generate(schedule, time):
                         res += str(e[0] + weekday * 13) + '-' + str(e[1] + weekday * 13) + '-' + '1' + '-' + str(
                             weektime_cur)
                     else:
+                        weekday += 1
                         res += ',' + str(e[0] + weekday * 13) + '-' + str(e[1] + weekday * 13) + '-' + '1' + '-' + str(
                             weektime_cur)
-                    weekday += 1
                     cnt += 1
                     break
             if cnt == 2:
@@ -400,9 +400,9 @@ def coures_time_generate(schedule, time):
                                 res += str(e[0] + weekday * 13) + '-' + str(e[1] + weekday * 13) + '-' + str(1 + bias) + '-' + str(
                                     weektime_cur + bias)
                             else:
+                                weekday += 1
                                 res += ',' + str(e[0] + weekday * 13) + '-' + str(
                                     e[1] + weekday * 13) + '-' + str(1 + bias) + '-' + str(weektime_cur + bias)
-                            weekday += 1
                             cnt += 1
                             break
                     if cnt == 2:
@@ -428,10 +428,10 @@ def coures_time_generate(schedule, time):
                             res += str(e[0] + weekday * 13) + '-' + str(e[1] + weekday * 13) + '-' + str(1 + bias) + '-' + str(
                                 weektime_cur+bias)
                         else:
+                            weekday += 1
                             res += ',' + str(e[0] + weekday * 13) + '-' + str(e[1] + weekday * 13) + '-' + str(1 + bias) + '-' + str(
                                 weektime_cur+bias)
                         print(String_to_table(res))
-                        weekday += 1
                         cnt += 1
                         break
                 if cnt == 1:
@@ -835,11 +835,15 @@ def init_exam(year=2019, semester=2):
             Classrooms_id[element.where].examSchedule = mergeTable(Classrooms_id[element.where].examSchedule, String_to_examTable(element.time))
 
 def exam_time_generate(bf: Buffer):
+    cnt = 0
     for i in range(7):
         for j in range(5):
+            if cnt > 0:
+                cnt -= 1
+                continue
             if bf.examSchedule[i][j] != '':
                 if j + 2 <= 4:
-                    j += 1
+                    cnt = 2
                 elif j + 2 >= 5:
                     break
             else:
