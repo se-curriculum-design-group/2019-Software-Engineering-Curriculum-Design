@@ -13,160 +13,160 @@
         </ol>
     </section>
     <section class="content">
-    <div class="box">
-        <div class="box-header">
-            <h3 class="box-title">专业培养计划表</h3>
-            <div class="box-header ">
-                <label style="color: red">学院：</label><select id="college" class="select2" style="width: 20%">
-                <option value="ALL" selected="selected">全部</option>
-                {% for item in all_college %}
-                    <option value="{{ item }}">{{ item }}
-                {% endfor %}
-            </select>
-                <label style="color: red">专业：</label><select id="major" class="select2" style="width: 15%">
-                <option value="ALL" selected="selected">全部</option>
-                {% for item in all_major %}
-                    <option value="{{ item }}">{{ item }}</option>
-                {% endfor %}
-            </select>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                <label>年级：</label><select id="year" class="select2" style="width: 15%">
-                <option value="ALL" selected="selected">全部</option>
-                {% for item in all_year %}
-                    <option value="{{ item.year }}">{{ item.year }}</option>
-                {% endfor %}
-            </select>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-            </div>
-
-            <div class="box-body">
-                <table id="major_plan_table" class="table table-bordered table-striped">
-                    <thead>
-                    <tr>
-                        <th>序号</th>
-                        <th>学院</th>
-                        <th>专业</th>
-                        <th>年级</th>
-                        <th>计划人数</th>
-                        <th>最低毕业学分</th>
-                        <th>学制</th>
-                        <th>计划课程总数</th>
-                        <th>班级个数</th>
-                    </tr>
-                    </thead>
-                    <tbody>
-                    {% for item in all_major_plan %}
-                        <tr>
-                            <td>{{ forloop.counter }}</td>
-                            <td>{{ item.major.in_college }}</td>
-                            <td>{{ item.major }}</td>
-                            <td>{{ item.year }}</td>
-                            <td>{{ item.people_num }}</td>
-                            <td>{{ item.score_grad }}</td>
-                            <td>{{ item.stu_years }}</td>
-                            <td>{{ item.course_num }}</td>
-                            <td>{{ item.cls_num }}</td>
-                        </tr>
+        <div class="box">
+            <div class="box-header">
+                <h3 class="box-title">专业培养计划表</h3>
+                <div class="box-header ">
+                    <label style="color: red">学院：</label><select id="college" class="select2" style="width: 20%">
+                    <option value="ALL" selected="selected">全部</option>
+                    {% for item in all_college %}
+                        <option value="{{ item }}">{{ item }}
                     {% endfor %}
-                    </tbody>
-                </table>
+                </select>
+                    <label style="color: red">专业：</label><select id="major" class="select2" style="width: 15%">
+                    <option value="ALL" selected="selected">全部</option>
+                    {% for item in all_major %}
+                        <option value="{{ item }}">{{ item }}</option>
+                    {% endfor %}
+                </select>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                    <label>年级：</label><select id="year" class="select2" style="width: 15%">
+                    <option value="ALL" selected="selected">全部</option>
+                    {% for item in all_year %}
+                        <option value="{{ item.year }}">{{ item.year }}</option>
+                    {% endfor %}
+                </select>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                </div>
+
+                <div class="box-body">
+                    <table id="major_plan_table" class="table table-bordered table-striped">
+                        <thead>
+                        <tr>
+                            <th>序号</th>
+                            <th>学院</th>
+                            <th>专业</th>
+                            <th>年级</th>
+                            <th>计划人数</th>
+                            <th>最低毕业学分</th>
+                            <th>学制</th>
+                            <th>计划课程总数</th>
+                            <th>班级个数</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        {% for item in all_major_plan %}
+                            <tr>
+                                <td>{{ forloop.counter }}</td>
+                                <td>{{ item.major.in_college }}</td>
+                                <td>{{ item.major }}</td>
+                                <td>{{ item.year }}</td>
+                                <td>{{ item.people_num }}</td>
+                                <td>{{ item.score_grad }}</td>
+                                <td>{{ item.stu_years }}</td>
+                                <td>{{ item.course_num }}</td>
+                                <td>{{ item.cls_num }}</td>
+                            </tr>
+                        {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <div class="box-footer">
+                <div class="btn-group pull-left ">
+                    <a id="a">
+                        <button id='change_major_plan_btn' class="btn btn-info" type="button">
+                            <span class="glyphicon glyphicon-pencil"></span>修改专业计划方案
+                        </button>
+                    </a>
+                </div>
             </div>
         </div>
-        <div class="box-footer">
-            <div class="btn-group pull-left ">
-                <a id="a">
-                    <button id='change_major_plan_btn' class="btn btn-info" type="button">
-                        <span class="glyphicon glyphicon-pencil"></span>修改专业计划方案
-                    </button>
-                </a>
-            </div>
-        </div>
-    </div>
 
-    <div class="modal fade" id="changePlan">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <form action="" name="changeMajorPlan" method="get" onsubmit="return(false);">
-                    <div class="modal-header">
-                        <button type="button" class="close" data-dismiss="modal">&times;</button>
-                        <h4 class="modal-title">修改专业培养计划</h4>
-                    </div>
-                    <div class="modal-content" id="changePlanModal">
-                        <div class="form-horizontal">
-                            <div class="form-group">
-                                <label for="changeScoreCollege" class="col-sm-2 control-label">学院：</label>
-                                <div class="col-sm-10">
-                                    <input type="text" id="changeScoreCollege" disabled class="form-control"
-                                           name="change_college">
+        <div class="modal fade" id="changePlan">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <form action="" name="changeMajorPlan" method="get" onsubmit="return(false);">
+                        <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal">&times;</button>
+                            <h4 class="modal-title">修改专业培养计划</h4>
+                        </div>
+                        <div class="modal-content" id="changePlanModal">
+                            <div class="form-horizontal">
+                                <div class="form-group">
+                                    <label for="changeScoreCollege" class="col-sm-2 control-label">学院：</label>
+                                    <div class="col-sm-10">
+                                        <input type="text" id="changeScoreCollege" disabled class="form-control"
+                                               name="change_college">
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label for="changePlanMajor" class="col-sm-2 control-label">专业：</label>
+                                    <div class="col-sm-10">
+                                        <input type="text" id="changePlanMajor" disabled class="form-control"
+                                               name="change_major">
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="changePlanYear" class="col-sm-2 control-label">年级：</label>
+                                    <div class="col-sm-10">
+                                        <input type="text" id="changePlanYear" disabled class="form-control"
+                                               name="change_year">
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="changePlanNum" class="col-sm-2 control-label">计划人数：</label>
+                                    <div class="col-sm-10">
+                                        <input type="text" id="changePlanNum" class="form-control"
+                                               name="change_num">
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="changeLowestScore" class="col-sm-2 control-label">毕业最低学分：</label>
+                                    <div class="col-sm-10">
+                                        <input type="text" id="changeLowestScore" class="form-control"
+                                               name="change_lowest_score">
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="changePlanStuMethod" class="col-sm-2 control-label">学制：</label>
+                                    <div class="col-sm-10">
+                                        <input type="text" id="changePlanStuMethod" class="form-control"
+                                               name="change_course_stu_method">
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="changePlanCourseNum" class="col-sm-2 control-label">计划课程总数：</label>
+                                    <div class="col-sm-10">
+                                        <input type="text" id="changePlanCourseNum" class="form-control"
+                                               name="change_course_num">
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="changePlanClassNum" class="col-sm-2 control-label">班级个数：</label>
+                                    <div class="col-sm-10">
+                                        <input type="text" id="changePlanClassNum" class="form-control"
+                                               name="change_class_num">
+                                    </div>
                                 </div>
                             </div>
-                            <div class="form-group">
-                                <label for="changePlanMajor" class="col-sm-2 control-label">专业：</label>
-                                <div class="col-sm-10">
-                                    <input type="text" id="changePlanMajor" disabled class="form-control"
-                                           name="change_major">
-                                </div>
-                            </div>
-
-                            <div class="form-group">
-                                <label for="changePlanYear" class="col-sm-2 control-label">年级：</label>
-                                <div class="col-sm-10">
-                                    <input type="text" id="changePlanYear" disabled class="form-control"
-                                           name="change_year">
-                                </div>
-                            </div>
-
-                            <div class="form-group">
-                                <label for="changePlanNum" class="col-sm-2 control-label">计划人数：</label>
-                                <div class="col-sm-10">
-                                    <input type="text" id="changePlanNum" class="form-control"
-                                           name="change_num">
-                                </div>
-                            </div>
-
-                            <div class="form-group">
-                                <label for="changeLowestScore" class="col-sm-2 control-label">毕业最低学分：</label>
-                                <div class="col-sm-10">
-                                    <input type="text" id="changeLowestScore" class="form-control"
-                                           name="change_lowest_score">
-                                </div>
-                            </div>
-
-                            <div class="form-group">
-                                <label for="changePlanStuMethod" class="col-sm-2 control-label">学制：</label>
-                                <div class="col-sm-10">
-                                    <input type="text" id="changePlanStuMethod" class="form-control"
-                                           name="change_course_stu_method">
-                                </div>
-                            </div>
-
-                            <div class="form-group">
-                                <label for="changePlanCourseNum" class="col-sm-2 control-label">计划课程总数：</label>
-                                <div class="col-sm-10">
-                                    <input type="text" id="changePlanCourseNum" class="form-control"
-                                           name="change_course_num">
-                                </div>
-                            </div>
-
-                            <div class="form-group">
-                                <label for="changePlanClassNum" class="col-sm-2 control-label">班级个数：</label>
-                                <div class="col-sm-10">
-                                    <input type="text" id="changePlanClassNum" class="form-control"
-                                           name="change_class_num">
+                            <div class="modal-footer">
+                                <div class="center-block">
+                                    <button id="cancelChange" type="button" class="btn btn-default"
+                                            data-dismiss="modal">取消
+                                    </button>
+                                    <button id="sureToChange" type="submit" class="btn btn-success">保存</button>
                                 </div>
                             </div>
                         </div>
-                        <div class="modal-footer">
-                            <div class="center-block">
-                                <button id="cancelChange" type="button" class="btn btn-default"
-                                        data-dismiss="modal">取消
-                                </button>
-                                <button id="sureToChange" type="submit" class="btn btn-success">保存</button>
-                            </div>
-                        </div>
-                    </div>
-                </form>
+                    </form>
+                </div>
             </div>
         </div>
-    </div>
 
     </section>
 {% endblock %}

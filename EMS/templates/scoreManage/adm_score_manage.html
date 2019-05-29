@@ -284,12 +284,13 @@
                 }
             });
 
-            $('.select2').select2();
             $('#course_major #course_college #course_semester #course_year').change(
                 function () {
                     table.draw();
                 }
             );
+
+            $('.select2').select2();
 
 
             $('#change_score_btn').click(function () {

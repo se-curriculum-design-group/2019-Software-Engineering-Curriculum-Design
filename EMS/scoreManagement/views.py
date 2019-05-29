@@ -913,8 +913,8 @@ def tch_change_score_weight(request):
 
             for c in course_selected_list:
                 c.cno.tno.weight = final_weight
+                c.cno.tno.save()
                 c.score = c.common_score * (1 - final_weight) + c.final_score * final_weight
-                print(c.cno.tno.weight)
                 c.save()
             return JsonResponse({"succ": "yes"})
 
