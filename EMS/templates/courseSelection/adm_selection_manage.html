@@ -7,9 +7,9 @@
             {% csrf_token %}
             <h1><span class="label label-primary">设置选课时间</span></h1>
             <h1></h1>
-             <h2><span class="label label-success">开始时间</span></h2>
+             <h4><span class="label label-success">开始时间</span></h4>
             <input type="datetime-local" value="" name="begin_time"/>
-             <h2><span class="label label-success">结束时间</span></h2>
+             <h4><span class="label label-success">结束时间</span></h4>
             <input type="datetime-local" value=" " name="end_time"/>
             <button type="submit" class="btn btn-primary " onclick="return confirm('Yes/No')">设置</button>
         </form>

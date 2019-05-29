@@ -168,7 +168,6 @@
                                 <th>课程容量</th>
                                 <th>授课教师</th>
                                 <th>上课教室</th>
-                                <th>上课时间</th>
                             </tr>
                             </thead>
                             <tbody>
@@ -180,11 +179,10 @@
                                     <td>{{ info.tno.mcno.cno.cno }}</td>
                                     <td>{{ info.tno.mcno.cno.cname }}</td>
                                     <td>{{ info.tno.mcno.hour_total }}</td>
-                                    <td>{{ info.current_number}}</td>
+                                    <td>{{ info.current_number }}</td>
                                     <td>{{ info.MAX_number }}</td>
                                     <td>{{ info.tno.tno.name }}</td>
                                     <td>{{ info.where.crno }}</td>
-                                    <td>{{ info.time }}</td>
                                 </tr>
                             {% endfor %}
                             </tbody>
@@ -267,22 +265,22 @@
             var table = $('#my_course_score_table').DataTable({
                 dom: 'Bfrtip',
                 buttons: [
-                        'copy',
-                        {
-                            extend: 'excel',
-                            filename: '课程信息表'
-                        },
-                        {
-                            extend: 'print',
-                            filename: "课程信息表",
-                        }
-                    ],
-                "paging": true,       <!-- 允许分页 -->
+                    'copy',
+                    {
+                        extend: 'excel',
+                        filename: '课程信息表'
+                    },
+                    {
+                        extend: 'print',
+                        filename: "课程信息表",
+                    }
+                ],
+                "paging": true, <!-- 允许分页 -->
                 "lengthChange": true, <!-- 允许改变每页显示的行数 -->
-                "searching": true,    <!-- 允许内容搜索 -->
-                "ordering": true,     <!-- 允许排序 -->
-                "info": true,         <!-- 显示信息 -->
-                "autoWidth": false,    <!-- 固定宽度 -->
+                "searching": true, <!-- 允许内容搜索 -->
+                "ordering": true, <!-- 允许排序 -->
+                "info": true, <!-- 显示信息 -->
+                "autoWidth": false, <!-- 固定宽度 -->
                 "language": {
                     "sProcessing": "处理中...",
                     "sLengthMenu": "显示 _MENU_ 项结果",
@@ -329,13 +327,11 @@
             });
 
             $('.select2').select2();
-        })
-
+        });
 
 
         {#----------------------候选课程---------------------------#}
         var class_week = new Array(data.length);
-
         for (var i = 0; i < data.length; i++) {
             class_week[i] = new Array();
             times = data[i]["上课时间"].split(",");
@@ -345,6 +341,15 @@
             {#alert(class_week[i].length);#}
             tmp = new Array();//classweek每个索引都是不同的周
             for (var j = 0; j < class_week[i].length; j++) {
+                class_week[i][j][0] = "" + (parseInt(class_week[i][j][0]) % 13) + "";
+                class_week[i][j][1] = "" + (parseInt(class_week[i][j][1]) % 13) + "";
+                if (parseInt(class_week[i][j][0]) % 13 == 0) {
+                    class_week[i][j][0] == "13";
+                }
+                if (parseInt(class_week[i][j][1]) % 13 == 0) {
+                    class_week[i][j][1] == "13";
+                }
+
                 var di = {
                     "week": class_week[i][j][2] + "-" + class_week[i][j][3] + "周",
                     "course": class_week[i][j][0] + "-" + class_week[i][j][1] + "节"
@@ -388,6 +393,14 @@
             {#alert(class_week[i].length);#}
             tmp = new Array();//classweek每个索引都是不同的周
             for (var j = 0; j < class_week[i].length; j++) {
+                class_week[i][j][0] = "" + (parseInt(class_week[i][j][0]) % 13) + "";
+                class_week[i][j][1] = "" + (parseInt(class_week[i][j][1]) % 13) + "";
+                if (parseInt(class_week[i][j][0]) % 13 == 0) {
+                    class_week[i][j][0] == "13";
+                }
+                if (parseInt(class_week[i][j][1]) % 13 == 0) {
+                    class_week[i][j][1] == "13";
+                }
                 var di = {
                     "week": class_week[i][j][2] + "-" + class_week[i][j][3] + "周",
                     "course": class_week[i][j][0] + "-" + class_week[i][j][1] + "节"
@@ -600,46 +613,45 @@
 
         {#----------------------导出课表到本地---------------------------#}
         {% comment %}
-        var ctables = document.getElementById("coursesTable");
+            var ctables = document.getElementById("coursesTable");
             $(function () {
-            $(".down2").click(function () {
-                html2canvas($(".test")).then(function (canvas) {
-                    var imgUri = canvas.toDataURL("image/png").replace("image/png", "image/octet-stream"); // 获取生成的图片的url
-                    window.location.href = imgUri; // 下载图片
+                $(".down2").click(function () {
+                    html2canvas($(".test")).then(function (canvas) {
+                        var imgUri = canvas.toDataURL("image/png").replace("image/png", "image/octet-stream"); // 获取生成的图片的url
+                        window.location.href = imgUri; // 下载图片
+                    });
+
+
+                    //html2canvas($('.tongxingzheng_bg'), {
+                    //    onrendered: function (canvas) {
+                    //        var data = canvas.toDataURL("image/png");//生成的格式
+                    //        //data就是生成的base64码啦
+                    //        alert(data);
+                    //    }
+                    //});
                 });
-
-
-                //html2canvas($('.tongxingzheng_bg'), {
-                //    onrendered: function (canvas) {
-                //        var data = canvas.toDataURL("image/png");//生成的格式
-                //        //data就是生成的base64码啦
-                //        alert(data);
-                //    }
-                //});
             });
-        });
-          function Texport(obj) {
-              html2canvas(ctables, {
-                  onrendered:function(canvas) {
+            function Texport(obj) {
+                html2canvas(ctables, {
+                    onrendered: function (canvas) {
 
-                      //返回图片dataURL，参数：图片格式和清晰度(0-1)
-                      var pageData = canvas.toDataURL('image/jpeg', 1.0);
+                        //返回图片dataURL，参数：图片格式和清晰度(0-1)
+                        var pageData = canvas.toDataURL('image/jpeg', 1.0);
 
-                      //方向默认竖直，尺寸ponits，格式a4[595.28,841.89]
-                      var pdf = new jsPDF('', 'pt', 'a4');
+                        //方向默认竖直，尺寸ponits，格式a4[595.28,841.89]
+                        var pdf = new jsPDF('', 'pt', 'a4');
 
-                      //addImage后两个参数控制添加图片的尺寸，此处将页面高度按照a4纸宽高比列进行压缩
-                      pdf.addImage(pageData, 'JPEG', 0, 0, 595.28, 592.28/canvas.width * canvas.height );
+                        //addImage后两个参数控制添加图片的尺寸，此处将页面高度按照a4纸宽高比列进行压缩
+                        pdf.addImage(pageData, 'JPEG', 0, 0, 595.28, 592.28 / canvas.width * canvas.height);
 
-                      pdf.save('stone.pdf');
+                        pdf.save('stone.pdf');
 
-                  }
-              });
-          }
-{% endcomment %}
+                    }
+                });
+            }
+        {% endcomment %}
         {% comment %}
-          function Texport(obj)
-        {
+            function Texport(obj) {
 
                 html2canvas($("coursesTable")).then(function (canvas) {
                     var imgUri = canvas.toDataURL("image/png").replace("image/png", "image/octet-stream"); // 获取生成的图片的url
@@ -656,7 +668,7 @@
                 //});
 
 
-        }
-    {% endcomment %}
+            }
+        {% endcomment %}
     </script>
 {% endblock %}
