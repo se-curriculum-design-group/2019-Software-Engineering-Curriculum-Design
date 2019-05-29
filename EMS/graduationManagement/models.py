@@ -80,4 +80,4 @@ class FinalProjectScore(models.Model):
     grade = models.IntegerField(default=0)
 
     class Meta:
-        db_table = 'finalprojectScore'
+        db_table = 'finalprojectscore'
