@@ -92,7 +92,7 @@
                     <tbody>
                     {% for course_score in all_course_score %}
                         <tr>
-                            <td>{{ forloop.counter }}</td>
+                            <td>{{ course_score.id }}</td>
                             <td>{{ course_score.cno.tno.mcno.year }}</td>
                             <td>{{ course_score.cno.tno.mcno.semester }}</td>
                             <td>{{ course_score.cno.tno.mcno.mno.major.in_college | safe }}</td>
@@ -121,6 +121,15 @@
                         </div>
                         <div class="modal-content" id="changeScoreModal">
                             <div class="form-horizontal">
+
+                                <div class="form-group">
+                                    <label for="changeScoreId" class="col-sm-2 control-label">编号：</label>
+                                    <div class="col-sm-10">
+                                        <input type="text" id="changeScoreId" disabled class="form-control"
+                                               name="change_id">
+                                    </div>
+                                </div>
+
                                 <div class="form-group">
                                     <label for="changeScoreYear" class="col-sm-2 control-label">学年：</label>
                                     <div class="col-sm-10">
@@ -128,6 +137,7 @@
                                                name="change_year">
                                     </div>
                                 </div>
+
                                 <div class="form-group">
                                     <label for="changeScoreSemester" class="col-sm-2 control-label">学期：</label>
                                     <div class="col-sm-10">
@@ -298,8 +308,8 @@
                     var rowData = table.rows('.selected').data()[0];
                     var form_modal = $('#changeScore');
                     var inputs = form_modal.find('input');
-                    for (let i = 1; i <= inputs.length; i++) {
-                        $(inputs[i - 1]).val(rowData[i]);
+                    for (let i = 0; i < inputs.length; i++) {
+                        $(inputs[i]).val(rowData[i]);
                     }
                     form_modal.modal();
                 } else {
@@ -314,27 +324,16 @@
                     values.push($(inputs[i]).val());
                 }
 
-                const year = values[0];
-                const semester = values[1];
-                const college = values[2];
-                const major = values[3];
-                const sno = values[4];
-                const tno = values[5];
-                const cno = values[6];
-                const method = values[7];
-                const common = values[8];
-                const final = values[9];
+                const cs_id = values[0];
+                const sno = values[5];
+                const common = values[9];
+                const final_score = values[10];
 
                 const data = {
-                    'year': year,
-                    'semester': semester,
-                    'college': college,
+                    'cs_id': cs_id,
                     'sno': sno,
-                    'tno': tno,
-                    'cno': cno,
-                    'method': method,
                     'common': common,
-                    'final': final,
+                    'final_score': final_score,
                 };
 
                 $.get(

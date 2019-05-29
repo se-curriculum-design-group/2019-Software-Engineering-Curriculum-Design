@@ -48,7 +48,8 @@ def adm_all_course_score(request):
             try:
                 sear_year = request.GET['sear_year']
                 sear_semester = request.GET['sear_semester']
-                tch_sch_list = Teacher_Schedule_result.objects.filter(tno__mcno__year=sear_year, tno__mcno__semester=sear_semester)
+                tch_sch_list = Teacher_Schedule_result.objects.filter(tno__mcno__year=sear_year,
+                                                                      tno__mcno__semester=sear_semester)
                 all_course_score = CourseSelected.objects.filter(cno__in=tch_sch_list)
                 context = {
                     "all_course_score": all_course_score,
@@ -642,35 +643,18 @@ def teacher_view_stu_score(request):
 def adm_change_score(request):
     if request.is_ajax():
         if len(request.GET):
-            year = request.GET.get('year')
-            semester = request.GET.get('semester')
-            college = request.GET.get('college')
-            major = request.GET.get('major')
+            cs_id = request.GET.get('cs_id')
+
             sno = request.GET.get('sno')
-            tno = request.GET.get('tno')
-            cno = request.GET.get('cno')
-            method = request.GET.get('method')
-            common = request.GET.get('common')
-            final_score = request.GET.get('final')
-            student = Student.objects.get(username=sno)
-            teacher = Teacher.objects.get(username=tno)
-            try:
-                course = Course.objects.get(cno=cno, course_type=method)
-                major_course = MajorCourses.objects.get(cno=course, year=year, semester=semester)
-                teaching = Teaching.objects.get(tno=teacher, mcno=major_course)
-                course_score = CourseScore.objects.get(sno=student, teaching=teaching)
-            except Course.MultipleObjectsReturned or CourseScore.MultipleObjectsReturned:
-                return JsonResponse({"except": Exception})
-
-            course_score.commen_score = common
-            course_score.final_score = final_score
-            weight = course_score.teaching.weight
-            course_score.score = float(common) * (1 - weight) + float(final_score) * weight
-            course_score.save()
-
+            common = float(request.GET.get('common'))
+            final_score = float(request.GET.get('final_score'))
+            cs = CourseSelected.objects.get(id=cs_id)
+            cs.common_score = common
+            cs.final_score = final_score
+            cs.save()
             n_commen = common
             n_final = final_score
-            score = course_score.score
+            score = cs.score
             result = {
                 'n_commen': n_commen,
                 'n_final': n_final,
