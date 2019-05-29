@@ -371,9 +371,9 @@ def coures_time_generate(schedule, time):
                         res += str(e[0] + weekday * 13) + '-' + str(e[1] + weekday * 13) + '-' + '1' + '-' + str(
                             weektime_cur)
                     else:
+                        weekday += 1
                         res += ',' + str(e[0] + weekday * 13) + '-' + str(e[1] + weekday * 13) + '-' + '1' + '-' + str(
                             weektime_cur)
-                    weekday += 1
                     cnt += 1
                     break
             if cnt == 2:
@@ -399,6 +399,7 @@ def coures_time_generate(schedule, time):
                                 res += str(e[0] + weekday * 13) + '-' + str(e[1] + weekday * 13) + '-' + str(1 + bias) + '-' + str(
                                     weektime_cur + bias)
                             else:
+                                weekday += 1
                                 res += ',' + str(e[0] + weekday * 13) + '-' + str(
                                     e[1] + weekday * 13) + '-' + str(1 + bias) + '-' + str(weektime_cur + bias)
                             weekday += 1
@@ -427,10 +428,10 @@ def coures_time_generate(schedule, time):
                             res += str(e[0] + weekday * 13) + '-' + str(e[1] + weekday * 13) + '-' + str(1 + bias) + '-' + str(
                                 weektime_cur+bias)
                         else:
+                            weekday += 1
                             res += ',' + str(e[0] + weekday * 13) + '-' + str(e[1] + weekday * 13) + '-' + str(1 + bias) + '-' + str(
                                 weektime_cur+bias)
                         print(String_to_table(res))
-                        weekday += 1
                         cnt += 1
                         break
                 if cnt == 1:
@@ -652,7 +653,7 @@ def Search_spare_room(name: str) -> Classroom:
 
 
 # 搜索时间空闲的房间:
-def init_room():
+def init_room(year=2019, semester=2):
     "初始化房间"
     set1 = Teacher_Schedule_result.objects.filter(tno__mcno__year=year, tno__mcno__semester=semester)
     for elements in set1:
@@ -834,11 +835,15 @@ def init_exam(year=2019, semester=2):
             Classrooms_id[element.where].examSchedule = mergeTable(Classrooms_id[element.where].examSchedule, String_to_examTable(element.time))
 
 def exam_time_generate(bf: Buffer):
+    cntjump = 0
     for i in range(7):
         for j in range(5):
+            if cntjump == 1:
+                cntjump = 0
+                continue
             if bf.examSchedule[i][j] != '':
                 if j + 2 <= 4:
-                    j += 1
+                    cntjump = 1
                 elif j + 2 >= 5:
                     break
             else:
@@ -1005,7 +1010,7 @@ def search_exam_time(stu_username: str):
 if __name__ == '__main__':
     #autoSchedule()
     #exam_schedule()
-    #Sycho()
+
     #手工排
     #以上在管理员的排课界面
 
