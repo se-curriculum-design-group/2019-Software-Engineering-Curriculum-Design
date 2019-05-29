@@ -233,7 +233,6 @@ def send_emails(request):
     else:
         Emailform = SendEmails(request.POST, request.FILES)
         if Emailform.is_valid():
-
             path = os.getcwd()
             path_use = path.replace('\\', '/')
 
@@ -264,6 +263,7 @@ def send_emails(request):
                 msg.attach_file(src)
             if msg.send():
                 message = "发送成功"
+                new_email = SendEmails()
                 return render(request, 'backstage/send_emails.html', locals())
             else:
                 message = "发送失败"

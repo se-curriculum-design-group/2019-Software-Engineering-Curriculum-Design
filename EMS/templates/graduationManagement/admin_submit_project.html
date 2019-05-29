@@ -13,10 +13,23 @@
                             </div>
                         </div>
                     </div>
+                <label>学院：</label><select id="college" class="select2" style="width: 20%">
+                <option value="ALL" selected="selected">全部</option>
+                    <option value="信息科学与技术学院">信息科学与技术学院</option>
+            </select>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                <label>专业：</label><select id="major" class="select2" style="width: 15%">
+                <option value="ALL" selected="selected">全部</option>
+
+                    <option value="计算机科学与技术专业">计算机科学与技术专业</option>
+            </select>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                <label>入学年份：</label><select id="year" class="select2" style="width: 15%">
+                <option value="ALL" selected="selected">全部</option>
+                    <option value="15">15</option>
+            </select>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                 </div>
                 <!-- /.box-header -->
                 <div class="box-body table-responsive no-padding">
-                    <table id="mytable" class="table table-hover">
+                    <table id="students_tabl" class="table table-bordered table-striped">
                         <thead>
                         <tr>
                             <th>编号</th>
@@ -51,12 +64,24 @@
 
     <!-- Page script -->
     <script>
-        $(function () {
-            var table = $('#mytable').DataTable(
+        $.fn.dataTable.ext.search.push(
+            function (settings, data, dataIndex) {
+                var college = $('#college').val();
+                var major = $('#major').val();
+                var year = $('#year').val();
+                return ((college === data[1] || college === "ALL") && (((major === data[2] || major === "ALL") && (year === data[3] || year === "ALL"))));
+            }
+        );
+        $(document).ready(function () {
+            var table = $('#students_table').DataTable(
                 {
                     dom: 'Bfrtip',
                     buttons: [
-                        'copy', 'csv', 'excel', 'pdf', 'print'
+                        'copy',
+                        {
+                            extend: 'excel',
+                            filename: "全校学生信息表",
+                        }, 'pdf', 'print'
                     ],
                     "paging": true,       <!-- 允许分页 -->
                     "lengthChange": true, <!-- 允许改变每页显示的行数 -->
@@ -97,10 +122,18 @@
                 }
             );
 
-
-            //Initialize Select2 Elements
-            $(".select2").select2();
-        });
+            $('#students_table tbody').on('click', 'tr', function (e) {
+                if ($(this).hasClass('selected')) {
+                    $(this).removeClass('selected');
+                } else {
+                    table.$('tr.selected').removeClass('selected');
+                    $(this).addClass('selected');
+                }
+            });
+            // Event listener to the two range filtering inputs to redraw on input
+            $('#major, #year, #college').change(function () {
+                table.draw();
+            });
 
         $(".jump1").click(function () {
             location.href = "/graduationManagement/teacher_edit_project";

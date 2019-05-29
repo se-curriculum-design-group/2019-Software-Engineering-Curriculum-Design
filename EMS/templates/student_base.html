@@ -103,4 +103,81 @@
     </li>
 {% endblock %}
 {% block content %}
+       <!-- Content Header (Page header) -->
+    <section class="content-header">
+        <h1>
+            通知
+        </h1>
+        <ol class="breadcrumb">
+            <li><a href="#"><i class="fa fa-dashboard"></i> Home</a></li>
+            <li class="active">通知</li>
+        </ol>
+    </section>
+
+    <!-- Main content -->
+    <section class="content">
+        <div class="row">
+            {% block main %}
+
+                <!-- /.col -->
+                <div class="col-md-12">
+                    {% block details %}
+                        <div class="box box-primary">
+                            <div class="box-header with-border">
+                                <h3 class="box-title">通知集合</h3>
+                            </div>
+                            <!-- /.box-header -->
+                            <div class="box-body no-padding">
+
+                                <div class="table-responsive mailbox-messages">
+
+                                    <table class="table table-hover table-striped">
+                                        <tr>
+                                            <td style="vertical-align: middle">编号</td>
+                                            <td class="mailbox-name">通知主题</td>
+                                            <td class="mailbox-messages">签发</td>
+                                            <td class="mailbox-messages">对象</td>
+                                            <td class="mailbox-messages">年级</td>
+                                            <td class="mailbox-date">时间</td>
+                                            <td class="mailbox-messages">查看</td>
+                                        </tr>
+                                        <tbody>
+                                        {% for announcement in announcements %}
+                                            <tr>
+                                                <td style="vertical-align: middle">{{ forloop.counter }}</td>
+                                                <td class="mailbox-name">
+                                                    {{ announcement.title }}
+                                                </td>
+                                                <td class="mailbox-messages">{{ announcement.author }}</td>
+                                                <td class="mailbox-messages">{{ announcement.receiver }}</td>
+                                                <td class="mailbox-messages">{{ announcement.year }}</td>
+                                                <td class="mailbox-date">{{ announcement.time }}</td>
+                                                <td>
+                                                    <form action="{% url 'backstage:student_view' %}" method="post"
+                                                          id="form1">
+                                                        {% csrf_token %}
+                                                        <button type="submit" class="btn btn-instagram" name="details"
+                                                                value={{ announcement.id }}>查看
+                                                        </button>
+                                                    </form>
+                                                </td>
+                                            </tr>
+                                        {% endfor %}
+                                        </tbody>
+                                    </table>
+                                    <!-- /.table -->
+                                </div>
+                                <!-- /.mail-box-messages -->
+                            </div>
+                            <!-- /.box-body -->
+                        </div>
+                        <!-- /. box -->
+                    {% endblock %}
+                </div>
+                <!-- /.col -->
+            {% endblock %}
+        </div>
+        <!-- /.row -->
+    </section>
+    <!-- /.content -->
 {% endblock %}

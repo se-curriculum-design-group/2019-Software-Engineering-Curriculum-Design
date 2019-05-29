@@ -35,7 +35,7 @@
             <li class="divider"></li>
             <li><a href=" {% url 'courseSelection:adm_selection_manage' %}">设置选课时间</a></li>
             <li><a href=" {% url 'courseSelection:adm_school' %}">查询全校选课情况</a></li>
-            <li><a href="#">查看毕设选题情况</a></li>
+            <li><a href="{% url 'graduationManagement:admin_submit_project' %}">查看毕设选题情况</a></li>
         </ul>
     </li>
     <li><a href="{% url 'scoreManagement:adm_view_teacher_evaluation' %}">查看教学评价</a></li>
@@ -117,7 +117,7 @@
         <ul class="treeview-menu">
             <li><a href="{% url 'courseSelection:adm_selection_manage' %}"><i class="fa fa-circle-o"></i>设置选课时间</a></li>
             <li><a href=" {% url 'courseSelection:adm_school' %}"><i class="fa fa-circle-o"></i>查询全校选课情况</a></li>
-            <li><a href="#"><i class="fa fa-circle-o"></i>查看毕设选题情况</a></li>
+            <li><a href="{% url 'graduationManagement:admin_submit_project' %}"><i class="fa fa-circle-o"></i>查看毕设选题情况</a></li>
         </ul>
     </li>
     <li class="treeview">

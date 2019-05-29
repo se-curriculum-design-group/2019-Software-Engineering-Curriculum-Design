@@ -16,11 +16,6 @@
             <div class="box-header">
                 <h3 class="box-title">教师授课表</h3>
                 <div class="btn-group pull-right ">
-                    <a id="a">
-                        <button id='chart' class="btn btn-success" type="button">
-                            <span class="glyphicon glyphicon-plus"></span>导出表格
-                        </button>
-                    </a>
                 </div>
             </div>
             <div class="box-body">
@@ -41,26 +36,45 @@
                     </thead>
                     <tbody>
                     {% for teaching in teachings %}
-                            <tr>
-                                <td>{{ forloop.counter }}</td>
-                                <td>{{ teaching.mcno.cno.cno }}</td>
-                                <td>{{ teaching.mcno.cno.cname }}</td>
-                                <td>{{ teaching.mcno.cno.course_type }}</td>
-                                <td>{{ teaching.mcno.mno.year }}</td>
-                                <td>{{ teaching.mcno.mno.major.mno }}</td>
-                                <td>{{ teaching.mcno.mno.major.mname }}</td>
-                                <td>{{ teaching.mcno.year }}</td>
-                                <td>{{ teaching.mcno.semester }}</td>
-                                <td>
-                                    <a href="{% url 'courseSelection:show_students' teaching.mcno.cno.cno teaching.mcno.cno.course_type %}">
-                                        <button id='show_students' class="btn btn-primary" type="button">
-                                            <span class="glyphicon glyphicon-plus"></span>查看
-                                        </button>
-                                    </a>
-                                </td>
-                            </tr>
+                        {#                        {% if teaching.tno == cookie %}#}
+                        <tr>
+                            <td>{{ forloop.counter }}</td>
+                            <td>{{ teaching.mcno.cno.cno }}</td>
+                            <td>{{ teaching.mcno.cno.cname }}</td>
+                            <td>{{ teaching.mcno.cno.course_type }}</td>
+                            <td>{{ teaching.mcno.mno.year }}</td>
+                            <td>{{ teaching.mcno.mno.major.mno }}</td>
+                            <td>{{ teaching.mcno.mno.major.mname }}</td>
+                            <td>{{ teaching.mcno.year }}</td>
+                            <td>{{ teaching.mcno.semester }}</td>
+                            <td>
+                                {#                                    <a href="{% url 'courseSelection:show_students?cno='+teaching.mcno.cno.cno+'&course_type='+teaching.mcno.cno.course_type %}">#}
+                                <a href="{% url 'courseSelection:show_students' teaching.mcno.cno.cno teaching.mcno.cno.course_type %}">
+                                    {#                                    <a href="{% url 'courseSelection:show_students' teaching %}">#}
+                                    <button id='show_students' class="btn btn-primary" type="button">
+                                        <span class="glyphicon glyphicon-plus"></span>查看
+                                    </button>
+                                </a>
+
+                            </td>
+                        </tr>
+                        {#                        {% endif %}#}
                     {% endfor %}
                     </tbody>
+                    <tfoot>
+                    <tr>
+                        <th>编号</th>
+                        <th>课程号</th>
+                        <th>课程名称</th>
+                        <th>课程性质</th>
+                        <th>年级</th>
+                        <th>授课教室</th>
+                        <th>专业名称</th>
+                        <th>开课学年</th>
+                        <th>开课学期</th>
+                        <th>查看选课学生</th>
+                    </tr>
+                    </tfoot>
                 </table>
             </div>
         </div>
@@ -69,6 +83,19 @@
 
 
 {% block script %}
+
+
+    <!-- page script -->
+
+    {#    <script>#}
+    {#    window.onLoad=function()#}
+    {#    {#}
+    {#        var cookie=$.cookie('name');#}
+    {#    }#}
+    {#    </script>#}
+
+
+
     <script>
 
         $(function () {
@@ -79,14 +106,14 @@
                     'copy',
                     {
                         extend: 'excel',
-                        filename: "专业课程信息表",
+                        filename: '课程信息表'
                     },
                     {
                         extend: 'print',
-                        filename: "专业课程信息表",
+                        filename: "课程信息表",
                     }
                 ],
-                "paging": true,       <!-- 允许分页 -->
+                "paging": true, <!-- 允许分页 -->
                 "lengthChange": true, <!-- 允许改变每页显示的行数 -->
                 "searching": true, <!-- 允许内容搜索 -->
                 "ordering": true, <!-- 允许排序 -->
@@ -133,28 +160,12 @@
                 }
             });
 
-            $('#add').click(function () {
-                console.log("new car.");
-                $('#addCar').modal();
-            });
-
-            $('#change').click(function () {
-                console.log("change car");
-                if (table.rows('.selected').data().length) {
-                    $("#changeCar").modal();
-                    var rowData = table.rows('.selected').data()[0];
-                    var inputs = $('#changeCar').find('input');
-                    for (let i = 0; i < inputs.length; i++) {
-                        $(inputs[i]).val(rowData[i]);
-                    }
-                } else {
-                    alert("请选择一个项目！");
-                }
-            });
 
             $('#show_students').click(function () {
 
             });
         })
+
+
     </script>
 {% endblock %}

@@ -24,7 +24,7 @@ class GraduationProject(models.Model):
     pstatus = models.IntegerField(default=0)
 
     class Meta:
-        db_table = 'graduationproject'
+        db_table = 'GraduationProject'
 
 
 # 学生选题表
@@ -36,10 +36,9 @@ class StuChoice(models.Model):
     # 课题编号
     pno = models.ForeignKey(to=GraduationProject, on_delete=models.CASCADE)
     # 学生状态
-    status = models.IntegerField(default=0)  # 2拒绝  1被接受  0未审核
-
+    status = models.IntegerField(default=0)      #2拒绝  1被接受  0未审核
     class Meta:
-        db_table = 'stuchoice'
+        db_table = 'StuChoice'
         unique_together = (
             'sno', 'tno', 'pno'
         )
@@ -47,37 +46,33 @@ class StuChoice(models.Model):
 
 class ProjectDocument(models.Model):
     schoic = models.ForeignKey(to=StuChoice, on_delete=models.CASCADE)
-    # 中期报告，最终报告
-    dtype = models.CharField(max_length=10)
-    dpath = models.TextField()
-
+    #中期报告，最终报告
+    dtype=models.CharField(max_length=10)
+    dpath=models.TextField()
     class Meta:
-        db_table = 'projectdocument'
+        db_table = 'ProjectDocument'
     # paper=
 
 
 class ProjectScore(models.Model):
     project = models.ForeignKey(to=ProjectDocument, on_delete=models.CASCADE)
     # 答辩成绩
-    # 论述是否充分合理  30%
-    lundian = models.IntegerField(default=0)
-    # 设计方案是否深入  40%
-    fangan = models.IntegerField(default=0)
-    # 问题回答情况 30%
-    dabian = models.IntegerField(default=0)
-    # 中期报告/最终报告分数
-    grade = models.IntegerField(default=0)
+    #论述是否充分合理  30%
+    lundian=models.IntegerField(default=0)
+    #设计方案是否深入  40%
+    fangan=models.IntegerField(default=0)
+    #问题回答情况 30%
+    dabian=models.IntegerField(default=0)
+    #中期报告/最终报告分数
+    grade=models.IntegerField(default=0)
     # 答辩评语
     comments = models.TextField()
-
     class Meta:
-        db_table = 'projectscore'
-
+        db_table = 'ProjectScore'
 
 class FinalProjectScore(models.Model):
     project = models.ForeignKey(to=Student, on_delete=models.CASCADE)
-    # 中期*40%+最终*60%
-    grade = models.IntegerField(default=0)
-
+    #中期*40%+最终*60%
+    grade=models.IntegerField(default=0)
     class Meta:
-        db_table = 'finalprojectscore'
+        db_table = 'FinalProjectScore'

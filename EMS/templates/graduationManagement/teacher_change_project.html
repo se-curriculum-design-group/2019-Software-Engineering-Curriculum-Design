@@ -14,7 +14,7 @@
             <!-- /.box-header -->
             <div class="box-body">
               {% for item in info %}
-              <form role="form" method="post" action="{% url 'graduationManagement:teacher_submit_project' %}" >
+              <form role="form" method="post" action="/graduationManagement/teacher_submit_project?change_id={{ item.id }}" >
                 {% csrf_token %}
                 <!-- text input -->
                 <div class="form-group">

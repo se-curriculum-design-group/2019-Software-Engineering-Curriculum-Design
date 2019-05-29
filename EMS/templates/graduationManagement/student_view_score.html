@@ -8,17 +8,20 @@
           <div class="box box-widget widget-user-2">
             <!-- Add the bg color to the header using any of the bg-* classes -->
             <div class="widget-user-header bg-blue">
-             
+
               <!-- /.widget-user-image -->
-              <h3 class="widget-user-username">A+</h3>
-              <h5 class="widget-user-desc">毕业设计管理子系统</h5>
+
+              <h3 class="widget-user-username">{{grade }}</h3>
+
+              <h5 class="widget-user-desc">{{ info1.pno.pname }}</h5>
             </div>
             <div class="box-footer no-padding">
 
               <ul class="nav nav-stacked">
+               {% for item in info %}
                 <li><div class="box box-primary box-solid" style="margin-bottom: 0px;">
             <div class="box-header with-border">
-              <h3 class="box-title">开题报告</h3>
+              <h3 class="box-title">{{ item.project.dtype }}</h3>
 
               <div class="box-tools pull-right">
                 <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i>
@@ -28,51 +31,21 @@
             </div>
             <!-- /.box-header -->
             <div class="box-body" style="display: none;">
-              题目立意  A+
-              发展前景  A+
-              表述清晰  A+
+              <strong>论点：</strong>{{ item.lundian }} <br>
+              <strong>方案：</strong>{{ item.fangan }}<br>
+              <strong>答辩：</strong>{{ item.dabian }}<br>
+              <strong>评语：</strong>{{ item.comments }}<br>
             </div>
             <!-- /.box-body -->
           </div></li>
-                <li><div class="box box-primary box-solid" style="margin-bottom: 0px;">
-            <div class="box-header with-border">
-              <h3 class="box-title">中期答辩</h3>
-
-              <div class="box-tools pull-right">
-                <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i>
-                </button>
-              </div>
-              <!-- /.box-tools -->
-            </div>
-            <!-- /.box-header -->
-            <div class="box-body" style="display: none;">
-              The body of the box
-            </div>
-            <!-- /.box-body -->
-          </div></li>
-                <li><div class="box box-primary box-solid" style="margin-bottom: 0px;">
-            <div class="box-header with-border">
-              <h3 class="box-title">最终答辩</h3>
-
-              <div class="box-tools pull-right">
-                <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i>
-                </button>
-              </div>
-              <!-- /.box-tools -->
-            </div>
-            <!-- /.box-header -->
-            <div class="box-body" style="display: none;">
-              The body of the box
-            </div>
-            <!-- /.box-body -->
-          </div></li>
+               {% endfor %}
                 
               </ul>
             </div>
           </div>
           <!-- /.widget-user -->
         </div>
-	</div>		
+	</div>
 {% endblock %}
 
 {% block script %}
