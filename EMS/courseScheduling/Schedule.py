@@ -5,7 +5,7 @@ from courseScheduling.models import MajorCourses as MajorCourses
 from courseScheduling.models import Teaching as original_Teaching
 from backstage.models import ClassRoom, Student, AdmClass, MajorPlan
 from courseSelection.models import CourseSelected as courseSelected
-#from courseScheduling.Synchronize import Sychronize_with_courseSelected as swc
+# from courseScheduling.Synchronize import Sychronize_with_courseSelected as swc
 # 输出
 from courseScheduling.models import Schedule_result, Teacher_Schedule_result, Classroom_other_schedule, Exam_Schedule
 
@@ -214,6 +214,7 @@ course_2_96 = [(1, 2), (3, 4), (6, 7), (7, 8)]
 course_2 = [(1, 2), (3, 4), (6, 7), (9, 10), (11, 12)]
 course_3 = [(1, 3), (3, 5), (6, 8), (8, 10), (11, 13)]
 
+
 def String_to_table(string1: str):
     res = []
     for i in range(8):
@@ -277,10 +278,10 @@ def init(year=2019, semester=2):
             else:
                 Students_id[element.sno.username].courseSchedule = mergeTable(
                     Students_id[element.sno.username].courseSchedule, stu_table)
-        if has_already_scheduled.get(elements.tno.mcno.cno.cno+elements.tno.mcno.mno.major.mname) == None:
-            has_already_scheduled[elements.tno.mcno.cno.cno+elements.tno.mcno.mno.major.mname] = True
-        print("init", elements.tno.mcno.cno.cno, elements.tno.mcno.cno.cname, elements.tno.mcno.mno.major.mname, has_already_scheduled.get(elements.tno.mcno.cno.cno+elements.tno.mcno.mno.major.mname))
-
+        if has_already_scheduled.get(elements.tno.mcno.cno.cno + elements.tno.mcno.mno.major.mname) == None:
+            has_already_scheduled[elements.tno.mcno.cno.cno + elements.tno.mcno.mno.major.mname] = True
+        print("init", elements.tno.mcno.cno.cno, elements.tno.mcno.cno.cname, elements.tno.mcno.mno.major.mname,
+              has_already_scheduled.get(elements.tno.mcno.cno.cno + elements.tno.mcno.mno.major.mname))
 
     set2 = Schedule_result.objects.filter(tno__mcno__year=year, tno__mcno__semester=semester)
     for elements in set2:
@@ -293,7 +294,6 @@ def init(year=2019, semester=2):
         else:
             Students_id[elements.sno.username].courseSchedule = mergeTable(
                 Students_id[elements.sno.username].courseSchedule, Table)
-
 
 
 def check_hazard(weekday, daytime, schedule, week_start, week_end):
@@ -397,7 +397,8 @@ def coures_time_generate(schedule, time):
                     for i, e in enumerate(course_3):
                         if check_hazard(weekday, e, schedule, 1 + bias, weektime_cur + bias):
                             if len(res) == 0:
-                                res += str(e[0] + weekday * 13) + '-' + str(e[1] + weekday * 13) + '-' + str(1 + bias) + '-' + str(
+                                res += str(e[0] + weekday * 13) + '-' + str(e[1] + weekday * 13) + '-' + str(
+                                    1 + bias) + '-' + str(
                                     weektime_cur + bias)
                             else:
                                 weekday += 1
@@ -425,12 +426,14 @@ def coures_time_generate(schedule, time):
                         print(1 + bias, weektime_cur + bias, '||||||', weekday, e)
 
                         if len(res) == 0:
-                            res += str(e[0] + weekday * 13) + '-' + str(e[1] + weekday * 13) + '-' + str(1 + bias) + '-' + str(
-                                weektime_cur+bias)
+                            res += str(e[0] + weekday * 13) + '-' + str(e[1] + weekday * 13) + '-' + str(
+                                1 + bias) + '-' + str(
+                                weektime_cur + bias)
                         else:
                             weekday += 1
-                            res += ',' + str(e[0] + weekday * 13) + '-' + str(e[1] + weekday * 13) + '-' + str(1 + bias) + '-' + str(
-                                weektime_cur+bias)
+                            res += ',' + str(e[0] + weekday * 13) + '-' + str(e[1] + weekday * 13) + '-' + str(
+                                1 + bias) + '-' + str(
+                                weektime_cur + bias)
                         print(String_to_table(res))
                         cnt += 1
                         break
@@ -508,7 +511,8 @@ def autoSchedule(yy=2019, smt=2):
             heapq.heappush(heap_smallroom, Classrooms_id[elements.crno])
     coures_set = MajorCourses.objects.filter(year=year, semester=semester)
     for course in coures_set:
-        print(course.cno.cno, course.cno.cname, course.mno.major.mname, has_already_scheduled.get(course.cno.cno + course.mno.major.mname))
+        print(course.cno.cno, course.cno.cname, course.mno.major.mname,
+              has_already_scheduled.get(course.cno.cno + course.mno.major.mname))
         if has_already_scheduled.get(course.cno.cno + course.mno.major.mname) == True:
             continue
         teacher_set = original_Teaching.objects.filter(mcno__cno__cno=course.cno.cno)
@@ -616,6 +620,7 @@ def autoSchedule(yy=2019, smt=2):
             heapq.heapify(heap_smallroom)
             has_already_scheduled[course.cno.cno + course.mno.major.mname] = True
 
+
 # ---------------------
 # 自动排考试时间
 """
@@ -623,6 +628,8 @@ def autoSchedule(yy=2019, smt=2):
 2.查询教室:学生、老师---查询。管理员查+改（添加临时活动1-2，一个上午）。
 3.生成课表---》初步的课表---》选课加入课表
 """
+
+
 # ----------------------------
 # 按地点查空闲:
 def Search_spare_room(name: str):
@@ -678,6 +685,7 @@ def init_room():
             room = Classroom(elements.crno, elements.crtype, elements.contain_num)
             Classrooms_id[room.id] = room
 
+
 def week_has_hazzard(week1: str, week2: str):
     if len(week1) == 0 or len(week2) == 0:
         return False
@@ -685,7 +693,7 @@ def week_has_hazzard(week1: str, week2: str):
     r1 = int(week1.split('-')[1])
     l2 = int(week2.split('-')[0])
     r2 = int(week2.split('-')[1])
-    #print(l1,r1,l2,r2)
+    # print(l1,r1,l2,r2)
     if (l2 <= l1 and l1 <= r2) or (l1 <= l2 and l2 <= r1):
         return True
     else:
@@ -700,6 +708,7 @@ def has_table_hazzard(table1, table2):
                 return True
     return False
 
+
 def Search_time_room(time: str):
     init_room()
     res = []
@@ -711,14 +720,15 @@ def Search_time_room(time: str):
             continue
         else:
             res.append({
-                'type':room.type,
-                'id':room.id,
-                'container':room.container,
+                'type': room.type,
+                'id': room.id,
+                'container': room.container,
             })
     return res
 
-#添加临时活动
-def add_active(time:str, room:str, state:str):
+
+# 添加临时活动
+def add_active(time: str, room: str, state: str):
     init_room()
     new_table = String_to_table(time)
     if Classrooms_id.get(room) == None:
@@ -735,6 +745,8 @@ def add_active(time:str, room:str, state:str):
             )
             new_row.save()
     return True
+
+
 def get_students_teacher_courseSchedule(stuset: [], class_set=None, teacher_username=None) -> Buffer:
     if teacher_username == None:
         return None
@@ -807,8 +819,9 @@ def manual_schedule(time_string, place_name, stuset: [], class_set=[], teacher_u
     else:
         pass
 
+
 # 排考试时间
-def String_to_examTable(string:str):
+def String_to_examTable(string: str):
     res = []
     for i in range(7):
         res.append([])
@@ -817,8 +830,10 @@ def String_to_examTable(string:str):
     res[int(string.split('-')[0])][int(string.split('-')[1])] = '20-20'
     return res
 
+
 def init_exam(year=2019, semester=2):
-    rows_in_exam = Exam_Schedule.objects.filter(tno_mno_course__tno__mcno__year=year, tno_mno_course__tno__mcno__semester=semester)
+    rows_in_exam = Exam_Schedule.objects.filter(tno_mno_course__tno__mcno__year=year,
+                                                tno_mno_course__tno__mcno__semester=semester)
     for element in rows_in_exam:
         if Students_id.get(element.sno.username) == None:
             stu = Students(element.sno.username, element.sno.name,
@@ -826,13 +841,16 @@ def init_exam(year=2019, semester=2):
             stu.examSchedule = String_to_examTable(element.time)
             Students_id[element.sno.username] = stu
         else:
-            Students_id[element.sno.username].examSchedule = mergeTable(Students_id[element.sno.username].examSchedule,String_to_examTable(element.time))
+            Students_id[element.sno.username].examSchedule = mergeTable(Students_id[element.sno.username].examSchedule,
+                                                                        String_to_examTable(element.time))
         if Classrooms_id.get(element.where) == None:
             room = Classroom(element.where.crno, element.where.crtype, element.where.contain_num)
             room.examSchedule = String_to_examTable(element.time)
             Classrooms_id[element.where.crno] = room
         else:
-            Classrooms_id[element.where].examSchedule = mergeTable(Classrooms_id[element.where].examSchedule, String_to_examTable(element.time))
+            Classrooms_id[element.where].examSchedule = mergeTable(Classrooms_id[element.where].examSchedule,
+                                                                   String_to_examTable(element.time))
+
 
 def exam_time_generate(bf: Buffer):
     cnt = 0
@@ -847,7 +865,7 @@ def exam_time_generate(bf: Buffer):
                 elif j + 2 >= 5:
                     break
             else:
-                return str(i)+'-'+str(j)
+                return str(i) + '-' + str(j)
 
 
 def exam_schedule(year=2019, semester=2):
@@ -898,7 +916,7 @@ def exam_schedule(year=2019, semester=2):
                         bf.examSchedule = mergeTable(bf.examSchedule, Students_id[element.sno.username].examSchedule)
                         bf.students.append(element.sno.username)
 
-            elif course.current_number < 165 and course.current_number >= 100: #两个大教室
+            elif course.current_number < 165 and course.current_number >= 100:  # 两个大教室
                 target_cnt = int(course.current_number / 2)
                 cnt_room = 0
                 students_set = Schedule_result.objects.filter(tno=course.tno, time=course.time, where=course.where)
@@ -924,7 +942,7 @@ def exam_schedule(year=2019, semester=2):
                         target_cnt -= 1
                         bf.examSchedule = mergeTable(bf.examSchedule, Students_id[element.sno.username].examSchedule)
                         bf.students.append(element.sno.username)
-            elif course.current_number < 100 and course.current_number >= 80: #两个中教室
+            elif course.current_number < 100 and course.current_number >= 80:  # 两个中教室
                 target_cnt = int(course.current_number / 2)
                 cnt_room = 0
                 students_set = Schedule_result.objects.filter(tno=course.tno, time=course.time, where=course.where)
@@ -950,7 +968,7 @@ def exam_schedule(year=2019, semester=2):
                         target_cnt -= 1
                         bf.examSchedule = mergeTable(bf.examSchedule, Students_id[element.sno.username].examSchedule)
                         bf.students.append(element.sno.username)
-            elif course.current_number < 80 and course.current_number >= 25:  #一个中教室
+            elif course.current_number < 80 and course.current_number >= 25:  # 一个中教室
                 target_cnt = course.current_number
                 students_set = Schedule_result.objects.filter(tno=course.tno, time=course.time, where=course.where)
                 bf = Buffer()
@@ -989,7 +1007,8 @@ def exam_schedule(year=2019, semester=2):
                         bf.examSchedule = mergeTable(bf.examSchedule, Students_id[element.sno.username].examSchedule)
                         bf.students.append(element.sno.username)
 
-def exam_write_to_database(bf:Buffer, course, res:str):
+
+def exam_write_to_database(bf: Buffer, course, res: str):
     for element in bf.students:
         row = Exam_Schedule.objects.create(
             sno=Student.objects.get(username=element),
@@ -1007,24 +1026,23 @@ def search_exam_time(stu_username: str):
 
 
 if __name__ == '__main__':
-    #autoSchedule()
+    # autoSchedule()
     exam_schedule()
-    #Sycho()
-    #手工排
-    #以上在管理员的排课界面
+    # Sycho()
+    # 手工排
+    # 以上在管理员的排课界面
 
-    #查询空闲教室页面 学生教师只能看
-    #管理员看+占用空闲教室 ssss('时间段，16-18-14-15'，'地点'，'陈述') 返回是否加入成功
+    # 查询空闲教室页面 学生教师只能看
+    # 管理员看+占用空闲教室 ssss('时间段，16-18-14-15'，'地点'，'陈述') 返回是否加入成功
 
-    #仅学生可以看自己的考试时间表
+    # 仅学生可以看自己的考试时间表
 
-
-    #bf = get_students_teacher_courseSchedule(['2016000474', '2016000475', '2016000476', '2016000477'], teacher_username='198500038', )
-    #Search_time_room()
-    #print('-----------------')
-    #print(bf.courseSchedule)
-    #fff = Search_time_room("14-16-1-1,27-29-8-8")
-    #False print(manual_schedule('16-18-14-15', 'A-202', ['2016000474', '2016000475', '2016000476', '2016000477'], [], '199000064', 'CSE14302C'))
-    #print(manual_schedule('14-15-17-18', 'A-202', ['2016000474', '2016000475', '2016000476', '2016000477'], [], '199000064', 'CSE14302C'))
-    #print(add_active("3-3-11-12", "阶A-202", "exam"))
+    # bf = get_students_teacher_courseSchedule(['2016000474', '2016000475', '2016000476', '2016000477'], teacher_username='198500038', )
+    # Search_time_room()
+    # print('-----------------')
+    # print(bf.courseSchedule)
+    # fff = Search_time_room("14-16-1-1,27-29-8-8")
+    # False print(manual_schedule('16-18-14-15', 'A-202', ['2016000474', '2016000475', '2016000476', '2016000477'], [], '199000064', 'CSE14302C'))
+    # print(manual_schedule('14-15-17-18', 'A-202', ['2016000474', '2016000475', '2016000476', '2016000477'], [], '199000064', 'CSE14302C'))
+    # print(add_active("3-3-11-12", "阶A-202", "exam"))
     a = 1
