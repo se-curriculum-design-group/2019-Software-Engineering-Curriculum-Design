@@ -1,4 +1,4 @@
-django==2.1.7
+django==2.2.24
 pymysql
 pytest
 numpy
